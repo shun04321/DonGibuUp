@@ -1,7 +1,7 @@
 ﻿-- erdcloud export 기능 이용하여 작성
 -- PRIMARY KEY, FOREIGN KEY는 자동 생성, UNIQUE는 추가로 작성한 것
 -- FOREIGN KEY 제약조건 중 일부 KEY는 이름이 너무 길어서 임의로 축약함
--- 시퀀스는 자동생성이 안되므로 따로 FUNAL_SEQUENCE.sql 작성
+-- 시퀀스는 자동생성이 안되므로 따로 FUNAL_SEQUENCE.sql 작성 
 
 CREATE TABLE MEMBER (
 	mem_num			number						NOT NULL,
