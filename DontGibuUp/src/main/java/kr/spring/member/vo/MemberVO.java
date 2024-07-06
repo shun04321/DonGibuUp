@@ -6,6 +6,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import kr.spring.config.validation.ValidationGroups;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,17 +18,17 @@ public class MemberVO {
 	private long mem_num;
 	private int auth_num;
 	private String mem_social_id;
-	@NotBlank
-	@Email
+	@NotBlank(groups=ValidationGroups.NotNullGroup.class)
+	@Email(groups=ValidationGroups.TypeCheckGroup.class)
 	private String mem_email;
 	@NotBlank
 	private String mem_nick;
 	private int mem_status;
 	private int mem_reg_type;
-	@NotBlank
-	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,12}$")
+	@NotBlank(groups=ValidationGroups.NotNullGroup.class)
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,12}$", groups=ValidationGroups.PatternCheckGroup.class)
 	private String mem_pw;
-	
+
 	private int pref_num;
 	private String mem_photo;
 	private String mem_name;
@@ -38,5 +39,5 @@ public class MemberVO {
 	private String mem_rcode;
 	private int recommend_status;
 	private int mem_point;
-	
+
 }

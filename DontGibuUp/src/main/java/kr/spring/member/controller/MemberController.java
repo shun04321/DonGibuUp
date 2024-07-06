@@ -1,12 +1,12 @@
 package kr.spring.member.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +38,7 @@ public class MemberController {
 	
 	//회원가입
 	@PostMapping("/member/signup")
-	public String signup(@Valid MemberVO memberVO, BindingResult result, Model model, HttpServletRequest request) {
+	public String signup(@Validated MemberVO memberVO, BindingResult result, Model model, HttpServletRequest request) {
 		log.debug("<<회원가입>> : " + memberVO);
 		
 		if (result.hasErrors()) {
