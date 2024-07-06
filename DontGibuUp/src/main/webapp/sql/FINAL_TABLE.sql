@@ -35,7 +35,7 @@ CREATE TABLE MEMBER_DETAIL (
 	pref_num			number(1)							NULL,
 	mem_photo			varchar2(400)						NULL,
 	mem_name			varchar2(30)						NULL,
-	mem_phone			number(11)							NULL,
+	mem_phone			varchar2(11)						NULL,
 	mem_birth			number(6)							NULL,
 	mem_date			date			DEFAULT SYSDATE		NULL,
 	mem_mdate			date								NULL,

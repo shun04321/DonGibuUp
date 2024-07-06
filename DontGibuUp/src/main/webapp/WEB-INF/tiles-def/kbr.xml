@@ -4,11 +4,17 @@
        "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
+<!-- 회원가입 -->
 <tiles-definitions>
-	<definition name="kbr" template="/WEB-INF/views/template/layout_basic.jsp">
-		<put-attribute name="title" value="SpringPage"/>
+	<definition name="memberSignup" extends="main">
+		<put-attribute name="title" value="회원가입"/>
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/member/memberSignup.jsp"/>
+	</definition>
+	<definition name="resultView" extends="main">
+		<put-attribute name="title" value="회원가입 완료"/>
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/common/resultBody.jsp"/>
 	</definition>
 </tiles-definitions>
 

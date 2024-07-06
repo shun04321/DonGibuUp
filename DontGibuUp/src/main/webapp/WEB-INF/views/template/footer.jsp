@@ -2,6 +2,6 @@
     pageEncoding="UTF-8"%>
 <!-- 하단 시작 -->
 <div class="align-center">
-	&copy; SpringPage
+	&copy; DontGibuUp
 </div>
 <!-- 하단 끝 -->

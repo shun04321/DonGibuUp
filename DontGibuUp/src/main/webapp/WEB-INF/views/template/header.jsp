@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- 상단 시작 -->
-<h2 class="align-center">SpringPage</h2>
+<h2 class="align-center">Dont Gibu Up</h2>
 <div class="align-right">
 	<a href="${pageContext.request.contextPath}/board/list">게시판</a>
     <c:if test="${!empty user}">
@@ -11,7 +11,7 @@
     <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
     </c:if>
 	<c:if test="${empty user}">
-	<a href="${pageContext.request.contextPath}/member/registerUser">회원가입</a>
+	<a href="${pageContext.request.contextPath}/member/signup">회원가입</a>
 	<a href="${pageContext.request.contextPath}/member/login">로그인</a>
 	</c:if>	
 	<a href="${pageContext.request.contextPath}/main/main">홈으로</a>
