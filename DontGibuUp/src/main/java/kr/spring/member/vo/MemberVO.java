@@ -18,15 +18,15 @@ public class MemberVO {
 	private long mem_num;
 	private int auth_num;
 	private String mem_social_id;
-	@NotBlank(groups=ValidationGroups.NotNullGroup.class)
-	@Email(groups=ValidationGroups.TypeCheckGroup.class)
+	@NotBlank(groups = ValidationGroups.NotNullGroup.class)
+	@Email(groups = ValidationGroups.TypeCheckGroup.class)
 	private String mem_email;
-	@NotBlank
+	@NotBlank(groups = ValidationGroups.NotNullGroup.class)
 	private String mem_nick;
 	private int mem_status;
 	private int mem_reg_type;
-	@NotBlank(groups=ValidationGroups.NotNullGroup.class)
-	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,12}$", groups=ValidationGroups.PatternCheckGroup.class)
+	@NotBlank(groups = ValidationGroups.NotNullGroup.class)
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,12}$", groups = ValidationGroups.PatternCheckGroup.class)
 	private String mem_pw;
 
 	private int pref_num;

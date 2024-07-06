@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import kr.spring.config.validation.ValidationSequence;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class MemberController {
 	
 	//회원가입
 	@PostMapping("/member/signup")
-	public String signup(@Validated MemberVO memberVO, BindingResult result, Model model, HttpServletRequest request) {
+	public String signup(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result, Model model, HttpServletRequest request) {
 		log.debug("<<회원가입>> : " + memberVO);
 		
 		if (result.hasErrors()) {
