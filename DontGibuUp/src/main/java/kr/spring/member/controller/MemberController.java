@@ -53,7 +53,8 @@ public class MemberController {
 		model.addAttribute("accessBtn", "로그인하기");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
 		
+		log.debug("뷰호출 직전");
 		
-		return "resultView";
+		return "resultPage";
 	}
 }

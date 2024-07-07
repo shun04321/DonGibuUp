@@ -11,7 +11,7 @@ import kr.spring.member.vo.MemberVO;
 @Transactional
 public class MemberServiceImpl implements MemberService {
 	@Autowired
-	private MemberMapper memberMapper;
+	MemberMapper memberMapper;
 
 	@Override
 	public void insertMember(MemberVO memberVO) {

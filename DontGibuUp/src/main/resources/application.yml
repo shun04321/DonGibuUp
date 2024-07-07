@@ -20,6 +20,7 @@ spring:
   messages:
     basename: messages/cyy,messages/jsy,messages/kbr,messages/khc,messages/lsy,messages/syj,messages/yhl
     encoding: UTF-8
+
     
   devtools: #View reload
     livereload:

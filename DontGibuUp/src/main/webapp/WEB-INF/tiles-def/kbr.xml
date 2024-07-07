@@ -11,7 +11,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/member/memberSignup.jsp"/>
 	</definition>
-	<definition name="resultView" extends="main">
+	<definition name="resultPage" extends="main">
 		<put-attribute name="title" value="회원가입 완료"/>
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/common/resultBody.jsp"/>
