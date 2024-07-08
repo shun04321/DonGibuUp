@@ -19,9 +19,16 @@
 		</li>
 	</ul>
 	<div class="align-center">
-		<form:button class="default-btn">로그인</form:button>
-		<input type="button" value="계정찾기" class="default-btn" onclick="location.href=findAccount">
-		<input type="button" value="회원가입" class="default-btn" onclick="location.href='${pageContext.request.contextPath}/main/main'">
+		<form:button class="default-btn">Login</form:button>
+		<input type="button" value="계정찾기" class="default-btn" onclick="location.href='findAccount'">
+		<input type="button" value="회원가입" class="default-btn" onclick="location.href='signup'">
+	</div>
+	<div class="align-center">
+		<span>SNS로 로그인하기</span>
+		<div>
+			<a href="oauth/kakao"><img alt="카카오톡 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/kakaotalk_logo.png"></a>
+			<a href="oauth/naver"><img alt="네이버 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/naver_logo.png"></a>
+		</div>
 	</div>
 </form:form>
 

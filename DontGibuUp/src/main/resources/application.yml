@@ -51,7 +51,13 @@ server:
       enabled: true #http 인코딩 지원을 활성활지 여부
       force: true    
   tomcat:
-    max-http-form-post-size: 200MB #톰캣에서 허용하는 파일 업로드 사이즈    
+    max-http-form-post-size: 200MB #톰캣에서 허용하는 파일 업로드 사이즈
+
+kakao:
+  client_id: 361a53f841ae7d3b7fc4a74f0535dba2
+  redirect_uri: http://localhost:8000/member/callback/kakao
+  client_secret: PYllM1U05uZRCeeV64RWvPHDAiEPmkbd
+
     
     
     
