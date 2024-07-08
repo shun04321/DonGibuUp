@@ -23,8 +23,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<DonationCategoryVO> selectList(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return categoryMapper.selectList(map);
 	}
 
 	@Override
@@ -43,6 +42,11 @@ public class CategoryServiceImpl implements CategoryService {
 	public void deleteDonationCategory(Long dcate_num) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getListCount(Map<String, Object> map) {
+		return categoryMapper.getListCount(map);
 	}
 
 }

@@ -8,6 +8,8 @@ import kr.spring.category.vo.DonationCategoryVO;
 public interface CategoryService {
 	// 기부 카테고리 등록
 		public void insertDonationCategory(DonationCategoryVO donationCategoryVO);
+		// 기부 카테고리 수
+		public int getListCount(Map<String,Object> map);
 		// 기부 카테고리 목록
 		public List<DonationCategoryVO> selectList(Map<String,Object> map);
 		// 기부 카테고리 상세
