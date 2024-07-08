@@ -6,6 +6,7 @@
 <div class="align-right">
 	<a href="${pageContext.request.contextPath}/board/list">게시판</a>
 	<a href="${pageContext.request.contextPath}/dbox/list">기부박스</a>
+	<a href="${pageContext.request.contextPath}/subscription/subscriptionMain">정기기부</a>
     <c:if test="${!empty user}">
     <a href="${pageContext.request.contextPath}/member/myPage">MY페이지</a>
     <img src="${pageContext.request.contextPath}/member/photoView" width="25" height="25" class="my-photo">
