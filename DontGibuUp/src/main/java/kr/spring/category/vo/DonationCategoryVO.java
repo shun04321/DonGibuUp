@@ -17,7 +17,6 @@ public class DonationCategoryVO {
 	private String dcate_name;
 	@NotBlank
 	private String dcate_charity;
-	@NotBlank
 	private String dcate_icon;
 	@NotBlank
 	private String dcate_content;

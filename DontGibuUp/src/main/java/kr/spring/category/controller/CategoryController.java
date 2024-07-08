@@ -62,7 +62,6 @@ public class CategoryController {
 		donationCategoryVO.setDcate_icon(FileUtil.createFile(request, 
 				                      donationCategoryVO.getUpload()));
 		
-		
 		//기부 카테고리 등록
 		categoryService.insertDonationCategory(donationCategoryVO);
 		
