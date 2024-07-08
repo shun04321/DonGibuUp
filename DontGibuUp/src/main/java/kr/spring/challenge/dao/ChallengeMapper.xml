@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.challenge.dao.ChallengeMapper">	
+	<insert id="insertChallenge" parameterType="challengeVO">
+		INSERT INTO challenge
+		(chal_num,
+		 mem_num,
+		 chal_person,
+		 chal_type,
+		 chal_public,
+		 chal_title,
+		 chal_content,
+		 chal_photo,
+		 chal_verify,
+		 chal_freq,
+		 chal_sdate,
+		 chal_edate,
+		 chal_fee,
+		 chal_max,
+		 chal_rdate)
+			 VALUES(
+			 challenge_seq.nextval,
+			 #{mem_num},
+			 #{chal_person},
+			 #{chal_type},
+			 #{chal_public},
+			 #{chal_title},
+			 #{chal_content},
+			 #{chal_photo},
+			 #{chal_verify},
+			 #{chal_freq},
+			 #{chal_sdate},
+			 #{chal_edate},
+			 #{chal_fee},
+			 #{chal_max},
+			 #{chal_rdate}
+		)
+	</insert>
+</mapper>
+
+
+
+
+
+
+
