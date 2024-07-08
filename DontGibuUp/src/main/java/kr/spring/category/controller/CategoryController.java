@@ -18,14 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import kr.spring.board.vo.BoardVO;
 import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
-import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Controller
 public class CategoryController {
