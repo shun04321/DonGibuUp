@@ -12,7 +12,7 @@
 			mem_reg_type,
 			mem_pw
 		) VALUES(
-			member_seq.nextval,
+			#{mem_num},
 			#{mem_email},
 			#{mem_nick},
 			#{mem_reg_type},
