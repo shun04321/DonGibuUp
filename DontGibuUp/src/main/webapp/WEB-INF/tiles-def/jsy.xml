@@ -5,10 +5,10 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<definition name="jsy" extends="main">
+	<definition name="goodsList" extends="main">
 		<put-attribute name="title" value="회원가입"/>
 		<put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/goods/goodsWrite.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/goods/goodsList.jsp"/>
 	</definition>
 </tiles-definitions>
 
