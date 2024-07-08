@@ -267,6 +267,7 @@ CREATE TABLE DBOX (
 	dbox_budget_data		varchar2(400)					NULL,
 	dbox_bank				varchar2(30)					NOT NULL,
 	dbox_account			number(20)						NOT NULL,
+	dbox_account_name		varchar2(21)					NOT NULL,
 	dbox_content			clob							NOT NULL,
 	dbox_comment			varchar2(4000)					NULL,
 	dbox_goal				number(15)						NOT NULL,
@@ -301,6 +302,8 @@ COMMENT ON COLUMN DBOX.dbox_business_plan IS '구체적인 사업계획서';
 COMMENT ON COLUMN DBOX.dbox_budget_data IS '견적서 등 금액책정의 근거자료';
 
 COMMENT ON COLUMN DBOX.dbox_bank IS '정산받을 계좌의 은행';
+
+COMMENT ON COLUMN DBOX.dbox_account_name IS '정산받을 계좌의 예금주명';
 
 COMMENT ON COLUMN DBOX.dbox_account IS '정산받을 계좌의 계좌번호';
 
