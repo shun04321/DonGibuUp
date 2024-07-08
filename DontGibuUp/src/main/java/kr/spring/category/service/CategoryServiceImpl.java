@@ -28,8 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public DonationCategoryVO selectDonationCategory(Long dcate_num) {
-		// TODO Auto-generated method stub
-		return null;
+		return categoryMapper.selectDonationCategory(dcate_num);
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import kr.spring.category.vo.DonationCategoryVO;
-
 public interface CategoryService {
 	// 기부 카테고리 등록
 		public void insertDonationCategory(DonationCategoryVO donationCategoryVO);
