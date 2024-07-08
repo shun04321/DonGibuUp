@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.spring.goods.dao.GoodsMapper">
+	<!-- 상품 등록 -->
+	<insert id="insertGoods" parameterType="GoodsVO">
+		INSERT INTO item(
+		item_num,
+		dcate_num,
+		item_name,
+		item_photo,
+		item_detail,
+		item_price,
+		item_stock,
+		item_status)VALUES(
+		item_seq.nextval,
+		#{dcate_num},
+		#{item_name},
+		#{item_photo},
+		#{item_detail},
+		#{item_price},
+		#{item_stock},
+		#{item_status})
+	</insert>
+	<!-- sql 태그와 include 태그를 이용한 SQL문 재사용 -->
+	<sql id="goodsSearch">
+		<where>
+			<if test="item_name != null and item_num != ''">
+				item_name = #{item_name}
+			</if>
+
+
+		</where>
+	</sql>
+</mapper>
