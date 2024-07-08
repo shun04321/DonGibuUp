@@ -32,10 +32,14 @@
 	</ul>
 	<div class="align-center">
 		<form:button class="default-btn">Signup</form:button>
-		<input type="button" value="로그인" class="default-btn" onclick="location.href='login">
-		<div>SNS로 간편하게 시작하기</div>
-		<img alt="카카오톡 간편 로그인" src="">
-		<img alt="네이버 간편 로그인" src="">
+		<input type="button" value="로그인" class="default-btn" onclick="location.href='login'">
+	</div>
+	<div class="align-center">
+		<span>SNS로 간편하게 시작하기</span>
+		<div>
+			<a href="oauth/kakao"><img alt="카카오톡 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/kakaotalk_logo.png"></a>
+			<a href="oauth/naver"><img alt="네이버 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/naver_logo.png"></a>
+		</div>
 	</div>
 </form:form>
 

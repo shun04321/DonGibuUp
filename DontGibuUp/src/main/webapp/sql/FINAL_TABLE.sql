@@ -218,7 +218,8 @@ CREATE TABLE CHALLENGE (
 	chal_edate		varchar2(10)					NOT NULL,
 	chal_fee		number(10)						NOT NULL,
 	chal_max		number(9)		DEFAULT 1		NULL,
-	chal_rdate		date			DEFAULT SYSDATE	NOT NULL
+	chal_rdate		date			DEFAULT SYSDATE	NOT NULL,
+	chal_public		number(1) 		DEFAULT 0		NOT NULL
 );
 
 COMMENT ON COLUMN CHALLENGE.chal_num IS '챌린지 식별 번호,sequence 사용';
@@ -249,6 +250,8 @@ COMMENT ON COLUMN CHALLENGE.chal_max IS '참가가능 인원수';
 
 COMMENT ON COLUMN CHALLENGE.chal_rdate IS '챌린지 개설일';
 
+COMMENT ON COLUMN CHALLENGE.chal_rdate IS '챌린지 공개여부 (0:공개, 1:비공개)';
+
 CREATE TABLE DBOX (
 	dbox_num				number							NOT NULL,
 	mem_num					number							NOT NULL,
@@ -264,6 +267,7 @@ CREATE TABLE DBOX (
 	dbox_budget_data		varchar2(400)					NULL,
 	dbox_bank				varchar2(30)					NOT NULL,
 	dbox_account			number(20)						NOT NULL,
+	dbox_account_name		varchar2(21)					NOT NULL,
 	dbox_content			clob							NOT NULL,
 	dbox_comment			varchar2(4000)					NULL,
 	dbox_goal				number(15)						NOT NULL,
@@ -298,6 +302,8 @@ COMMENT ON COLUMN DBOX.dbox_business_plan IS '구체적인 사업계획서';
 COMMENT ON COLUMN DBOX.dbox_budget_data IS '견적서 등 금액책정의 근거자료';
 
 COMMENT ON COLUMN DBOX.dbox_bank IS '정산받을 계좌의 은행';
+
+COMMENT ON COLUMN DBOX.dbox_account_name IS '정산받을 계좌의 예금주명';
 
 COMMENT ON COLUMN DBOX.dbox_account IS '정산받을 계좌의 계좌번호';
 
@@ -555,8 +561,9 @@ CREATE TABLE REPORT (
 	reported_mem_num	number							NOT NULL,
 	chal_num			number							NULL,
 	chal_rev_num		number							NULL,
+	chal_ver_num		number							NULL,
 	dbox_re_num			number							NULL,
-	report_type			varchar2(50)					NOT NULL,
+	report_type			number(1)						NOT NULL,
 	report_content		varchar2(4000)					NULL,
 	report_filename		varchar2(400)					NULL,
 	report_reply		varchar2(4000)					NULL,
@@ -574,9 +581,11 @@ COMMENT ON COLUMN REPORT.chal_num IS '챌린지 고유 번호,sequence 사용';
 
 COMMENT ON COLUMN REPORT.chal_rev_num IS '후기 고유 번호,sequence 사용';
 
+COMMENT ON COLUMN REPORT.chal_ver_num IS '챌린지 인증 고유 번호';
+
 COMMENT ON COLUMN REPORT.dbox_re_num IS '기부박스 댓글의 고유식별번호,sequence 사용';
 
-COMMENT ON COLUMN REPORT.report_type IS '신고신고 종류 (1: 스팸/광고, 2: 폭력/위협, 3:혐오발언/차별, 4:음란물/부적절한 콘텐츠, 5:기타) 종류';
+COMMENT ON COLUMN REPORT.report_type IS '신고신고 종류 (1: 스팸/광고, 2: 폭력/위협, 3:혐오발언/차별, 4:음란물/부적절한 콘텐츠, 5:챌린지 인증) 종류';
 
 COMMENT ON COLUMN REPORT.report_content IS '신고 내용';
 
@@ -697,7 +706,9 @@ CREATE TABLE CHAL_VERIFY (
 	mem_num				number							NOT NULL,
 	chal_ver_photo		varchar2(400)					NOT NULL,
 	chal_ver_status		number(2)		DEFAULT 0		NOT NULL,
-	chal_reg_date		date			DEFAULT SYSDATE	NOT NULL
+	chal_reg_date		date			DEFAULT SYSDATE	NOT NULL,
+	chal_ver_report		number(1)		DEFAULT 0		NOT NULL,
+	chal_content		varchar2(4000)					NULL
 );
 
 COMMENT ON COLUMN CHAL_VERIFY.chal_ver_num IS '챌린지 인증을 식별하는 번호,sequence 사용';
@@ -711,6 +722,10 @@ COMMENT ON COLUMN CHAL_VERIFY.chal_ver_photo IS '챌린지 인증사진';
 COMMENT ON COLUMN CHAL_VERIFY.chal_ver_status IS '챌린지 인증상태  (0:승인전,1:인증완료,2:인증실패)';
 
 COMMENT ON COLUMN CHAL_VERIFY.chal_reg_date IS '챌린지 인증 업로드 날짜,하루에 중복인증 불가능';
+
+COMMENT ON COLUMN CHAL_VERIFY.chal_ver_report IS '챌린지 신고 여부 (0: 신고 안 됨, 1: 신고됨)';
+
+COMMENT ON COLUMN CHAL_VERIFY.chal_content IS '챌린지 인증시 작성 가능한 한줄평';
 
 CREATE TABLE SUB_PAYMENT (
 	sub_pay_num			number					NOT NULL,
@@ -1043,6 +1058,13 @@ ALTER TABLE REPORT ADD CONSTRAINT FK_CHALLENGE_TO_REPORT_1 FOREIGN KEY (
 )
 REFERENCES CHALLENGE (
 	chal_num
+);
+
+ALTER TABLE REPORT ADD CONSTRAINT FK_CHAL_VER_NUM_TO_REPORT_1 FOREIGN KEY (
+	chal_ver_num
+)
+REFERENCES CHAL_VERIFY (
+	chal_ver_num
 );
 
 ALTER TABLE REPORT ADD CONSTRAINT FK_CHAL_REVIEW_TO_REPORT_1 FOREIGN KEY (

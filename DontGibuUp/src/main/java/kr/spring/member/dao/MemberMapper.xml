@@ -15,7 +15,7 @@
 			member_seq.nextval,
 			#{mem_email},
 			#{mem_nick},
-			1,
+			#{mem_reg_type},
 			#{mem_pw}
 		)
 	</insert>
