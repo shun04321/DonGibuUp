@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>정기기부 메인</title>
 </head>
 <body>
-	잘 뜨면 좋겠다~
+	정기기부 메인
 </body>
 </html>
