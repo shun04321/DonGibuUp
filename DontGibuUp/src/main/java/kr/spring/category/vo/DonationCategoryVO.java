@@ -1,4 +1,4 @@
-package kr.spring.vo.category;
+package kr.spring.category.vo;
 
 import lombok.Getter;
 import lombok.Setter;
