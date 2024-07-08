@@ -17,7 +17,27 @@
 			 #{dcate_icon,jdbcType=VARCHAR},
 			 #{dcate_content}
 		)
-	</insert>
+	</insert>	
+	<select id="selectList" parameterType="map" resultType="donationCategoryVO">
+		 	SELECT
+	 	   *
+	    FROM (SELECT
+	            a.*,
+	            rownum rnum
+	          FROM (SELECT
+	                  dcate_num,
+	                  <![CDATA[
+	                  	REPLACE(REPLACE(dcate_name,'<','&lt;'),'>','&gt;') dcate_name,
+	                  ]]>
+	                  dcate_charity,
+	                  dcate_icon,
+	                  dcate_content
+	                FROM dona_category 				<!-- 알리아스 -->
+	                )a)
+	 	<![CDATA[
+	 	WHERE rnum >= #{start} AND rnum <= #{end}
+	 	]]>
+	</select>
 </mapper>
 
 
