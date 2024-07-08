@@ -6,7 +6,7 @@
 <div class="page-main">
 	<h2>게시판 목록</h2>
 	<div class="align-right">
-		<input type="button" value="기부 카테고리 및 기부처 등록" onclick="insertCategory">                 
+		<input type="button" value="기부 카테고리 및 기부처 등록" onclick="location.href='/category/insertCategory'">                 
 	</div>
 	<c:if test="${count == 0}">
 	<div class="result-display">표시할 게시물이 없습니다.</div>
