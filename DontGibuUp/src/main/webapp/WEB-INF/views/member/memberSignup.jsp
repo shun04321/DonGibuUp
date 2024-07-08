@@ -31,8 +31,11 @@
 		</li>
 	</ul>
 	<div class="align-center">
-		<form:button class="default-btn">가입</form:button>
-		<input type="button" value="홈으로" class="default-btn" onclick="location.href='${pageContext.request.contextPath}/main/main'">
+		<form:button class="default-btn">Signup</form:button>
+		<input type="button" value="로그인" class="default-btn" onclick="location.href='login">
+		<div>SNS로 간편하게 시작하기</div>
+		<img alt="카카오톡 간편 로그인" src="">
+		<img alt="네이버 간편 로그인" src="">
 	</div>
 </form:form>
 

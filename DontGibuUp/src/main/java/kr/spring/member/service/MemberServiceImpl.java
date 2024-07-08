@@ -17,6 +17,11 @@ public class MemberServiceImpl implements MemberService {
 	public void insertMember(MemberVO memberVO) {
 		memberMapper.insertMember(memberVO);
 	}
+
+	@Override
+	public MemberVO selectMemberByEmail(String mem_email) {
+		return memberMapper.selectMemberByEmail(mem_email);
+	}
 	
 	
 }

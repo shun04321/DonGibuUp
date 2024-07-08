@@ -39,5 +39,12 @@ public class MemberVO {
 	private String mem_rcode;
 	private int recommend_status;
 	private int mem_point;
+	
+	public boolean isCheckedPassword(String user_pw) {
+		if (user_pw.equals(mem_pw)) {
+			return true;
+		}
+		return false;
+	}
 
 }
