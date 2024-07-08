@@ -260,6 +260,10 @@ CREATE TABLE DBOX (
 	dbox_business_rnum		number(10)						NULL,
 	dbox_title				varchar2(150)					NOT NULL,
 	dbox_photo				varchar2(400)					NOT NULL,
+	dbox_business_plan		varchar2(400)					NOT NULL,
+	dbox_budget_data		varchar2(400)					NULL,
+	dbox_bank				varchar2(30)					NOT NULL,
+	dbox_account			number(20)						NOT NULL,
 	dbox_content			clob							NOT NULL,
 	dbox_comment			varchar2(4000)					NULL,
 	dbox_goal				number(15)						NOT NULL,
@@ -288,6 +292,14 @@ COMMENT ON COLUMN DBOX.dbox_business_rnum IS '기부박스 주최팀의 사업�
 COMMENT ON COLUMN DBOX.dbox_title IS '기부박스의 제목';
 
 COMMENT ON COLUMN DBOX.dbox_photo IS '썸네일에 보일 이미지의 이름';
+
+COMMENT ON COLUMN DBOX.dbox_business_plan IS '구체적인 사업계획서';
+
+COMMENT ON COLUMN DBOX.dbox_budget_data IS '견적서 등 금액책정의 근거자료';
+
+COMMENT ON COLUMN DBOX.dbox_bank IS '정산받을 계좌의 은행';
+
+COMMENT ON COLUMN DBOX.dbox_account IS '정산받을 계좌의 계좌번호';
 
 COMMENT ON COLUMN DBOX.dbox_content IS '기부박스를 설명하는 내용';
 
