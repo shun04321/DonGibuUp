@@ -5,18 +5,9 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<definition name="yhl" template="/WEB-INF/views/template/layout_basic.jsp">
-		<put-attribute name="title" value="SpringPage"/>
-		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
+	<definition name="dboxList" extends="main">
+		<put-attribute name="title" value="기부박스"/>
+		<put-attribute name="css" value="/WEB-INF/views/dbox/dboxCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxList.jsp"/>
 	</definition>
 </tiles-definitions>
-
-
-
-
-
-
-
-
-
