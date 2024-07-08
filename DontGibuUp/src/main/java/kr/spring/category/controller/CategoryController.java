@@ -52,7 +52,10 @@ public class CategoryController {
 		
 		//유효성 체크 결과 오류가 있으면 폼 호출
 		if(result.hasErrors()) {
-			return insertCategoryForm(model);
+			if (donationCategoryVO.getUpload() == null || donationCategoryVO.getUpload().isEmpty()) {
+		        result.rejectValue("upload", "error.upload", "기부처 아이콘을 업로드해야 합니다.");
+		    }
+			return "insertCategory";
 		}
 		
 		//파일 업로드
