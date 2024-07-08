@@ -14,12 +14,11 @@ import kr.spring.category.vo.DonationCategoryVO;
 @Transactional
 public class CategoryServiceImpl implements CategoryService {
 	@Autowired
-	CategoryMapper CategoryMapper;
+	CategoryMapper categoryMapper;
 
 	@Override
 	public void insertDonationCategory(DonationCategoryVO donationCategoryVO) {
-		// TODO Auto-generated method stub
-		
+		categoryMapper.insertDonationCategory(donationCategoryVO);
 	}
 
 	@Override
