@@ -17,7 +17,10 @@ public class MainController {
 	public String main() {
 		return "main";//Tiles의 설정명
 	}
-	
+	@GetMapping("/main/admin")
+	public String adminMain() {
+		return "admin";//Tiles의 설정명
+	}
 }
 
 
