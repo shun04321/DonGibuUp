@@ -1,11 +1,10 @@
 package kr.spring.member.service;
 
 import kr.spring.member.vo.MemberVO;
-import kr.spring.point.vo.PointVO;
-import kr.spring.util.RCodeGenerator;
 
 public interface MemberService {
-	public void insertMember(MemberVO memberVO, PointVO pointVO);
+	public void insertMember(MemberVO memberVO);
+	//이메일로 회원정보 가져오기
 	public MemberVO selectMemberByEmail(String mem_email);
 	
 	//추천인코드 만들기

@@ -11,7 +11,9 @@ import kr.spring.point.dao.PointMapper;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.RCodeGenerator;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 public class MemberServiceImpl implements MemberService {
@@ -24,20 +26,41 @@ public class MemberServiceImpl implements MemberService {
 
 	//회원가입
 	@Override
-	public void insertMember(MemberVO memberVO, PointVO pointVO) {
+	public void insertMember(MemberVO memberVO) {
 		//mem_num 지정
 		long mem_num = memberMapper.selectMemNum();
 		memberVO.setMem_num(mem_num);
-		pointVO.setMem_num(mem_num);
+		//추천인 코드지정
+		memberVO.setMem_rcode(generateUniqueRCode());
 		
 		//member 추가
 		memberMapper.insertMember(memberVO);
-		//member_detail 추가
+		//member_detail 추가(default point = 1000)
 		memberMapper.insertMemberDetail(memberVO);
-		//포인트 적립
-		pointMapper.insertPointLog(pointVO);
-		//추천인 이벤트 참여시
-		//memberMapper.updateMemPoint(pointVO2);
+		
+		//회원가입 포인트 로그
+		PointVO point_signup = new PointVO(12, 1000); //포인트타입 12:회원가입
+		log.debug("<<회원가입 - 포인트>> : " + point_signup);
+		point_signup.setMem_num(mem_num);
+		
+		//회원가입 포인트 로그 추가
+		pointMapper.insertPointLog(point_signup);
+		
+		//추천인 이벤트 참여
+		if (memberVO.getRecommend_status() == 1) {
+			long recipientMemNum = memberMapper.selectMemNumByRCode(memberVO.getFriend_rcode());
+			
+			PointVO point_revent1 = new PointVO(10, 3000, mem_num);
+			PointVO point_revent2 = new PointVO(10, 3000, recipientMemNum);
+			
+			//포인트 로그 추가
+			pointMapper.insertPointLog(point_revent1);
+			pointMapper.insertPointLog(point_revent2);
+			
+			//member_detail 업데이트
+			memberMapper.updateMemPoint(point_revent1);
+			memberMapper.updateMemPoint(point_revent2);
+		}
 		
 	}
 

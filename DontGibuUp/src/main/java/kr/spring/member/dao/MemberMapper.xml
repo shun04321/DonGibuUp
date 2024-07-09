@@ -16,7 +16,7 @@
 			#{mem_num},
 			#{mem_email},
 			#{mem_nick},
-			#{mem_social_id},
+			#{mem_social_id, jdbcType=BIGINT},
 			#{mem_reg_type},
 			#{mem_pw}
 		)
