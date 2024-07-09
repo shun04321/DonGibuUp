@@ -9,25 +9,32 @@
 <script src="${pageContext.request.contextPath}/js/uploadAdapter.js"></script>
 <div class="page-main">
 	<h2>글쓰기</h2>
-	<form:form action="write" id="Goods_register"
+	<form:form action="write" id="goods_register"
 		enctype="multipart/form-data"
-							modelAttribute="GoodsVO">
+							modelAttribute="goodsVO">
 	<ul>
 		<li>
 		 	<form:label path="dcate_num">분류</form:label>
 		 	<form:select path="dcate_num">
 		 		<option disabled="disabled" selected>선택하세요</option>
-		 		<form:option value="1">자바</form:option>
-		 		<form:option value="2">데이터 베이스</form:option>
-		 		<form:option value="3">자바스크립트</form:option>
-		 		<form:option value="4">기타</form:option>
+		 		<form:option value="24">구미요양원</form:option>
+		 		<form:option value="2">아동</form:option>
+		 		<form:option value="3">다문화</form:option>
+		 		<form:option value="4">정신영기부좀요</form:option>
 		 	</form:select>
 		 	<form:errors path="dcate_num" cssClass="error-color"/>
 		</li>
-		<li>
-		 	
-		 	<form:input path="item_name" placeholder="상품명을 입력하세요"/>
+		<li>상품명<br>
+		 	<form:input path="item_name"/>
 		 	<form:errors path="item_name" cssClass="error-color"/>
+		</li>
+		<li>가격<br>
+		 	<form:input path="item_price"/>
+		 	<form:errors path="item_price" cssClass="error-color"/>
+		</li>
+		<li>수량<br>
+		 	<form:input path="item_stock"/>
+		 	<form:errors path="item_stock" cssClass="error-color"/>
 		</li>
 		<li>
 		 	<form:textarea path="item_detail"/>
@@ -53,7 +60,8 @@
 		</li>
 		<li>
 		 	<form:label path="item_photo">파일업로드</form:label>
-		 	<input type="file" name="item_photo" id="item_photo">
+		 	<input type="file" name="upload" id="upload">
+		 	<form:errors path="upload" cssClass="error-color"/>
 		</li>
 	</ul>						
 	<div class="align-center">
