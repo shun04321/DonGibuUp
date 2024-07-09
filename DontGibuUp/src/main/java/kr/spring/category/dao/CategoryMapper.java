@@ -18,6 +18,7 @@ public interface CategoryMapper {
 	// 기부 카테고리 목록
 	public List<DonationCategoryVO> selectList(Map<String,Object> map);
 	// 기부 카테고리 상세
+	@Select("SELECT * FROM dona_category WHERE dcate_num=#{dcate_num}")
 	public DonationCategoryVO selectDonationCategory(Long dcate_num);
 	// 기부 카테고리 수정 
 	public void updateDonationCategory(DonationCategoryVO donationCategoryVO);

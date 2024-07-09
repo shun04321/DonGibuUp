@@ -3,7 +3,6 @@ package kr.spring.member.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +23,7 @@ import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.KakaoInfo;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.vo.PointVO;
 import kr.spring.util.AuthCheckException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -70,8 +70,16 @@ public class MemberController {
 		}
 		//회원가입 타입 지정(1:일반 회원가입)
 		memberVO.setMem_reg_type(1);
+		
+		//포인트 정보 지정
+		PointVO pointVO = new PointVO();
+		pointVO.setPevent_type(12); //포인트타입 12:회원가입
+		pointVO.setPoint_amount(1000);
+		
+		log.debug("<<회원가입 - 포인트>> : " + pointVO);
+		
 		//회원가입
-		memberService.insertMember(memberVO);
+		memberService.insertMember(memberVO, pointVO);
 		
 		model.addAttribute("accessTitle", "회원가입 완료");
 		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
@@ -130,14 +138,19 @@ public class MemberController {
 	            }
 
 	        } else { // 기존 회원이 없는 경우 회원가입 처리
-	            MemberVO newMember = new MemberVO();
-	            newMember.setMem_email(kakaoMember.getEmail());
-	            newMember.setMem_reg_type(3); // 회원가입 타입 지정
-	            newMember.setMem_nick(String.valueOf(kakaoMember.getId())); // 랜덤 닉네임 지정
-	            newMember.setMem_pw("N"); // 비밀번호 임의 지정
+	            MemberVO memberVO = new MemberVO();
+	            memberVO.setMem_email(kakaoMember.getEmail());
+	            memberVO.setMem_reg_type(3); // 회원가입 타입 지정
+	            memberVO.setMem_nick(String.valueOf(kakaoMember.getId())); // 랜덤 닉네임 지정
+	            memberVO.setMem_pw("N"); // 비밀번호 임의 지정
+	            
+	    		//포인트 정보 지정
+	    		PointVO pointVO = new PointVO();
+	    		pointVO.setPevent_type(12); //포인트타입 12:회원가입
+	    		pointVO.setPoint_amount(1000);
 
 	            // 회원가입 처리
-	            memberService.insertMember(newMember);
+	            memberService.insertMember(memberVO, pointVO);
 
 	            // 로그인 처리
 	            session.setAttribute("user", existingMember);
