@@ -17,4 +17,6 @@ public interface CategoryService {
 		public void updateDonationCategory(DonationCategoryVO donationCategoryVO);
 		// 기부 카테고리 삭제
 		public void deleteDonationCategory(Long dcate_num);
+		// 기부 카테고리 수정시 파일 삭제
+		public void deleteFile(Long dcate_num);
 }

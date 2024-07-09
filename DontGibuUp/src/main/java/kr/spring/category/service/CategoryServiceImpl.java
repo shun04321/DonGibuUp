@@ -33,19 +33,22 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void updateDonationCategory(DonationCategoryVO donationCategoryVO) {
-		// TODO Auto-generated method stub
-		
+		categoryMapper.updateDonationCategory(donationCategoryVO);
 	}
 
 	@Override
 	public void deleteDonationCategory(Long dcate_num) {
-		// TODO Auto-generated method stub
-		
+		categoryMapper.deleteDonationCategory(dcate_num);
 	}
 
 	@Override
 	public int getListCount(Map<String, Object> map) {
 		return categoryMapper.getListCount(map);
+	}
+
+	@Override
+	public void deleteFile(Long dcate_num) {
+		categoryMapper.deleteFile(dcate_num);
 	}
 
 }

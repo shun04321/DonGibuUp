@@ -22,7 +22,15 @@ public interface MemberMapper {
 	@Select("SELECT * FROM member WHERE mem_email=#{mem_eamil}")
 	public MemberVO selectMemberByEmail(String mem_email);
 	
+	//추천코드로 회원정보 가져오기
+	@Select("SELECT mem_num FROM member_detail WHERE mem_rcode=#{friend_rcode}")
+	public long selectMemNumByRCode(String friend_rcode);
+	
 	//회원 포인트 업데이트
-	@Update("UPDATE member_detail SET mem_point=mem_point+#{mem_point} WHERE mem_num=#{mem_num}")
+	@Update("UPDATE member_detail SET mem_point=mem_point+#{point_amount} WHERE mem_num=#{mem_num}")
 	public void updateMemPoint(PointVO pointVO);
+	
+	//중복 추천인 코드 체크
+	@Select("SELECT COUNT(*) FROM member_detail WHERE mem_rcode=#{rcode}")
+	public int checkRCodeExists(String rcode);
 }

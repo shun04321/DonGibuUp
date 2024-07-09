@@ -1,5 +1,7 @@
 package kr.spring.member.controller;
 
+import java.net.http.HttpRequest;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -23,7 +25,6 @@ import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.KakaoInfo;
 import kr.spring.member.vo.MemberVO;
-import kr.spring.point.vo.PointVO;
 import kr.spring.util.AuthCheckException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,7 +36,6 @@ public class MemberController {
 
 	@Autowired
 	private MemberOAuthService memberOAuthService;
-
 
 	//카카오 로그인 API 정보
 	@Value("${kakao.client_id}")
@@ -54,42 +54,84 @@ public class MemberController {
 	/*===================================
 	 * 			회원가입
 	 *==================================*/
-	//회원가입 폼
+	//일반 회원가입 폼
 	@GetMapping("/member/signup")
 	public String signupForm() {
 		return "memberSignup";
 	}
 	
+	//카카오 회원가입 폼
+	@GetMapping("/member/signup/kakao")
+	public String signupFormKakao(HttpSession session, Model model) {
+		MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+		
+		if (memberVO == null) {
+			return "redirect:/member/signup";
+		} else {
+			model.addAttribute("memberVO", memberVO);
+			return "memberSocialSignup";
+		}
+	}
+
 	//일반 회원가입
 	@PostMapping("/member/signup")
-	public String signup(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result, Model model, HttpServletRequest request) {
+	public String signup(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result, Model model,
+			HttpServletRequest request) {
 		log.debug("<<회원가입>> : " + memberVO);
-		
+
 		if (result.hasErrors()) {
 			return signupForm();
 		}
 		//회원가입 타입 지정(1:일반 회원가입)
 		memberVO.setMem_reg_type(1);
 		
-		//포인트 정보 지정
-		PointVO pointVO = new PointVO();
-		pointVO.setPevent_type(12); //포인트타입 12:회원가입
-		pointVO.setPoint_amount(1000);
-		
-		log.debug("<<회원가입 - 포인트>> : " + pointVO);
-		
+		//추천인 이벤트 참가
+		if (memberVO.getFriend_rcode() != null && !memberVO.getFriend_rcode().equals("")) {
+			memberVO.setRecommend_status(1);
+		} else {
+			memberVO.setRecommend_status(0);
+		}
+
 		//회원가입
-		memberService.insertMember(memberVO, pointVO);
-		
+		memberService.insertMember(memberVO);
+
 		model.addAttribute("accessTitle", "회원가입 완료");
 		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
 		model.addAttribute("accessBtn", "로그인하기");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
-		
+
 		return "resultPage";
 	}
 	
-	//카카오 로그인/회원가입 폼
+	//카카오 회원가입
+	@PostMapping("/member/signup/kakao") 
+	public String signupKakao(@Valid MemberVO memberVO, BindingResult result, Model model, HttpServletRequest request, HttpSession session) {
+		memberVO.setMem_email(request.getParameter("mem_email"));
+		memberVO.setMem_social_id(Long.parseLong(request.getParameter("mem_social_id")));
+		memberVO.setMem_reg_type(3); // 회원가입 타입 지정
+        memberVO.setMem_pw("N"); // 비밀번호 임의 지정
+        
+		//추천인 이벤트 참가
+		if (memberVO.getFriend_rcode() != null && !memberVO.getFriend_rcode().equals("")) {
+			memberVO.setRecommend_status(1);
+		}
+        
+        log.debug("<<회원가입>> : " + memberVO);
+
+        // 회원가입 처리
+        memberService.insertMember(memberVO);
+        
+        // 메인으로 redirect
+		model.addAttribute("accessTitle", "회원가입 완료");
+		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
+		model.addAttribute("accessBtn", "로그인하기");
+		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
+
+		return "resultPage";
+	}
+	
+
+	//카카오 로그인/회원가입 api
 	@GetMapping("/member/oauth/kakao")
 	public String getKakaoLogin() {
 		String url = String.format(
@@ -98,77 +140,67 @@ public class MemberController {
 		return "redirect:" + url;
 	}
 
-	//카카오 로그인/회원가입
+	//카카오 로그인/회원가입 api 콜백
 	@GetMapping("/member/callback/kakao")
 	public ResponseEntity<?> kakaoCallback(@RequestParam("code") String code, Model model, HttpSession session) {
-	    try {
-	        // Access Token 획득
-	        String accessToken = memberOAuthService.getKakaoAccessToken(code);
-	        KakaoInfo kakaoMember = memberOAuthService.getKakaoInfo(accessToken);
+		try {
+			// Access Token 획득
+			String accessToken = memberOAuthService.getKakaoAccessToken(code);
+			KakaoInfo kakaoMember = memberOAuthService.getKakaoInfo(accessToken);
 
-	        log.debug("<<카카오 로그인 정보>> : " + kakaoMember);
+			log.debug("<<카카오 로그인 정보>> : " + kakaoMember);
 
-	        // 이메일을 통해 기존 회원 정보 조회
-	        MemberVO existingMember = memberService.selectMemberByEmail(kakaoMember.getEmail());
+			// 이메일을 통해 기존 회원 정보 조회
+			MemberVO existingMember = memberService.selectMemberByEmail(kakaoMember.getEmail());
 
-	        String redirectUrl;
-	        
-	        if (existingMember != null) { // 기존 회원이 존재하는 경우
-	            if (existingMember.getMem_status() == 1) { // 정지 회원인 경우
-	                model.addAttribute("result", "suspendedMember");
-	                redirectUrl = "redirect:/member/login";
-	            } else { // 정상 회원인 경우
-	                // TODO: 자동 로그인 체크 로직 추가
+			String redirectUrl;
 
-	                // 로그인 처리
-	                session.setAttribute("user", existingMember);
-	                session.setMaxInactiveInterval(60 * 30); //30분
-	                session.setAttribute("kakaoToken", accessToken);
+			if (existingMember != null) { // 기존 회원이 존재하는 경우
+				if (existingMember.getMem_status() == 1) { // 정지 회원인 경우
+					model.addAttribute("result", "suspendedMember");
+					redirectUrl = "/member/login";
+				} else { // 정상 회원인 경우
+					// TODO: 자동 로그인 체크 로직 추가
 
-	                log.debug("<<인증 성공>>");
-	                log.debug("<<email>> : {}", existingMember.getMem_email());
-	                log.debug("<<status>> : {}", existingMember.getMem_status());
-	                log.debug("<<reg_type>> : {}", existingMember.getMem_reg_type());
-	                
-	                if (existingMember.getMem_status() == 9) { // 관리자
-	                    redirectUrl = "/main/admin";
-	                } else { // 일반 회원
-	                    redirectUrl = "/main/main";
-	                }
-	            }
+					// 로그인 처리
+					session.setAttribute("user", existingMember);
+					session.setMaxInactiveInterval(60 * 30); //30분
+					session.setAttribute("kakaoToken", accessToken);
 
-	        } else { // 기존 회원이 없는 경우 회원가입 처리
-	            MemberVO memberVO = new MemberVO();
-	            memberVO.setMem_email(kakaoMember.getEmail());
-	            memberVO.setMem_reg_type(3); // 회원가입 타입 지정
-	            memberVO.setMem_nick(String.valueOf(kakaoMember.getId())); // 랜덤 닉네임 지정
-	            memberVO.setMem_pw("N"); // 비밀번호 임의 지정
-	            
-	    		//포인트 정보 지정
-	    		PointVO pointVO = new PointVO();
-	    		pointVO.setPevent_type(12); //포인트타입 12:회원가입
-	    		pointVO.setPoint_amount(1000);
+					log.debug("<<인증 성공>>");
+					log.debug("<<email>> : {}", existingMember.getMem_email());
+					log.debug("<<status>> : {}", existingMember.getMem_status());
+					log.debug("<<reg_type>> : {}", existingMember.getMem_reg_type());
 
-	            // 회원가입 처리
-	            memberService.insertMember(memberVO, pointVO);
+					if (existingMember.getMem_status() == 9) { // 관리자
+						redirectUrl = "/main/admin";
+					} else { // 일반 회원
+						redirectUrl = "/main/main";
+					}
+				}
 
-	            // 로그인 처리
-	            session.setAttribute("user", existingMember);
-	            session.setMaxInactiveInterval(60 * 30); //30분
-	            session.setAttribute("kakaoToken", accessToken);
-	            redirectUrl = "/main/main";
-	        }
+			} else { // 기존 회원이 없는 경우 회원가입 폼으로 이동
 
-	        // 리다이렉트 URL을 반환
-	        return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, redirectUrl).body(null);
+				MemberVO memberVO = new MemberVO();
+				memberVO.setMem_email(kakaoMember.getEmail());
+				memberVO.setMem_social_id(kakaoMember.getId());
+				
+				log.debug("<<카카오 email>> : " + memberVO.getMem_email());
 
-	    } catch (Exception e) {
-	        // 예외 처리 로직: 에러 페이지로 리다이렉트
-	        return new ResponseEntity<>("Exception occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+				//회원가입 폼으로 redirect
+				session.setAttribute("memberVO", memberVO);
+				redirectUrl = "/member/signup/kakao";
+			}
+
+			// 리다이렉트 URL을 반환
+			return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, redirectUrl).body(null);
+
+		} catch (Exception e) {
+			// 예외 처리 로직: 에러 페이지로 리다이렉트
+			return new ResponseEntity<>("Exception occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
-	
-	
+
 	/*===================================
 	 * 			로그인
 	 *==================================*/
@@ -177,76 +209,76 @@ public class MemberController {
 	public String loginForm() {
 		return "memberLogin";
 	}
-	
+
 	//일반 로그인
 	@PostMapping("/member/login")
 	public String login(@Valid MemberVO memberVO, BindingResult result, HttpSession session) {
-	    log.debug("<<회원 로그인>> : {}", memberVO);
-	    
-	    // 유효성 체크 결과 오류가 있으면 폼 호출
-	    if (result.hasFieldErrors("mem_email") || result.hasFieldErrors("mem_pw")) {
-	        return loginForm();
-	    }
-	    
-	    try {
-	        MemberVO member = memberService.selectMemberByEmail(memberVO.getMem_email());
-	        
-	     // =====TODO 로그인타입 체크 ====//
-	        if (member != null) {
-	            // 멤버 email이 존재할 시 status가 정지회원, 탈퇴회원인지 체크
-	            if (member.getMem_status() == 1) { // 정지회원
-	                result.reject("suspendedMember");
-	            }
-	            
-	            // 비밀번호 일치여부 체크
-	            if (member.isCheckedPassword(memberVO.getMem_pw())) {
-	                // 인증 성공
-	        		// =====TODO 자동로그인 체크 시작====//
-	        		// =====TODO 자동로그인 체크 끝====//
-	            	
-	            	// 로그인 처리
-	                session.setAttribute("user", member);
-	                
-	                log.debug("<<인증 성공>>");
-	                log.debug("<<email>> : {}", member.getMem_email());
-	                log.debug("<<status>> : {}", member.getMem_status());
-	                log.debug("<<reg_type>> : {}", member.getMem_reg_type());
-	                
-	                if (member.getMem_status() == 9) { // 관리자
-	                    return "redirect:/main/admin";
-	                } else {
-	                    return "redirect:/main/main";
-	                }
-	            }
-	        }
-	        
-	        // 인증 실패 시 예외 던지기
-	        throw new AuthCheckException();
-	    } catch (AuthCheckException e) {
-	        result.reject("invalidEmailOrPassword");
-	        log.debug("<<인증 실패>>");
-	        return loginForm();
-	    }
+		log.debug("<<회원 로그인>> : {}", memberVO);
+
+		// 유효성 체크 결과 오류가 있으면 폼 호출
+		if (result.hasFieldErrors("mem_email") || result.hasFieldErrors("mem_pw")) {
+			return loginForm();
+		}
+
+		try {
+			MemberVO member = memberService.selectMemberByEmail(memberVO.getMem_email());
+
+			// =====TODO 로그인타입 체크 ====//
+			if (member != null) {
+				// 멤버 email이 존재할 시 status가 정지회원, 탈퇴회원인지 체크
+				if (member.getMem_status() == 1) { // 정지회원
+					result.reject("suspendedMember");
+				}
+
+				// 비밀번호 일치여부 체크
+				if (member.isCheckedPassword(memberVO.getMem_pw())) {
+					// 인증 성공
+					// =====TODO 자동로그인 체크 시작====//
+					// =====TODO 자동로그인 체크 끝====//
+
+					// 로그인 처리
+					session.setAttribute("user", member);
+
+					log.debug("<<인증 성공>>");
+					log.debug("<<email>> : {}", member.getMem_email());
+					log.debug("<<status>> : {}", member.getMem_status());
+					log.debug("<<reg_type>> : {}", member.getMem_reg_type());
+
+					if (member.getMem_status() == 9) { // 관리자
+						return "redirect:/main/admin";
+					} else {
+						return "redirect:/main/main";
+					}
+				}
+			}
+
+			// 인증 실패 시 예외 던지기
+			throw new AuthCheckException();
+		} catch (AuthCheckException e) {
+			result.reject("invalidEmailOrPassword");
+			log.debug("<<인증 실패>>");
+			return loginForm();
+		}
 	}
-	
+
 	//로그아웃
 	@GetMapping("/member/logout")
 	public String logout(HttpSession session) {
-		String accessToken = (String)session.getAttribute("kakaoToken");
+		String accessToken = (String) session.getAttribute("kakaoToken");
 		if (accessToken != null && !"".equals(accessToken)) { //소셜(카카오) 로그인 
-            try {
-            	// =====TODO 자동로그인 체크 시작====//
-            	// =====TODO 자동로그인 체크 끝====//
-                memberOAuthService.kakaoDisconnect(accessToken);
-            } catch (Exception e) {
-    	        // 예외 처리
-    	        return "Exception occurred: " + e.getMessage();
-            }
+			try {
+				// =====TODO 자동로그인 체크 시작====//
+				// =====TODO 자동로그인 체크 끝====//
+				memberOAuthService.kakaoDisconnect(accessToken);
+			} catch (Exception e) {
+				// 예외 처리
+				return "Exception occurred: " + e.getMessage();
+			}
 		}
-		
+
 		//로그아웃
 		session.invalidate();
-		
+
 		return "redirect:/main/main";
 	}
 }

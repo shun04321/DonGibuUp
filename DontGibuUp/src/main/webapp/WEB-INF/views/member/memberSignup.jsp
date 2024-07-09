@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
 <div class="page-main">
 <h2>회원가입</h2>
 <form:form action="signup" id="member_signup" modelAttribute="memberVO">
@@ -29,6 +30,11 @@
 			<form:input path="mem_nick"/>
 			<form:errors path="mem_nick" cssClass="form-error"></form:errors>
 		</li>
+		<li>
+			<form:label path="friend_rcode">추천인 코드</form:label>
+			<form:input path="friend_rcode" />
+			<span>*선택 입력</span>
+		</li>
 	</ul>
 	<div class="align-center">
 		<form:button class="default-btn">Signup</form:button>
@@ -37,8 +43,8 @@
 	<div class="align-center">
 		<span>SNS로 간편하게 시작하기</span>
 		<div>
-			<a href="oauth/kakao"><img alt="카카오톡 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/kakaotalk_logo.png"></a>
-			<a href="oauth/naver"><img alt="네이버 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/naver_logo.png"></a>
+			<a href="${pageContext.request.contextPath}/member/oauth/kakao"><img alt="카카오톡 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/kakaotalk_logo.png"></a>
+			<a href="${pageContext.request.contextPath}/member/oauth/naver"><img alt="네이버 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/naver_logo.png"></a>
 		</div>
 	</div>
 </form:form>
