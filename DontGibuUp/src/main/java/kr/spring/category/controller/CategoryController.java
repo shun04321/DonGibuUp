@@ -108,4 +108,19 @@ public class CategoryController {
 		log.debug("donationcategoryVO : " + categoryVO);
 		return new ModelAndView("categoryDetail","category",categoryVO);
 	} 
+	
+	//기부 카테고리 삭제
+	@GetMapping("/category/delete")
+	public String submitDelete(long dcate_num, HttpServletRequest request) {
+		log.debug("<<기부 카테고리 삭제>> : dcate_num : " + dcate_num );
+		DonationCategoryVO categoryVO = categoryService.selectDonationCategory(dcate_num);
+		
+		
+		if(categoryVO.getDcate_icon()!=null) {
+			FileUtil.removeFile(request, categoryVO.getDcate_icon());
+		}
+		categoryService.deleteDonationCategory(dcate_num);	
+		
+		return  "redirect:/category/categoryList";
+	}
 }

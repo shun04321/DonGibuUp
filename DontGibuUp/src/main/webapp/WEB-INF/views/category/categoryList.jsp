@@ -4,7 +4,7 @@
 <!-- 게시판 목록 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <div class="page-main">
-	<h2>게시판 목록</h2>
+	<h2>기부 카테고리 및 기부처 목록</h2>
 	<div class="align-right">
 		<input type="button" value="기부 카테고리 및 기부처 등록" onclick="location.href='/category/insertCategory'">                 
 	</div>
@@ -16,14 +16,14 @@
 		<tr>
 			<th>아이콘</th>
 			<th>번호</th>
-			<th width="400">카테고리명</th>
+			<th>카테고리명</th>
 			<th>기부처</th>
 		</tr>
 		<c:forEach var="dcate" items="${list}">
 		<tr>
 			<td class="align-center"><img src="${pageContext.request.contextPath}/upload/${dcate.dcate_icon}" alt="기부처 아이콘" width="20"></td>
 			<td class="align-center">${dcate.dcate_num}</td>
-			<td class="align-left"><a href="detail?dcate_num=${dcate.dcate_num}">${dcate.dcate_name}</a></td>
+			<td class="align-center"><a href="detail?dcate_num=${dcate.dcate_num}">${dcate.dcate_name}</a></td>
 			<td class="align-center">${dcate.dcate_charity}</td>
 		</tr>
 		</c:forEach>

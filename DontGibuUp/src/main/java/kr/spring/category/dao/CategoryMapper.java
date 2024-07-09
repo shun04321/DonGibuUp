@@ -3,6 +3,7 @@ package kr.spring.category.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -23,5 +24,6 @@ public interface CategoryMapper {
 	// 기부 카테고리 수정 
 	public void updateDonationCategory(DonationCategoryVO donationCategoryVO);
 	// 기부 카테고리 삭제
+	@Delete("DELETE FROM dona_category WHERE dcate_num =#{dcate_num}")
 	public void deleteDonationCategory(Long dcate_num);
 }
