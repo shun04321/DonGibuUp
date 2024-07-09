@@ -10,7 +10,7 @@
 			 VALUES(
 			 challenge_seq.nextval,#{mem_num},#{chal_person},#{chal_type},#{chal_public},#{chal_title},
 			 #{chal_content,jdbcType=CLOB},#{chal_photo,jdbcType=VARCHAR},#{chal_verify},#{chal_freq},#{chal_sdate},
-			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=NUMBER},#{chal_rdate}
+			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_rdate}
 		)
 	</insert>
 </mapper>
