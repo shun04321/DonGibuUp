@@ -11,4 +11,10 @@ public interface MemberService {
     public String generateUniqueRCode();
 	//추천인코드 중복확인
 	public boolean checkIfRCodeIsUnique(String rcode);
+	
+	//프로필사진 업데이트
+	public void updateMemPhoto(MemberVO memberVO);
+	
+	//회원정보 수정
+	public void updateMember(MemberVO memberVO);
 }

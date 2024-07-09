@@ -94,6 +94,17 @@ public class MemberServiceImpl implements MemberService {
 			return false;
 		}
 	}
+
+	@Override
+	public void updateMemPhoto(MemberVO memberVO) {
+		memberMapper.updateMemPhoto(memberVO);
+	}
+
+	@Override
+	public void updateMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

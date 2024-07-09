@@ -58,8 +58,8 @@
 		FROM item
 		JOIN spmember USING(mem_num)
 		<include refid="goodsSearch"></include>
-		<include refid="goodsOrder"></include>
-		)a)
+<!-- 		<include refid="goodsOrder"></include>
+		)a) 이거 없어서 에러떠서 주석처리 해뒀어용-->
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>

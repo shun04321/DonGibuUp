@@ -9,7 +9,9 @@ import kr.spring.point.vo.PointVO;
 
 @Mapper
 public interface MemberMapper {
-	//회원관리
+	/*---------------------------------------
+					회원 가입
+	---------------------------------------*/
 	//회원 시퀀스 생성
 	@Select("SELECT member_seq.nextval FROM DUAL")
 	public long selectMemNum();
@@ -33,4 +35,14 @@ public interface MemberMapper {
 	//중복 추천인 코드 체크
 	@Select("SELECT COUNT(*) FROM member_detail WHERE mem_rcode=#{rcode}")
 	public int checkRCodeExists(String rcode);
+	
+	/*---------------------------------------
+				회원정보 수정
+	---------------------------------------*/
+	//프로필사진 수정
+	@Update("UPDATE member_detail SET mem_photo=#{mem_photo} WHERE mem_num=#{mem_num}")
+	public void updateMemPhoto(MemberVO memberVO);
+	
+	//회원정보 수정
+	public void updateMember(MemberVO memberVO);
 }

@@ -28,7 +28,7 @@
 	</definition>
 	<!-- 마이페이지 -->
 	<definition name="memberInfo" template="/WEB-INF/views/template/layout_myPage.jsp">
-		<put-attribute name="title" value="Mypage - 회원정보" />
+		<put-attribute name="title" value="MyPage - 회원정보" />
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="nav" value="/WEB-INF/views/template/nav_myPage.jsp"/>
