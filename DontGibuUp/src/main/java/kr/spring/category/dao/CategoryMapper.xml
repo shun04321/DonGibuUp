@@ -38,6 +38,16 @@
 	 	WHERE rnum >= #{start} AND rnum <= #{end}
 	 	]]>
 	</select>
+	 <update id="updateDonationCategory" parameterType="DonationCategoryVO">
+ 		UPDATE dona_category SET
+ 		   <if test="dcate_icon != null">
+ 		   dcate_icon = #{dcate_icon},
+ 		   </if>
+ 		   dcate_name = #{dcate_name},
+ 		   dcate_charity = #{dcate_charity},
+ 		   dcate_content = #{dcate_content}
+ 		WHERE dcate_num = #{dcate_num}
+ 	</update>       
 </mapper>
 
 

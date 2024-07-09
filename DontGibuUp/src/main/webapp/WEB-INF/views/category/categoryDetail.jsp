@@ -19,7 +19,7 @@
 	<hr size="1" width="100%">
 	<div class="align-right">
 		<input type="button" value="수정"
-		   onclick="location.href='update?dcate_num=${category.dcate_num}'">
+		   onclick="location.href='/category/updateCategory?dcate_num=${category.dcate_num}'">
 		<input type="button" value="삭제" id="delete_btn">
 		<script>
 			const delete_btn = document.getElementById('delete_btn');

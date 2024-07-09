@@ -123,4 +123,50 @@ public class CategoryController {
 		
 		return  "redirect:/category/categoryList";
 	}
+	// 카테고리 수정 폼 호출
+	@GetMapping("/category/updateCategory")
+	public String formUpdate(long dcate_num,Model model) {
+		log.debug("dcate_num : " + dcate_num);
+		DonationCategoryVO categoryVO = 
+				categoryService.selectDonationCategory(dcate_num);
+		model.addAttribute("donationCategoryVO", categoryVO);
+		
+		return "categoryUpdate";
+	}
+
+	
+	  @PostMapping("/category/updateCategory") 
+	  public String submitUpdate(@Valid DonationCategoryVO categoryVO, 
+			  					BindingResult result, 
+			  					Model model, 
+			  					HttpServletRequest request)
+	  throws IllegalStateException, IOException { 
+		  log.debug("<<카테고리 수정>> : " + categoryVO);
+	  
+	  //유효성 체크 결과 오류가 있으면 폼 호출 
+	  if(result.hasErrors()) { 
+	  // 유효성 체크시 오류 있을 시 파일 정보 잃어버림
+	  DonationCategoryVO vo = categoryService.selectDonationCategory(categoryVO.getDcate_num());
+	  categoryVO.setDcate_icon(vo.getDcate_icon()); 
+	  return "categoryUpdate"; 
+	  }
+	  
+	  //DB에 저장된 파일 정보 구하기 
+	  DonationCategoryVO db_category = categoryService.selectDonationCategory(categoryVO.getDcate_num());
+	  //파일명 셋팅(FileUtil.createFile에서 파일이 없으면 null 처리함)
+	  categoryVO.setDcate_icon(FileUtil.createFile(request, categoryVO.getUpload()));
+	  
+	  //카테고리 수정
+	  categoryService.updateDonationCategory(categoryVO);
+	  
+	  if(categoryVO.getUpload()!=null && !categoryVO.getUpload().isEmpty()) { //수정전 파일 삭제처리
+		 FileUtil.removeFile(request, db_category.getDcate_icon()); 
+	  }
+	  
+	  model.addAttribute("message","카테고리 수정완료");
+	  model.addAttribute("url",request.getContextPath()+"/category/detail?dcate_num="+categoryVO.getDcate_num()); 
+	  
+	  return "common/resultAlert";
+	 }
+	
 }

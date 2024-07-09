@@ -24,7 +24,12 @@
 		<put-attribute name="title" value="기부처 및 기부 카테고리 상세"/>
 		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/category/categoryDetail.jsp"/>
-	</definition>	
+	</definition>
+	<definition name="categoryUpdate" extends="main">
+		<put-attribute name="title" value="기부처 및 기부 카테고리 상세"/>
+		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/category/updateCategory.jsp"/>
+	</definition>		
 </tiles-definitions>
 
 
