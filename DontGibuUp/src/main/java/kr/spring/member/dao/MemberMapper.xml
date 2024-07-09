@@ -3,23 +3,36 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.member.dao.MemberMapper">
-	<!-- 회원가입 -->
+	<!-- 회원가입 - member -->
 	<insert id="insertMember" parameterType="memberVO">
 		INSERT INTO member(
 			mem_num,
 			mem_email,
 			mem_nick,
+			mem_social_id,
 			mem_reg_type,
 			mem_pw
 		) VALUES(
 			#{mem_num},
 			#{mem_email},
 			#{mem_nick},
+			#{mem_social_id},
 			#{mem_reg_type},
 			#{mem_pw}
 		)
 	</insert>
-	
+	<!-- 회원가입 - member_detail -->
+	<insert id="insertMemberDetail" parameterType="memberVO">
+		INSERT INTO member_detail(
+			mem_num,
+			mem_rcode,
+			recommend_status
+		) VALUES(
+			#{mem_num},
+			#{mem_rcode},
+			#{recommend_status}
+		)
+	</insert>
  </mapper>
 
 

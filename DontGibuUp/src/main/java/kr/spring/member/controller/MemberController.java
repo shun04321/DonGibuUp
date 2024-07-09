@@ -140,9 +140,13 @@ public class MemberController {
 	        } else { // 기존 회원이 없는 경우 회원가입 처리
 	            MemberVO memberVO = new MemberVO();
 	            memberVO.setMem_email(kakaoMember.getEmail());
+	            memberVO.setMem_social_id(kakaoMember.getId());
 	            memberVO.setMem_reg_type(3); // 회원가입 타입 지정
 	            memberVO.setMem_nick(String.valueOf(kakaoMember.getId())); // 랜덤 닉네임 지정
 	            memberVO.setMem_pw("N"); // 비밀번호 임의 지정
+	            
+	            memberVO.setMem_rcode(memberService.generateUniqueRCode());
+	            memberVO.setRecommend_status(0); //TODO 추천인 이벤트 참여 일단 안했다고 해둠
 	            
 	    		//포인트 정보 지정
 	    		PointVO pointVO = new PointVO();

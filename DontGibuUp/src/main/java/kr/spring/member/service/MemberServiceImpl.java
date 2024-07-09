@@ -10,6 +10,7 @@ import kr.spring.member.vo.MemberVO;
 import kr.spring.point.dao.PointMapper;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
+import kr.spring.util.RCodeGenerator;
 
 @Service
 @Transactional
@@ -31,11 +32,12 @@ public class MemberServiceImpl implements MemberService {
 		
 		//member 추가
 		memberMapper.insertMember(memberVO);
-		//TODO member_detail 추가
-		// memberMapper.insertMemberDetail(memberVO);
+		//member_detail 추가
+		memberMapper.insertMemberDetail(memberVO);
 		//포인트 적립
 		pointMapper.insertPointLog(pointVO);
-		//memberMapper.updateMemPoint(pointVO);
+		//추천인 이벤트 참여시
+		//memberMapper.updateMemPoint(pointVO2);
 		
 	}
 
@@ -43,6 +45,31 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO selectMemberByEmail(String mem_email) {
 		return memberMapper.selectMemberByEmail(mem_email);
+	}
+	
+	//추천인코드 만들기
+	@Override
+    public String generateUniqueRCode() {
+        String rcode;
+        boolean isUnique;
+        do {
+            rcode = RCodeGenerator.generateRCode();
+            isUnique = checkIfRCodeIsUnique(rcode);
+        } while (!isUnique);
+        return rcode;
+    }
+    
+	//추천인코드 중복확인
+	@Override
+	public boolean checkIfRCodeIsUnique(String rcode) {
+		//mapper에서 중복 체크
+		if (memberMapper.checkRCodeExists(rcode) == 0) {
+			//중복아님 = unique
+			return true;
+		} else {
+			//중복 = not unique
+			return false;
+		}
 	}
 	
 	
