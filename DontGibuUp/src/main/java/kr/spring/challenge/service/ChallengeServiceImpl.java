@@ -23,14 +23,12 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public List<ChallengeVO> selectList(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return challengeMapper.selectList(map);
 	}
-
+	
 	@Override
 	public Integer selectRowCount(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return challengeMapper.selectRowCount(map);
 	}
 
 	@Override

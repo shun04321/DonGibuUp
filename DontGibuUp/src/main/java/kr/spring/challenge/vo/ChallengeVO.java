@@ -39,5 +39,8 @@ public class ChallengeVO {
 	@NotBlank
 	private int chal_fee;
 	private int chal_max;
-	private Date chal_rdate;	
+	private Date chal_rdate;
+	
+	private String mem_nick;
+	private String mem_photo;
 }

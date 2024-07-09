@@ -2,7 +2,8 @@
 <!DOCTYPE mapper   
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
-<mapper namespace="kr.spring.challenge.dao.ChallengeMapper">	
+<mapper namespace="kr.spring.challenge.dao.ChallengeMapper">
+	<!-- 챌린지 개설 신청하기 -->	
 	<insert id="insertChallenge" parameterType="challengeVO">
 		INSERT INTO challenge
 		(chal_num,mem_num,chal_person,chal_type,chal_public,chal_title,chal_content,
@@ -13,6 +14,28 @@
 			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_rdate}
 		)
 	</insert>
+	
+	<!-- 챌린지 개설수-->
+	<select id="selectRowCount" parameterType="map" resultType="Integer">
+		SELECT COUNT(*) FROM challenge
+		JOIN member USING (mem_num)
+		<!-- 검색 조건 sql문 -->
+	</select>
+	
+	<!-- 챌린지 개설 목록보기 -->
+	<select id="selectList" parameterType="map" resultType="challengeVO">
+		SELECT * FROM(
+			SELECT a.*,rownum rnum FROM(
+				SELECT c.*,m.mem_nick,md.mem_photo FROM challenge c
+				JOIN member m ON c.mem_num=m.mem_num
+				LEFT OUTER JOIN member_detail md ON c.mem_num=md.mem_num
+				<!-- 검색 조건 sql문 -->
+			)a
+		)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>		
+	</select>
 </mapper>
 
 

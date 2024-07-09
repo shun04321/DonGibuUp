@@ -8,6 +8,7 @@
 	<a href="${pageContext.request.contextPath}/goods/list">굿즈샵</a>
 	<a href="${pageContext.request.contextPath}/dbox/list">기부박스</a>
 	<a href="${pageContext.request.contextPath}/subscription/subscriptionMain">정기기부</a>
+	<a href="${pageContext.request.contextPath}/challenge/list">챌린지</a>
     <c:if test="${!empty user}">
     <a href="${pageContext.request.contextPath}/challenge/write">챌린지 개설하기</a>
     <a href="${pageContext.request.contextPath}/member/myPage">MY페이지</a>
