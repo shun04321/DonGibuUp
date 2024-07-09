@@ -17,7 +17,7 @@
 		item_seq.nextval,
 		#{dcate_num},
 		#{item_name},
-		#{item_photo},
+		#{item_photo,jdbcType=VARCHAR},
 		#{item_detail},
 		#{item_price},
 		#{item_stock},
@@ -29,8 +29,39 @@
 			<if test="item_name != null and item_num != ''">
 				item_name = #{item_name}
 			</if>
-
-
 		</where>
 	</sql>
+	<!-- 총 등록 상품수 / 검색 상품 수 -->
+	<select id="selectRowCount" parameterType="map"
+		resultType="integer">
+		SELECT
+		COUNT(*)
+		FROM item
+		<include refid="goodsSearch"></include>
+	</select>
+	
+	<!-- 굿즈샵 전체 목록 / 검색 목록 -->
+	<select id="selectList" parameterType="map" resultType="goodsVO">
+		SELECT
+		*
+		FROM(SELECT
+		a.*,
+		rownum rnum
+		FROM (SELECT
+		item_num,
+		<![CDATA[
+		REPLACE(REPLACE(item_name,'<','&lt;'),'>','&gt;')item_name,
+		]]>
+		item_photo,
+		item_stock,
+		dcate_num
+		FROM item
+		JOIN spmember USING(mem_num)
+		<include refid="goodsSearch"></include>
+		<include refid="goodsOrder"></include>
+		)a)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
 </mapper>
