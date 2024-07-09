@@ -110,7 +110,7 @@ public class CategoryController {
 	} 
 	
 	//기부 카테고리 삭제
-	@GetMapping("/category/delete")
+	@GetMapping("/category/deleteCategory")
 	public String submitDelete(long dcate_num, HttpServletRequest request) {
 		log.debug("<<기부 카테고리 삭제>> : dcate_num : " + dcate_num );
 		DonationCategoryVO categoryVO = categoryService.selectDonationCategory(dcate_num);
