@@ -12,7 +12,9 @@
     <c:if test="${!empty user}">
     <a href="${pageContext.request.contextPath}/challenge/write">챌린지 개설하기</a>
     <a href="${pageContext.request.contextPath}/member/myPage">MY페이지</a>
-    <img src="${pageContext.request.contextPath}/member/photoView" width="25" height="25" class="my-photo">
+    <c:if test="${!empty user && !empty user.mem_photo}">
+    <img src="${pageContext.request.contextPath}/upload/${user.mem_photo}" width="25" height="25" class="my-photo">
+    </c:if>
     <a href="${pageContext.request.contextPath}/member/logout">로그아웃</a>
     </c:if>
 	<c:if test="${empty user}">

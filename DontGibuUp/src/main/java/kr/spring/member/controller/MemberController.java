@@ -168,6 +168,8 @@ public class MemberController {
 					session.setAttribute("kakaoToken", accessToken);
 
 					log.debug("<<인증 성공>>");
+					
+					log.debug("<<photo>> : {}", existingMember.getMem_photo());
 					log.debug("<<email>> : {}", existingMember.getMem_email());
 					log.debug("<<status>> : {}", existingMember.getMem_status());
 					log.debug("<<reg_type>> : {}", existingMember.getMem_reg_type());

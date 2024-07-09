@@ -34,6 +34,7 @@ $(function() {
 			//선택한 사진이 있으면 ajax 요청
 			if (this.files[0]) {
 				const form_data = new FormData();
+				form_data.append('upload', this.files[0]);
 				
 				//서버와 통신
 				$.ajax({

@@ -6,6 +6,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import kr.spring.config.validation.ValidationGroups;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,6 +42,8 @@ public class MemberVO {
 	private String friend_rcode;
 	private Integer recommend_status;
 	private int mem_point;
+	
+	private MultipartFile upload;
 	
 	public boolean isCheckedPassword(String user_pw) {
 		if (user_pw.equals(mem_pw)) {

@@ -1,18 +1,21 @@
 package kr.spring.member.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -23,20 +26,44 @@ public class MyPageAjaxController {
 
 	@PostMapping("/member/myPage/modifyMemPhoto")
 	@ResponseBody
-	public Map<String, Object> processMemPhoto(MemberVO memberVO, HttpSession session) {
-		
+	public Map<String, String> processMemPhoto(MemberVO memberVO, HttpSession session, HttpServletRequest request) {
 		// ajax 통신이기 때문에 인터셉터를 쓰면 안됨(로그인 화면이 중간에 보여질 수 없음)
-		Map<String, Object> mapAjax = new HashMap<String, Object>();
-		MemberVO user = (MemberVO)session.getAttribute("user");
+		Map<String, String> mapAjax = new HashMap<String, String>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
 		if (user == null) {
 			mapAjax.put("result", "logout");
-		} else {
-			memberVO.setMem_num(user.getMem_num());
-			memberService.updateMemPhoto(memberVO);
-			
-			mapAjax.put("result", "success");
+		} else { // 로그인 된 경우
+	        try {	        		            
+	            if (memberVO.getUpload() != null) {
+	                // 파일명이 존재할 경우
+		            // 파일 업로드
+		            String filename = FileUtil.createFile(request, memberVO.getUpload());
+	            	
+		        	// 기존 파일 삭제
+		        	FileUtil.removeFile(request, user.getMem_photo());
+		        	
+	                // db에 저장
+		        	memberVO.setMem_num(user.getMem_num());
+	                memberVO.setMem_photo(filename);
+	                
+	                memberService.updateMemPhoto(memberVO);
+		        	
+                    // 세션에 저장된 user 정보 업데이트
+                    user.setMem_photo(filename);
+
+                    // 세션에 업데이트된 user 객체 저장
+                    session.setAttribute("user", user);
+                    
+                    log.debug("<<프로필 사진 세션 저장>> : " + user.getMem_photo());
+	                
+	                mapAjax.put("result", "success");
+	            } 
+	        } catch (IllegalStateException | IOException e) {
+	            e.printStackTrace();
+	            mapAjax.put("result", "error");
+	        }
 		}
-		
+
 		return mapAjax;
 	}
 }

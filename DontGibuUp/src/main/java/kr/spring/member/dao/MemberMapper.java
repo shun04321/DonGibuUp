@@ -21,7 +21,7 @@ public interface MemberMapper {
 	public void insertMemberDetail(MemberVO memberVO);
 
 	//회원 이메일로 회원정보 가져오기
-	@Select("SELECT * FROM member WHERE mem_email=#{mem_eamil}")
+	@Select("SELECT a.*, b.mem_photo mem_photo FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_eamil}")
 	public MemberVO selectMemberByEmail(String mem_email);
 	
 	//추천코드로 회원정보 가져오기
