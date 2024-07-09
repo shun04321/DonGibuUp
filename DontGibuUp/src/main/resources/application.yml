@@ -58,6 +58,10 @@ kakao:
   redirect_uri: http://localhost:8000/member/callback/kakao
   client_secret: PYllM1U05uZRCeeV64RWvPHDAiEPmkbd
 
+naver:
+  client_id: inEolviFM4LB9sPu34jX
+  redirect_uri: http://localhost:8000/member/callback/naver
+  client_secret: zIDSLvMlCb
     
     
     
