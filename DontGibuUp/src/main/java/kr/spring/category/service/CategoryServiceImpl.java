@@ -39,8 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void deleteDonationCategory(Long dcate_num) {
-		// TODO Auto-generated method stub
-		
+		categoryMapper.deleteDonationCategory(dcate_num);
 	}
 
 	@Override

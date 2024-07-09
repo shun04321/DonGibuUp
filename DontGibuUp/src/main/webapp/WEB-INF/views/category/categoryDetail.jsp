@@ -26,7 +26,7 @@
 			delete_btn.onclick=function(){
 				const choice = confirm('삭제하시겠습니까?');
 				if(choice){
-					location.replace('delete?board_num=${board.board_num}');
+					location.replace('/category/delete?dcate_num=${category.dcate_num}');
 				}
 			};
 		</script>   
