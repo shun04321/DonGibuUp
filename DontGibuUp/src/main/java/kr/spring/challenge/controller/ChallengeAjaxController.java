@@ -31,7 +31,7 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/addlist")
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
-			@RequestParam(defaultValue="1") int rowCount,HttpSession session){
+			@RequestParam(defaultValue="1") int rowCount){
 		Map<String,Object> map = new HashMap<>();
 		//map에 검색할 자기계발 카테고리 넣기
 		
@@ -54,10 +54,6 @@ public class ChallengeAjaxController {
 		Map<String,Object> mapJson = new HashMap<>();
 		mapJson.put("count", count);
 		mapJson.put("list", list);
-		
-		//user_num 구해서 저장
-		//MemberVO user = (MemberVO) session.getAttribute("user");
-		//mapJson.put("user_num", user.getMem_num());
 		
 		return mapJson;
 	}

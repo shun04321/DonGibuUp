@@ -36,6 +36,11 @@
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>		
 	</select>
+	
+	<!-- 챌린지 상세보기 -->
+	<select id="selectChallenge" parameterType="Long" resultType="challengeVO">
+		
+	</select>
 </mapper>
 
 

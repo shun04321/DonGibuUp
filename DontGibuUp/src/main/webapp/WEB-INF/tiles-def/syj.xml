@@ -15,6 +15,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeList.jsp"/>
 	</definition>
+	<definition name="challengeView" extends="main">
+		<put-attribute name="title" value="챌린지 상세"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeView.jsp"/>
+	</definition>
 </tiles-definitions>
 
 

@@ -43,6 +43,6 @@ public class ChallengeController {
 	@GetMapping("/challenge/detail")
 	public ModelAndView chalDetail(long chal_num) {
 		
-		return new ModelAndView();
+		return new ModelAndView("challengeView");
 	}
 }
