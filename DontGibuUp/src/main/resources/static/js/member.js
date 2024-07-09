@@ -1,4 +1,8 @@
 $(function() {
+	var pathArray = window.location.pathname.split('/');
+  	var contextPath = '/' + (pathArray.length > 1 ? pathArray[1] : '');
+  	console.log("Context Path:", contextPath);
+	
 	/*===============================
 		  회원 프로필사진 수정
 	================================*/
@@ -59,7 +63,11 @@ $(function() {
 						alert('네트워크 오류 발생');
 					}
 				});
-			}
+			} //end of if
+		}); //end of onchange
+		
+		$('#photo_del').click(function() {
+			$('.my-photo').attr('src', photo_path);
 		});
 
 	}); //photo_choic click 이벤트

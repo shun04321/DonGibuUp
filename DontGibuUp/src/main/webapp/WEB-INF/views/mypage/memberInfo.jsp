@@ -10,7 +10,7 @@
 	<div>
 		<c:if test="${!empty user.mem_photo}">
 			<img src="${pageContext.request.contextPath}/upload/${user.mem_photo}" width="200" height="200" class="my-photo">
-			<button>삭제</button>
+			<button id="photo_del">삭제</button>
 		</c:if>
 		<c:if test="${empty user.mem_photo}">
 			<img src="${pageContext.request.contextPath}/images/basicProfile.png" width="80" height="80" class="my-photo">
