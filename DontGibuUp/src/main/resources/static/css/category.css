@@ -2,6 +2,10 @@
 
 /* 전체 레이아웃
 ---------------------*/
+body{
+	font-family: NotoSansKR-Regular, Apple SD Gothic Neo, 맑은 고딕, sans-serif;
+}
+
 #main{
 	width:1024px;
 	margin:0 auto;
@@ -317,4 +321,17 @@ ul#delivery_info li span{
 	width:130px;
 	display: inline-block;
 }
+.pay-button{
+	text-align:center;
+}
 
+#paybutton{
+	 position: fixed;
+	 bottom: 20px; /* 화면 하단에서 20px 위 */
+	 width: 500px;          
+	 left: 50%; /* 화면 가로 중앙 정렬을 위한 시작점 */
+     transform: translateX(-50%);
+     z-index: 1000; /* 다른 요소들보다 앞에 오도록 설정 */
+     background-color:yellow;
+     border-color: yellow;
+}
