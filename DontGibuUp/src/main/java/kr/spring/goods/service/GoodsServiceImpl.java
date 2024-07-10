@@ -24,14 +24,13 @@ public class GoodsServiceImpl implements GoodsService {
 
 	@Override
 	public List<GoodsVO> selectList(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return goodsMapper.selectList(map);
 	}
 
 	@Override
 	public Integer selectRowCount(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return goodsMapper.selectRowCount(map);
 	}
 
 	@Override

@@ -13,7 +13,8 @@
 		item_detail,
 		item_price,
 		item_stock,
-		item_status)VALUES(
+		item_status)
+		VALUES(
 		item_seq.nextval,
 		#{dcate_num},
 		#{item_name},
@@ -52,14 +53,15 @@
 		<![CDATA[
 		REPLACE(REPLACE(item_name,'<','&lt;'),'>','&gt;')item_name,
 		]]>
+		item_price,
 		item_photo,
 		item_stock,
 		dcate_num
 		FROM item
-		JOIN spmember USING(mem_num)
+
 		<include refid="goodsSearch"></include>
 <!-- 		<include refid="goodsOrder"></include>
-		)a) 이거 없어서 에러떠서 주석처리 해뒀어용-->
+		 이거 없어서 에러떠서 주석처리 해뒀어용 감사용-->)a)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
