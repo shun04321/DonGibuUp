@@ -65,6 +65,9 @@ $(function() {
 		}); //end of onchange
 	}); //photo_choice click 이벤트
 
+	/*===============================
+		  회원 프로필사진 삭제
+	================================*/
 	$('#photo_del').click(function() {
 		let photo_del = $(this);
 		//서버와 통신
@@ -88,4 +91,5 @@ $(function() {
 			}
 		});
 	});
+
 });

@@ -1,12 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- MyPage 메뉴 시작 -->
 <ul class="side-bar">
 	<li class="side-menu">
 		<div>나의 정보</div>
 		<ul class="side-menu-sub">
 			<li><a href="memberInfo">회원정보 수정</a></li>
+			<c:if test="${user.mem_reg_type == 1}">
 			<li><a href="changePassword">비밀번호 수정</a></li>
+			</c:if>
 			<li>친구초대</li>
 			<li>포인트</li>
 		</ul>

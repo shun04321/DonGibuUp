@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.spring.member.service.MemberService;
@@ -24,6 +25,9 @@ public class MyPageAjaxController {
 	@Autowired
 	private MemberService memberService;
 
+	/*===============================
+	   		프로필 사진 수정
+	================================*/
 	@PostMapping("/member/myPage/modifyMemPhoto")
 	@ResponseBody
 	public Map<String, String> processMemPhoto(MemberVO memberVO, HttpSession session, HttpServletRequest request) {
@@ -67,6 +71,9 @@ public class MyPageAjaxController {
 		return mapAjax;
 	}
 
+	/*===============================
+			프로필 사진 삭제
+	================================*/
 	@PostMapping("member/myPage/deleteMemPhoto")
 	@ResponseBody
 	public Map<String, String> deleteMemPhoto(HttpSession session, HttpServletRequest request) {
@@ -106,4 +113,53 @@ public class MyPageAjaxController {
 
 		return mapAjax;
 	}
+
+	/*===============================
+			비밀번호 확인
+	================================*/
+	@PostMapping("member/myPage/checkPassword")
+	@ResponseBody
+	public Map<String, String> checkPassword(HttpSession session, HttpServletRequest request) {
+		Map<String, String> mapAjax = new HashMap<String, String>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		
+		if (user == null) {
+			mapAjax.put("result", "logout");
+		} else {
+			MemberVO memberVO = memberService.selectMember(user.getMem_num());
+			if (memberService.isCheckedPassword(memberVO, request.getParameter("currentPassword"))) {
+				mapAjax.put("result", "matched");
+			} else {
+				mapAjax.put("result", "notMatched");
+			}
+		}
+		return mapAjax;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

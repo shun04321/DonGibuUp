@@ -1,12 +1,18 @@
 package kr.spring.member.service;
 
+import org.apache.ibatis.annotations.Select;
+
 import kr.spring.member.vo.MemberVO;
 
 public interface MemberService {
+	//회원가입
 	public void insertMember(MemberVO memberVO);
 	
 	//비밀번호 비교하기
 	public boolean isCheckedPassword(MemberVO member, String rawPassword);
+	
+	//회원정보 가져오기
+	public MemberVO selectMember(Long mem_num);
 	
 	//이메일로 회원정보 가져오기
 	public MemberVO selectMemberByEmail(String mem_email);

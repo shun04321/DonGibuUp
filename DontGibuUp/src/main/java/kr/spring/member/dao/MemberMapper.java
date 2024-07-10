@@ -19,6 +19,10 @@ public interface MemberMapper {
 	//회원가입
 	public void insertMember(MemberVO memberVO);
 	public void insertMemberDetail(MemberVO memberVO);
+	
+	//회원정보 가져오기
+	@Select("SELECT * FROM member WHERE mem_num=#{mem_num}")
+	public MemberVO selectMember(Long mem_num);
 
 	//회원 이메일로 회원정보 가져오기
 	@Select("SELECT a.*, b.mem_photo mem_photo FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_eamil}")

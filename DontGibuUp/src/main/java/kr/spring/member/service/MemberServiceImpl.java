@@ -76,6 +76,11 @@ public class MemberServiceImpl implements MemberService {
 	public boolean isCheckedPassword(MemberVO member, String rawPassword) {
 		return pwEncoder.matches(rawPassword, member.getMem_pw());
 	}
+	
+	@Override
+	public MemberVO selectMember(Long mem_num) {
+		return memberMapper.selectMember(mem_num);
+	}
 
 	//이메일로 회원 찾기(기존회원 체크)
 	@Override

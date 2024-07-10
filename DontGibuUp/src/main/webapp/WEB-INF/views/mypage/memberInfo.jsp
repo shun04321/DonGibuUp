@@ -6,7 +6,7 @@
 <script type="text/javascript">
     var contextPath = "${pageContext.request.contextPath}";
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/member.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/member.info.js"></script>
 <div class="page-main">
 <h2>회원정보 수정</h2>
 <div>
