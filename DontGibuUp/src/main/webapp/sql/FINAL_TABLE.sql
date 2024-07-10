@@ -326,13 +326,14 @@ CREATE TABLE SUBSCRIPTION (
 	sub_num			number					NOT NULL,
 	mem_num			number					NOT NULL,
 	dcate_num		number(2)				NOT NULL,
-	sub_pay_uid		varchar2(17)			NULL,
 	sub_name		varchar2(45)			NULL,
 	sub_annony		number(1)				NOT NULL,
 	sub_price		number(9)				NOT NULL,
 	sub_ndate		varchar2(10)			NOT NULL,
 	sub_status		number(1)	DEFAULT 0	NOT NULL
 );
+
+
 
 COMMENT ON COLUMN SUBSCRIPTION.sub_num IS '회원이 신청한 정기기부를 식별하는 번호,sequence 사용';
 
