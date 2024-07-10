@@ -2,6 +2,7 @@ package kr.spring.dbox.vo;
 
 import java.sql.Date;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -17,17 +18,13 @@ import lombok.ToString;
 public class DboxVO {
 	private long dbox_num;							//제안 완료시 - 시퀀스
 	private long mem_num;							//제안 완료시 - session에서 불러오기
-	@NotEmpty
 	private long dcate_num;				//STEP1 - 카테고리 선책
-	@NotBlank
 	private int dbox_team_type;				//STEP2 - 1:기관, 2:개인/단체
 	@NotBlank
-	@Pattern(regexp="^[0-9]{0,10}$")
 	private String dbox_team_name;			//STEP2 - 팀명(60byte)
 	@NotBlank
 	private String dbox_team_detail;		//STEP2 - 팀설명(1500byte)
-	private String dbox_team_photo;			//STEP2 - 팀사진
-	@Size(min=10,max=10)
+	private String dbox_team_photo;			//STEP2 - 팀사진)
 	private int dbox_business_rnum;			//STEP2 - 사업자번호(10자)
 	@NotBlank 
 	private String dbox_title;					//STEP3 - 기부박스 제목(150byte)
@@ -40,8 +37,6 @@ public class DboxVO {
 	private String dbox_budget_data;		//STEP2 - 금액책정 근거자료
 	@NotEmpty
 	private String dbox_bank;				//STEP2 - 은행
-	@NotBlank
-	@Size(min=0,max=20)
 	private int dbox_account;				//STEP2 - 계좌번호(최대20자)
 	@NotBlank
 	private String dbox_account_name;		//STEP2 - 예금주명

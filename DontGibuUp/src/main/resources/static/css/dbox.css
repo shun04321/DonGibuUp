@@ -71,6 +71,7 @@ a:hover{
 ---------------------*/
 .validation-check{
 	color:#b80b38;
+	font-size: 0.6em;
 }
 .nav_buttons{
 	background-color: white;
@@ -133,10 +134,10 @@ form{
 	border:1px solid #000;
 	padding:10px 10px 30px 10px;
 }
-form ul li label{
+/* form ul li label{
 	width:110px;
 	display:inline-block;
-}
+} */
 ul {
 	list-style:none;
 }

@@ -15,25 +15,29 @@
 	<definition name="dboxPropose" template="/WEB-INF/views/template/layout_dbox.jsp">
 		<put-attribute name="title" value="기부박스 제안하기"/>
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
-		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
+		<put-attribute name="nav" value=""/>
 		<put-attribute name="css" value="/WEB-INF/views/dbox/dboxCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxPropose.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
 	</definition>
 	<definition name="dboxProposeStep1" extends="dboxPropose">
 		<put-attribute name="title" value="기부박스 제안하기 : 1.나의 다짐"/>
+		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeStep1.jsp"/>
 	</definition>
 	<definition name="dboxProposeStep2" extends="dboxPropose">
 		<put-attribute name="title" value="기부박스 제안하기 : 2.팀 및 계획 작성"/>
+		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeStep2.jsp"/>
 	</definition>
 	<definition name="dboxProposeStep3" extends="dboxPropose">
 		<put-attribute name="title" value="기부박스 제안하기 : 3.내용 작성"/>
+		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeStep3.jsp"/>
 	</definition>
 	<definition name="dboxProposeEnd" extends="dboxPropose">
 		<put-attribute name="title" value="기부박스 제안하기 : 제안 완료"/>
+		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeEnd.jsp"/>
 	</definition>
 </tiles-definitions>

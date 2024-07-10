@@ -1,12 +1,20 @@
 package kr.spring.dbox.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.spring.dbox.dao.DboxMapper;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,16 +43,45 @@ public class DboxController {
 	 *==================================*/
 	@GetMapping("/dbox/propose")
 	public String proposeForm() {
-		log.debug("<<기부박스 제안하기 : >>");
 		return "dboxPropose";
 	}
 	/*===================================
 	 * 		기부박스 제안하기 : 1.나의 다짐
 	 *==================================*/
 	@GetMapping("/dbox/propose/step1")
-	public String proposeStep1() {
-		log.debug("<<기부박스 제안하기 - step1 : >>");
+	public String proposeStep1(HttpSession session) {
+		//로그인체크
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		log.debug("<<Step1 회원정보>> : " + user);
+		if(user==null) {
+			return "redirect:/member/login";
+		}
 		return "dboxProposeStep1";
+	}
+	@PostMapping("/dbox/propose/step1")
+	public String Step1Submit(@Valid DboxVO dboxVO,
+							  BindingResult result,
+							  HttpSession session) {
+		//dboxVO에 dcate_num이 담겼는지 확인
+		log.debug("<<기부박스 제안 Step1>> : " + dboxVO);
+		
+		//로그인 체크
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user==null) {
+			//로그인 안한 경우
+			return "redirect:/member/login";
+		}
+		//로그인한 회원의 mem_num을 dboxVO에 저장
+		dboxVO.setMem_num(user.getMem_num());
+		
+		//dboxVO를 세션에 "dbox"명칭으로 저장
+		session.setAttribute("dbox", dboxVO);
+		
+		//세션에 저장된 dboxVO 확인
+		log.debug("<<기부박스 제안 Step1 - 세션 저장>> : " + dboxVO);
+		
+		//다음페이지로 이동
+		return "dboxProposeStep2";
 	}
 	
 	
@@ -56,7 +93,36 @@ public class DboxController {
 		log.debug("<<기부박스 제안하기 - step2 : >>");
 		return "dboxProposeStep2";
 	}
-	
+	@PostMapping("/dbox/propose/step2")
+	public String Step2Submit(@Valid DboxVO dboxVO,
+							  BindingResult result,
+							  HttpSession session) {
+		//dboxVO에 dcate_num이 담겼는지 확인
+		log.debug("<<기부박스 제안 Step2>> : " + dboxVO);
+		
+		//로그인 체크
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user==null) {
+			//로그인 안한 경우
+			return "redirect:/member/login";
+		}
+		//세션에 저장된 dbox 불러오기
+		DboxVO s_dbox = (DboxVO)session.getAttribute("dbox"); 
+		log.debug("<<기부박스 제안 Step2 - 세션에서 불러온 정보>> : " + s_dbox);
+		
+		//dboxVO에 세션정보 넣기(카테고리,회원번호)
+		dboxVO.setMem_num(s_dbox.getMem_num());
+		dboxVO.setDcate_num(s_dbox.getDcate_num());
+		
+		//dboxVO를 세션에 "dbox"명칭으로 저장
+		session.setAttribute("dbox", dboxVO);
+		
+		//세션에 저장된 dboxVO 확인
+		log.debug("<<기부박스 제안 Step2 - 세션 저장>> : " + dboxVO);
+		
+		//다음페이지로 이동
+		return "dboxProposeStep3";
+	}
 	
 	/*===================================
 	 * 		기부박스 제안하기 : 3.내용 작성
