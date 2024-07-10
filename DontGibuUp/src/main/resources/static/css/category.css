@@ -7,7 +7,7 @@ body{
 }
 
 #main{
-	width:1024px;
+	width:800px;
 	margin:0 auto;
 	font-size:10pt;
 	font-family:"맑은 고딕";
@@ -328,10 +328,11 @@ ul#delivery_info li span{
 #paybutton{
 	 position: fixed;
 	 bottom: 20px; /* 화면 하단에서 20px 위 */
-	 width: 500px;          
+	 width: 300px;          
 	 left: 50%; /* 화면 가로 중앙 정렬을 위한 시작점 */
      transform: translateX(-50%);
      z-index: 1000; /* 다른 요소들보다 앞에 오도록 설정 */
      background-color:yellow;
      border-color: yellow;
 }
+

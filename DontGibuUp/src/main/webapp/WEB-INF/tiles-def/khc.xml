@@ -20,15 +20,15 @@
 		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/category/insertCategory.jsp"/>
 	</definition>
-	<definition name="categoryDetail" extends="main">
-		<put-attribute name="title" value="기부처 및 기부 카테고리 상세"/>
-		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/category/categoryDetail.jsp"/>
-	</definition>
 	<definition name="categoryUpdate" extends="main">
 		<put-attribute name="title" value="기부처 및 기부 카테고리 수정"/>
 		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/category/updateCategory.jsp"/>
+	</definition>
+	<definition name="categoryDetail" template="/WEB-INF/views/category/categoryDetail.jsp">
+		<put-attribute name="title" value="기부처 및 기부 카테고리 상세"/>
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
 	</definition>	
 </tiles-definitions>
 

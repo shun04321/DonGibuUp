@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <!-- 게시판 글상세 시작 -->
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,6 +13,7 @@
 <script src="${pageContext.request.contextPath}/js/videoAdapter.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/category.css" type="text/css">
 <title>container</title>
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -27,7 +28,12 @@
 }
 </style>
 </head>
-	<img src="${pageContext.request.contextPath}/upload/${category.dcate_banner}" height="330" width="100%">
+<body>
+<div id="main">
+<div id="main_header">
+		<tiles:insertAttribute name="header"/>
+</div>
+	<img src="${pageContext.request.contextPath}/upload/${category.dcate_banner}" id="banner">
 	<div class="page-main">
 		<h2>${category.dcate_name}</h2>
 		<ul class="detail-info">
@@ -49,7 +55,7 @@
 				}
 			};
 		</script>
-			<input type="button" value="목록" onclick="location.href='list'">
+			<input type="button" value="목록" onclick="location.href='categoryList'">
 		</div>
 	</div>
 	<div class="pay-button">
@@ -88,25 +94,14 @@
 			</div>
 		</div>
 	</div>
-
-
-	<script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
-
-	<div class="portone-ui-container" data-portone-ui-type="PAYPAL_RT">
-		<!-- 여기에 PG사 전용 버튼이 그려집니다 -->
-	</div>
-
-	<script>
-PortOne.loadIssueBillingKeyUI({
-  uiType: "PAYPAL_RT",
-  storeId: "store-3f9ebc91-a91b-4783-8f05-da9c39896c3a",
-  channelKey: "channel-key-4bd84ea8-2ed3-4536-8636-526b6856a072",
-  billingKeyMethod: "PAYPAL",
-});
-</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
+<div id="main_footer">
+		<tiles:insertAttribute name="footer"/>
+</div>
+</div>
+</body>
 </html>
 
