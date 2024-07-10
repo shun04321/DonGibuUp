@@ -6,8 +6,11 @@
 	<ul>
 		<li>
 			<img src="">
-			<span></span>
 		</li>
-		<li></li>
+		<li>
+			<c:if test="${!empty user}">
+				<button onclick="location.href='join?chal_num=${challenge.chal_num}'">참가하기</button>
+			</c:if>		
+		</li>
 	</ul>
 </div>

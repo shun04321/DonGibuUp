@@ -6,12 +6,12 @@
 	<!-- 챌린지 개설 신청하기 -->	
 	<insert id="insertChallenge" parameterType="challengeVO">
 		INSERT INTO challenge
-		(chal_num,mem_num,chal_person,chal_type,chal_public,chal_title,chal_content,
-		 chal_photo,chal_verify,chal_freq,chal_sdate,chal_edate,chal_fee,chal_max,chal_rdate)
+		(chal_num,mem_num,chal_type,chal_public,chal_title,chal_content,
+		 chal_photo,chal_verify,chal_freq,chal_sdate,chal_edate,chal_fee,chal_max,chal_ip)
 			 VALUES(
-			 challenge_seq.nextval,#{mem_num},#{chal_person},#{chal_type},#{chal_public},#{chal_title},
+			 challenge_seq.nextval,#{mem_num},#{chal_type},#{chal_public},#{chal_title},
 			 #{chal_content,jdbcType=CLOB},#{chal_photo,jdbcType=VARCHAR},#{chal_verify},#{chal_freq},#{chal_sdate},
-			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_rdate}
+			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_ip}
 		)
 	</insert>
 	
@@ -39,7 +39,13 @@
 	
 	<!-- 챌린지 상세보기 -->
 	<select id="selectChallenge" parameterType="Long" resultType="challengeVO">
-		
+		SELECT 
+			* 
+		FROM challenge
+		LEFT OUTER JOIN member_detail USING(mem_num)
+		<!-- 후기 join -->
+		<!-- 좋아요 join -->
+		WHERE chal_num=#{chal_num}
 	</select>
 </mapper>
 

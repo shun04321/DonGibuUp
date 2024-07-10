@@ -4,7 +4,9 @@ import java.sql.Date;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -17,11 +19,9 @@ import lombok.ToString;
 public class ChallengeVO {
 	private long chal_num;
 	private long mem_num;
-	@NotEmpty
-	private int chal_person;//0:개인,1:단체
-	@NotEmpty
+	@NotNull
 	private int chal_public;//0:공개,1:비공개
-	@NotEmpty
+	@NotNull
 	private int chal_type;
 	@NotBlank
 	private String chal_title;
@@ -30,16 +30,18 @@ public class ChallengeVO {
 	private String chal_photo;//파일명
 	@NotBlank
 	private String chal_verify;
-	@NotEmpty
-	private int chal_freq;
+	@NotNull
+	private Integer chal_freq;
 	@NotEmpty
 	private String chal_sdate;
 	@NotEmpty
 	private String chal_edate;
-	@NotBlank
-	private int chal_fee;
-	private int chal_max;
+	@Range(min=1000,max=200000)
+	private Integer chal_fee;
+	@Range(min=1)
+	private Integer chal_max;
 	private Date chal_rdate;
+	private String chal_ip;
 	
 	private String mem_nick;
 	private String mem_photo;

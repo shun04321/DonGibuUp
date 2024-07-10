@@ -33,8 +33,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public ChallengeVO selectChallenge(Long chal_num) {
-		// TODO Auto-generated method stub
-		return null;
+		return challengeMapper.selectChallenge(chal_num);
 	}
 
 	@Override
