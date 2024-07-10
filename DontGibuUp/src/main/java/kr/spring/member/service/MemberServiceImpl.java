@@ -2,6 +2,7 @@ package kr.spring.member.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,8 @@ public class MemberServiceImpl implements MemberService {
 	PointMapper pointMapper;
 	@Autowired
 	PointService pointService;
+	@Autowired
+	PasswordEncoder pwEncoder;
 
 	//회원가입
 	@Override
@@ -32,6 +35,10 @@ public class MemberServiceImpl implements MemberService {
 		memberVO.setMem_num(mem_num);
 		//추천인 코드지정
 		memberVO.setMem_rcode(generateUniqueRCode());
+		
+		//비밀번호 해싱
+		String encpassword = pwEncoder.encode(memberVO.getMem_pw());
+		memberVO.setMem_pw(encpassword);
 		
 		//member 추가
 		memberMapper.insertMember(memberVO);
@@ -62,6 +69,12 @@ public class MemberServiceImpl implements MemberService {
 			memberMapper.updateMemPoint(point_revent2);
 		}
 		
+	}
+	
+	//비밀번호 비교하기
+	@Override
+	public boolean isCheckedPassword(MemberVO member, String rawPassword) {
+		return pwEncoder.matches(rawPassword, member.getMem_pw());
 	}
 
 	//이메일로 회원 찾기(기존회원 체크)
@@ -105,6 +118,7 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+
 	
 }

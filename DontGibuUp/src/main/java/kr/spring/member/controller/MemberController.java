@@ -233,7 +233,7 @@ public class MemberController {
 				}
 
 				// 비밀번호 일치여부 체크
-				if (member.isCheckedPassword(memberVO.getMem_pw())) {
+				if (memberService.isCheckedPassword(member, memberVO.getMem_pw())) {
 					// 인증 성공
 					// =====TODO 자동로그인 체크 시작====//
 					// =====TODO 자동로그인 체크 끝====//

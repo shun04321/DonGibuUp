@@ -4,6 +4,10 @@ import kr.spring.member.vo.MemberVO;
 
 public interface MemberService {
 	public void insertMember(MemberVO memberVO);
+	
+	//비밀번호 비교하기
+	public boolean isCheckedPassword(MemberVO member, String rawPassword);
+	
 	//이메일로 회원정보 가져오기
 	public MemberVO selectMemberByEmail(String mem_email);
 	
