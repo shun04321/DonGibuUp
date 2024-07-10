@@ -34,8 +34,8 @@ public class ChallengeVO {
 	private Integer chal_freq;
 	@NotEmpty
 	private String chal_sdate;
-	@NotEmpty
-	private String chal_edate;
+	@NotNull
+	private Integer chal_period;
 	@Range(min=1000,max=200000)
 	private Integer chal_fee;
 	@Range(min=1)

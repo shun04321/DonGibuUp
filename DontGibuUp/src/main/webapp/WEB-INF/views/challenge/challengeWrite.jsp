@@ -35,13 +35,28 @@
 				<form:textarea path="chal_content"/>
 			</li>
 			<li>
-				<label>챌린지 기간</label>
-				<form:label path="chal_sdate">시작일</form:label>
+				<form:label path="chal_sdate">챌린지 시작일</form:label>
 				<form:input type="date" path="chal_sdate"/>
+				<script type="text/javascript">
+					let today = new Date();
+					
+					let year = today.getFullYear();
+					let month = ('0'+(today.getMonth()+1)).slice(-2);
+					let day = ('0'+today.getDate()).slice(-2);
+					
+					let minDate = year+'-'+month+'-'+day;
+					
+					document.getElementById('chal_sdate').setAttribute('min',minDate);
+				</script>
 				<form:errors path="chal_sdate" cssClass="error-color"/>
-				<form:label path="chal_edate">종료일</form:label>
-				<form:input type="date" path="chal_edate"/>
-				<form:errors path="chal_edate" cssClass="error-color"/>
+			</li>
+			<li>				
+				<form:label path="chal_period">챌린지 진행기간</form:label>
+				<form:radiobutton path="chal_period" value="1" label="1주 동안"/>
+				<form:radiobutton path="chal_period" value="2" label="2주 동안"/>
+				<form:radiobutton path="chal_period" value="3" label="3주 동안"/>
+				<form:radiobutton path="chal_period" value="4" label="4주 동안"/>
+				<form:errors path="chal_period" cssClass="error-color"/>
 			</li>
 			<li>
 				<form:label path="chal_freq">인증 빈도</form:label>
