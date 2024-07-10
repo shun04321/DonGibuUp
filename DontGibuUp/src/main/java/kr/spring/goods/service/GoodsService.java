@@ -10,6 +10,7 @@ public interface GoodsService {
 	public void insertGoods(GoodsVO goodsVO);
 	public Integer selectRowCount(Map<String,Object> map);
 	public void updateGoods(GoodsVO goods);
+	public GoodsVO detailGoods(long item_num);
 
 	
 	//상품이미지 수정

@@ -15,7 +15,8 @@ public interface GoodsMapper {
 	//상품 등록 - xml
 	public void insertGoods(GoodsVO goods);
 	//상품 상세
-	public void detailGoods(long item_num);
+	@Select("SELECT * FROM item WHERE item_num=#{item_num}")
+	public GoodsVO detailGoods(long item_num);
 	
 	
 }

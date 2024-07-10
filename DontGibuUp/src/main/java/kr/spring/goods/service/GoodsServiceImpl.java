@@ -39,6 +39,11 @@ public class GoodsServiceImpl implements GoodsService {
 		
 	}
 
+	@Override
+	public GoodsVO detailGoods(long item_num) {
+		return goodsMapper.detailGoods(item_num);
+	}
+
 
 	
 }

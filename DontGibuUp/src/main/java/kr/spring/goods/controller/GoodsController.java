@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 
 import kr.spring.goods.service.GoodsService;
@@ -25,6 +26,7 @@ import kr.spring.goods.util.fileUtil;
 import kr.spring.goods.vo.GoodsVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
+import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -87,7 +89,21 @@ public class GoodsController {
 	/*===================================
 	 * 				상품 상세
 	 *==================================*/
-	//
+	@GetMapping("/goods/detail")
+	public ModelAndView process(long item_num) {
+		log.debug("<<게시판 글 상세 - item_num>> :" + item_num);
+		
+		
+		GoodsVO goods = goodsService.detailGoods(item_num);
+		
+		//제목에 태그를 허용하지 않음
+		goods.setItem_name(StringUtil.useNoHTML(goods.getItem_name()));
+		
+		//내용에 태그를 허용하지 않으면서 줄바꿈 처리(ck에디터 사용시 주석처리해야함)
+		//board.setContent( StringUtil.useBrNoHTML(board.getContent()));
+		
+		return new ModelAndView("goodsView","goods",goods);
+	}
 	
 	
 	/*===================================
