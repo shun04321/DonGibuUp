@@ -45,6 +45,9 @@
  		   <if test="dcate_icon != null">
  		   dcate_icon = #{dcate_icon},
  		   </if>
+ 		   <if test="dcate_banner != null">
+ 		   dcate_banner = #{dcate_banner},
+ 		   </if>
  		   dcate_name = #{dcate_name},
  		   dcate_charity = #{dcate_charity},
  		   dcate_content = #{dcate_content}

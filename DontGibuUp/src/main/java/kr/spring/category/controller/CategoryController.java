@@ -176,30 +176,35 @@ public class CategoryController {
 	    // 파일 업로드 처리
 	    MultipartFile iconFile = categoryVO.getIconUpload();
 	    MultipartFile bannerFile = categoryVO.getBannerUpload();
-	
+
+	    // 기존 파일명 저장
+	    String oldIconFilename = db_category.getDcate_icon();
+	    String oldBannerFilename = db_category.getDcate_banner();
+	    
 	    if (iconFile != null && !iconFile.isEmpty()) {
 	        String iconFileName = FileUtil.createFile(request, iconFile);
 	        categoryVO.setDcate_icon(iconFileName);
 	    } else {
 	        categoryVO.setDcate_icon(db_category.getDcate_icon());
 	    }
+	    
 	    if (bannerFile != null && !bannerFile.isEmpty()) {
 	        String bannerFileName = FileUtil.createFile(request, bannerFile);
 	        categoryVO.setDcate_banner(bannerFileName);
 	    } else {
 	        categoryVO.setDcate_banner(db_category.getDcate_banner());
 	    }
+
 	    // 카테고리 수정
 	    categoryService.updateDonationCategory(categoryVO);
-	   
-	    
+
 	    // 기존 파일 삭제 처리
-	    if (iconFile != null && !iconFile.isEmpty() && !iconFile.getOriginalFilename().equals(db_category.getDcate_icon())) {
-	        FileUtil.removeFile(request, db_category.getDcate_icon());
+	    if (iconFile != null && !iconFile.isEmpty() && !categoryVO.getDcate_icon().equals(oldIconFilename)) {
+	        FileUtil.removeFile(request, oldIconFilename);
 	    }
 
-	    if (bannerFile != null && !bannerFile.isEmpty() && !bannerFile.getOriginalFilename().equals(db_category.getDcate_banner())) {
-	        FileUtil.removeFile(request, db_category.getDcate_banner());
+	    if (bannerFile != null && !bannerFile.isEmpty() && !categoryVO.getDcate_banner().equals(oldBannerFilename)) {
+	        FileUtil.removeFile(request, oldBannerFilename);
 	    }
 
 	    model.addAttribute("message", "카테고리 수정완료");
