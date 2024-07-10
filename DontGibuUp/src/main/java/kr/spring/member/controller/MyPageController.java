@@ -21,8 +21,15 @@ public class MyPageController {
 		return "redirect:/member/myPage/memberInfo";
 	}
 	
+	//회원정보 수정
 	@GetMapping("/member/myPage/memberInfo")
 	public String memberInfo() {
 		return "memberInfo";
+	}
+	
+	//비밀번호 수정
+	@GetMapping("/member/myPage/changePassword")
+	public String changePasswordForm() {
+		return "memberChangePassword";
 	}
 }

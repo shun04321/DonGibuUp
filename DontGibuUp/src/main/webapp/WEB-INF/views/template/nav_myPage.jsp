@@ -6,7 +6,7 @@
 		<div>나의 정보</div>
 		<ul class="side-menu-sub">
 			<li><a href="memberInfo">회원정보 수정</a></li>
-			<li>비밀번호 수정</li>
+			<li><a href="changePassword">비밀번호 수정</a></li>
 			<li>친구초대</li>
 			<li>포인트</li>
 		</ul>
