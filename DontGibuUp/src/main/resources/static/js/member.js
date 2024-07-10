@@ -1,8 +1,4 @@
 $(function() {
-	var pathArray = window.location.pathname.split('/');
-  	var contextPath = '/' + (pathArray.length > 1 ? pathArray[1] : '');
-  	console.log("Context Path:", contextPath);
-	
 	/*===============================
 		  회원 프로필사진 수정
 	================================*/
@@ -34,15 +30,15 @@ $(function() {
 			reader.onload = function() {
 				$('.my-photo').attr('src', reader.result);
 			};
-			
+
 			//선택한 사진이 있으면 ajax 요청
 			if (this.files[0]) {
 				const form_data = new FormData();
 				form_data.append('upload', this.files[0]);
-				
+
 				//서버와 통신
 				$.ajax({
-					url:'modifyMemPhoto',
+					url: 'modifyMemPhoto',
 					type: 'post',
 					data: form_data,
 					dataType: 'json',
@@ -51,10 +47,12 @@ $(function() {
 					success: function(param) {
 						if (param.result == 'logout') {
 							alert('로그인 후 사용하세요');
-							location.href="../login";
+							location.href = "../login";
 						} else if (param.result == 'success') {
 							//교체된 이미지 저장
 							photo_path = $('.my-photo').attr('src'); //다시 작업할 수도 있기 때문에 저장해둠
+							//삭제버튼 보이게
+							$('#photo_del').show();
 						} else {
 							alert('파일 전송 오류 발생');
 						}
@@ -65,10 +63,29 @@ $(function() {
 				});
 			} //end of if
 		}); //end of onchange
-		
-		$('#photo_del').click(function() {
-			$('.my-photo').attr('src', photo_path);
-		});
+	}); //photo_choice click 이벤트
 
-	}); //photo_choic click 이벤트
+	$('#photo_del').click(function() {
+		let photo_del = $(this);
+		//서버와 통신
+		$.ajax({
+			url: 'deleteMemPhoto',
+			type: 'post',
+			dataType: 'json',
+			success: function(param) {
+				if (param.result == 'logout') {
+					alert('로그인 후 사용하세요');
+					location.href = "../login";
+				} else if (param.result == 'success') {
+					$('.my-photo').attr('src', contextPath + '/images/basicProfile.png'); //이미지 안보이게 처리
+					photo_del.hide(); //삭제 버튼 안보이게
+				} else {
+					alert('파일 삭제 오류 발생');
+				}
+			},
+			error: function() {
+				alert('네트워크 오류 발생');
+			}
+		});
+	});
 });
