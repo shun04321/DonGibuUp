@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class PayUIdVO {
+public class PayuidVO {
 	private String pay_uid;
 	private int mem_num;
 }
