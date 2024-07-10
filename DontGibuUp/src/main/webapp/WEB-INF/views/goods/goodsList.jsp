@@ -55,27 +55,34 @@
 	</c:if>
 	<c:if test="${count > 0}">
 		<table class="striped-table">
-			<tr>
-				<th>상품번호</th>
-				<th>사진</th>
-				<th>카테고리</th>
-				<th width="400">상품명</th>
-				<th>카테고리</th>
-				<th>가격</th>
-				<th>재고</th>
-			</tr>
-			<c:forEach var="goods" items="${list}">
-				<tr>
-					<td class="align-center">${goods.item_num}</td>
-					<td class="align-center">${goods.item_photo}</td>
-					<td class="align-center">${goods.dcate_num}</td>
-					<td class="align-left"><a
-						href="detail?item_num=${goods.item_num}">${goods.item_name}</a></td>
-					<td class="align-center">${goods.dcate_num}</td>
-					<td class="align-center">${goods.item_price}</td>
-					<td class="align-center">${goods.item_stock}</td>
-				</tr>
-			</c:forEach>
-		</table>
+    <thead>
+        <tr>
+            <th>상품번호</th>
+            <th>사진</th>
+            <th>카테고리</th>
+            <th width="400">상품명</th>
+            <th>카테고리</th>
+            <th>가격</th>
+            <th>재고</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="goods" items="${list}">
+            <tr>
+                <td class="align-center">${goods.item_num}</td>
+                <td class="align-center">
+                    <img src="${pageContext.request.contextPath}${goods.item_photo}" width="100">
+                </td>
+                <td class="align-center">${goods.dcate_num}</td>
+                <td class="align-left">
+                    <a href="detail?item_num=${goods.item_num}">${goods.item_name}</a>
+                </td>
+                <td class="align-center">${goods.dcate_num}</td>
+                <td class="align-center">${goods.item_price}</td>
+                <td class="align-center">${goods.item_stock}</td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
 	</c:if>
 </div>

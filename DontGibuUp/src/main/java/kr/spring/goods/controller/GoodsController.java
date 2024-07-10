@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import kr.spring.goods.service.GoodsService;
+import kr.spring.goods.util.fileUtil;
 import kr.spring.goods.vo.GoodsVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
@@ -80,6 +81,9 @@ public class GoodsController {
 		
 		return "goodsList";
 	}	
+	
+	
+	
 	/*===================================
 	 * 				상품 상세
 	 *==================================*/
@@ -116,16 +120,16 @@ public class GoodsController {
 			
 			return form();
 		}
-		//상품 번호
-		goodsVO.setItem_photo(FileUtil.createFile(request,goodsVO.getUpload()));
-		
-		//글쓰기
-		goodsService.insertGoods(goodsVO);
-		
-		model.addAttribute("message","성공적으로 상품이 등록되었습니다.");
-		model.addAttribute("uri",request.getContextPath()+"/goods/list");
-		
-		return "common/resultAlert";
+		 // 상품 사진 업로드 처리
+	    String uploadedFileName = fileUtil.createFile(request, goodsVO.getUpload());
+	    goodsVO.setItem_photo(uploadedFileName);
+
+	    goodsService.insertGoods(goodsVO);
+
+	    model.addAttribute("message", "성공적으로 상품이 등록되었습니다.");
+	    model.addAttribute("uri", request.getContextPath() + "/goods/list");
+
+	    return "common/resultAlert";
 	}
 	
 }
