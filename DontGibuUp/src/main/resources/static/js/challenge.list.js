@@ -1,17 +1,18 @@
 $(function(){
-	let rowCount = 1;
+	let rowCount = 9;
 	let currentPage=1;
 	let loading = false;
+	let hasMoreData = true;
 	
 	/*---------------------
 	 * 챌린지 목록
 	 *---------------------*/
-  $(window).scroll(function() {
-  	if ($(window).scrollTop() + $(window).height() >= $(document).height() - 50) {
-    	currentPage++;
-    	selectList(currentPage);
-    }
-  });
+	window.onscroll = function() {
+    	if (hasMoreData && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        	currentPage++;
+    		selectList(currentPage);
+        }
+    };
   
 	function selectList(currentPage){
 		
@@ -23,9 +24,10 @@ $(function(){
 			success:function(param){
 				
 				loading = true;
-				alert("param.count"+param.count);
-				alert("currentPage"+currentPage);
-				if(currentPage >= param.count || !loading){
+				
+				if(currentPage > param.count){
+					loading = false;
+					hasMoreData = false;	
 					return;
 				}
 						
@@ -79,10 +81,13 @@ $(function(){
 						
 						$('#output').append(output);
 					}
-					loading = false;
-				});					
+					
+				});
+				loading = false;
+									
 			},
 			error:function(){
+				loading = false;	
 				alert('네트워크 오류');
 			}
 		});
