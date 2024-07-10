@@ -27,7 +27,7 @@
 }
 </style>
 </head>
-<body>
+	<img src="${pageContext.request.contextPath}/upload/${category.dcate_banner}" height="330" width="100%">
 	<div class="page-main">
 		<h2>${category.dcate_name}</h2>
 		<ul class="detail-info">
@@ -61,8 +61,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">
-						<img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
-							width="30"> ${category.dcate_name}
+						<img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}" width="30"><span>${category.dcate_name}</span>
 					</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 				</div>
@@ -109,6 +108,5 @@ PortOne.loadIssueBillingKeyUI({
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"></script>
-</body>
 </html>
 
