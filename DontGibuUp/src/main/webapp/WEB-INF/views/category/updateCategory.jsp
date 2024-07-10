@@ -12,10 +12,17 @@
 	<form:hidden path="dcate_num"/>
     <ul>
         <li>
-            <form:label path="upload">기부처 아이콘</form:label>
-            <input type="file" name="upload" id="upload">
+            <form:label path="iconUpload">기부카테고리 아이콘</form:label>
+            <input type="file" name="iconUpload" id="iconUpload">
+          	<div id="file_detail">
+				${donationCategoryVO.dcate_icon})파일이 등록되어 있습니다.
+			</div>
+        </li>
+        <li>
+            <form:label path="bannerUpload">기부카테고리 배너</form:label>
+            <input type="file" name="bannerUpload" id="bannerUpload">
 				<div id="file_detail">
-					(${donationCategoryVO.dcate_icon})파일이 등록되어 있습니다.
+					(${donationCategoryVO.dcate_banner})파일이 등록되어 있습니다.
 				</div>
         </li>
         <li>

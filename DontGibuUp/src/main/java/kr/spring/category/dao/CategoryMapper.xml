@@ -3,21 +3,23 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.category.dao.CategoryMapper">	
-	<insert id="insertDonationCategory" parameterType="donationCategoryVO">
-		INSERT INTO dona_category
-		(dcate_num,
-		 dcate_name,
-		 dcate_charity,
-		 dcate_icon,
-		 dcate_content)
-			 VALUES(
-			 dona_category_seq.nextval,
-			 #{dcate_name},
-			 #{dcate_charity},
-			 #{dcate_icon,jdbcType=VARCHAR},
-			 #{dcate_content}
-		)
-	</insert>	
+<insert id="insertDonationCategory" parameterType="donationCategoryVO">
+    INSERT INTO dona_category
+    (dcate_num,
+     dcate_name,
+     dcate_charity,
+     dcate_icon,
+     dcate_content,
+     dcate_banner)
+    VALUES (
+        dona_category_seq.nextval,
+        #{dcate_name},
+        #{dcate_charity},
+        #{dcate_icon,jdbcType=VARCHAR},
+        #{dcate_content},
+        #{dcate_banner,jdbcType=VARCHAR}
+    )
+</insert>
 	<select id="selectList" parameterType="map" resultType="donationCategoryVO">
 		 	SELECT
 	 	   *

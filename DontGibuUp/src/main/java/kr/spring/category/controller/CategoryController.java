@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.spring.category.service.CategoryService;
@@ -67,37 +68,55 @@ public class CategoryController {
 
 
 	//기부 카테고리 및 기부처 등록
-	@PostMapping("/category/insertCategory")
-	public String submit(@Valid DonationCategoryVO donationCategoryVO,
-			BindingResult result,
-			HttpServletRequest request,
-			HttpSession session,
-			Model model)
-					throws IllegalStateException,
-					IOException{
-		log.debug("<<카테고리 및 기부처 저장>> : " + donationCategoryVO);
+	@Controller
+	public class DonationCategoryController {
 
-		//유효성 체크 결과 오류가 있으면 폼 호출
-		if(result.hasErrors()) {
-			if (donationCategoryVO.getUpload() == null || donationCategoryVO.getUpload().isEmpty()) {
-				result.rejectValue("upload", "error.upload", "기부처 아이콘을 업로드해야 합니다.");
-			}
-			return "insertCategory";
-		}
+	    @Autowired
+	    private CategoryService categoryService;
 
-		//파일 업로드
-		donationCategoryVO.setDcate_icon(FileUtil.createFile(request, 
-				donationCategoryVO.getUpload()));
+	    @PostMapping("/category/insertCategory")
+	    public String submit(@Valid DonationCategoryVO donationCategoryVO,
+	                         BindingResult result,
+	                         HttpServletRequest request,
+	                         HttpSession session,
+	                         Model model) throws IllegalStateException, IOException {
+	        // 로깅
+	        log.debug("<<카테고리 및 기부처 저장>> : " + donationCategoryVO);
 
-		//기부 카테고리 등록
-		categoryService.insertDonationCategory(donationCategoryVO);
+	        // 유효성 체크 결과 오류가 있으면 폼 호출
+	        if (result.hasErrors()) {
+	            if (donationCategoryVO.getIconUpload() == null || donationCategoryVO.getIconUpload().isEmpty()) {
+	                result.rejectValue("iconUpload", "error.iconUpload", "기부처 아이콘을 업로드해야 합니다.");
+	            }
+	            if (donationCategoryVO.getBannerUpload() == null || donationCategoryVO.getBannerUpload().isEmpty()) {
+	                result.rejectValue("bannerUpload", "error.bannerUpload", "기부처 배너를 업로드해야 합니다.");
+	            }
+	            return "insertCategory";
+	        }
 
-		//View 메시지 처리
-		model.addAttribute("message", "카테고리 및 기부처가 등록되었습니다.");
-		model.addAttribute("url", 
-				request.getContextPath()+"/category/categoryList");
+	        // 파일 업로드
+	        MultipartFile iconFile = donationCategoryVO.getIconUpload();
+	        MultipartFile bannerFile = donationCategoryVO.getBannerUpload();
 
-		return "common/resultAlert";
+	        if (iconFile != null && !iconFile.isEmpty()) {
+	            String iconFileName = FileUtil.createFile(request, iconFile);
+	            donationCategoryVO.setDcate_icon(iconFileName);
+	        }
+
+	        if (bannerFile != null && !bannerFile.isEmpty()) {
+	            String bannerFileName = FileUtil.createFile(request, bannerFile);
+	            donationCategoryVO.setDcate_banner(bannerFileName);
+	        }
+
+	        // 기부 카테고리 등록
+	        categoryService.insertDonationCategory(donationCategoryVO);
+
+	        // View 메시지 처리
+	        model.addAttribute("message", "카테고리 및 기부처가 등록되었습니다.");
+	        model.addAttribute("url", request.getContextPath() + "/category/categoryList");
+
+	        return "common/resultAlert";
+	    }
 	}
 	
 	//기부 카테고리 상세
@@ -132,41 +151,63 @@ public class CategoryController {
 		model.addAttribute("donationCategoryVO", categoryVO);
 		
 		return "categoryUpdate";
-	}
+	} 
 
 	
-	  @PostMapping("/category/updateCategory") 
-	  public String submitUpdate(@Valid DonationCategoryVO categoryVO, 
-			  					BindingResult result, 
-			  					Model model, 
-			  					HttpServletRequest request)
-	  throws IllegalStateException, IOException { 
-		  log.debug("<<카테고리 수정>> : " + categoryVO);
-	  
-	  //유효성 체크 결과 오류가 있으면 폼 호출 
-	  if(result.hasErrors()) { 
-	  // 유효성 체크시 오류 있을 시 파일 정보 잃어버림
-	  DonationCategoryVO vo = categoryService.selectDonationCategory(categoryVO.getDcate_num());
-	  categoryVO.setDcate_icon(vo.getDcate_icon()); 
-	  return "categoryUpdate"; 
-	  }
-	  
-	  //DB에 저장된 파일 정보 구하기 
-	  DonationCategoryVO db_category = categoryService.selectDonationCategory(categoryVO.getDcate_num());
-	  //파일명 셋팅(FileUtil.createFile에서 파일이 없으면 null 처리함)
-	  categoryVO.setDcate_icon(FileUtil.createFile(request, categoryVO.getUpload()));
-	  
-	  //카테고리 수정
-	  categoryService.updateDonationCategory(categoryVO);
-	  
-	  if(categoryVO.getUpload()!=null && !categoryVO.getUpload().isEmpty()) { //수정전 파일 삭제처리
-		 FileUtil.removeFile(request, db_category.getDcate_icon()); 
-	  }
-	  
-	  model.addAttribute("message","카테고리 수정완료");
-	  model.addAttribute("url",request.getContextPath()+"/category/detail?dcate_num="+categoryVO.getDcate_num()); 
-	  
-	  return "common/resultAlert";
-	 }
+	@PostMapping("/category/updateCategory")
+	public String submitUpdate(@Valid DonationCategoryVO categoryVO, 
+	                           BindingResult result, 
+	                           Model model, 
+	                           HttpServletRequest request) throws IllegalStateException, IOException {
+	    log.debug("<<카테고리 수정>> : " + categoryVO);
+
+	    // 유효성 체크 결과 오류가 있으면 폼 호출
+	    if (result.hasErrors()) {
+	        // 유효성 체크시 오류 있을 시 파일 정보 잃어버림
+	        DonationCategoryVO vo = categoryService.selectDonationCategory(categoryVO.getDcate_num());
+	        categoryVO.setDcate_icon(vo.getDcate_icon());
+	        categoryVO.setDcate_banner(vo.getDcate_banner());
+	        return "categoryUpdate";
+	    }
+
+	    // DB에 저장된 파일 정보 구하기
+	    DonationCategoryVO db_category = categoryService.selectDonationCategory(categoryVO.getDcate_num());
+
+	    // 파일명 셋팅(FileUtil.createFile에서 파일이 없으면 null 처리함)
+	    MultipartFile iconFile = categoryVO.getIconUpload();
+	    MultipartFile bannerFile = categoryVO.getBannerUpload();
+
+	    if (iconFile != null && !iconFile.isEmpty()) {
+	        String iconFileName = FileUtil.createFile(request, iconFile);
+	        categoryVO.setDcate_icon(iconFileName);
+	    } else {
+	        categoryVO.setDcate_icon(db_category.getDcate_icon());
+	    }
+
+	    if (bannerFile != null && !bannerFile.isEmpty()) {
+	        String bannerFileName = FileUtil.createFile(request, bannerFile);
+	        categoryVO.setDcate_banner(bannerFileName);
+	    } else {
+	        categoryVO.setDcate_banner(db_category.getDcate_banner());
+	    }
+
+	    // 카테고리 수정
+	    categoryService.updateDonationCategory(categoryVO);
+
+	    if (iconFile != null && !iconFile.isEmpty()) {
+	        // 수정 전 아이콘 파일 삭제 처리
+	        FileUtil.removeFile(request, db_category.getDcate_icon());
+	    }
+
+	    if (bannerFile != null && !bannerFile.isEmpty()) {
+	        // 수정 전 배너 파일 삭제 처리
+	        FileUtil.removeFile(request, db_category.getDcate_banner());
+	    }
+
+	    model.addAttribute("message", "카테고리 수정완료");
+	    model.addAttribute("url", request.getContextPath() + "/category/detail?dcate_num=" + categoryVO.getDcate_num());
+
+	    return "common/resultAlert";
+	}
 	
 }

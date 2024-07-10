@@ -12,13 +12,21 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DonationCategoryVO {
-	private long dcate_num;
-	@NotBlank
-	private String dcate_name;
-	@NotBlank
-	private String dcate_charity;
-	private String dcate_icon;
-	@NotBlank
-	private String dcate_content;
-	private MultipartFile upload;	//파일
+    private long dcate_num;
+    
+    @NotBlank
+    private String dcate_name;
+    
+    @NotBlank
+    private String dcate_charity;
+    
+    private String dcate_icon;
+    
+    @NotBlank
+    private String dcate_content;
+    
+    private String dcate_banner;
+    
+    private MultipartFile iconUpload;    // 아이콘 파일
+    private MultipartFile bannerUpload;  // 배너 파일
 }

@@ -89,6 +89,7 @@ CREATE TABLE DONA_CATEGORY (
 	dcate_name			varchar2(20)		NOT NULL,
 	dcate_charity		varchar2(20)		NOT NULL,
 	dcate_icon			varchar2(400)		NOT NULL,
+	dcate_filename		varchar2(400)		NOT NULL,
 	dcate_content		varchar2(4000)		NOT NULL
 );
 

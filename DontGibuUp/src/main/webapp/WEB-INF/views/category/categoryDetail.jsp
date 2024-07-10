@@ -29,6 +29,15 @@
             <input type="button" value="수정"
                    onclick="location.href='/category/updateCategory?dcate_num=${category.dcate_num}'">
             <input type="button" value="삭제" id="delete_btn">
+            <script>
+			const delete_btn = document.getElementById('delete_btn');
+			delete_btn.onclick=function(){
+				const choice = confirm('삭제하시겠습니까?');
+				if(choice){
+					location.replace('/category/deleteCategory?dcate_num=${category.dcate_num}');
+				}
+			};
+		</script>   
             <input type="button" value="목록" onclick="location.href='list'">
         </div>
         <div class="pay-button">

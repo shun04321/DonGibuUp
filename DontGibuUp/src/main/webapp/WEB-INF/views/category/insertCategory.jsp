@@ -11,9 +11,14 @@
 <form:form action="insertCategory" method="post" enctype="multipart/form-data" modelAttribute="donationCategoryVO">
     <ul>
         <li>
-            <form:label path="upload">기부처 아이콘</form:label>
-            <input type="file" name="upload" id="upload">
-            <form:errors path="upload" cssClass="error-color"/>
+            <form:label path="iconUpload">기부카테고리 아이콘</form:label>
+            <input type="file" name="iconUpload" id="iconUpload">
+            <form:errors path="iconUpload" cssClass="error-color"/>
+        </li>
+        <li>
+            <form:label path="bannerUpload">기부카테고리 배너</form:label>
+            <input type="file" name="bannerUpload" id="bannerUpload">
+            <form:errors path="bannerUpload" cssClass="error-color"/>
         </li>
         <li>
             <form:input path="dcate_name" placeholder="카테고리명을 입력하세요."/>
