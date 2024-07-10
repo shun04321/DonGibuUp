@@ -92,4 +92,40 @@ $(function() {
 		});
 	});
 
+  const yearSelect = $('#birth_year');
+  const monthSelect = $('#birth_month');
+  const daySelect = $('#birth_day');
+
+  // 년도 옵션 추가
+  const currentYear = new Date().getFullYear();
+  for (let year = currentYear; year >= 1900; year--) {
+    yearSelect.append(`<option value="${year}">${year}</option>`);
+  }
+
+  // 월 옵션 추가
+  const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+  $.each(months, function(index, month) {
+    monthSelect.append(`<option value="${month}">${month}</option>`);
+  });
+
+  // 일 옵션 추가 (1일부터 31일까지)
+  for (let day = 1; day <= 31; day++) {
+    daySelect.append(`<option value="${day}">${day}</option>`);
+  }
+
+  // 폼 제출 시 처리
+  $('#birthday-form').submit(function(event) {
+    event.preventDefault();
+
+    const selectedYear = yearSelect.val();
+    const selectedMonth = monthSelect.val();
+    const selectedDay = daySelect.val();
+
+    // 선택된 값으로 생년월일 문자열 생성
+    const birthday = `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`;
+    console.log('생일:', birthday);
+
+    // 이후 원하는 작업 수행 (예: 서버로 전송 등)
+  });
+
 });

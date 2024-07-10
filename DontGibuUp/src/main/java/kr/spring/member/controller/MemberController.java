@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.spring.config.validation.ValidationSequence;
+import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.KakaoInfo;
@@ -87,8 +88,15 @@ public class MemberController {
 		
 		//추천인 이벤트 참가
 		if (memberVO.getFriend_rcode() != null && !memberVO.getFriend_rcode().equals("")) {
-			memberVO.setRecommend_status(1);
+			//추천인 이벤트 참여
+			if (memberService.selectMemNumByRCode(memberVO.getFriend_rcode()) != null) {
+				memberVO.setRecommend_status(1);
+			} else {
+	            result.rejectValue("friend_rcode", "invalidRCode");
+	            return signupForm(); // 회원가입 폼 다시 보여주기
+			}
 		} else {
+			//미참여
 			memberVO.setRecommend_status(0);
 		}
 

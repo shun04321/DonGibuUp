@@ -23,6 +23,10 @@ public interface MemberMapper {
 	//회원정보 가져오기
 	@Select("SELECT * FROM member WHERE mem_num=#{mem_num}")
 	public MemberVO selectMember(Long mem_num);
+	
+	//회원정보+디테일 가져오기
+	@Select("SELECT * FROM member LEFT OUTER JOIN member_detail USING(mem_num) WHERE mem_num=#{mem_num}")
+	public MemberVO selectMemberDetail(Long mem_num);
 
 	//회원 이메일로 회원정보 가져오기
 	@Select("SELECT a.*, b.mem_photo mem_photo FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_eamil}")
@@ -30,7 +34,7 @@ public interface MemberMapper {
 	
 	//추천코드로 회원정보 가져오기
 	@Select("SELECT mem_num FROM member_detail WHERE mem_rcode=#{friend_rcode}")
-	public long selectMemNumByRCode(String friend_rcode);
+	public Long selectMemNumByRCode(String friend_rcode);
 	
 	//회원 포인트 업데이트
 	@Update("UPDATE member_detail SET mem_point=mem_point+#{point_amount} WHERE mem_num=#{mem_num}")
@@ -44,9 +48,10 @@ public interface MemberMapper {
 				회원정보 수정
 	---------------------------------------*/
 	//프로필사진 수정
-	@Update("UPDATE member_detail SET mem_photo=#{mem_photo} WHERE mem_num=#{mem_num}")
+	@Update("UPDATE member_detail SET mem_photo=#{mem_photo}, mem_mdate=SYSDATE WHERE mem_num=#{mem_num}")
 	public void updateMemPhoto(MemberVO memberVO);
 	
 	//회원정보 수정
 	public void updateMember(MemberVO memberVO);
+	public void updateMemberDetail(MemberVO memberVO);
 }

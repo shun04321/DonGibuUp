@@ -33,6 +33,23 @@
 			#{recommend_status}
 		)
 	</insert>
+	<!-- 회원정보 수정 - member -->
+	<update id="updateMember">
+		UPDATE member
+		SET
+			mem_nick=#{mem_nick}
+		WHERE mem_num=#{mem_num}
+	</update>
+	<!-- 회원정보 수정 - member_detail -->
+	<update id="updateMemberDetail">
+		UPDATE member_detail
+		SET
+			mem_name=#{mem_name, jdbcType=VARCHAR},
+			mem_phone=#{mem_phone, jdbcType=VARCHAR},
+			mem_birth=#{mem_birth},
+			mem_mdate=SYSDATE
+		WHERE mem_num=#{mem_num}
+	</update>
  </mapper>
 
 

@@ -13,6 +13,8 @@ public interface MemberService {
 	
 	//회원정보 가져오기
 	public MemberVO selectMember(Long mem_num);
+	//회원정보+디테일 가져오기
+	public MemberVO selectMemberDetail(Long mem_num);
 	
 	//이메일로 회원정보 가져오기
 	public MemberVO selectMemberByEmail(String mem_email);
@@ -21,6 +23,8 @@ public interface MemberService {
     public String generateUniqueRCode();
 	//추천인코드 중복확인
 	public boolean checkIfRCodeIsUnique(String rcode);
+	//추천인 코드 대조
+	public Long selectMemNumByRCode(String friend_rcode);
 	
 	//프로필사진 업데이트
 	public void updateMemPhoto(MemberVO memberVO);

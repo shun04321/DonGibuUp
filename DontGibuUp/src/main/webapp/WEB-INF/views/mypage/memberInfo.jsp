@@ -25,26 +25,40 @@
 	</div>
 </div>
 
-<form:form action="modify" id="member_modify" modelAttribute="memberVO">
+<form:form action="updateMember" id="member_update" modelAttribute="memberVO">
 	<ul>
 		<li>
-			<form:label path="mem_email">이메일</form:label>
-			<form:input path="mem_email"/>
+			<label for="mem_email">이메일</label>
+			<input id="mem_email" value="${member.mem_email}" disabled/>
 		</li>
 		<li>
 			<form:label path="mem_nick">닉네임</form:label>
-			<form:input path="mem_nick"/>
+			<form:input path="mem_nick" value="${member.mem_nick}"/>
 			<form:errors path="mem_nick" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<form:label path="mem_name">이름</form:label>
-			<form:input path="mem_name"/>
+			<form:input path="mem_name" value="${member.mem_name}"/>
 			<form:errors path="mem_name" cssClass="form-error"></form:errors>
 		</li>
 		<li>
-			<form:label path="mem_phone">전화번호</form:label>
-			<form:input path="mem_phone"/>
-			<form:errors path="mem_phone" cssClass="form-error"></form:errors>
+			<label>전화번호</label>
+		    <input type="text" id="phone1" maxlength="4" pattern="[0-9]{4}" style="width:100px;" required disabled value="010">
+		    -
+		    <input type="text" id="phone2" maxlength="4" pattern="[0-9]{4}" style="width:100px;" required>
+		    -
+		    <input type="text" id="phone3" maxlength="4" pattern="[0-9]{4}" style="width:100px;" required>
+		</li>
+		<li>
+			<label>생년월일</label>
+		    <label for="birth_year" style="width:20px;">년</label>
+		    <select id="birth_year" name="birth_year"></select>
+		
+		    <label for="birth_month" style="width:20px;">월</label>
+		    <select id="birth_month" name="birth_month"></select>
+		
+		    <label for="birth_day" style="width:20px;">일</label>
+		    <select id="birth_day" name="birth_day"></select>
 		</li>
 	</ul>
 	<div class="align-center">

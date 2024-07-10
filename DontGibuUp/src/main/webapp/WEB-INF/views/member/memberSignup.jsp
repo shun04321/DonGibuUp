@@ -34,6 +34,7 @@
 			<form:label path="friend_rcode">추천인 코드</form:label>
 			<form:input path="friend_rcode" />
 			<span>*선택 입력</span>
+			<form:errors path="friend_rcode" cssClass="form-error"></form:errors>
 		</li>
 	</ul>
 	<div class="align-center">

@@ -56,6 +56,7 @@ public class MemberServiceImpl implements MemberService {
 		//추천인 이벤트 참여
 		if (memberVO.getRecommend_status() == 1) {
 			long recipientMemNum = memberMapper.selectMemNumByRCode(memberVO.getFriend_rcode());
+
 			
 			PointVO point_revent1 = new PointVO(10, 3000, mem_num);
 			PointVO point_revent2 = new PointVO(10, 3000, recipientMemNum);
@@ -80,6 +81,10 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public MemberVO selectMember(Long mem_num) {
 		return memberMapper.selectMember(mem_num);
+	}
+	@Override
+	public MemberVO selectMemberDetail(Long mem_num) {
+		return memberMapper.selectMemberDetail(mem_num);
 	}
 
 	//이메일로 회원 찾기(기존회원 체크)
@@ -112,6 +117,12 @@ public class MemberServiceImpl implements MemberService {
 			return false;
 		}
 	}
+	
+	//추천인 코드 대조
+	@Override
+	public Long selectMemNumByRCode(String friend_rcode) {
+		return memberMapper.selectMemNumByRCode(friend_rcode);
+	}
 
 	@Override
 	public void updateMemPhoto(MemberVO memberVO) {
@@ -120,9 +131,10 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void updateMember(MemberVO memberVO) {
-		// TODO Auto-generated method stub
-		
+		memberMapper.updateMember(memberVO);
+		memberMapper.updateMemberDetail(memberVO);
 	}
+
 
 
 	
