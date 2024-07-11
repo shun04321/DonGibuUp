@@ -52,10 +52,12 @@
 			</li>
 			<li>				
 				<form:label path="chal_period">챌린지 진행기간</form:label>
+				<div>
 				<form:radiobutton path="chal_period" value="1" label="1주 동안"/>
 				<form:radiobutton path="chal_period" value="2" label="2주 동안"/>
 				<form:radiobutton path="chal_period" value="3" label="3주 동안"/>
 				<form:radiobutton path="chal_period" value="4" label="4주 동안"/>
+				</div>
 				<form:errors path="chal_period" cssClass="error-color"/>
 			</li>
 			<li>
