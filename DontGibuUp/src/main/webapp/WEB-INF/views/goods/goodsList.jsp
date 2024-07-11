@@ -55,6 +55,7 @@
 	</c:if>
 	<c:if test="${count > 0}">
 		<table class="striped-table">
+		
     <thead>
         <tr>
 			<th>선택</th>
@@ -90,7 +91,6 @@
             const form = document.getElementById('goodsForm');
             const formData = new FormData(form);
             const selectedGoods = formData.getAll('selectedGoods');
-            
             if (selectedGoods.length > 0) {
                 form.submit();
             } else {
@@ -98,5 +98,6 @@
             }
         }
     </script>
+    
 	</c:if>
 </div>
