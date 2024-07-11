@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.category.dao.CategoryMapper;
+import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.category.vo.DonationCategoryVO;
 
 @Service
@@ -49,6 +50,41 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleteFile(Long dcate_num) {
 		categoryMapper.deleteFile(dcate_num);
+	}
+
+	@Override
+	public void insertChallengeCategory(ChallengeCategoryVO challengeCategoryVO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getChalCateCount(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<ChallengeCategoryVO> selectChalCateList() {
+		return categoryMapper.selectChalCateList();
+	}
+
+	@Override
+	public ChallengeCategoryVO selectChallengeCategory(Long ccate_num) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateChallengeCategory(ChallengeCategoryVO challengeCategoryVO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteChallengeCategory(Long ccate_num) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
