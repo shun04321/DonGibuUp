@@ -89,16 +89,36 @@
   </c:if>
   </form>
    <script>
-        function submitForm() {
-            const form = document.getElementById('goodsForm');
-            const formData = new FormData(form);
-            const selectedGoods = formData.getAll('selectedGoods');
-            if (selectedGoods.length > 0) {
-                form.submit();
-            } else {
-                alert('하나 이상의 상품을 선택해주세요.');
-            }
-        }
+   function submitForm() {
+	    const form = document.getElementById('goodsForm');
+	    const formData = new FormData(form);
+	    const selectedGoods = formData.getAll('selectedGoods');
+
+	    // 상품 번호와 수량을 담은 객체 배열 생성
+	    const goodsData = selectedGoods.map(item_num => ({
+	        item_num: item_num,
+	        quantity: 1 // 수량은 일단 1로 고정, 필요에 따라 클라이언트에서 변경 가능
+	    }));
+
+	    // 서버로 JSON 데이터 전송
+	    fetch('/add-to-cart', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json'
+	        },
+	        body: JSON.stringify(goodsData)
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        // 서버로부터 받은 응답 처리
+	        console.log(data);
+	        // 예시: 장바구니 페이지로 리다이렉트
+	        window.location.href = '/cart';
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	    });
+	}
     </script>
 	
 </div>
