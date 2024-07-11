@@ -7,15 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.dao.ChallengeMapper;
+import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengeVO;
 
 @Service
 @Transactional
 public class ChallengeServiceImpl implements ChallengeService{
+	
 	@Autowired
 	ChallengeMapper challengeMapper;
-	
+
+	//챌린지 개설//
 	@Override
 	public void insertChallenge(ChallengeVO chalVO) {
 		challengeMapper.insertChallenge(chalVO);
@@ -54,4 +58,35 @@ public class ChallengeServiceImpl implements ChallengeService{
 		
 	}
 
+	//챌린지 참가 및 결제, 현황//
+    @Override
+    public void insertChallengeJoin(ChallengeJoinVO chalJoinVO) {
+        challengeMapper.insertChallengeJoin(chalJoinVO);
+    }
+
+    @Override
+    public List<ChallengeJoinVO> selectChallengeJoinList(Map<String, Object> map) {
+        return challengeMapper.selectChallengeJoinList(map);
+    }
+
+    @Override
+    public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
+        return challengeMapper.selectChallengeJoin(chal_joi_num);
+    }
+
+    @Override
+    public void updateChallengeJoin(ChallengeJoinVO chalJoinVO) {
+        challengeMapper.updateChallengeJoin(chalJoinVO);
+    }
+
+    @Override
+    public void deleteChallengeJoin(Long chal_joi_num) {
+        challengeMapper.deleteChallengeJoin(chal_joi_num);
+    }
+    
+    @Override
+    public List<DonationCategoryVO> selectDonaCategories() {
+        return challengeMapper.selectDonaCategories();
+    }
+    
 }

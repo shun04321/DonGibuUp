@@ -3,9 +3,12 @@ package kr.spring.challenge.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.spring.category.vo.DonationCategoryVO;
+import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengeVO;
 
 public interface ChallengeService {
+	
 	//챌린지 개설
 	public void insertChallenge(ChallengeVO chalVO);
 	public List<ChallengeVO> selectList(Map<String,Object> map);
@@ -15,8 +18,14 @@ public interface ChallengeService {
 	public void deleteChallenge(Long chal_num);
 	public void deleteChalPhoto(Long chal_num);
 	
-	
-	//챌린지 신청 및 결제, 현황
+	//챌린지 참가 및 결제, 현황
+	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
+	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
+	public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
+	public void updateChallengeJoin(ChallengeJoinVO chalJoinVO);
+	public void deleteChallengeJoin(Long chal_joi_num);
+	// 기부 카테고리 목록 가져오기
+	List<DonationCategoryVO> selectDonaCategories();
 	
 	//챌린지 인증
 	

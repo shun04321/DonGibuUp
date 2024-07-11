@@ -30,7 +30,7 @@ $(function(){
 					hasMoreData = false;	
 					return;
 				}
-						
+
 				//챌린지 목록 작업
 				$(param.list).each(function(index,item){
 					let sdate = new Date(item.chal_sdate);

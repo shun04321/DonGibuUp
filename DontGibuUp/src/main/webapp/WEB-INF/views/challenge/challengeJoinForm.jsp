@@ -1,0 +1,72 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<div>
+    <h2>챌린지 참가하기</h2>
+    <div>
+        <img src="<c:url value='/images/${challengeVO.chal_photo}' />" alt="${challengeVO.chal_title}" />
+        <h3>${challengeVO.chal_title}</h3>
+        <p>${challengeVO.chal_freq}</p>
+        <p>${challengeVO.chal_sdate} ~ ${challengeVO.chal_edate}</p>
+        
+        <p>참여금 <span id="chal_fee">${challengeVO.chal_fee}</span>원</p>
+        <p>100% 성공 : <span id="chal_fee_90"></span>p + 추가 ()p 환급, <span id="chal_fee_10"></span>원 기부</p>
+        <p>90% 이상 성공 : <span id="chal_fee_90"></span>p 환급, <span id="chal_fee_10"></span>원 기부</p>
+        <p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부
+    </div>
+    <form:form action="${pageContext.request.contextPath}/challenge/join" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
+        <ul>
+            <form:hidden path="chal_num" value="${challengeJoinVO.chal_num}"/>
+            <form:hidden path="chal_joi_rate"/>
+            <form:hidden path="chal_joi_total"/>
+            <form:hidden path="chal_joi_success"/>
+            <form:hidden path="chal_joi_refund"/>
+            <form:hidden path="chal_joi_status"/>
+            <form:hidden path="chal_joi_date"/>
+            <li>
+                <form:label path="dcate_num">기부 카테고리</form:label>
+                <form:select path="dcate_num" onchange="showCharityInfo(this)">
+                    <option disabled="disabled" selected>선택하세요</option>
+                    <c:forEach var="category" items="${categories}">
+                        <form:option value="${category.dcate_num}" data-charity="${category.dcate_charity}">${category.dcate_name}</form:option>
+                    </c:forEach>
+                </form:select>
+                <form:errors path="dcate_num" cssClass="error-color"/>
+            </li>
+            <li>
+                <label>기부처:</label>
+                <span id="charityInfo"></span>
+            </li>
+        </ul>
+        <div class="align-center">
+        	결제 조건 및 서비스 약관에 동의합니다
+            <form:button>결제하기</form:button>
+        </div>
+    </form:form>
+</div>
+
+<script>
+	function showCharityInfo(selectElement) {
+	    var selectedOption = selectElement.options[selectElement.selectedIndex];
+	    var charityInfo = selectedOption.getAttribute('data-charity');
+	    document.getElementById('charityInfo').innerText = charityInfo || '';
+	}
+	
+	function formatNumber(num) {
+	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	}
+	
+	document.addEventListener("DOMContentLoaded", function() {
+	    var chalFeeElement = document.getElementById('chal_fee');
+	    var chalFee90Element = document.getElementById('chal_fee_90');
+	    var chalFee10Element = document.getElementById('chal_fee_10');
+	
+	    if (chalFeeElement) {
+	        var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
+	        chalFeeElement.innerText = formatNumber(chalFee);
+	        chalFee90Element.innerText = formatNumber((chalFee * 0.9).toFixed(0));
+	        chalFee10Element.innerText = formatNumber((chalFee * 0.1).toFixed(0));
+	    }
+	});
+</script>

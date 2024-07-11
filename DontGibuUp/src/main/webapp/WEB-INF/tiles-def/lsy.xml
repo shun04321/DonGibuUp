@@ -5,18 +5,19 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<definition name="lsy" template="/WEB-INF/views/template/layout_basic.jsp">
-		<put-attribute name="title" value="SpringPage"/>
-		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
+	<definition name="challengeJoinForm" extends="main">
+		<put-attribute name="title" value="챌린지 신청"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinForm.jsp"/>
+	</definition>
+	<definition name="challengeJoinList" extends="main">
+		<put-attribute name="title" value="챌린지 신청 목록"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinList.jsp"/>
+	</definition>
+	<definition name="challengeJoinView" extends="main">
+		<put-attribute name="title" value="챌린지 신청 상세"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinView.jsp"/>
 	</definition>
 </tiles-definitions>
-
-
-
-
-
-
-
-
-

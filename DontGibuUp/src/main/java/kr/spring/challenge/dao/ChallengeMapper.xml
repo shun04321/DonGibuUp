@@ -3,15 +3,16 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.challenge.dao.ChallengeMapper">
+
 	<!-- 챌린지 개설 신청하기 -->	
 	<insert id="insertChallenge" parameterType="challengeVO">
 		INSERT INTO challenge
 		(chal_num,mem_num,chal_type,chal_public,chal_title,chal_content,
-		 chal_photo,chal_verify,chal_freq,chal_sdate,chal_period,chal_fee,chal_max,chal_ip)
+		 chal_photo,chal_verify,chal_freq,chal_sdate,chal_edate,chal_fee,chal_max,chal_ip)
 			 VALUES(
 			 challenge_seq.nextval,#{mem_num},#{chal_type},#{chal_public},#{chal_title},
 			 #{chal_content,jdbcType=CLOB},#{chal_photo,jdbcType=VARCHAR},#{chal_verify},#{chal_freq},#{chal_sdate},
-			 #{chal_period},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_ip}
+			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_ip}
 		)
 	</insert>
 	
@@ -47,6 +48,53 @@
 		<!-- 좋아요 join -->
 		WHERE chal_num=#{chal_num}
 	</select>
+	
+		<!-- 챌린지 참가 및 결제, 현황 -->
+	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
+		INSERT INTO challenge_join
+		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_rate, chal_joi_total, 
+		chal_joi_success, chal_joi_refund, chal_joi_status, chal_joi_date, chal_joi_ip)
+		VALUES 
+		(challenge_join_seq.nextval, #{chal_num}, #{mem_num}, #{dcate_num}, 
+		#{chal_joi_rate}, #{chal_joi_total}, #{chal_joi_success}, #{chal_joi_refund}, 
+		#{chal_joi_status}, #{chal_joi_date}, #{chal_joi_ip})
+	</insert>
+	
+	<select id="selectChallengeJoinList" parameterType="map" resultType="challengeJoinVO">
+		SELECT * FROM challenge_join
+		WHERE 
+		<if test="mem_num != null">
+			mem_num = #{mem_num} AND
+		</if>
+		<if test="chal_num != null">
+			chal_num = #{chal_num} AND
+		</if>
+		1=1
+		ORDER BY chal_joi_date DESC
+	</select>
+	
+	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
+		SELECT * FROM challenge_join WHERE chal_joi_num = #{chal_joi_num}
+	</select>
+	
+	<update id="updateChallengeJoin" parameterType="challengeJoinVO">
+		UPDATE challenge_join SET
+		chal_num = #{chal_num},
+		mem_num = #{mem_num},
+		dcate_num = #{dcate_num},
+		chal_joi_rate = #{chal_joi_rate},
+		chal_joi_total = #{chal_joi_total},
+		chal_joi_success = #{chal_joi_success},
+		chal_joi_refund = #{chal_joi_refund},
+		chal_joi_status = #{chal_joi_status},
+		chal_joi_date = #{chal_joi_date},
+		chal_joi_ip = #{chal_joi_ip}
+		WHERE chal_joi_num = #{chal_joi_num}
+	</update>
+	
+	<delete id="deleteChallengeJoin" parameterType="long">
+		DELETE FROM challenge_join WHERE chal_joi_num = #{chal_joi_num}
+	</delete>
 </mapper>
 
 

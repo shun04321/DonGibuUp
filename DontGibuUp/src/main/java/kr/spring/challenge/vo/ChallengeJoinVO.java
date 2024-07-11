@@ -1,0 +1,34 @@
+package kr.spring.challenge.vo;
+
+import java.sql.Date;
+
+import javax.validation.constraints.NotNull;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@ToString
+public class ChallengeJoinVO {
+	
+    private long chal_joi_num; 			//챌린지 참가번호
+    @NotNull
+    private long chal_num; 				//챌린지 번호
+    @NotNull
+    private long mem_num; 				//회원 번호
+    @NotNull
+    private int dcate_num; 				//기부 카테고리
+    
+    private Double chal_joi_rate; 		//최종 달성률
+    private Double chal_joi_total; 		//최종 기부액
+    private Integer chal_joi_success; 	//성공 여부
+    private Double chal_joi_refund; 	//환급액
+    @NotNull
+    private Integer chal_joi_status; 	//참가 상태
+    
+    private Date chal_joi_date; 		//챌린지 참가일
+    private String chal_joi_ip;			//챌린지 참가자 ip
+    
+}
