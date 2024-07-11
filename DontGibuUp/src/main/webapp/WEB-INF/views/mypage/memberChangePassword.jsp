@@ -5,7 +5,7 @@
 <script type="text/javascript">
     var contextPath = "${pageContext.request.contextPath}";
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/member.password.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.password.js"></script>
 <div class="page-main">
 <h2>비밀번호 수정</h2>
 <form action="changePassword" method="post" id="change_password">

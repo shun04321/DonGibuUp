@@ -1,7 +1,5 @@
 package kr.spring.member.service;
 
-import org.apache.ibatis.annotations.Select;
-
 import kr.spring.member.vo.MemberVO;
 
 public interface MemberService {
@@ -18,6 +16,9 @@ public interface MemberService {
 	
 	//이메일로 회원정보 가져오기
 	public MemberVO selectMemberByEmail(String mem_email);
+	
+	//회원 닉네임으로 회원정보 가져오기(중복 닉네임 체크)
+	public MemberVO selectMemberByNick(String mem_nick);
 	
 	//추천인코드 만들기
     public String generateUniqueRCode();

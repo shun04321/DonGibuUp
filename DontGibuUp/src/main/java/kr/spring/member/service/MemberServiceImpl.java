@@ -93,6 +93,13 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.selectMemberByEmail(mem_email);
 	}
 	
+	//닉네임으로 회원 찾기(기존회원 체크)
+	@Override
+	public MemberVO selectMemberByNick(String mem_nick) {
+		return memberMapper.selectMemberByNick(mem_nick);
+	}
+
+	
 	//추천인코드 만들기
 	@Override
     public String generateUniqueRCode() {
@@ -134,7 +141,6 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updateMember(memberVO);
 		memberMapper.updateMemberDetail(memberVO);
 	}
-
 
 
 	
