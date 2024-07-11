@@ -172,6 +172,23 @@ public class ChallengeController {
 
         return "common/resultAlert";
     }
+    
+    //리더
+    @PostMapping("/challenge/leaderJoin")
+    public String leaderJoin(@Valid ChallengeJoinVO challengeJoinVO, BindingResult result,
+                       HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
+        //log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
+
+        // 유효성 체크
+        if (result.hasErrors()) {
+            return "leaderJoinForm";
+        }
+
+        session.setAttribute("challengeJoinVO",challengeJoinVO);
+        model.addAttribute("result", "success");
+
+        return "leaderJoinForm";
+    }    
 
     /*==========================
      *  챌린지 참가 목록

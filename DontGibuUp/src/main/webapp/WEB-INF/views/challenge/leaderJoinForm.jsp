@@ -2,6 +2,22 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script type="text/javascript">
+	$('#enrollAndPay').submit(function(event){
+		//폼 제출 방지
+		event.preventDefault();
+		
+		let result = '${result}';
+
+		if(result == 'success'){
+			alert('a');
+			//결제창 실행 function 작성
+			//openPaymentModal();
+		}
+	});
+</script>
 <div>
     <h2>챌린지 참가하기</h2>
     <div>
@@ -17,8 +33,6 @@
     </div>
     <form:form action="${pageContext.request.contextPath}/challenge/join" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
-            <form:hidden path="chal_joi_status" value="0"/>
-            <form:hidden path="chal_joi_date"/>
             <li>
                 <form:label path="dcate_num">기부 카테고리</form:label>
                 <form:select path="dcate_num" onchange="showCharityInfo(this)">
@@ -36,7 +50,7 @@
         </ul>
         <div class="align-center">
             결제 조건 및 서비스 약관에 동의합니다
-            <form:button>결제하기</form:button>
+            <form:button id="enrollAndPay">결제하기</form:button>
         </div>
     </form:form>
 </div>
@@ -45,7 +59,9 @@
 		setChallengePointRules();
     function showCharityInfo(selectElement) {
         var selectedOption = selectElement.options[selectElement.selectedIndex];
+        console.log(selectedOption);
         var charityInfo = selectedOption.getAttribute('data-charity');
+        console.log(charityInfo);
         document.getElementById('charityInfo').innerText = charityInfo || '';
     }
 
@@ -72,13 +88,5 @@
             	e.innerText = formatNumber(chalFee10);
             });
         }
-
-        // 오늘 날짜 설정
-        var today = new Date();
-        var day = ('0' + today.getDate()).slice(-2);
-        var month = ('0' + (today.getMonth() + 1)).slice(-2);
-        var year = today.getFullYear();
-        var todayString = year + '-' + month + '-' + day;
-        document.querySelector('input[name="chal_joi_date"]').value = todayString;
     }
 </script>
