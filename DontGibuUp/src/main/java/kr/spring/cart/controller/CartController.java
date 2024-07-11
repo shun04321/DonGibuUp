@@ -14,8 +14,7 @@ public class CartController {
 
 	    @PostMapping("/add-to-cart")
 	    public String addToCart(@RequestParam("selectedGoods") List<String> selectedGoods, HttpSession session) {
-	        @SuppressWarnings("unchecked")
-			List<String> cart = (List<String>) session.getAttribute("cart");
+	        List<String> cart = (List<String>) session.getAttribute("cart");
 	        if (cart == null) {
 	            cart = new ArrayList<>();
 	            session.setAttribute("cart", cart);
