@@ -28,8 +28,7 @@ public class PayuidServiceImpl implements PayuidService{
 
 	@Override
 	public String getPayUId(long mem_num) {
-		// TODO Auto-generated method stub
-		return null;
+		return payuidMapper.getPayUId(mem_num);
 	}
 
 

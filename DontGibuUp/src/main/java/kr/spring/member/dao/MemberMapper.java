@@ -28,8 +28,8 @@ public interface MemberMapper {
 	@Select("SELECT * FROM member LEFT OUTER JOIN member_detail USING(mem_num) WHERE mem_num=#{mem_num}")
 	public MemberVO selectMemberDetail(Long mem_num);
 
-	//회원 이메일로 회원정보 가져오기
-	@Select("SELECT a.*, b.mem_photo mem_photo FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_eamil}")
+	//회원 이메일로 회원정보 가져오기(중복 이메일 체크)
+	@Select("SELECT a.*, b.mem_photo mem_photo FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_email}")
 	public MemberVO selectMemberByEmail(String mem_email);
 	
 	//추천코드로 회원정보 가져오기
@@ -43,6 +43,10 @@ public interface MemberMapper {
 	//중복 추천인 코드 체크
 	@Select("SELECT COUNT(*) FROM member_detail WHERE mem_rcode=#{rcode}")
 	public int checkRCodeExists(String rcode);
+	
+	//회원 닉네임으로 회원정보 가져오기(중복 닉네임 체크)
+	@Select("SELECT * FROM member WHERE mem_nick=#{mem_nick}")
+	public MemberVO selectMemberByNick(String mem_nick);
 	
 	/*---------------------------------------
 				회원정보 수정

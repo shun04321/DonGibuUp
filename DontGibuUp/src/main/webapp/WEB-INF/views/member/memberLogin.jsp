@@ -8,6 +8,8 @@
 <form:form action="login" id="member_login" modelAttribute="memberVO">
 	<ul>
 	<form:errors element="div" cssClass="form-error" />
+	<c:if test="${not empty error}"><div class="form-error">${error}</div></c:if>
+	<script>console.log("${error}")</script>
 		<li>
 			<form:label path="mem_email">이메일</form:label>
 			<form:input path="mem_email"/>

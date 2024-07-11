@@ -57,32 +57,46 @@
 		<table class="striped-table">
     <thead>
         <tr>
+			<th>선택</th>
             <th>상품번호</th>
             <th>사진</th>
             <th>카테고리</th>
             <th width="400">상품명</th>
-            <th>카테고리</th>
             <th>가격</th>
             <th>재고</th>
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="goods" items="${list}">
-            <tr>
-                <td class="align-center">${goods.item_num}</td>
-                <td class="align-center">
-                    <img src="${pageContext.request.contextPath}${goods.item_photo}" width="100">
-                </td>
-                <td class="align-center">${goods.dcate_num}</td>
-                <td class="align-left">
-                    <a href="detail?item_num=${goods.item_num}">${goods.item_name}</a>
-                </td>
-                <td class="align-center">${goods.dcate_num}</td>
-                <td class="align-center">${goods.item_price}</td>
-                <td class="align-center">${goods.item_stock}</td>
-            </tr>
-        </c:forEach>
-    </tbody>
+            <c:forEach var="goods" items="${list}">
+                    <tr>
+                        <td class="align-center"><input type="checkbox" name="selectedGoods" value="${goods.item_num}"></td>
+                        <td class="align-center">${goods.item_num}</td>
+                        <td class="align-center">
+                            <img src="${pageContext.request.contextPath}${goods.item_photo}" class="my-photo" width="100px" height="100px">
+                        </td>
+                        <td class="align-center">${goods.dcate_num}</td>
+                        <td class="align-left">
+                            <a href="detail?item_num=${goods.item_num}">${goods.item_name}</a>
+                        </td>
+                        <td class="align-center">${goods.item_price}</td>
+                        <td class="align-center">${goods.item_stock}</td>
+                    </tr>
+              </c:forEach>
+	</tbody>
 </table>
+  <button type="button" onclick="submitForm()">장바구니에 추가</button>
+   <script>
+        function submitForm() {
+            const form = document.getElementById('goodsForm');
+            const formData = new FormData(form);
+            const selectedGoods = formData.getAll('selectedGoods');
+            
+            if (selectedGoods.length > 0) {
+                form.submit();
+            } else {
+                alert('하나 이상의 상품을 선택해주세요.');
+            }
+        }
+    </script>
 	</c:if>
 </div>

@@ -28,5 +28,4 @@ private Date item_reg_date;
 private Date item_mdate;
 private long item_status;
 private MultipartFile upload;
-
 }
