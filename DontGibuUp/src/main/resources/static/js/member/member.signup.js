@@ -124,14 +124,11 @@ $(function() {
 	================================*/
 	$('#member_signup').submit(function(event) {
 		if (pw_checked == 0 || email_checked == 0 || nick_checked == 0) {
-			event.preventDefault();
 			if ($('#mem_email').val().trim().length != 0 && $('#mem_nick').val().trim().length != 0 && $('#mem_pw').val().trim().length != 0) {
+				event.preventDefault();
 				$('#mem_email').trigger('blur');
 				$('#mem_nick').trigger('blur');
 				$('#check_pw').trigger('blur');
-
-				// 폼을 한번만 다시 제출
-				$(this).off('submit').submit(); 
 			}
 		}
 	});
@@ -141,10 +138,6 @@ $(function() {
 			//이벤트 트리거 일으키기
 			event.preventDefault();
 			$('#mem_nick').trigger('blur');
-
-			// 폼을 한번만 다시 제출
-			$(this).off('submit').submit();
-
 		}
 	});
 });

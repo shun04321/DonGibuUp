@@ -79,6 +79,7 @@ public class MemberController {
 		log.debug("<<회원가입>> : " + memberVO);
 
 		if (result.hasErrors()) {
+			log.debug("<<에러>> : " + result.getAllErrors());
 			return signupForm();
 		}
 		//회원가입 타입 지정(1:일반 회원가입)

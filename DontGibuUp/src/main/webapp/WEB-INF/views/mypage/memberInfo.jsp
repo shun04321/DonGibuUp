@@ -29,26 +29,26 @@
 	<ul>
 		<li>
 			<label for="mem_email">이메일</label>
-			<input id="mem_email" value="${member.mem_email}" disabled/>
+			<input id="mem_email" value="${memberVO.mem_email}" disabled/>
 		</li>
 		<li>
 			<form:label path="mem_nick">닉네임</form:label>
-			<form:input path="mem_nick" value="${member.mem_nick}"/>
+			<form:input path="mem_nick" />
 			<span id="nick_check_msg"></span>
 			<form:errors path="mem_nick" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<form:label path="mem_name">이름</form:label>
-			<form:input path="mem_name" value="${member.mem_name}"/>
+			<form:input path="mem_name"/>
 			<form:errors path="mem_name" cssClass="form-error"></form:errors>
 		</li>
 		<li>
-			<label>전화번호</label>
+			<form:label path="mem_phone">전화번호</form:label>
 		    <input type="text" id="phone1" style="width:100px;" required disabled value="010">
 		    -
-		    <input type="text" id="phone2" maxlength="4" pattern="[0-9]{4}" style="width:100px;">
+		    <input type="text" id="phone2" maxlength="4" style="width:100px;">
 		    -
-		    <input type="text" id="phone3" maxlength="4" pattern="[0-9]{4}" style="width:100px;">
+		    <input type="text" id="phone3" maxlength="4" style="width:100px;">
 		    <form:hidden path="mem_phone"/>
 		    <form:errors path="mem_phone" cssClass="form-error"></form:errors>
 		</li>
@@ -62,6 +62,8 @@
 		
 		    <label for="birth_day" style="width:20px;">일</label>
 		    <select id="birth_day" name="birth_day"></select>
+		    <form:hidden path="mem_birth"/>
+		    <form:errors path="mem_birth" cssClass="form-error"></form:errors>
 		</li>
 	</ul>
 	<div class="align-center">

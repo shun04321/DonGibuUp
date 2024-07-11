@@ -46,7 +46,7 @@
 		SET
 			mem_name=#{mem_name, jdbcType=VARCHAR},
 			mem_phone=#{mem_phone, jdbcType=VARCHAR},
-			mem_birth=#{mem_birth},
+			mem_birth=#{mem_birth, jdbcType=DECIMAL},
 			mem_mdate=SYSDATE
 		WHERE mem_num=#{mem_num}
 	</update>

@@ -39,26 +39,44 @@ public class MyPageController {
 	public String memberInfo(HttpSession session, Model model) {
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		
-		MemberVO member = memberService.selectMemberDetail(user.getMem_num());
+		MemberVO memberVO = memberService.selectMemberDetail(user.getMem_num());
 
-		model.addAttribute("member", member);
+		model.addAttribute("memberVO", memberVO);
 		return "memberInfo";
 	}
 	
 	//회원정보 수정
 	@PostMapping("/member/myPage/updateMember")
 	public String updateMemberInfo(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result, HttpSession session, Model model) {
-		log.debug("<<회원정보 수정>> : " + memberVO);
-
-		if (result.hasErrors()) {
-			return memberInfo(session, model);
+		
+		if (memberVO.getMem_phone().equals("010")) {
+			memberVO.setMem_phone(null);
 		}
+
+		log.debug("<<회원정보 수정>> : " + memberVO);
 		
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		
 		memberVO.setMem_num(user.getMem_num());
-		memberService.updateMember(memberVO);
+		memberVO.setMem_email(user.getMem_email());
 		
+		model.addAttribute("memberVO", memberVO);
+
+		if (result.hasFieldErrors("mem_phone")) {
+			log.debug("<<회원정보 수정 유효성검사 실패>> : "+ result.getAllErrors());
+			return "memberInfo";
+		}
+//		if (result.hasFieldErrors("mem_nick")) {
+//			result.rejectValue("mem_nick", "닉네임을 입력해주세요");
+//			return "memberInfo";
+//		}
+//		if (result.hasFieldErrors("mem_phone")) {
+//			return "memberInfo";
+//		}
+//		if (result.hasFieldErrors("mem_birth")) {
+//			return "memberInfo";
+//		}
+		memberService.updateMember(memberVO);
 		return "memberInfo";
 	}
 	

@@ -97,7 +97,7 @@ $(function() {
 	================================*/
 	let err_msg = $('.form-error')
 	let nick_check_msg = $('#nick_check_msg');
-	let nick_checked = 0;
+	let nick_checked = 1;
 	$('#mem_nick').blur(function() {
 		if ($('#mem_nick').val().trim()) {
 			//서버와 통신
@@ -112,13 +112,13 @@ $(function() {
 						err_msg.text('');
 						nick_check_msg.text('사용할 수 없는 닉네임입니다');
 						nick_check_msg.css('color', 'red');
-						console.log(param.result);
 					} else if (param.result == "notExist") {
 						nick_checked = 1;
 						err_msg.text('');
 						nick_check_msg.text('사용 가능한 닉네임입니다');
 						nick_check_msg.css('color', 'green');
 					} else if (param.result == "notChanged") {
+						nick_checked = 1;
 						err_msg.text('');
 						nick_check_msg.text('');
 					} else {
@@ -151,25 +151,18 @@ $(function() {
 		let birth_month = $('#birth_month').val();
 		let birth_day = $('#birth_day').val();
 		
+		$('#mem_phone').val(phone1 + phone2 + phone3);
+		$('#mem_birth').val(formatBirthDate(birth_year, birth_month, birth_day));
+		
         // 데이터 조합
-        var formData = {
+/*        var formData = {
             mem_phone: phone1 + phone2 + phone3,
             mem_birth: birth_year + birth_month + birth_day
-        };
-        console.log(formData);
-        event.preventDefault();
+        };*/
 
-/*        // 폼 데이터에 추가
-        $.extend($(this).serializeObject(), formData);
+        // 폼 데이터에 추가
+/*        $.extend($(this).serialize(), formData);*/
 		
-		if (nick_checked == 0 && $('#mem_nick').val().trim().length != 0) {
-			//이벤트 트리거 일으키기
-			event.preventDefault();
-			$('#mem_nick').trigger('blur');
-
-			// 폼을 한번만 다시 제출
-			$(this).off('submit').submit();
-		}*/
 	});
 
   const yearSelect = $('#birth_year');

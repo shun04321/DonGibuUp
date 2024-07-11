@@ -62,11 +62,11 @@ public class MemberAjaxController {
 		//회원정보 수정 페이지에서 중복체크 할 경우
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		if (user != null && existingMember != null) {
-			if (user.getMem_nick().equals(existingMember.getMem_nick())) {
+			if (user.getMem_nick().equals(memberVO.getMem_nick())) {
 				mapAjax.put("result", "notChanged");
 			}
 		}
-
+		log.debug("<<닉네임 중복체크>> : " + mapAjax.toString());
 		return mapAjax;
 	}
 

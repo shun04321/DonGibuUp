@@ -34,7 +34,9 @@ public class MemberVO {
 	private Integer pref_num;
 	private String mem_photo;
 	private String mem_name;
+	@Pattern(regexp = "^[0-9]{11}$", groups = ValidationGroups.PatternCheckGroup.class)
 	private String mem_phone;
+	@Pattern(regexp = "^[0-9]{6}$", groups = ValidationGroups.PatternCheckGroup.class)
 	private String mem_birth;
 	private Date mem_date;
 	private Date mem_mdate;
