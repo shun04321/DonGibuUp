@@ -11,7 +11,7 @@
 	<h2>${goods.item_name}</h2>
 	<ul class="detail-info">
 		<li>
-			<img src="${pageContext.request.contextPath}${goods.item_photo}" width="40" height="40" class="my-photo">
+			<img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2">
 		</li>
 		<li>
 			재고 :${goods.item_stock}<br>
@@ -19,9 +19,6 @@
 			재고 :${goods.item_price}<br>
 		</li>
 	</ul>
-
-		<li>첨부파일 : <a href="file?item_num=${goods.item_num}">${goods.item_photo}</a></li>
-
 		<div class="detail-content">
 			${goods.item_detail}
 		</div>
@@ -45,6 +42,8 @@
 			</script>
 			</c:if>--%>
 			<input type="button" value="목록" onclick="location.href='list'">
+			<input type="button" value="구매하기" onclick="location.href='list'">
+			<input type="button" value="장바구니 담기" onclick="location.href='list'">
 		</div> 
 		<hr size="1" width="100%">
 		<%-- <!--  댓글 UI 시작 -->
