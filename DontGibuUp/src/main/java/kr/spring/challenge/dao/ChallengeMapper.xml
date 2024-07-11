@@ -49,7 +49,7 @@
 		WHERE chal_num=#{chal_num}
 	</select>
 	
-		<!-- 챌린지 참가 및 결제, 현황 -->
+	<!-- 챌린지 참가 및 결제, 현황 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
 		INSERT INTO challenge_join
 		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_rate, chal_joi_total, 
