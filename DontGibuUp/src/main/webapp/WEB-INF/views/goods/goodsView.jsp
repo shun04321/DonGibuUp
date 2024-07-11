@@ -8,38 +8,25 @@
 <script src="${pageContext.request.contextPath}/js/board.fav.js"></script>
 <script src="${pageContext.request.contextPath}/js/board.reply.js"></script>
 <div class="page-main">
-	<h2>${board.title}</h2>
+	<h2>${goods.item_name}</h2>
 	<ul class="detail-info">
 		<li>
-			<img src="${pageContext.request.contextPath}/member/viewProfile?mem_num=${board.mem_num}" width="40" height="40" class="my-photo">
+			<img src="${pageContext.request.contextPath}${goods.item_photo}" width="40" height="40" class="my-photo">
 		</li>
 		<li>
-			<c:if test="${empty board.nick_name}">${board.id}</c:if>
-			<c:if test="${!empty board.nick_name}">${board.nick_name}</c:if>
-			<br>
-			<c:if test="${empty board.modify_date}">
-			작성일 : ${board.reg_date}
-			</c:if>
-			<c:if test="${!empty board.modify_date}">
-			최근 수정일 : ${board.modify_date}
-			</c:if>
-			조회: ${board.hit}
+			재고 :${goods.item_stock}<br>
+			카테고리:${goods.dcate_num}<br>
+			재고 :${goods.item_price}<br>
 		</li>
-		</ul>
-		<c:if test="${!empty board.filename}">
-		<ul>
-			<li>첨부파일 : <a href="file?board_num=${board.board_num}">${board.filename}</a></li>
-		</ul>
-		</c:if>
+	</ul>
+
+		<li>첨부파일 : <a href="file?item_num=${goods.item_num}">${goods.item_photo}</a></li>
+
 		<div class="detail-content">
-			${board.content}
+			${goods.item_detail}
 		</div>
-		<div>
-			<%-- 좋아요 --%>
-			<img id ="output_fav" data-num="${board.board_num}"
-				src="${pageContext.request.contextPath}/images/fav01.gif">
-			<span id="output_fcount"></span>
-			<%-- 댓글수 --%>
+		 <div>
+		<%--	댓글수
 			<span id="output_rcount"></span>
 		</div>
 		<hr size="1" width="100%">
@@ -52,15 +39,15 @@
 				delete_btn.onclick=function(){
 					const choice=confirm('삭제하시겠습니까?');
 					if(choice){
-						location.replace('delete?board_num=${board.board_num}');
+						location.replace('delete?item_num=${board.board_num}');
 					}
 				};
 			</script>
-			</c:if>
+			</c:if>--%>
 			<input type="button" value="목록" onclick="location.href='list'">
-		</div>
+		</div> 
 		<hr size="1" width="100%">
-		<!--  댓글 UI 시작 -->
+		<%-- <!--  댓글 UI 시작 -->
 		<div id="reply_div">
 			<span class="re-title">댓글 달기</span>
 			<form id="re_form">
@@ -87,5 +74,5 @@
 			<input type="button" value="더보기">
 		</div>
 	
-<!-- 게시판 글 상세 끝 -->
+<!-- 게시판 글 상세 끝 --> --%>
 </div>
