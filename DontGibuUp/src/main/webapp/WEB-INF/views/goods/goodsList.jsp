@@ -58,7 +58,6 @@
 	<table class="striped-table">
     <thead>
         <tr>
-			<th>선택</th>
             <th>상품번호</th>
             <th>사진</th>
             <th>카테고리</th>
@@ -70,7 +69,6 @@
     <tbody>
             <c:forEach var="goods" items="${list}">
                     <tr>
-                        <td class="align-center"><input type="checkbox" name="selectedGoods" value="${goods.item_num}"></td>
                         <td class="align-center">${goods.item_num}</td>
                         <td class="align-center">
                             <img src="${pageContext.request.contextPath}${goods.item_photo}" class="my-photo" width="100px" height="100px">
@@ -85,40 +83,9 @@
              </c:forEach>
 	</tbody>
 	</table>
-  <button type="button" onclick="submitForm()">장바구니에 추가</button>
+  
   </c:if>
   </form>
-   <script>
-   function submitForm() {
-	    const form = document.getElementById('goodsForm');
-	    const formData = new FormData(form);
-	    const selectedGoods = formData.getAll('selectedGoods');
 
-	    // 상품 번호와 수량을 담은 객체 배열 생성
-	    const goodsData = selectedGoods.map(item_num => ({
-	        item_num: item_num,
-	        quantity: 1 // 수량은 일단 1로 고정, 필요에 따라 클라이언트에서 변경 가능
-	    }));
-
-	    // 서버로 JSON 데이터 전송
-	    fetch('/add-to-cart', {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/json'
-	        },
-	        body: JSON.stringify(goodsData)
-	    })
-	    .then(response => response.json())
-	    .then(data => {
-	        // 서버로부터 받은 응답 처리
-	        console.log(data);
-	        // 예시: 장바구니 페이지로 리다이렉트
-	        window.location.href = '/cart';
-	    })
-	    .catch(error => {
-	        console.error('Error:', error);
-	    });
-	}
-    </script>
 	
 </div>

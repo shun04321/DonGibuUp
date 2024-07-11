@@ -8,12 +8,12 @@
 	INSERT INTO cart(
 	cart_num,
 	item_num,
-	item_quantity,
+	cart_quantity,
 	mem_num)
 	VALUES(
 	cart_seq.nextval,
 	#{item_num},
-	#{item_quantity},
+	#{cart_quantity},
 	#{mem_num}
 	)
 	</insert>
