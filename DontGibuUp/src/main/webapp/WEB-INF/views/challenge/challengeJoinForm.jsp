@@ -11,18 +11,14 @@
         <p>${challengeVO.chal_sdate} ~ ${challengeVO.chal_edate}</p>
         
         <p>참여금 <span id="chal_fee">${challengeVO.chal_fee}</span>원</p>
-        <p>100% 성공 : <span id="chal_fee_90"></span>p + 추가 ()p 환급, <span id="chal_fee_10"></span>원 기부</p>
-        <p>90% 이상 성공 : <span id="chal_fee_90"></span>p 환급, <span id="chal_fee_10"></span>원 기부</p>
-        <p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부
+        <p>100% 성공 : <span id="chal_fee_90"></span>원 + 추가 (??)원 환급, <span id="chal_fee_10"></span>원 기부</p>
+        <p>90% 이상 성공 : <span id="chal_fee_90"></span>원 환급, <span id="chal_fee_10"></span>원 기부</p>
+        <p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
     </div>
     <form:form action="${pageContext.request.contextPath}/challenge/join" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
             <form:hidden path="chal_num" value="${challengeJoinVO.chal_num}"/>
-            <form:hidden path="chal_joi_rate"/>
-            <form:hidden path="chal_joi_total"/>
-            <form:hidden path="chal_joi_success"/>
-            <form:hidden path="chal_joi_refund"/>
-            <form:hidden path="chal_joi_status"/>
+            <form:hidden path="chal_joi_status" value="0"/>
             <form:hidden path="chal_joi_date"/>
             <li>
                 <form:label path="dcate_num">기부 카테고리</form:label>
@@ -40,33 +36,44 @@
             </li>
         </ul>
         <div class="align-center">
-        	결제 조건 및 서비스 약관에 동의합니다
+            결제 조건 및 서비스 약관에 동의합니다
             <form:button>결제하기</form:button>
         </div>
     </form:form>
 </div>
 
 <script>
-	function showCharityInfo(selectElement) {
-	    var selectedOption = selectElement.options[selectElement.selectedIndex];
-	    var charityInfo = selectedOption.getAttribute('data-charity');
-	    document.getElementById('charityInfo').innerText = charityInfo || '';
-	}
-	
-	function formatNumber(num) {
-	    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-	}
-	
-	document.addEventListener("DOMContentLoaded", function() {
-	    var chalFeeElement = document.getElementById('chal_fee');
-	    var chalFee90Element = document.getElementById('chal_fee_90');
-	    var chalFee10Element = document.getElementById('chal_fee_10');
-	
-	    if (chalFeeElement) {
-	        var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
-	        chalFeeElement.innerText = formatNumber(chalFee);
-	        chalFee90Element.innerText = formatNumber((chalFee * 0.9).toFixed(0));
-	        chalFee10Element.innerText = formatNumber((chalFee * 0.1).toFixed(0));
-	    }
-	});
+    function showCharityInfo(selectElement) {
+        var selectedOption = selectElement.options[selectElement.selectedIndex];
+        var charityInfo = selectedOption.getAttribute('data-charity');
+        document.getElementById('charityInfo').innerText = charityInfo || '';
+    }
+
+    function formatNumber(num) {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var chalFeeElement = document.getElementById('chal_fee');
+        var chalFee90Element = document.getElementById('chal_fee_90');
+        var chalFee10Element = document.getElementById('chal_fee_10');
+
+        if (chalFeeElement) {
+            var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
+            var chalFee90 = (chalFee * 0.9).toFixed(0);
+            var chalFee10 = (chalFee * 0.1).toFixed(0);
+
+            chalFeeElement.innerText = formatNumber(chalFee);
+            chalFee90Element.innerText = formatNumber(chalFee90);
+            chalFee10Element.innerText = formatNumber(chalFee10);
+        }
+
+        // 오늘 날짜 설정
+        var today = new Date();
+        var day = ('0' + today.getDate()).slice(-2);
+        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+        var year = today.getFullYear();
+        var todayString = year + '-' + month + '-' + day;
+        document.querySelector('input[name="chal_joi_date"]').value = todayString;
+    });
 </script>

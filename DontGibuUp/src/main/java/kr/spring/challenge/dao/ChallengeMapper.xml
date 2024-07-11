@@ -51,12 +51,10 @@
 	
 	<!-- 챌린지 참가 및 결제, 현황 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
-		INSERT INTO challenge_join
-		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_rate, chal_joi_total, 
-		chal_joi_success, chal_joi_refund, chal_joi_status, chal_joi_date, chal_joi_ip)
+		INSERT INTO chal_join
+		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_status, chal_joi_date, chal_joi_ip)
 		VALUES 
-		(challenge_join_seq.nextval, #{chal_num}, #{mem_num}, #{dcate_num}, 
-		#{chal_joi_rate}, #{chal_joi_total}, #{chal_joi_success}, #{chal_joi_refund}, 
+		(chal_join_seq.nextval, #{chal_num}, #{mem_num}, #{dcate_num}, 
 		#{chal_joi_status}, #{chal_joi_date}, #{chal_joi_ip})
 	</insert>
 	
