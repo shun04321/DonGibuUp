@@ -30,6 +30,7 @@ import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -42,6 +43,10 @@ public class ChallengeController {
     @ModelAttribute("challengeVO")
     public ChallengeVO initChallengeVO() {
         return new ChallengeVO();
+    }
+    @ModelAttribute("challengeJoinVO")
+    public ChallengeJoinVO initChallengeJoinVO() {
+        return new ChallengeJoinVO();
     }
 
     @InitBinder
@@ -57,7 +62,8 @@ public class ChallengeController {
     public String form() {
         return "challengeWrite";
     }
-
+    
+    //챌린지 개설 유효성 검사 확인 후, 세션에 저장
     @PostMapping("/challenge/write")
     public String checkValidation(@Valid ChallengeVO challengeVO, BindingResult result, 
                                   HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
@@ -67,11 +73,20 @@ public class ChallengeController {
         if (result.hasErrors()) {
             return form();
         }
-
+        
+		//회원번호
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		challengeVO.setMem_num(member.getMem_num());
+		//ip
+		challengeVO.setChal_ip(request.getRemoteAddr());
+		//대표 사진 업로드 및 파일 저장
+		//challengeVO.setChal_photo(FileUtil.createFile(request, challengeVO.getUpload()));
+		//챌린지 종료일 계산
         challengeVO.calculateChalEdate();
+        
         session.setAttribute("challengeVO", challengeVO);
 
-        return "main";
+        return "redirect:/challenge/leaderJoin";
     }
 
     /*==========================
@@ -108,7 +123,18 @@ public class ChallengeController {
 
         return "challengeJoinForm";
     }
-
+    
+    //리더 참가 폼
+    @GetMapping("/challenge/leaderJoin")
+    public String joinForm(Model model,HttpSession session) {
+        List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
+        model.addAttribute("categories", categories);
+        
+        ChallengeVO vo = (ChallengeVO) session.getAttribute("challengeVO");
+        model.addAttribute("challenge", vo);
+        
+        return "leaderJoinForm";
+    }    
     /*==========================
      *  챌린지 참가 및 결제
      *==========================*/

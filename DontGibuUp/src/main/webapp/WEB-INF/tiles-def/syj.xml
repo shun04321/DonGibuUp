@@ -10,6 +10,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeWrite.jsp"/>
 	</definition>
+	<definition name="leaderJoinForm" extends="main">
+		<put-attribute name="title" value="챌린지 신청"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/leaderJoinForm.jsp"/>
+	</definition>
 	<definition name="challengeList" extends="main">
 		<put-attribute name="title" value="챌린지"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
