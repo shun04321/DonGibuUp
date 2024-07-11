@@ -3,6 +3,8 @@ package kr.spring.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,7 @@ public class MemberAjaxController {
 	/*===============================
 	   		이메일 중복 체크
 	================================*/
-	@GetMapping("/member/signup/checkEmail")
+	@GetMapping("/member/checkEmail")
 	@ResponseBody
 	public Map<String, String> checkEmail(MemberVO memberVO) {
 		log.debug("<<이메일 중복체크>> : " + memberVO.getMem_email());
@@ -42,9 +44,9 @@ public class MemberAjaxController {
 	/*===============================
 		닉네임 중복 체크
 	================================*/
-	@GetMapping("/member/signup/checkNick")
+	@GetMapping("/member/checkNick")
 	@ResponseBody
-	public Map<String, String> checkNick(MemberVO memberVO) {
+	public Map<String, String> checkNick(MemberVO memberVO, HttpSession session) {
 		log.debug("<<닉네임 중복체크>> : " + memberVO.getMem_nick());
 		
 		Map<String, String> mapAjax = new HashMap<String, String>();
@@ -55,6 +57,14 @@ public class MemberAjaxController {
 			mapAjax.put("result", "exist");
 		} else {
 			mapAjax.put("result", "notExist");
+		}
+		
+		//회원정보 수정 페이지에서 중복체크 할 경우
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if (user != null && existingMember != null) {
+			if (user.getMem_nick().equals(existingMember.getMem_nick())) {
+				mapAjax.put("result", "notChanged");
+			}
 		}
 
 		return mapAjax;

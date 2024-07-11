@@ -31,17 +31,17 @@ $(function() {
 		$('#check_pw').val('');
 	});
 
+	let err_msg = $('.form-error')
 	/*===============================
 		이메일 중복체크
 	================================*/
 	let email_check_msg = $('#email_check_msg');
 	let email_checked = 0;
-	let err_msg = $('.form-error')
 	$('#mem_email').blur(function() {
 		if ($('#mem_email').val().trim() != '' && $('#mem_email').val().includes("@")) {
 			//서버와 통신
 			$.ajax({
-				url: '/member/signup/checkEmail',
+				url: '/member/checkEmail',
 				type: 'get',
 				data: { mem_email: $('#mem_email').val() },
 				dataType: 'json',
@@ -85,7 +85,7 @@ $(function() {
 		if ($('#mem_nick').val().trim()) {
 			//서버와 통신
 			$.ajax({
-				url: '/member/signup/checkNick',
+				url: '/member/checkNick',
 				type: 'get',
 				data: { mem_nick: $('#mem_nick').val() },
 				dataType: 'json',

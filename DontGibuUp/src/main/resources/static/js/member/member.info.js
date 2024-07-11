@@ -91,6 +91,86 @@ $(function() {
 			}
 		});
 	});
+	
+	/*===============================
+		닉네임 중복체크
+	================================*/
+	let err_msg = $('.form-error')
+	let nick_check_msg = $('#nick_check_msg');
+	let nick_checked = 0;
+	$('#mem_nick').blur(function() {
+		if ($('#mem_nick').val().trim()) {
+			//서버와 통신
+			$.ajax({
+				url: '/member/checkNick',
+				type: 'get',
+				data: { mem_nick: $('#mem_nick').val() },
+				dataType: 'json',
+				success: function(param) {
+					if (param.result == "exist") {
+						nick_checked = 0;
+						err_msg.text('');
+						nick_check_msg.text('사용할 수 없는 닉네임입니다');
+						nick_check_msg.css('color', 'red');
+						console.log(param.result);
+					} else if (param.result == "notExist") {
+						nick_checked = 1;
+						err_msg.text('');
+						nick_check_msg.text('사용 가능한 닉네임입니다');
+						nick_check_msg.css('color', 'green');
+					} else if (param.result == "notChanged") {
+						err_msg.text('');
+						nick_check_msg.text('');
+					} else {
+						alert('닉네임 체크 오류 발생');
+					}
+				},
+				error: function() {
+					alert('네트워크 오류 발생');
+				}
+			});
+		}
+
+	});
+
+	//닉네임 다시 입력시 알림 메세지 없애기
+	$('#mem_nick').on('keyup', function() {
+		nick_checked = 0;
+		nick_check_msg.text('');
+	});
+
+	/*===============================
+		전송방지
+	================================*/
+	$('#member_update').submit(function(event) {
+		let phone1 = $('#phone1').val();
+		let phone2 = $('#phone2').val();
+		let phone3 = $('#phone3').val();
+		
+		let birth_year = $('#birth_year').val();
+		let birth_month = $('#birth_month').val();
+		let birth_day = $('#birth_day').val();
+		
+        // 데이터 조합
+        var formData = {
+            mem_phone: phone1 + phone2 + phone3,
+            mem_birth: birth_year + birth_month + birth_day
+        };
+        console.log(formData);
+        event.preventDefault();
+
+/*        // 폼 데이터에 추가
+        $.extend($(this).serializeObject(), formData);
+		
+		if (nick_checked == 0 && $('#mem_nick').val().trim().length != 0) {
+			//이벤트 트리거 일으키기
+			event.preventDefault();
+			$('#mem_nick').trigger('blur');
+
+			// 폼을 한번만 다시 제출
+			$(this).off('submit').submit();
+		}*/
+	});
 
   const yearSelect = $('#birth_year');
   const monthSelect = $('#birth_month');
@@ -113,19 +193,16 @@ $(function() {
     daySelect.append(`<option value="${day}">${day}</option>`);
   }
 
-  // 폼 제출 시 처리
-  $('#birthday-form').submit(function(event) {
-    event.preventDefault();
-
-    const selectedYear = yearSelect.val();
-    const selectedMonth = monthSelect.val();
-    const selectedDay = daySelect.val();
-
-    // 선택된 값으로 생년월일 문자열 생성
-    const birthday = `${selectedYear}-${selectedMonth.padStart(2, '0')}-${selectedDay.padStart(2, '0')}`;
-    console.log('생일:', birthday);
-
-    // 이후 원하는 작업 수행 (예: 서버로 전송 등)
-  });
-
 });
+
+function formatBirthDate(year, month, day) {
+    // 년도 뒤 두 자리 추출
+    let birth_year = year.substring(2);
+
+    // 월과 일이 한 자리 수일 경우 앞에 0을 붙여줌
+    let birth_month = ('0' + month).slice(-2);
+    let birth_day = ('0' + day).slice(-2);
+
+    // 결과를 합쳐서 반환
+    return birth_year + birth_month + birth_day;
+}
