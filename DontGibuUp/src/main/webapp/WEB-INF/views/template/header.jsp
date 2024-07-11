@@ -2,7 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- 상단 시작 -->
-<h2 class="align-center"><a href="${pageContext.request.contextPath}/main/main">Don Gibu Up</a></h2>
+<h2 class="align-center">
+	<c:if test="${empty user || user.mem_status != 9}">
+	<a href="${pageContext.request.contextPath}/main/main">Don Gibu Up</a>
+	</c:if>
+	<c:if test="${!empty user && user.mem_status == 9}">
+	<a href="${pageContext.request.contextPath}/main/admin">Don Gibu Up</a>
+	</c:if>
+</h2>
 <div class="align-right">
 	<a href="${pageContext.request.contextPath}/board/list">게시판</a>
 	<a href="${pageContext.request.contextPath}/goods/list">굿즈샵</a>
@@ -27,7 +34,6 @@
 	<a href="${pageContext.request.contextPath}/main/main">홈으로</a>
 </div>
 <!-- 상단 끝 -->
-
 
 
 
