@@ -7,7 +7,7 @@
 	<a href="${pageContext.request.contextPath}/main/main">Don Gibu Up</a>
 	</c:if>
 	<c:if test="${!empty user && user.mem_status == 9}">
-	<a href="${pageContext.request.contextPath}/main/main">Don Gibu Up</a>
+	<a href="${pageContext.request.contextPath}/main/admin">Don Gibu Up</a>
 	</c:if>
 </h2>
 <div class="align-right">
