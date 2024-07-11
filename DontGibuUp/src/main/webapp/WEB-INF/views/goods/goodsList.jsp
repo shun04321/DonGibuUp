@@ -53,9 +53,9 @@
 	<c:if test="${count ==0}">
 		<div class="result-display">표시할 상품이 없습니다.</div>
 	</c:if>
+	<form id="goodsForm" action="/add-to-cart" method="post">
 	<c:if test="${count > 0}">
-		<table class="striped-table">
-		
+	<table class="striped-table">
     <thead>
         <tr>
 			<th>선택</th>
@@ -82,10 +82,12 @@
                         <td class="align-center">${goods.item_price}</td>
                         <td class="align-center">${goods.item_stock}</td>
                     </tr>
-              </c:forEach>
+             </c:forEach>
 	</tbody>
-</table>
+	</table>
   <button type="button" onclick="submitForm()">장바구니에 추가</button>
+  </c:if>
+  </form>
    <script>
         function submitForm() {
             const form = document.getElementById('goodsForm');
@@ -98,6 +100,5 @@
             }
         }
     </script>
-    
-	</c:if>
+	
 </div>
