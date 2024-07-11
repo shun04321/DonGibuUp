@@ -1,6 +1,8 @@
 package kr.spring.challenge.vo;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -43,6 +45,13 @@ public class ChallengeVO {
 	private Date chal_rdate;
 	private String chal_ip;
 	
+	private String chal_edate;
 	private String mem_nick;
 	private String mem_photo;
+	
+	public void calculateChalEdate() {
+		LocalDate sdate = LocalDate.parse(chal_sdate,DateTimeFormatter.ISO_LOCAL_DATE);
+		LocalDate edate = sdate.plusDays(chal_period * 7);
+		this.chal_edate = edate.toString();
+	}
 }

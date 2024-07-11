@@ -55,11 +55,13 @@ public class ChallengeController {
 		if(result.hasErrors()) {
 			return form();
 		}
-			
+		challengeVO.calculateChalEdate();
+		
 		session.setAttribute("challengeVO", challengeVO);
+		
 						
 		//return "redirect:/challenge/챌린지 결제url";
-		return "challengeWrite";
+		return "main";
 	}
 	
     @InitBinder
