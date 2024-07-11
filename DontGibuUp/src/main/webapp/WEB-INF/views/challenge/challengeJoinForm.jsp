@@ -18,8 +18,6 @@
     <form:form action="${pageContext.request.contextPath}/challenge/join" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
             <form:hidden path="chal_num" value="${challengeJoinVO.chal_num}"/>
-            <form:hidden path="chal_joi_status" value="0"/>
-            <form:hidden path="chal_joi_date"/>
             <li>
                 <form:label path="dcate_num">기부 카테고리</form:label>
                 <form:select path="dcate_num" onchange="showCharityInfo(this)">

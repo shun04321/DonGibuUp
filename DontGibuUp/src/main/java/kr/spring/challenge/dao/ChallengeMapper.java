@@ -29,7 +29,7 @@ public interface ChallengeMapper {
     public void updateChallengeJoin(ChallengeJoinVO chalJoinVO);
     public void deleteChallengeJoin(Long chal_joi_num);
     // 기부 카테고리 목록 가져오기
-    @Select("SELECT dcate_num, dcate_name FROM DONA_CATEGORY")
+    @Select("SELECT dcate_num,dcate_name,dcate_charity FROM DONA_CATEGORY")
     List<DonationCategoryVO> selectDonaCategories();
 	
 	//챌린지 인증
