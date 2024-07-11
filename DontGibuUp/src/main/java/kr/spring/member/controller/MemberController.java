@@ -1,7 +1,5 @@
 package kr.spring.member.controller;
 
-import java.net.http.HttpRequest;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -19,9 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.config.validation.ValidationSequence;
-import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.KakaoInfo;
@@ -99,6 +97,16 @@ public class MemberController {
 			//미참여
 			memberVO.setRecommend_status(0);
 		}
+		
+		//이메일,닉네임 UK 체크
+		if (memberService.selectMemberByEmail(memberVO.getMem_email()) != null) {
+			result.rejectValue("mem_email", "emailExists");
+			return signupForm();
+		}
+		if (memberService.selectMemberByNick(memberVO.getMem_nick()) != null) {
+			result.rejectValue("mem_nick", "nickExists");
+			return signupForm();
+		}
 
 		//회원가입
 		memberService.insertMember(memberVO);
@@ -121,7 +129,25 @@ public class MemberController {
         
 		//추천인 이벤트 참가
 		if (memberVO.getFriend_rcode() != null && !memberVO.getFriend_rcode().equals("")) {
-			memberVO.setRecommend_status(1);
+			//추천인 이벤트 참여
+			if (memberService.selectMemNumByRCode(memberVO.getFriend_rcode()) != null) {
+				memberVO.setRecommend_status(1);
+			} else {
+	            result.rejectValue("friend_rcode", "invalidRCode");
+	            return "memberSocialSignup"; // 회원가입 폼 다시 보여주기
+			}
+		} else {
+			//미참여
+			memberVO.setRecommend_status(0);
+		}
+		//이메일,닉네임 UK 체크
+		if (memberService.selectMemberByEmail(memberVO.getMem_email()) != null) {
+			result.rejectValue("mem_email", "emailExists");
+			return signupForm();
+		}
+		if (memberService.selectMemberByNick(memberVO.getMem_nick()) != null) {
+			result.rejectValue("mem_nick", "nickExists");
+			return signupForm();
 		}
         
         log.debug("<<회원가입>> : " + memberVO);
@@ -150,7 +176,7 @@ public class MemberController {
 
 	//카카오 로그인/회원가입 api 콜백
 	@GetMapping("/member/callback/kakao")
-	public ResponseEntity<?> kakaoCallback(@RequestParam("code") String code, Model model, HttpSession session) {
+	public ResponseEntity<?> kakaoCallback(@RequestParam("code") String code, RedirectAttributes redirectAttributes, HttpSession session) {
 		try {
 			// Access Token 획득
 			String accessToken = memberOAuthService.getKakaoAccessToken(code);
@@ -163,9 +189,16 @@ public class MemberController {
 
 			String redirectUrl;
 
+
 			if (existingMember != null) { // 기존 회원이 존재하는 경우
 				if (existingMember.getMem_status() == 1) { // 정지 회원인 경우
-					model.addAttribute("result", "suspendedMember");
+					redirectAttributes.addFlashAttribute("error", "정지된 회원입니다");
+					redirectUrl = "/member/login";
+				} else if (existingMember.getMem_reg_type() == 1) { //일반회원가입된 이메일일 경우
+					redirectAttributes.addFlashAttribute("error", "일반 회원가입된 이메일입니다");
+					redirectUrl = "/member/login";
+				} else if (existingMember.getMem_reg_type() == 2) { //네이버 회원가입된 이메일일 경우
+					redirectAttributes.addFlashAttribute("error", "네이버로 회원가입된 이메일입니다");
 					redirectUrl = "/member/login";
 				} else { // 정상 회원인 경우
 					// TODO: 자동 로그인 체크 로직 추가
@@ -238,6 +271,7 @@ public class MemberController {
 				// 멤버 email이 존재할 시 status가 정지회원, 탈퇴회원인지 체크
 				if (member.getMem_status() == 1) { // 정지회원
 					result.reject("suspendedMember");
+					return loginForm();
 				}
 
 				// 비밀번호 일치여부 체크

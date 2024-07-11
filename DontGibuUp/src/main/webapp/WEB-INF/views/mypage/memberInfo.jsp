@@ -6,7 +6,7 @@
 <script type="text/javascript">
     var contextPath = "${pageContext.request.contextPath}";
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/member.info.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.info.js"></script>
 <div class="page-main">
 <h2>회원정보 수정</h2>
 <div>
@@ -34,6 +34,7 @@
 		<li>
 			<form:label path="mem_nick">닉네임</form:label>
 			<form:input path="mem_nick" value="${member.mem_nick}"/>
+			<span id="nick_check_msg"></span>
 			<form:errors path="mem_nick" cssClass="form-error"></form:errors>
 		</li>
 		<li>
@@ -43,11 +44,13 @@
 		</li>
 		<li>
 			<label>전화번호</label>
-		    <input type="text" id="phone1" maxlength="4" pattern="[0-9]{4}" style="width:100px;" required disabled value="010">
+		    <input type="text" id="phone1" style="width:100px;" required disabled value="010">
 		    -
-		    <input type="text" id="phone2" maxlength="4" pattern="[0-9]{4}" style="width:100px;" required>
+		    <input type="text" id="phone2" maxlength="4" pattern="[0-9]{4}" style="width:100px;">
 		    -
-		    <input type="text" id="phone3" maxlength="4" pattern="[0-9]{4}" style="width:100px;" required>
+		    <input type="text" id="phone3" maxlength="4" pattern="[0-9]{4}" style="width:100px;">
+		    <form:hidden path="mem_phone"/>
+		    <form:errors path="mem_phone" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<label>생년월일</label>
