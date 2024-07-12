@@ -23,6 +23,7 @@ import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.payuid.service.PayuidService;
+import kr.spring.payuid.vo.PayuidVO;
 import kr.spring.subscription.vo.SubscriptionVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
@@ -133,11 +134,18 @@ public class CategoryController {
 		DonationCategoryVO category = categoryService.selectDonationCategory(dcate_num);
 		log.debug("donationcategoryVO : " + category);
 		MemberVO user = (MemberVO)session.getAttribute("user");
+		
+		
 		ModelAndView modelAndView = new ModelAndView("categoryDetail");
 		modelAndView.addObject("category", category);
+		modelAndView.addObject("subscriptionVO", new SubscriptionVO()); // 폼 데이터 초기화
 		if(user!=null) {
 			modelAndView.addObject("user", user);
 			log.debug("user : " + user);
+			
+			List<PayuidVO> list = payuidService.getPayUId(user.getMem_num());
+			log.debug("list : " + list);
+			model.addAttribute("list", list);
 		}
 		return modelAndView;
 	} 

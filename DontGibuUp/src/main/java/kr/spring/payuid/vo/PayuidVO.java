@@ -10,5 +10,6 @@ import lombok.ToString;
 public class PayuidVO {
 	private String pay_uid;
 	private int mem_num;
+	private String card_nickname;
 	private int easypay_method;
 }

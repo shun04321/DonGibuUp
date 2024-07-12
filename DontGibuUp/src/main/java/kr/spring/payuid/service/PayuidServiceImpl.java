@@ -1,5 +1,7 @@
 package kr.spring.payuid.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +29,7 @@ public class PayuidServiceImpl implements PayuidService{
 	}
 
 	@Override
-	public String getPayUId(long mem_num) {
+	public List<PayuidVO> getPayUId(long mem_num) {
 		return payuidMapper.getPayUId(mem_num);
 	}
 

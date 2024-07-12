@@ -1,5 +1,9 @@
 package kr.spring.subscription.vo;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,9 +18,9 @@ public class SubscriptionVO {
 	private String sub_name;
 	private boolean sub_annoy;
 	private int sub_price;
+	@Pattern(regexp = "^([A-Za-z])$")
 	private String sub_ndate;
 	private int sub_status;
 	private String sub_method;
 	private String easypay_method;
-	private String card_nickname;
 }

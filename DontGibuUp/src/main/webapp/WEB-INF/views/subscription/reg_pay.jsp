@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,38 +17,45 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <style>
-	.payment-methods, .easypay-methods {
-		display: flex;
-		gap: 10px;
-	}
-	.payment-method, .easypay-method {
-		padding: 10px 20px;
-		border: 1px solid #ccc;
-		border-radius: 5px;
-		background-color: white;
-		cursor: pointer;
-		transition: background-color 0.3s;
-		display: flex;
-		align-items: center;
-	}
-	.payment-method.selected, .easypay-method.selected {
-		background-color: #007bff;
-		color: white;
-		border-color: #007bff;
-	}
-	.payment-method input[type="radio"], .easypay-method input[type="radio"] {
-		display: none;
-	}
-	
-	button[type="submit"]{
-		margin-left: 150px;
-		padding : 0px 10px;
-	}
-	
-	div{
-		margin-bottom: 10px;
-	}
-	
+.payment-methods, .easypay-methods {
+	display: flex;
+	gap: 10px;
+}
+
+.payment-method, .easypay-method {
+	padding: 10px 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: flex;
+	align-items: center;
+}
+
+.payment-method.selected, .easypay-method.selected {
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+}
+
+.payment-method input[type="radio"], .easypay-method input[type="radio"]
+	{
+	display: none;
+}
+
+button[type="submit"] {
+	margin-left: 150px;
+	padding: 0px 10px;
+}
+
+div {
+	margin-bottom: 10px;
+}
+
+#sub_ndate {
+	width: 100px;
+}
 </style>
 </head>
 <body>
@@ -79,7 +87,8 @@
 								<div class="form-check">
 									<form:checkbox class="form-check-input" id="anonymousCheck"
 										path="sub_annoy" />
-									<label class="form-check-label" for="anonymousCheck">익명으로 기부</label>
+									<label class="form-check-label" for="anonymousCheck">익명으로
+										기부</label>
 								</div>
 							</div>
 							<!-- 기부자 이름 입력 필드 -->
@@ -128,47 +137,66 @@
 									<label class="form-check-label" for="radio5"> 유기견보호소
 										50,000원/월 지원 </label>
 								</div>
+								  <form:errors path="sub_price" cssClass="text-danger"/>
+							</div>
+
+							<!-- 기부 날짜 선택 필드 -->
+							<div class="form-group">
+								<label for="sub_ndate">기부 날짜 선택</label><br>
+								<form:input path="sub_ndate" id="sub_ndate" name="sub_ndate" max="10"/>
+								  <form:errors path="sub_ndate" cssClass="text-danger"/>
+								<br> <small id="dateHelp" class="form-text text-muted"><br>
+									매월 지정된 날짜에 기부가 이루어집니다.<br> (1일에서 28일까지만 지정가능).
+								</small>
 							</div>
 							<!-- 결제 수단 라디오 버튼 -->
 							<div class="form-group">
 								<label>결제 수단</label><br>
 								<div class="payment-methods">
-									<label class="payment-method" for="card">
-										<form:radiobutton path="sub_method" id="card" value="card" />카드
-									</label>
-									<label class="payment-method" for="easy-pay">
-										<form:radiobutton path="sub_method" id="easy-pay" value="easy-pay" />간편결제
+									<label class="payment-method" for="card"> <form:radiobutton
+											path="sub_method" id="card" value="card"/>카드
+									</label> <label class="payment-method" for="easy-pay"> <form:radiobutton
+											path="sub_method" id="easy-pay" value="easy-pay" />간편결제
 									</label>
 								</div>
 							</div>
-							
+
+							<!-- 이미 등록된 카드 목록, 새 카드 등록 -->
+							<div id="card-options"  style="display: none;">
+								<c:forEach var="card" items="${list}">
+									<div>
+										<input type="radio" id="card_nickname"
+											name="selectedCard" value="${card.card_nickname}"><label
+											for="card_${card.card_nickname}">${card.card_nickname}</label>
+									</div>
+								</c:forEach>
+								<div>
+									<input type="radio" id="newCard" name="selectedCard"
+										value="newCard"> <label for="newCard">새 카드 등록</label>
+								</div>
+							</div>
+
 							<!-- 간편 결제 수단 라디오 버튼 -->
 							<div class="form-group easypay-container" style="display: none;">
 								<label>간편 결제</label><br>
 								<div class="easypay-methods">
-									<label class="easypay-method" for="kakao">
-										<form:radiobutton path="easypay_method" id="kakao" value="카카오" /><img src="../upload/카카오 페이 로고.png" width="60">
-									</label>
-									<label class="easypay-method" for="toss">
-										<form:radiobutton path="easypay_method" id="toss" value="toss" /><img src="../upload/토스 페이 로고.jpg" width="60">
-									</label>
-									<label class="easypay-method" for="naver">
-										<form:radiobutton path="easypay_method" id="naver" value="네이버" /><img src="../upload/네이버 페이 로고.png" width="60">
+									<label class="easypay-method" for="kakao"> <form:radiobutton
+											path="easypay_method" id="kakao" value="카카오" /><img
+										src="../upload/카카오 페이 로고.png" width="60">
+									</label> <label class="easypay-method" for="toss"> <form:radiobutton
+											path="easypay_method" id="toss" value="toss" /><img
+										src="../upload/토스 페이 로고.jpg" width="60">
+									</label> <label class="easypay-method" for="naver"> <form:radiobutton
+											path="easypay_method" id="naver" value="네이버" /><img
+										src="../upload/네이버 페이 로고.png" width="60">
 									</label>
 								</div>
 							</div>
-							<!-- 기부 날짜 선택 필드 -->
-							<div class="form-group">
-								<label for="sub_ndate">기부 날짜 선택</label>
-									<form:input path="sub_ndate" id="sub_ndate" name="sub_ndate"/>
-								<small id="dateHelp" class="form-text text-muted">
-									매월 지정된 날짜에 기부가 이루어집니다.
-									(1일에서 28일까지만 지정가능).
-								</small>
-							</div>
-							
+
+
 							<!-- 기부 시작하기 버튼 -->
-							<button type="submit" class="btn btn-primary" style="margin-top: 10px;">기부 시작하기</button>
+							<button type="submit" class="btn btn-primary"
+								style="margin-top: 10px;">기부 시작하기</button>
 						</form:form>
 					</div>
 				</div>
@@ -177,54 +205,54 @@
 	</div>
 
 	<script>
-		$(document).ready(function () {
-			$('.payment-method').click(function () {
-				var radio = $(this).find('input[type="radio"]');
-				if (radio.length) {
-					radio.prop('checked', true);
-					$('.payment-method').removeClass('selected');
-					$(this).addClass('selected');
-					
-					if (radio.val() === 'easy-pay') {
-						$('.easypay-container').slideDown();
-					} else {
-						$('.easypay-container').slideUp();
-						$('.easypay-methods input[type="radio"]').prop('checked', false);
-						$('.easypay-method').removeClass('selected');
-					}
-				}
-			});
-			//오늘 날짜 구하기
-			function getCurrentDate() {
-	            var today = new Date();
-	            var dd = String(today.getDate()).padStart(2, '0'); // 일자
-	            var mm = String(today.getMonth() + 1).padStart(2, '0'); // 월 (January is 0!)
-	            var yyyy = today.getFullYear(); // 년도
-	            return yyyy + '-' + mm + '-' + dd;
-	        }
-
-	        // 오늘 날짜를 기본으로 설정
-	        $('#sub_date').val(getCurrentDate());
-
-			$('.easypay-method').click(function () {
-				var radio = $(this).find('input[type="radio"]');
-				if (radio.length) {
-					radio.prop('checked', true);
-					$('.easypay-method').removeClass('selected');
-					$(this).addClass('selected');
-				}
-			});
-			
-			
-			// 익명 여부 체크박스 상태 변경 시 이벤트 처리
-			$('#anonymousCheck').change(function () {
-				if ($(this).is(':checked')) {
-					$('#sub_name').prop('disabled', true); // 기부자 이름 입력 필드 비활성화
-				} else {
-					$('#sub_name').prop('disabled', false); // 기부자 이름 입력 필드 활성화
-				}
-			}); 
+	$(document).ready(function () {
+		// 익명 여부 체크박스 상태 변경 시 이벤트 처리
+		$('#anonymousCheck').change(function () {
+			if ($(this).is(':checked')) {
+				$('#sub_name').prop('disabled', true); // 기부자 이름 입력 필드 비활성화
+			} else {
+				$('#sub_name').prop('disabled', false); // 기부자 이름 입력 필드 활성화
+			}
 		});
+
+		// 결제 수단 변경 시 이벤트 처리
+	    $('.payment-method').click(function() {
+	        var radio = $(this).find('input[type="radio"]');
+	        if (radio.length) {
+	            radio.prop('checked', true);
+	            $('.payment-method').removeClass('selected');
+	            $(this).addClass('selected');
+	            
+	            if (radio.val() === 'easy-pay') {
+	                $('#card-options').slideUp();
+	                $('.easypay-container').slideDown();
+	                // 선택된 카드의 체크 해제
+	                $('input[name="selectedCard"]').prop('checked', false);
+	            } else {
+	                $('.easypay-container').slideUp();
+	                $('#card-options').slideDown();
+	            }
+	        }
+	    });
+
+	    $('.easypay-method').click(function() {
+	        var radio = $(this).find('input[type="radio"]');
+	        if (radio.length) {
+	            radio.prop('checked', true);
+	            $('.easypay-method').removeClass('selected');
+	            $(this).addClass('selected');
+	        }
+	    });
+		$('.easypay-method').click(function () {
+			var radio = $(this).find('input[type="radio"]');
+			if (radio.length) {
+				radio.prop('checked', true);
+				$('.easypay-method').removeClass('selected');
+				$(this).addClass('selected');
+			}
+		});
+
+	});
 	</script>
 </body>
 </html>
