@@ -119,13 +119,13 @@ public class ChallengeController {
         model.addAttribute("challengeVO", challengeVO);
 
         ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
-        challengeJoinVO.setChal_num(chal_num);  // 챌린지 번호 설정
+        challengeJoinVO.setChal_num(chal_num);//챌린지 번호 설정
         model.addAttribute("challengeJoinVO", challengeJoinVO);
 
         return "challengeJoinForm";
     }
     
-    //리더 참가 폼
+    //리더
     @GetMapping("/challenge/leaderJoin")
     public String joinForm(Model model,HttpSession session) {
         List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
@@ -145,13 +145,13 @@ public class ChallengeController {
                        HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
         log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
 
-        // 유효성 체크
+        //유효성 체크
         if (result.hasErrors()) {
             log.debug("<<유효성 검사 실패>> : " + result.getAllErrors());
             return "challengeJoinForm";
         }
 
-        // 회원번호
+        //회원번호
         MemberVO member = (MemberVO) session.getAttribute("user");
         if (member == null) {
             log.debug("<<로그인되지 않은 사용자>>");
@@ -165,20 +165,20 @@ public class ChallengeController {
         
         log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
         
-        // 챌린지 신청
+        //챌린지 신청
         challengeService.insertChallengeJoin(challengeJoinVO);
 
-        // 챌린지 결제 정보 저장
+        //챌린지 결제 정보 저장
         ChallengePaymentVO challengePaymentVO = new ChallengePaymentVO();
         challengePaymentVO.setChal_joi_num(challengeJoinVO.getChal_joi_num());
         challengePaymentVO.setMem_num(member.getMem_num());
         challengePaymentVO.setOd_imp_uid(request.getParameter("od_imp_uid"));
         challengePaymentVO.setChal_pay_price(Long.parseLong(request.getParameter("chal_pay_price")));
-        challengePaymentVO.setChal_point(0); // 사용된 포인트 (기본값 0)
-        challengePaymentVO.setChal_pay_status(0); // 결제 상태 (0: 결제 완료)
+        challengePaymentVO.setChal_point(0);//사용된 포인트 (기본값 0)
+        challengePaymentVO.setChal_pay_status(0);//결제 상태 (0: 결제 완료)
         challengeService.insertChallengePayment(challengePaymentVO);
         
-        // view에 메시지 추가
+        //view에 메시지 추가
         model.addAttribute("message", "챌린지 신청이 완료되었습니다!");
         model.addAttribute("url", request.getContextPath() + "/challenge/list");
 
@@ -189,7 +189,7 @@ public class ChallengeController {
     
 
     /*==========================
-     *  챌린지 참가 목록
+     *  챌린지 현황
      *==========================*/
     @GetMapping("/challenge/join/list")
     public ModelAndView joinList(HttpSession session) {
@@ -205,9 +205,10 @@ public class ChallengeController {
     /*==========================
      *  챌린지 참가 상세
      *==========================*/
-    @GetMapping("/challenge/joinDetail")
-    public ModelAndView joinDetail(@RequestParam("chal_joi_num") Long chal_joi_num) {
-        ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
-        return new ModelAndView("challengeJoinView", "challengeJoin", challengeJoin);
-    }
+	/*
+	 * @GetMapping("/challenge/joinDetail") public ModelAndView
+	 * joinDetail(@RequestParam("chal_joi_num") Long chal_joi_num) { ChallengeJoinVO
+	 * challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); return
+	 * new ModelAndView("challengeJoinView", "challengeJoin", challengeJoin); }
+	 */
 }

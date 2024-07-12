@@ -19,14 +19,14 @@ public interface ChallengeService {
 	public void deleteChallenge(Long chal_num);
 	public void deleteChalPhoto(Long chal_num);
 	
-	//챌린지 참가 및 결제, 현황
+	//챌린지 참가 및 현황
 	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
 	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
-	public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
-	public void updateChallengeJoin(ChallengeJoinVO chalJoinVO);
-	public void deleteChallengeJoin(Long chal_joi_num);
+	//public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
+	//public void deleteChallengeJoin(Long chal_joi_num);
 	//기부 카테고리 목록 가져오기
 	List<DonationCategoryVO> selectDonaCategories();
+	
 	//챌린지 결제
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
 	

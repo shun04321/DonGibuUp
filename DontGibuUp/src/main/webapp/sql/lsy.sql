@@ -11,6 +11,7 @@ CREATE TABLE CHAL_JOIN (
 	chal_joi_date		date		DEFAULT SYSDATE	NOT NULL,
 	chal_joi_ip			varchar2(40)				NOT NULL
 );
+CREATE SEQUENCE CHAL_JOIN_SEQ;
 
 COMMENT ON COLUMN CHAL_JOIN.chal_joi_num IS '챌린지 참가를 식별하는 번호,sequence 사용';
 
@@ -64,4 +65,49 @@ ALTER TABLE CHAL_VERIFY ADD CONSTRAINT FK_CHAL_JOIN_TO_CHAL_VERIFY_1 FOREIGN KEY
 )
 REFERENCES CHAL_JOIN (
 	chal_joi_num
+);
+
+
+CREATE TABLE CHAL_PAYMENT (
+	chal_pay_num		number						NOT NULL,
+	chal_joi_num		number						NOT NULL,
+	mem_num				number						NOT NULL,
+	od_imp_uid			varchar2(17)				NULL,
+	chal_pay_price		number(30)					NOT NULL,
+	chal_point			number(9)	DEFAULT 0		NOT NULL,
+	chal_pay_date		date		DEFAULT SYSDATE	NOT NULL,
+	chal_pay_status		number(2)					NOT NULL
+);
+CREATE SEQUENCE CHAL_PAYMENT_SEQ;
+
+COMMENT ON COLUMN CHAL_PAYMENT.chal_pay_num IS '챌린지 결제를 식별하는 번호,sequence 사용';
+
+COMMENT ON COLUMN CHAL_PAYMENT.chal_joi_num IS '챌린지 참가를 식별하는 번호,sequence 사용';
+
+COMMENT ON COLUMN CHAL_PAYMENT.mem_num IS '회원을 식별하는 번호,sequence 사용';
+
+COMMENT ON COLUMN CHAL_PAYMENT.od_imp_uid IS '포트원 api로 전달받은 결제를 식별하는 id';
+
+COMMENT ON COLUMN CHAL_PAYMENT.chal_pay_price IS '챌린지 결제금액';
+
+COMMENT ON COLUMN CHAL_PAYMENT.chal_point IS '사용된 포인트';
+
+COMMENT ON COLUMN CHAL_PAYMENT.chal_pay_date IS '챌린지 결제날짜';
+
+COMMENT ON COLUMN CHAL_PAYMENT.chal_pay_status IS '챌린지 결제상태(0:결제완료,1:결제취소)';
+
+ALTER TABLE CHAL_PAYMENT ADD CONSTRAINT PK_CHAL_PAYMENT PRIMARY KEY (
+	chal_pay_num
+);
+ALTER TABLE CHAL_PAYMENT ADD CONSTRAINT FK_CHAL_JOIN_TO_CHAL_PAYMENT_1 FOREIGN KEY (
+	chal_joi_num
+)
+REFERENCES CHAL_JOIN (
+	chal_joi_num
+);
+ALTER TABLE CHAL_PAYMENT ADD CONSTRAINT FK_MEMBER_TO_CHAL_PAYMENT_1 FOREIGN KEY (
+	mem_num
+)
+REFERENCES MEMBER (
+	mem_num
 );

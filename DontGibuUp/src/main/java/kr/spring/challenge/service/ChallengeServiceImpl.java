@@ -59,7 +59,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		
 	}
 
-	//챌린지 참가 및 결제, 현황//
+	//챌린지 참가 및 현황//
     @Override
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO) {
         challengeMapper.insertChallengeJoin(chalJoinVO);
@@ -70,20 +70,13 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeMapper.selectChallengeJoinList(map);
     }
 
-    @Override
-    public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
-        return challengeMapper.selectChallengeJoin(chal_joi_num);
-    }
-
-    @Override
-    public void updateChallengeJoin(ChallengeJoinVO chalJoinVO) {
-        challengeMapper.updateChallengeJoin(chalJoinVO);
-    }
-
-    @Override
-    public void deleteChallengeJoin(Long chal_joi_num) {
-        challengeMapper.deleteChallengeJoin(chal_joi_num);
-    }
+	/*
+	 * @Override public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
+	 * return challengeMapper.selectChallengeJoin(chal_joi_num); }
+	 * 
+	 * @Override public void deleteChallengeJoin(Long chal_joi_num) {
+	 * challengeMapper.deleteChallengeJoin(chal_joi_num); }
+	 */
     
     @Override
     public List<DonationCategoryVO> selectDonaCategories() {
