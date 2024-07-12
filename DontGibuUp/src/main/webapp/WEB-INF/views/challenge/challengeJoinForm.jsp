@@ -92,7 +92,7 @@
     }
 
     function requestPay() {
-        const userCode = "test_ck_DpexMgkW367Alma9km0EVGbR5ozO"; // 클라이언트 키
+        const userCode = "imp41500674"; // 클라이언트 키
         IMP.init(userCode); // 모듈 초기화
 
         IMP.request_pay({
