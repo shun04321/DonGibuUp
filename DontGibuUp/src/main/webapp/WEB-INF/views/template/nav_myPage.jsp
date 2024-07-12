@@ -10,7 +10,7 @@
 			<c:if test="${user.mem_reg_type == 1}">
 			<li><a href="changePassword">비밀번호 수정</a></li>
 			</c:if>
-			<li>친구초대</li>
+			<li><a href="inviteFriendEvent">친구초대</a></li>
 			<li>포인트</li>
 		</ul>
 	</li>
