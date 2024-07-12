@@ -169,10 +169,10 @@ public class MemberController {
 
 	//카카오 로그인/회원가입 api
 	@GetMapping("/member/oauth/kakao")
-	public String getKakaoLogin() {
+	public String getKakaoLogin(@RequestParam(value = "rcode", required = false) String rcode) {
 		String url = String.format(
-				"https://kauth.kakao.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s", client_id,
-				redirect_uri);
+				"https://kauth.kakao.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s&rcode=%s", client_id,
+				redirect_uri, rcode);
 		return "redirect:" + url;
 	}
 
