@@ -18,5 +18,5 @@ public interface SubscriptionMapper {
 	
 	//자신의 정기기부 현황 확인
 	
-	//모든 사용자의 정기기부 현황 확인
+	//모든 ,사용자의 정기기부 현황 확인
 }
