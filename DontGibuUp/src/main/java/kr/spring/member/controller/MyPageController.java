@@ -168,4 +168,10 @@ public class MyPageController {
 		
 		return "inviteFriendEvent";
 	}
+	
+	//포인트 페이지
+	@GetMapping("/member/myPage/point")
+	public String memberPoint() {
+		return "memberPoint";
+	}
 }

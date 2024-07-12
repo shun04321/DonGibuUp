@@ -191,7 +191,7 @@ public class ChallengeController {
     /*==========================
      *  챌린지 참가 목록
      *==========================*/
-    @GetMapping("/challenge/joinList")
+    @GetMapping("/challenge/join/list")
     public ModelAndView joinList(HttpSession session) {
         MemberVO member = (MemberVO) session.getAttribute("user");
         Map<String, Object> map = new HashMap<>();

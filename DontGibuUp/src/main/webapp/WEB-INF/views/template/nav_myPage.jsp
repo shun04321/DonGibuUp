@@ -11,7 +11,7 @@
 			<li><a href="changePassword">비밀번호 수정</a></li>
 			</c:if>
 			<li><a href="inviteFriendEvent">친구초대</a></li>
-			<li>포인트</li>
+			<li><a href="point">포인트</a></li>
 		</ul>
 	</li>
 	<li class="side-menu">

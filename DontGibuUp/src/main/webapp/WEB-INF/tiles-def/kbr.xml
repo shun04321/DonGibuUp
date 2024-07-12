@@ -50,6 +50,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/mypage/memberInviteFriendEvent.jsp"/>
 	</definition>
+	<definition name="memberPoint" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 포인트" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberPoint.jsp"/>
+	</definition>
 </tiles-definitions>
 
 
