@@ -28,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeJoinVO;
+import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
@@ -135,18 +136,19 @@ public class ChallengeController {
         
         return "leaderJoinForm";
     }    
+    
     /*==========================
      *  챌린지 참가 및 결제
      *==========================*/
     @PostMapping("/challenge/join")
     public String join(@Valid @ModelAttribute("challengeJoinVO") ChallengeJoinVO challengeJoinVO, BindingResult result,
                        HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
-        //log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
+        log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
 
         // 유효성 체크
         if (result.hasErrors()) {
             log.debug("<<유효성 검사 실패>> : " + result.getAllErrors());
-            return joinForm(challengeJoinVO.getChal_num(), model);
+            return "challengeJoinForm";
         }
 
         // 회원번호
@@ -166,6 +168,16 @@ public class ChallengeController {
         // 챌린지 신청
         challengeService.insertChallengeJoin(challengeJoinVO);
 
+        // 챌린지 결제 정보 저장
+        ChallengePaymentVO challengePaymentVO = new ChallengePaymentVO();
+        challengePaymentVO.setChal_joi_num(challengeJoinVO.getChal_joi_num());
+        challengePaymentVO.setMem_num(member.getMem_num());
+        challengePaymentVO.setOd_imp_uid(request.getParameter("od_imp_uid"));
+        challengePaymentVO.setChal_pay_price(Long.parseLong(request.getParameter("chal_pay_price")));
+        challengePaymentVO.setChal_point(0); // 사용된 포인트 (기본값 0)
+        challengePaymentVO.setChal_pay_status(0); // 결제 상태 (0: 결제 완료)
+        challengeService.insertChallengePayment(challengePaymentVO);
+        
         // view에 메시지 추가
         model.addAttribute("message", "챌린지 신청이 완료되었습니다!");
         model.addAttribute("url", request.getContextPath() + "/challenge/list");

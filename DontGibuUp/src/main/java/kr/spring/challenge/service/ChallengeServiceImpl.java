@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeJoinVO;
+import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
 
 @Service
@@ -87,6 +88,11 @@ public class ChallengeServiceImpl implements ChallengeService{
     @Override
     public List<DonationCategoryVO> selectDonaCategories() {
         return challengeMapper.selectDonaCategories();
+    }
+    
+    @Override
+    public void insertChallengePayment(ChallengePaymentVO chalPayVO) {
+        challengeMapper.insertChallengePayment(chalPayVO);
     }
     
 }

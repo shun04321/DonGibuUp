@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
+import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
 
 @Mapper
@@ -28,9 +29,11 @@ public interface ChallengeMapper {
     public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
     public void updateChallengeJoin(ChallengeJoinVO chalJoinVO);
     public void deleteChallengeJoin(Long chal_joi_num);
-    // 기부 카테고리 목록 가져오기
+    //기부 카테고리 목록 가져오기
     @Select("SELECT dcate_num,dcate_name,dcate_charity FROM DONA_CATEGORY")
     List<DonationCategoryVO> selectDonaCategories();
+	//챌린지 결제
+    public void insertChallengePayment(ChallengePaymentVO chalPayVO);
 	
 	//챌린지 인증
 	
