@@ -19,7 +19,7 @@ public class ChallengeJoinVO {
     @NotNull
     private long mem_num; 				//회원 번호
     @NotNull
-    private int dcate_num; 				//기부 카테고리
+    private Integer dcate_num; 			//기부 카테고리
     
     private Double chal_joi_rate; 		//최종 달성률
     private Double chal_joi_total; 		//최종 기부액
