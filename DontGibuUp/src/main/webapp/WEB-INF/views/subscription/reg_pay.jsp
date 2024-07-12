@@ -53,9 +53,6 @@ div {
 	margin-bottom: 10px;
 }
 
-#sub_ndate {
-	width: 100px;
-}
 </style>
 </head>
 <body>
@@ -139,16 +136,7 @@ div {
 								</div>
 								  <form:errors path="sub_price" cssClass="text-danger"/>
 							</div>
-
-							<!-- 기부 날짜 선택 필드 -->
-							<div class="form-group">
-								<label for="sub_ndate">기부 날짜 선택</label><br>
-								<form:input path="sub_ndate" id="sub_ndate" name="sub_ndate" max="10"/>
-								  <form:errors path="sub_ndate" cssClass="text-danger"/>
-								<br> <small id="dateHelp" class="form-text text-muted"><br>
-									매월 지정된 날짜에 기부가 이루어집니다.<br> (1일에서 28일까지만 지정가능).
-								</small>
-							</div>
+							
 							<!-- 결제 수단 라디오 버튼 -->
 							<div class="form-group">
 								<label>결제 수단</label><br>
@@ -251,7 +239,17 @@ div {
 				$(this).addClass('selected');
 			}
 		});
-
+		$('#registerSubscription').submit(function(event) {
+	        // 기부 금액 체크박스 중 하나가 선택되었는지 확인
+	        if (!$("input[name='sub_price']").is(":checked")) {
+	        	alert("기부 금액을 선택해주세요.");
+	        	return false;
+	        }
+	        if(!$("input[name='sub_method']").is(":checked")){
+	       		alert("결제수단을 선택해주세요");
+	         	return false;
+	        }
+		}
 	});
 	</script>
 </body>
