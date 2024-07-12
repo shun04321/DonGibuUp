@@ -11,7 +11,7 @@
 			<li><a href="changePassword">비밀번호 수정</a></li>
 			</c:if>
 			<li><a href="inviteFriendEvent">친구초대</a></li>
-			<li>포인트</li>
+			<li><a href="point">포인트</a></li>
 		</ul>
 	</li>
 	<li class="side-menu">
@@ -24,7 +24,7 @@
 	<li class="side-menu">
 		<div>챌린지</div>
 		<ul class="side-menu-sub">
-			<li><a href="${pageContext.request.contextPath}/challenge/join/list">참가중 챌린지</a></li>
+			<li>참가중 챌린지</li>
 			<li>완료된 챌린지</li>
 			<li>개설 챌린지</li>
 		</ul>

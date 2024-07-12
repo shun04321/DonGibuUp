@@ -167,7 +167,8 @@ public class MemberController {
 		model.addAttribute("accessBtn", "로그인하기");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
 
-		return "resultPage";
+		session.invalidate();
+		return "signupResultPage";
 	}
 	
 
