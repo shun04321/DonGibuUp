@@ -103,9 +103,9 @@
             escrow: false,
             amount: document.getElementById('chal_fee').innerText.replace(/,/g, ''),
             tax_free: 3000,
-            buyer_name: "홍길동",
-            buyer_email: "buyer@example.com",
-            buyer_tel: "02-1670-5176",
+            buyer_name: "${member.mem_nick}",
+            buyer_email: "${member.email}",
+            buyer_tel: "${member.phone}",
             buyer_addr: "성수이로 20길 16",
             buyer_postcode: "04783",
             notice_url: "${pageContext.request.contextPath}/api/v1/payments/notice",
@@ -115,13 +115,15 @@
             custom_data: { userId: "${member.mem_num}" },
             display: { card_quota: [0, 6] },
             appCard: false,
-            useCardPoint: true,
+            useCardPoint: false,
             bypass: {
                 tosspayments: {
-                    useInternationalCardOnly: true // 영어 결제창 활성화
+                    useInternationalCardOnly: false // 영어 결제창 활성화
                 }
             }
         }, function (rsp) {
+        	console.log("결제 응답 객체: ", rsp); // 응답 객체 전체를 콘솔에 출력하여 디버깅
+
             if (rsp.success) {
                 var form = document.getElementById('challenge_join');
                 var imp_uid_input = document.createElement('input');
@@ -138,7 +140,15 @@
 
                 form.submit();
             } else {
-                alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
+            	console.error('결제 실패 응답: ', rsp); // 실패 응답을 콘솔에 출력
+                alert('결제에 실패하였습니다. 에러 내용: ' + (rsp.error_msg || '알 수 없는 오류'));
+            	
+                // 디버깅을 위한 추가 메시지 출력
+                if (rsp.error_msg) {
+                    console.error('에러 메시지: ', rsp.error_msg);
+                } else {
+                    console.error('알 수 없는 오류 발생');
+                }
             }
         });
     }
