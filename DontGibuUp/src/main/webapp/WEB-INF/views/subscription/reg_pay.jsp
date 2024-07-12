@@ -38,9 +38,8 @@
 	.payment-method input[type="radio"], .easypay-method input[type="radio"] {
 		display: none;
 	}
-	.easypay-methods {
-		margin-top: 10px;
-	}
+
+	
 </style>
 </head>
 <body>
@@ -120,7 +119,7 @@
 							</div>
 							
 							<!-- 간편 결제 수단 라디오 버튼 -->
-							<div class="form-group" style="margin-top: 10px;">
+							<div class="form-group easypay-container" style="margin-top: 10px; display: none;">
 								<label>간편 결제</label><br>
 								<div class="easypay-methods">
 									<label class="easypay-method" for="kakao">
@@ -146,15 +145,28 @@
 
 	<script>
 		$(document).ready(function () {
-			$('.payment-method, .easypay-method').click(function () {
+			$('.payment-method').click(function () {
 				var radio = $(this).find('input[type="radio"]');
 				if (radio.length) {
 					radio.prop('checked', true);
-					if ($(this).hasClass('payment-method')) {
-						$('.payment-method').removeClass('selected');
+					$('.payment-method').removeClass('selected');
+					$(this).addClass('selected');
+					
+					if (radio.val() === 'easy-pay') {
+						$('.easypay-container').slideDown();
 					} else {
+						$('.easypay-container').slideUp();
+						$('.easypay-methods input[type="radio"]').prop('checked', false);
 						$('.easypay-method').removeClass('selected');
 					}
+				}
+			});
+
+			$('.easypay-method').click(function () {
+				var radio = $(this).find('input[type="radio"]');
+				if (radio.length) {
+					radio.prop('checked', true);
+					$('.easypay-method').removeClass('selected');
 					$(this).addClass('selected');
 				}
 			});
