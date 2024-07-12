@@ -11,8 +11,8 @@
         <p>${challengeVO.chal_sdate} ~ ${challengeVO.chal_edate}</p>
         
         <p>참여금 <span id="chal_fee">${challengeVO.chal_fee}</span>원</p>
-        <p>100% 성공 : <span id="chal_fee_90"></span>원 + 추가 (??)원 환급, <span id="chal_fee_10"></span>원 기부</p>
-        <p>90% 이상 성공 : <span id="chal_fee_90"></span>원 환급, <span id="chal_fee_10"></span>원 기부</p>
+        <p>100% 성공 : <span class="chal_fee_90"></span>원 + 추가 (??)원 환급, <span class="chal_fee_10"></span>원 기부</p>
+        <p>90% 이상 성공 : <span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</p>
         <p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
     </div>
     <form:form action="${pageContext.request.contextPath}/challenge/join" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
@@ -52,26 +52,23 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        var chalFeeElement = document.getElementById('chal_fee');
-        var chalFee90Element = document.getElementById('chal_fee_90');
-        var chalFee10Element = document.getElementById('chal_fee_10');
+        let chalFeeElement = document.getElementById('chal_fee');
+        let chalFee90Element = document.querySelectorAll('.chal_fee_90');
+        let chalFee10Element = document.querySelectorAll('.chal_fee_10');
 
         if (chalFeeElement) {
             var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
             var chalFee90 = (chalFee * 0.9).toFixed(0);
-            var chalFee10 = (chalFee * 0.1).toFixed(0);
+            var chalFee10 = chalFee - chalFee90;
 
             chalFeeElement.innerText = formatNumber(chalFee);
-            chalFee90Element.innerText = formatNumber(chalFee90);
-            chalFee10Element.innerText = formatNumber(chalFee10);
+            
+            chalFee90Element.forEach(function(e){
+            	e.innerText = formatNumber(chalFee90);
+            });
+            chalFee10Element.forEach(function(e){
+            	e.innerText = formatNumber(chalFee10);
+            });
         }
-
-        // 오늘 날짜 설정
-        var today = new Date();
-        var day = ('0' + today.getDate()).slice(-2);
-        var month = ('0' + (today.getMonth() + 1)).slice(-2);
-        var year = today.getFullYear();
-        var todayString = year + '-' + month + '-' + day;
-        document.querySelector('input[name="chal_joi_date"]').value = todayString;
     });
 </script>

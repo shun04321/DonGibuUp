@@ -25,7 +25,6 @@ public class ChallengeJoinVO {
     private Double chal_joi_total; 		//최종 기부액
     private Integer chal_joi_success; 	//성공 여부
     private Double chal_joi_refund; 	//환급액
-    @NotNull
     private Integer chal_joi_status; 	//참가 상태
     
     private Date chal_joi_date; 		//챌린지 참가일
