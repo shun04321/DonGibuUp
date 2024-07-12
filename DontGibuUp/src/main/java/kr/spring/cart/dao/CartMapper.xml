@@ -3,6 +3,13 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.spring.cart.dao.CartMapper">
+	<resultMap type="cartVO" id="cartMap">
+		<result property="goods.item_num" column="item_num"/>
+		<result property="goods.item_name" column="item_name"/>
+		<result property="goods.item_price" column="item_price"/>
+		<result property="goods.item_stock" column="item_stock"/>
+		<result property="goods.item_photo" column="item_photo"/>
+	</resultMap>
 	<!-- 장바구니 등록 -->
 	<insert id="insertCart" parameterType="cartVO">
 	INSERT INTO cart(
@@ -17,4 +24,31 @@
 	#{mem_num}
 	)
 	</insert>
+	<!-- 장바구니 상품 수 -->
+	<select id="cartRowCount" parameterType="map"
+		resultType="integer">
+	SELECT	
+	COUNT(*)
+	FROM cart
+	</select>
+	<!-- 장바구니 목록 -->
+	<select id="cartList" parameterType="map" resultMap="cartMap">		
+		SELECT *
+		FROM(SELECT a.*,
+		rownum rnum FROM (SELECT 
+		<![CDATA[
+		REPLACE(REPLACE(item_name,'<','&lt;'),'>','&gt;')item_name,
+		]]>
+		item_num,
+		cart_num,
+		item_price,
+		item_stock,
+		item_photo
+		FROM cart 
+		JOIN item USING(item_num)   	
+		ORDER BY cart_num DESC)a)
+        <![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
 </mapper>

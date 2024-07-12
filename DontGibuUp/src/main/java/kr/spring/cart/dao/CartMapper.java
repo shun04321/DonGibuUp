@@ -13,6 +13,7 @@ import kr.spring.cart.vo.CartVO;
 public interface CartMapper {
 	//장바구니 목록 출력
 	public List<CartVO>cartList(Map<String,Object>map);
+	public Integer cartRowCount(Map<String, Object> map);
 	//장바구니 담기 - xml
 	public void insertCart(CartVO cart);
 	//장바구니 수정

@@ -2,6 +2,7 @@ package kr.spring.cart.vo;
 
 import javax.validation.constraints.NotBlank;
 
+import kr.spring.goods.vo.GoodsVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,7 +20,7 @@ public class CartVO {
 	@NotBlank
 	private long cart_quantity;  //장바구니 상품 수량
 	
-		
+	private GoodsVO goods;	
 	}
 
 
