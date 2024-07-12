@@ -38,7 +38,15 @@
 	.payment-method input[type="radio"], .easypay-method input[type="radio"] {
 		display: none;
 	}
-
+	
+	button[type="submit"]{
+		margin-left: 150px;
+		padding : 0px 10px;
+	}
+	
+	div{
+		margin-bottom: 10px;
+	}
 	
 </style>
 </head>
@@ -71,15 +79,14 @@
 								<div class="form-check">
 									<form:checkbox class="form-check-input" id="anonymousCheck"
 										path="sub_annoy" />
-									<label class="form-check-label" for="anonymousCheck">
-										익명으로 기부 </label>
+									<label class="form-check-label" for="anonymousCheck">익명으로 기부</label>
 								</div>
 							</div>
 							<!-- 기부자 이름 입력 필드 -->
 							<div class="form-group">
 								<label for="sub_name">기부자 이름</label>
 								<form:input type="text" class="form-control" id="sub_name"
-									path="sub_name" placeholder="기부자 이름" />
+									path="sub_name" placeholder="성함이나 별명을 적어주세요." />
 							</div>
 
 							<!-- 기부 금액 라디오 버튼 -->
@@ -103,8 +110,25 @@
 									<label class="form-check-label" for="radio3"> 유기견보호소
 										10,000원/월 지원 </label>
 								</div>
+								<div class="form-check">
+									<form:radiobutton class="form-check-input" id="radio4"
+										path="sub_price" value="20000" />
+									<label class="form-check-label" for="radio4"> 유기견보호소
+										20,000원/월 지원 </label>
+								</div>
+								<div class="form-check">
+									<form:radiobutton class="form-check-input" id="radio4"
+										path="sub_price" value="30000" />
+									<label class="form-check-label" for="radio4"> 유기견보호소
+										30,000원/월 지원 </label>
+								</div>
+								<div class="form-check">
+									<form:radiobutton class="form-check-input" id="radio5"
+										path="sub_price" value="50000" />
+									<label class="form-check-label" for="radio5"> 유기견보호소
+										50,000원/월 지원 </label>
+								</div>
 							</div>
-
 							<!-- 결제 수단 라디오 버튼 -->
 							<div class="form-group">
 								<label>결제 수단</label><br>
@@ -119,17 +143,17 @@
 							</div>
 							
 							<!-- 간편 결제 수단 라디오 버튼 -->
-							<div class="form-group easypay-container" style="margin-top: 10px; display: none;">
+							<div class="form-group easypay-container" style="display: none;">
 								<label>간편 결제</label><br>
 								<div class="easypay-methods">
 									<label class="easypay-method" for="kakao">
-										<form:radiobutton path="easypay_method" id="kakao" value="카카오" /><img src="../upload/카카오 페이 로고.png" width="50">
+										<form:radiobutton path="easypay_method" id="kakao" value="카카오" /><img src="../upload/카카오 페이 로고.png" width="60">
 									</label>
 									<label class="easypay-method" for="toss">
-										<form:radiobutton path="easypay_method" id="toss" value="toss" /><img src="../upload/토스 페이 로고.jpg" width="50">
+										<form:radiobutton path="easypay_method" id="toss" value="toss" /><img src="../upload/토스 페이 로고.jpg" width="60">
 									</label>
 									<label class="easypay-method" for="naver">
-										<form:radiobutton path="easypay_method" id="naver" value="네이버" /><img src="../upload/네이버 페이 로고.png" width="50">
+										<form:radiobutton path="easypay_method" id="naver" value="네이버" /><img src="../upload/네이버 페이 로고.png" width="60">
 									</label>
 								</div>
 							</div>
@@ -170,6 +194,17 @@
 					$(this).addClass('selected');
 				}
 			});
+			
+			
+			// 익명 여부 체크박스 상태 변경 시 이벤트 처리
+			$('#anonymousCheck').change(function () {
+				if ($(this).is(':checked')) {
+					$('#sub_name').prop('disabled', true); // 기부자 이름 입력 필드 비활성화
+				} else {
+					$('#sub_name').prop('disabled', false); // 기부자 이름 입력 필드 활성화
+				}
+			});
+			
 		});
 	</script>
 </body>
