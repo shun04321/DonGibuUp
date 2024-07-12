@@ -66,7 +66,7 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
     @Override
-    public List<ChallengeJoinVO> selectChallengeJoinList(Map<String, Object> map) {
+    public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map) {
         return challengeMapper.selectChallengeJoinList(map);
     }
 

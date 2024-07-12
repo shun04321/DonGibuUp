@@ -59,19 +59,32 @@
 	
 	<!-- 챌린지 현황 -->
 	<select id="selectChallengeJoinList" parameterType="map" resultType="challengeJoinVO">
+	    <![CDATA[
 	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_fee, dc.dcate_charity
 	    FROM chal_join cj
 	    JOIN challenge c ON cj.chal_num = c.chal_num
 	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
-	    WHERE 
-	    <if test="mem_num != null">
-	        cj.mem_num = #{mem_num} AND
+	    WHERE cj.mem_num = #{mem_num}
+	    ]]>
+	    <if test="status == 'pre'">
+	        <![CDATA[
+	        AND c.chal_sdate > TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	        ]]>
 	    </if>
-	    <if test="chal_num != null">
-	        cj.chal_num = #{chal_num} AND
+	    <if test="status == 'on'">
+	        <![CDATA[
+	        AND c.chal_sdate <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	        AND c.chal_edate >= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	        ]]>
 	    </if>
-	    1=1
+	    <if test="status == 'post'">
+	        <![CDATA[
+	        AND c.chal_edate < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+	        ]]>
+	    </if>
+	    <![CDATA[
 	    ORDER BY cj.chal_joi_date DESC
+	    ]]>
 	</select>
 	
 <!-- 	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">

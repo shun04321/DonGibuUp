@@ -187,19 +187,26 @@ public class ChallengeController {
     
     //리더
     
-
     /*==========================
      *  챌린지 현황
      *==========================*/
     @GetMapping("/challenge/join/list")
-    public ModelAndView joinList(HttpSession session) {
+    public ModelAndView list(@RequestParam("status") String status, HttpSession session) {
         MemberVO member = (MemberVO) session.getAttribute("user");
         Map<String, Object> map = new HashMap<>();
         map.put("mem_num", member.getMem_num());
+        map.put("status", status);
+
+        System.out.println("Status: " + status); // 로그 추가
 
         List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map);
 
-        return new ModelAndView("challengeJoinList", "list", list);
+        System.out.println("List size: " + list.size()); // 로그 추가
+
+        ModelAndView mav = new ModelAndView("challenge/challengeJoinList");
+        mav.addObject("list", list);
+        mav.addObject("status", status);
+        return mav;
     }
 
     /*==========================

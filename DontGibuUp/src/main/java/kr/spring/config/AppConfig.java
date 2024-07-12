@@ -37,8 +37,7 @@ public class AppConfig implements WebMvcConfigurer{
 		        .addPathPatterns("/category/updateCategory")
 				.addPathPatterns("/challenge/write")
 		        .addPathPatterns("/challenge/join")
-		        .addPathPatterns("/challenge/joinList")
-		        .addPathPatterns("/challenge/joinDetail");
+		        .addPathPatterns("/challenge/join/list");
 	}  
 	
 	@Bean

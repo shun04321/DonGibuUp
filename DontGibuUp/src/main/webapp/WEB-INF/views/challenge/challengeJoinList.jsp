@@ -8,7 +8,13 @@
     <title>챌린지 참가 목록</title>
 </head>
 <body>
-<h2>참가중 챌린지</h2>
+<h2>
+    <c:choose>
+        <c:when test="${status == 'pre'}">시작 전 챌린지</c:when>
+        <c:when test="${status == 'on'}">참가중 챌린지</c:when>
+        <c:when test="${status == 'post'}">완료된 챌린지</c:when>
+    </c:choose>
+</h2>
 <table border="1">
     <thead>
         <tr>
@@ -28,7 +34,7 @@
                 <td>${challengeJoin.chal_edate}</td>
                 <td>${challengeJoin.chal_fee}</td>
                 <td>${challengeJoin.dcate_charity}</td>
-                <td><a href="challenge/joinDetail?chal_joi_num=${challengeJoin.chal_joi_num}">상세보기</a></td>
+                <td><a href="${pageContext.request.contextPath}/challenge/joinDetail?chal_joi_num=${challengeJoin.chal_joi_num}">상세보기</a></td>
             </tr>
         </c:forEach>
     </tbody>
