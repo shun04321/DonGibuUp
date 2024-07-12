@@ -30,4 +30,10 @@ public class ChallengeJoinVO {
     private Date chal_joi_date; 		//챌린지 참가일
     private String chal_joi_ip;			//챌린지 참가자 ip
     
+    // 추가된 속성
+    private String chal_title;
+    private String chal_sdate;
+    private String chal_edate;
+    private Long chal_fee;
+    private String dcate_charity;
 }
