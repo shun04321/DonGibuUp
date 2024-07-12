@@ -3,3 +3,9 @@
 input[name="chal_public"]{
 	
 }
+.line{
+	width:600px;
+	margin:0 auto;
+	border:1px solid #000;
+	padding:10px 10px 30px 10px;
+}

@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div>
     <h2>챌린지 참가하기</h2>
-    <div>
+    <div class="line">
         <img src="<c:url value='/images/${challengeVO.chal_photo}' />" alt="${challengeVO.chal_title}" />
         <h3>${challengeVO.chal_title}</h3>
         <p>${challengeVO.chal_freq}</p>

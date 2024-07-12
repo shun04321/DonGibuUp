@@ -18,7 +18,7 @@
 		}
 	});
 </script>
-<div>
+<div class="line">
     <h2>챌린지 참가하기</h2>
     <div>
         <img src="<c:url value='/images/${challenge.chal_photo}' />" alt="${challenge.chal_title}" />
