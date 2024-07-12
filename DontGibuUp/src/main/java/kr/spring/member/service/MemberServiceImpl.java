@@ -142,6 +142,16 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updateMemberDetail(memberVO);
 	}
 
+	//비밀번호 수정
+	@Override
+	public void updatePassword(MemberVO memberVO) {
+		//비밀번호 해싱
+		String encpassword = pwEncoder.encode(memberVO.getMem_pw());
+		memberVO.setMem_pw(encpassword);
+		
+		memberMapper.updatePassword(memberVO);
+	}
+
 
 	
 }

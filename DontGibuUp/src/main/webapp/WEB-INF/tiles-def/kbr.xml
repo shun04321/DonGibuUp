@@ -16,7 +16,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/member/memberSocialSignup.jsp"/>
 	</definition>
-	<definition name="resultPage" extends="main">
+	<definition name="signupResultPage" extends="main">
 		<put-attribute name="title" value="회원가입 완료"/>
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/common/resultBody.jsp"/>
@@ -39,6 +39,16 @@
 		<put-attribute name="title" value="MyPage - 비밀번호 변경" />
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/mypage/memberChangePassword.jsp"/>
+	</definition>
+	<definition name="changePasswordResultPage" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 비밀번호 변경"/>
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/common/resultBody.jsp"/>
+	</definition>
+	<definition name="inviteFriendEvent" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 친구초대" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberInviteFriendEvent.jsp"/>
 	</definition>
 </tiles-definitions>
 

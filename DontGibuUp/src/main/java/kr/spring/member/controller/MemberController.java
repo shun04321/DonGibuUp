@@ -55,7 +55,8 @@ public class MemberController {
 	 *==================================*/
 	//일반 회원가입 폼
 	@GetMapping("/member/signup")
-	public String signupForm() {
+	public String signupForm(@RequestParam(value = "rcode", required = false) String rcode, Model model) {
+		model.addAttribute("rcode", rcode);
 		return "memberSignup";
 	}
 	
@@ -80,7 +81,7 @@ public class MemberController {
 
 		if (result.hasErrors()) {
 			log.debug("<<에러>> : " + result.getAllErrors());
-			return signupForm();
+			return "memberSignup";
 		}
 		//회원가입 타입 지정(1:일반 회원가입)
 		memberVO.setMem_reg_type(1);
@@ -92,7 +93,7 @@ public class MemberController {
 				memberVO.setRecommend_status(1);
 			} else {
 	            result.rejectValue("friend_rcode", "invalidRCode");
-	            return signupForm(); // 회원가입 폼 다시 보여주기
+	            return "memberSignup"; // 회원가입 폼 다시 보여주기
 			}
 		} else {
 			//미참여
@@ -102,11 +103,11 @@ public class MemberController {
 		//이메일,닉네임 UK 체크
 		if (memberService.selectMemberByEmail(memberVO.getMem_email()) != null) {
 			result.rejectValue("mem_email", "emailExists");
-			return signupForm();
+			return "memberSignup";
 		}
 		if (memberService.selectMemberByNick(memberVO.getMem_nick()) != null) {
 			result.rejectValue("mem_nick", "nickExists");
-			return signupForm();
+			return "memberSignup";
 		}
 
 		//회원가입
@@ -117,7 +118,7 @@ public class MemberController {
 		model.addAttribute("accessBtn", "로그인하기");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
 
-		return "resultPage";
+		return "signupResultPage";
 	}
 	
 	//카카오 회원가입
@@ -144,11 +145,11 @@ public class MemberController {
 		//이메일,닉네임 UK 체크
 		if (memberService.selectMemberByEmail(memberVO.getMem_email()) != null) {
 			result.rejectValue("mem_email", "emailExists");
-			return signupForm();
+			return "memberSignup";
 		}
 		if (memberService.selectMemberByNick(memberVO.getMem_nick()) != null) {
 			result.rejectValue("mem_nick", "nickExists");
-			return signupForm();
+			return "memberSignup";
 		}
         
         log.debug("<<회원가입>> : " + memberVO);

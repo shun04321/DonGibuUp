@@ -143,25 +143,23 @@ $(function() {
 		전송방지
 	================================*/
 	$('#member_update').submit(function(event) {
-		let phone1 = $('#phone1').val();
 		let phone2 = $('#phone2').val();
 		let phone3 = $('#phone3').val();
+		
+		console.log('phone2:', phone2);
+		console.log('phone3:', phone3);
 		
 		let birth_year = $('#birth_year').val();
 		let birth_month = $('#birth_month').val();
 		let birth_day = $('#birth_day').val();
 		
-		$('#mem_phone').val(phone1 + phone2 + phone3);
-		$('#mem_birth').val(formatBirthDate(birth_year, birth_month, birth_day));
+		if (phone2 == "" && phone3 == "") {// phone2와 phone3 둘 다 빈 문자열인 경우를 처리
+		    $('#mem_phone').val('');
+		} else { 
+		    $('#mem_phone').val('010' + phone2 + phone3);
+		}
 		
-        // 데이터 조합
-/*        var formData = {
-            mem_phone: phone1 + phone2 + phone3,
-            mem_birth: birth_year + birth_month + birth_day
-        };*/
-
-        // 폼 데이터에 추가
-/*        $.extend($(this).serialize(), formData);*/
+		$('#mem_birth').val(formatBirthDate(birth_year, birth_month, birth_day));
 		
 	});
 

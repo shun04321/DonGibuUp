@@ -1,5 +1,5 @@
 $(function() {
-	let pw_checked = 0;
+	let cur_pw_checked = 0;
 	/*===============================
 		마이페이지 - 비밀번호 변경
 	================================*/
@@ -17,24 +17,26 @@ $(function() {
 				const inputElement = $('#current_pw');
 				feedbackElement.show();
 				if (param.result == "matched") {
-					pw_checked = 1;
+					cur_pw_checked = 1;
 					feedbackElement.text('비밀번호가 일치합니다.');
 					feedbackElement.css('color', 'green');
 
 					inputElement.css('border-color', 'green');
 				} else if (param.result == "notMatched" && currentPassword != "") {
-					pw_checked = 0;
+					cur_pw_checked = 0;
 					feedbackElement.text('비밀번호가 일치하지 않습니다.');
 					feedbackElement.css('color', 'red');
 
 					inputElement.css('border-color', 'red');
 					inputElement.val('');
 				} else if (currentPassword == "") {
-					pw_checked = 0;
+					cur_pw_checked = 0;
 					feedbackElement.text('');
 					feedbackElement.css('color', 'black');
 				
 					inputElement.css('border-color', 'black');
+				} else if (param.result == "logout") {
+					alert('로그인 후 이용해주세요');
 				}
 			},
 			error: function() {
@@ -47,10 +49,51 @@ $(function() {
 	$('#current_pw').on('keyup', function() {
 		const feedbackElement = $('#password_feedback');
 		const inputElement = $('#current_pw');
-		pw_checked = 0;
+		cur_pw_checked = 0;
 		feedbackElement.text('');
 		feedbackElement.css('color', 'black');
 
 		inputElement.css('border-color', 'black');
+	});
+	
+	/*===============================
+		비밀번호 일치 확인
+	================================*/
+	let check_pw_msg = $('#check_pw_msg');
+	let pw_checked = 0;
+
+	$('#check_pw').blur(function() {
+		if ($('#mem_pw').val().trim() != '') {
+			if ($('#mem_pw').val() == $('#check_pw').val()) {
+				pw_checked = 1;
+				check_pw_msg.text('비밀번호가 일치합니다');
+				check_pw_msg.css('color', 'green');
+			} else {
+				pw_checked = 0;
+				check_pw_msg.text('비밀번호가 일치하지 않습니다');
+				check_pw_msg.css('color', 'red');
+			}
+		}
+	});
+
+	//비밀번호나 비밀번호확인 다시 입력시 알림 메세지 없애기
+	$('#mem_pw, #check_pw').on('keyup', function() {
+		pw_checked = 0;
+		check_pw_msg.text('');
+	});
+
+	//비밀번호 다시 입력시 비밀번호 확인 지우기
+	$('#mem_pw').on('keyup', function() {
+		pw_checked = 0;
+		$('#check_pw').val('');
+	});
+	
+	/*===============================
+		전송방지
+	================================*/
+	$('#change_password').submit(function(event) {
+		if (pw_checked == 0 || cur_pw_checked == 0) {
+			event.preventDefault();
+		}
 	});
 });

@@ -45,7 +45,7 @@
 		</li>
 		<li>
 			<form:label path="mem_phone">전화번호</form:label>
-		    <input type="text" id="phone1" style="width:100px;" required disabled value="010">
+		    <span>010</span>
 		    -
 		    <input type="text" id="phone2" maxlength="4" style="width:100px;" value="${phone2}">
 		    -

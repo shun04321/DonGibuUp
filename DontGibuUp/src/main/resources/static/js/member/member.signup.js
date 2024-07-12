@@ -51,7 +51,6 @@ $(function() {
 						err_msg.text('');
 						email_check_msg.text('사용할 수 없는 이메일입니다');
 						email_check_msg.css('color', 'red');
-						console.log(param.result);
 					} else if (param.result == "notExist") {
 						email_checked = 1;
 						err_msg.text('');
@@ -95,7 +94,6 @@ $(function() {
 						err_msg.text('');
 						nick_check_msg.text('사용할 수 없는 닉네임입니다');
 						nick_check_msg.css('color', 'red');
-						console.log(param.result);
 					} else if (param.result == "notExist") {
 						nick_checked = 1;
 						err_msg.text('');
@@ -124,12 +122,9 @@ $(function() {
 	================================*/
 	$('#member_signup').submit(function(event) {
 		if (pw_checked == 0 || email_checked == 0 || nick_checked == 0) {
-			if ($('#mem_email').val().trim().length != 0 && $('#mem_nick').val().trim().length != 0 && $('#mem_pw').val().trim().length != 0) {
-				event.preventDefault();
-				$('#mem_email').trigger('blur');
-				$('#mem_nick').trigger('blur');
-				$('#check_pw').trigger('blur');
-			}
+			$('#mem_email').trigger('blur');
+			$('#mem_nick').trigger('blur');
+			$('#check_pw').trigger('blur');
 		}
 	});
 

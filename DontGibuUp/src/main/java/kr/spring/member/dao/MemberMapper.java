@@ -58,4 +58,8 @@ public interface MemberMapper {
 	//회원정보 수정
 	public void updateMember(MemberVO memberVO);
 	public void updateMemberDetail(MemberVO memberVO);
+	
+	//비밀번호 수정
+	@Update("UPDATE member SET mem_pw=#{mem_pw} WHERE mem_num=#{mem_num}")
+	public void updatePassword(MemberVO memberVO);
 }

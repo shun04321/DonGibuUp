@@ -3,3 +3,7 @@
 .form-error {
 	color: red;
 }
+
+.clickable-image {
+	cursor: pointer;
+}
