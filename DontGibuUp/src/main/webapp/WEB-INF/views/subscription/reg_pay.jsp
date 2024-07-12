@@ -15,6 +15,33 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
+<style>
+	.payment-methods, .easypay-methods {
+		display: flex;
+		gap: 10px;
+	}
+	.payment-method, .easypay-method {
+		padding: 10px 20px;
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		background-color: white;
+		cursor: pointer;
+		transition: background-color 0.3s;
+		display: flex;
+		align-items: center;
+	}
+	.payment-method.selected, .easypay-method.selected {
+		background-color: #007bff;
+		color: white;
+		border-color: #007bff;
+	}
+	.payment-method input[type="radio"], .easypay-method input[type="radio"] {
+		display: none;
+	}
+	.easypay-methods {
+		margin-top: 10px;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -37,13 +64,14 @@
 						<form:form id="registerSubscription"
 							modelAttribute="subscriptionVO" action="registerSubscription"
 							method="post" style="width: 465px;">
-							<input type="hidden" name="dcate_num" value="${category.dcate_num}">
+							<input type="hidden" name="dcate_num"
+								value="${category.dcate_num}">
 							<!-- 익명 여부 체크박스 -->
 							<div class="form-group">
 								<label>익명 여부</label>
 								<div class="form-check">
 									<form:checkbox class="form-check-input" id="anonymousCheck"
-										path="sub_annoy"/>
+										path="sub_annoy" />
 									<label class="form-check-label" for="anonymousCheck">
 										익명으로 기부 </label>
 								</div>
@@ -54,7 +82,6 @@
 								<form:input type="text" class="form-control" id="sub_name"
 									path="sub_name" placeholder="기부자 이름" />
 							</div>
-
 
 							<!-- 기부 금액 라디오 버튼 -->
 							<div class="form-group">
@@ -79,10 +106,38 @@
 								</div>
 							</div>
 
+							<!-- 결제 수단 라디오 버튼 -->
+							<div class="form-group">
+								<label>결제 수단</label><br>
+								<div class="payment-methods">
+									<label class="payment-method" for="card">
+										<form:radiobutton path="sub_method" id="card" value="card" />카드
+									</label>
+									<label class="payment-method" for="easy-pay">
+										<form:radiobutton path="sub_method" id="easy-pay" value="easy-pay" />간편결제
+									</label>
+								</div>
+							</div>
+							
+							<!-- 간편 결제 수단 라디오 버튼 -->
+							<div class="form-group" style="margin-top: 10px;">
+								<label>간편 결제</label><br>
+								<div class="easypay-methods">
+									<label class="easypay-method" for="kakao">
+										<form:radiobutton path="easypay_method" id="kakao" value="카카오" /><img src="../upload/카카오 페이 로고.png" width="50">
+									</label>
+									<label class="easypay-method" for="toss">
+										<form:radiobutton path="easypay_method" id="toss" value="toss" /><img src="../upload/토스 페이 로고.jpg" width="50">
+									</label>
+									<label class="easypay-method" for="naver">
+										<form:radiobutton path="easypay_method" id="naver" value="네이버" /><img src="../upload/네이버 페이 로고.png" width="50">
+									</label>
+								</div>
+							</div>
+							
 							<!-- 기부 시작하기 버튼 -->
-							<button type="submit" class="btn btn-primary">기부 시작하기</button>
+							<button type="submit" class="btn btn-primary" style="margin-top: 10px;">기부 시작하기</button>
 						</form:form>
-
 					</div>
 				</div>
 			</div>
@@ -90,15 +145,20 @@
 	</div>
 
 	<script>
-        $(document).ready(function() {
-            $('#anonymousCheck').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#sub_name').prop('disabled', true);
-                } else {
-                    $('#sub_name').prop('disabled', false);
-                }
-            });
-        });
-    </script>
+		$(document).ready(function () {
+			$('.payment-method, .easypay-method').click(function () {
+				var radio = $(this).find('input[type="radio"]');
+				if (radio.length) {
+					radio.prop('checked', true);
+					if ($(this).hasClass('payment-method')) {
+						$('.payment-method').removeClass('selected');
+					} else {
+						$('.easypay-method').removeClass('selected');
+					}
+					$(this).addClass('selected');
+				}
+			});
+		});
+	</script>
 </body>
 </html>

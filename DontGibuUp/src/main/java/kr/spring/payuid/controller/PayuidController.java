@@ -30,21 +30,6 @@ import lombok.extern.slf4j.Slf4j;
 public class PayuidController {
 	@Autowired
 	private PayuidService payuidService;
-	
-	@PostMapping("/category/registerSubscription")
-	public String signup(@Validated(ValidationSequence.class) SubscriptionVO subscriptionVO, BindingResult result, Model model,
-			HttpServletRequest request) {
-		if(result.hasErrors()) {
-			log.debug("result : " + result.getAllErrors());
-			return "categoryDetail";
-		}
-		log.debug("subscriptionVO : " + subscriptionVO);
-		model.addAttribute("accessTitle", "회원가입 완료");
-		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
-		model.addAttribute("accessBtn", "로그인하기");
-		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
 
-		return "getpayuid";
-	}
 }
 	

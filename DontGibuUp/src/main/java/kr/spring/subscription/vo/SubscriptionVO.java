@@ -16,4 +16,6 @@ public class SubscriptionVO {
 	private int sub_price;
 	private String sub_ndate;
 	private int sub_status;
+	private String sub_method;
+	private String easypay_method;
 }
