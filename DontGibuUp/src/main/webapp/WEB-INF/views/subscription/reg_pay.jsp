@@ -157,6 +157,15 @@
 									</label>
 								</div>
 							</div>
+							<!-- 기부 날짜 선택 필드 -->
+							<div class="form-group">
+								<label for="sub_ndate">기부 날짜 선택</label>
+									<form:input path="sub_ndate" id="sub_ndate" name="sub_ndate"/>
+								<small id="dateHelp" class="form-text text-muted">
+									매월 지정된 날짜에 기부가 이루어집니다.
+									(1일에서 28일까지만 지정가능).
+								</small>
+							</div>
 							
 							<!-- 기부 시작하기 버튼 -->
 							<button type="submit" class="btn btn-primary" style="margin-top: 10px;">기부 시작하기</button>
@@ -185,6 +194,17 @@
 					}
 				}
 			});
+			//오늘 날짜 구하기
+			function getCurrentDate() {
+	            var today = new Date();
+	            var dd = String(today.getDate()).padStart(2, '0'); // 일자
+	            var mm = String(today.getMonth() + 1).padStart(2, '0'); // 월 (January is 0!)
+	            var yyyy = today.getFullYear(); // 년도
+	            return yyyy + '-' + mm + '-' + dd;
+	        }
+
+	        // 오늘 날짜를 기본으로 설정
+	        $('#sub_date').val(getCurrentDate());
 
 			$('.easypay-method').click(function () {
 				var radio = $(this).find('input[type="radio"]');
@@ -203,8 +223,7 @@
 				} else {
 					$('#sub_name').prop('disabled', false); // 기부자 이름 입력 필드 활성화
 				}
-			});
-			
+			}); 
 		});
 	</script>
 </body>

@@ -3,7 +3,23 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.payuid.dao.PayuidMapper">	
-
+	<insert id="registerPayUId" parameterType="payuidVO">
+		INSERT INTO pay_uid 
+		(pay_uid, 
+		mem_num
+		<if test="easypay_method != null">
+ 		   ,easypay_method
+ 		</if>
+		) 
+		VALUES 
+		(#{pay_uid},
+		 #{mem_num}
+		 <if test="easypay_method != null">
+ 		   ,#{easypay_method}
+ 		</if>
+		 )
+		
+	</insert>
 </mapper>
 
 

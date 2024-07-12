@@ -18,4 +18,5 @@ public class SubscriptionVO {
 	private int sub_status;
 	private String sub_method;
 	private String easypay_method;
+	private String card_nickname;
 }

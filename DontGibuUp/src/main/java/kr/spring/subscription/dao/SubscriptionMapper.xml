@@ -3,8 +3,22 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.subscription.dao.SubscriptionMapper">
-	<!-- 회원가입 -->
-	
+	<insert id="insertSubscription" parameterType="SubscriptionVO">
+ 		INSERT INTO subscription(
+ 		sub_num,
+ 		mem_num,
+ 		dcate_num,
+ 		sub_name,
+ 		sub_annony,
+ 		sub_price,
+ 		sub_ndate,
+ 		sub_status,
+ 		)
+ 		   <if test="dcate_icon != null">
+ 		   dcate_icon = #{dcate_icon},
+ 		   </if>
+ 		   
+ 	</insert>       
  </mapper>
 
 
