@@ -28,40 +28,41 @@
 <form:form action="updateMember" id="member_update" modelAttribute="memberVO">
 	<ul>
 		<li>
-			<label for="mem_email">이메일</label>
-			<input id="mem_email" value="${memberVO.mem_email}" disabled/>
+	        <form:label path="mem_email">이메일</form:label>
+	        <form:input path="mem_email" readonly="true" disabled="true"/>
+	        <form:hidden path="mem_email"/>
 		</li>
 		<li>
 			<form:label path="mem_nick">닉네임</form:label>
-			<form:input path="mem_nick" />
+			<form:input path="mem_nick" maxlength="10"/>
 			<span id="nick_check_msg"></span>
 			<form:errors path="mem_nick" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<form:label path="mem_name">이름</form:label>
-			<form:input path="mem_name"/>
+			<form:input path="mem_name" maxlength="10"/>
 			<form:errors path="mem_name" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<form:label path="mem_phone">전화번호</form:label>
 		    <input type="text" id="phone1" style="width:100px;" required disabled value="010">
 		    -
-		    <input type="text" id="phone2" maxlength="4" style="width:100px;">
+		    <input type="text" id="phone2" maxlength="4" style="width:100px;" value="${phone2}">
 		    -
-		    <input type="text" id="phone3" maxlength="4" style="width:100px;">
+		    <input type="text" id="phone3" maxlength="4" style="width:100px;" value="${phone3}">
 		    <form:hidden path="mem_phone"/>
 		    <form:errors path="mem_phone" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<label>생년월일</label>
+		    <select id="birth_year" name="birth_year" data-year="${birth_year}"></select>
 		    <label for="birth_year" style="width:20px;">년</label>
-		    <select id="birth_year" name="birth_year"></select>
 		
+		    <select id="birth_month" name="birth_month" data-month="${birth_month}"></select>
 		    <label for="birth_month" style="width:20px;">월</label>
-		    <select id="birth_month" name="birth_month"></select>
 		
+		    <select id="birth_day" name="birth_day" data-day="${birth_day}"></select>
 		    <label for="birth_day" style="width:20px;">일</label>
-		    <select id="birth_day" name="birth_day"></select>
 		    <form:hidden path="mem_birth"/>
 		    <form:errors path="mem_birth" cssClass="form-error"></form:errors>
 		</li>

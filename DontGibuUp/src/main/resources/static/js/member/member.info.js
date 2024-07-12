@@ -168,6 +168,12 @@ $(function() {
   const yearSelect = $('#birth_year');
   const monthSelect = $('#birth_month');
   const daySelect = $('#birth_day');
+  
+  const birthYear = $('#birth_year').attr('data-year');
+  const birthMonth = $('#birth_month').attr('data-month');
+  const birthDay = $('#birth_day').attr('data-day');
+  
+  console.log(birthYear, birthMonth, birthDay);
 
   // 년도 옵션 추가
   const currentYear = new Date().getFullYear();
@@ -185,17 +191,25 @@ $(function() {
   for (let day = 1; day <= 31; day++) {
     daySelect.append(`<option value="${day}">${day}</option>`);
   }
+  
+   // 서버에서 전달된 값으로 미리 선택
+  if (birthYear) {
+    yearSelect.val(birthYear);
+  }
+  if (birthMonth) {
+    monthSelect.val(birthMonth);
+  }
+  if (birthDay) {
+    daySelect.val(birthDay);
+  }
 
 });
 
 function formatBirthDate(year, month, day) {
-    // 년도 뒤 두 자리 추출
-    let birth_year = year.substring(2);
-
     // 월과 일이 한 자리 수일 경우 앞에 0을 붙여줌
     let birth_month = ('0' + month).slice(-2);
     let birth_day = ('0' + day).slice(-2);
 
     // 결과를 합쳐서 반환
-    return birth_year + birth_month + birth_day;
+    return year + birth_month + birth_day;
 }

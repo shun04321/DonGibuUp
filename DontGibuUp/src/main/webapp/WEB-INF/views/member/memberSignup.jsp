@@ -11,7 +11,7 @@
 	<ul>
 		<li>
 			<form:label path="mem_email">이메일*</form:label>
-			<form:input path="mem_email"/>
+			<form:input path="mem_email"  maxlength="50"/>
 			<%--이메일 중복체크하기--%>
 			<span id="email_check_msg"></span>
 			<form:errors path="mem_email" cssClass="form-error"></form:errors>
@@ -29,14 +29,14 @@
 		</li>
 		<li>
 			<form:label path="mem_nick">닉네임*</form:label>
-			<form:input path="mem_nick"/>
+			<form:input path="mem_nick" maxlength="10"/>
 			<%--닉네임 중복체크하기--%>
 			<span id="nick_check_msg"></span>
 			<form:errors path="mem_nick" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<form:label path="friend_rcode">추천인 코드(선택)</form:label>
-			<form:input path="friend_rcode" />
+			<form:input path="friend_rcode"  maxlength="8"/>
 			<form:errors path="friend_rcode" cssClass="form-error"></form:errors>
 		</li>
 	</ul>
