@@ -8,12 +8,12 @@
 <div class="page-main">
 	<h2>상품 목록</h2>
 	<div>
-		<a href="list">전체</a> <a href="list?category=1">자바</a> | <a
-			href="list?category=2">데이터베이스</a> | <a href="list?category=3">자바스크립트</a>
-		| <a href="list?category=4">기타</a> |
+		<a href="list">전체</a> <a href="list?dcate_num=1">자바</a> | <a
+			href="list?dcate_num=2">데이터베이스</a> | <a href="list?dcate_num=3">자바스크립트</a>
+		| <a href="list?dcate_num=4">기타</a> |
 	</div>
 	<form action="list" id="search_form" method="get">
-		<input type="hidden" name="category" value="${param.category}">
+		<input type="hidden" name="dcate_num" value="${param.dcate_num}">
 		<ul class="search">
 			<li><select name="keyfield" id="keyfield">
 					<option value="1" <c:if test="${param.keyfield == 1}">select</c:if>>제목</option>
@@ -53,7 +53,6 @@
 	<c:if test="${count ==0}">
 		<div class="result-display">표시할 상품이 없습니다.</div>
 	</c:if>
-	<form id="goodsForm" action="/add-to-cart" method="post">
 	<c:if test="${count > 0}">
 	<table class="striped-table">
     <thead>
@@ -85,7 +84,4 @@
 	</table>
   
   </c:if>
-  </form>
-
-	
 </div>
