@@ -8,11 +8,11 @@
 $(function(){
 	$('#step1').submit(function(event){
 
-        //카테고리 검사
+   /*      //카테고리 검사
         if ($('#dcate_num').val() == null) {
             alert('카테고리를 선택해주세요.');
             return false;
-        }
+        } */
 		//체크박스 검사
 		if($('.validation_checkbox:checked').length!=3){
 			alert('안내사항을 읽고 체크박스를 체크해주세요.');
@@ -32,6 +32,7 @@ $(function(){
 					<form:option value="1">노약자</form:option>
 					<form:option value="2">동물</form:option>
 				</form:select>
+				<form:errors path="dcate_num" cssClass="error-color"/>
 			</li>
 			<li>
 				<h3>모금 진행 일정과 과정</h3>
