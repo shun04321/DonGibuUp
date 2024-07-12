@@ -1,5 +1,8 @@
 package kr.spring.member.controller;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -25,6 +28,7 @@ import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.KakaoInfo;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.AuthCheckException;
+import kr.spring.util.KakaoURLParameterExtractor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -235,7 +239,21 @@ public class MemberController {
 				//회원가입 폼으로 redirect
 				session.setAttribute("memberVO", memberVO);
 				redirectUrl = "/member/signup/kakao";
+				
+				
+				// rcode 파라미터가 있으면 리다이렉트 URL에 추가
+		        String url = "https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26rcode%3DDIOBOGP7%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8000%252Fmember%252Fcallback%252Fkakao%26through_account%3Dtrue%26client_id%3D361a53f841ae7d3b7fc4a74f0535dba2#login";
+		        try {
+		            // URL 디코딩
+		            String decodedURL = URLDecoder.decode(url, StandardCharsets.UTF_8.toString());
+		            // rcode 값 추출
+		            String rcode = KakaoURLParameterExtractor.extractRcode(decodedURL);
+		            session.setAttribute("rcode", rcode);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
 			}
+			
 
 			// 리다이렉트 URL을 반환
 			return ResponseEntity.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, redirectUrl).body(null);

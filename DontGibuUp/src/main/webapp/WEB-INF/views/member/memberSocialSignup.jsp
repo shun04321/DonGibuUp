@@ -22,7 +22,7 @@
 		</li>
 		<li>
 			<form:label path="friend_rcode">추천인 코드(선택)</form:label>
-			<form:input path="friend_rcode"  maxlength="8"/>
+			<form:input path="friend_rcode"  maxlength="8" value="${rcode}"/>
 			<form:errors path="friend_rcode" cssClass="form-error"></form:errors>
 		</li>
 	</ul>
