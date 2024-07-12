@@ -20,12 +20,9 @@
             <form:hidden path="chal_num" value="${challengeJoinVO.chal_num}"/>
             <li>
                 <form:label path="dcate_num">기부 카테고리</form:label>
-                <form:select path="dcate_num" onchange="showCharityInfo(this)">
-                    <option disabled="disabled" selected>선택하세요</option>
-                    <c:forEach var="category" items="${categories}">
-                        <form:option value="${category.dcate_num}" data-charity="${category.dcate_charity}">${category.dcate_name}</form:option>
-                    </c:forEach>
-                </form:select>
+                <c:forEach var="category" items="${categories}">
+                    <form:radiobutton path="dcate_num" value="${category.dcate_num}" label="${category.dcate_name}" data-charity="${category.dcate_charity}" onclick="showCharityInfo(this)"/>
+                </c:forEach>
                 <form:errors path="dcate_num" cssClass="error-color"/>
             </li>
             <li>
@@ -41,9 +38,8 @@
 </div>
 
 <script>
-    function showCharityInfo(selectElement) {
-        var selectedOption = selectElement.options[selectElement.selectedIndex];
-        var charityInfo = selectedOption.getAttribute('data-charity');
+    function showCharityInfo(radioElement) {
+        var charityInfo = radioElement.getAttribute('data-charity');
         document.getElementById('charityInfo').innerText = charityInfo || '';
     }
 
@@ -64,10 +60,10 @@
             chalFeeElement.innerText = formatNumber(chalFee);
             
             chalFee90Element.forEach(function(e){
-            	e.innerText = formatNumber(chalFee90);
+                e.innerText = formatNumber(chalFee90);
             });
             chalFee10Element.forEach(function(e){
-            	e.innerText = formatNumber(chalFee10);
+                e.innerText = formatNumber(chalFee10);
             });
         }
     });
