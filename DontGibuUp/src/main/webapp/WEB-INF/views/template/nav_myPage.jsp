@@ -24,9 +24,9 @@
 	<li class="side-menu">
 		<div>챌린지</div>
 		<ul class="side-menu-sub">
-			<li><a href="${pageContext.request.contextPath}/challenge/join/list">참가중 챌린지</a></li>
+			<li>시작 전 챌린지</li>
+			<li><a href="${pageContext.request.contextPath}/challenge/join/list">진행중인 챌린지</a></li>
 			<li>완료된 챌린지</li>
-			<li>개설 챌린지</li>
 		</ul>
 	</li>
 	<li class="side-menu">
