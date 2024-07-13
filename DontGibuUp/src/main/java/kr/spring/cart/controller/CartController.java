@@ -118,4 +118,18 @@ public class CartController {
             return "fail";
         }
     }
+    /*===================================
+     *   선택된 장바구니 항목 수량변경
+     *==================================*/
+    @PostMapping("/cart/updateQuantity")
+    @ResponseBody
+    public String updateCartQuantity(@RequestParam("cart_num") int cart_num,
+                                     @RequestParam("cart_quantity") int cart_quantity) {
+        try {
+            cartService.updateCartQuantity(cart_num, cart_quantity);
+            return "success";
+        } catch (Exception e) {
+            return "error";
+        }
+    }
 }
