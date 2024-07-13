@@ -17,18 +17,17 @@
     <table class="striped-table">
         <thead>
             <tr>
-                <th>상품번호</th>
                 <th>사진</th>
                 <th>장바구니번호</th>
                 <th width="400">상품명</th>
                 <th>가격</th>
                 <th>재고</th>
+                <th>담은 수량</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach var="cart" items="${list}">
                 <tr>
-                    <td class="align-center">${cart.goods.item_num}</td>
                     <td class="align-center">
                         <img src="${pageContext.request.contextPath}${cart.goods.item_photo}" class="my-photo" width="100px" height="100px">
                     </td>
@@ -38,6 +37,7 @@
                     </td>
                     <td class="align-center">${cart.goods.item_price}</td>
                     <td class="align-center">${cart.goods.item_stock}</td>
+                    <td class="align-center">${cart.cart_quantity}</td>
                 </tr>
             </c:forEach>
         </tbody>

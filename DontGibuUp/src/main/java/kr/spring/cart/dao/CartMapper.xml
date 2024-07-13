@@ -10,6 +10,19 @@
 		<result property="goods.item_stock" column="item_stock"/>
 		<result property="goods.item_photo" column="item_photo"/>
 	</resultMap>
+	<!-- 항목 존재 여부 확인 -->
+	<select id="checkCartItem" parameterType="cartVO" resultType="int">
+		SELECT COUNT(*) 
+		FROM cart 
+		WHERE item_num = #{item_num} AND mem_num = #{mem_num}
+	</select>
+	<!-- 기존 항목 수량 업데이트 -->
+	<update id="updateCartQuantity" parameterType="cartVO">
+		UPDATE cart 
+		SET cart_quantity = cart_quantity + #{cart_quantity}
+		WHERE item_num = #{item_num} AND mem_num = #{mem_num}
+	</update>
+
 	<!-- 장바구니 등록 -->
 	<insert id="insertCart" parameterType="cartVO">
 	INSERT INTO cart(
@@ -39,7 +52,7 @@
 		<![CDATA[
 		REPLACE(REPLACE(item_name,'<','&lt;'),'>','&gt;')item_name,
 		]]>
-		item_num,
+		cart_quantity,
 		cart_num,
 		item_price,
 		item_stock,

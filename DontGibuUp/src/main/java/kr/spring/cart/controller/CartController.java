@@ -53,7 +53,7 @@ public class CartController {
         cart.setCart_quantity(cartQuantity);
         cart.setMem_num(memNum);
         
-        cartService.insertCart(cart);
+        cartService.insertOrUpdateCart(cart);
         
 
         model.addAttribute("message", "성공적으로 상품이 등록되었습니다.");

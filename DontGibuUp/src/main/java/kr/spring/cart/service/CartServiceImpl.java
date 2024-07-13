@@ -17,9 +17,16 @@ public class CartServiceImpl implements CartService {
 	CartMapper cartMapper;
 	
 	@Override
-	public void insertCart(CartVO cartVO) {
-		cartMapper.insertCart(cartVO);
-		
+	public void insertOrUpdateCart(CartVO cartVO) {
+		// 기존 항목이 있는지 확인
+		int count = cartMapper.checkCartItem(cartVO);
+		if (count > 0) {
+			// 기존 항목이 있으면 수량 업데이트
+			cartMapper.updateCartQuantity(cartVO);
+		} else {
+			// 기존 항목이 없으면 새로 삽입
+			cartMapper.insertCart(cartVO);
+		}
 	}
 
 	@Override
