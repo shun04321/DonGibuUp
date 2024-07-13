@@ -1,7 +1,6 @@
 package kr.spring.dbox.vo;
 
 import java.sql.Date;
-import java.util.List;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -18,9 +17,9 @@ import lombok.ToString;
 public class DboxVO {
 	private long dbox_num;							//제안 완료시 - 시퀀스
 	private long mem_num;							//제안 완료시 - session에서 불러오기
-	@Min(value = 1)
+	@Min(value = 0)
 	private long dcate_num;				//STEP1 - 카테고리 선택
-	@Min(value = 1, groups=DboxValidationGroup_2.class)
+	@Min(value = 0, groups=DboxValidationGroup_2.class)
 	private int dbox_team_type;				//STEP2 - 1:기관, 2:개인/단체
 	@NotBlank(groups=DboxValidationGroup_2.class)
 	private String dbox_team_name;			//STEP2 - 팀명(60byte)
@@ -52,9 +51,4 @@ public class DboxVO {
 	private String dbox_edate;				//STEP2 - 종료일
 	private Date dbox_rdate;						//제안 완료시 - 신청등록일
 	private int dbox_status;						//제안 완료시 - 0:신청완료,1:심사완료,2:신청반려,3:진행중,4:진행완료,5:진행중단
-	
-	//기부액 사용계획
-	private DboxBudgetVO dboxBudget;
-	
-	private List<DboxBudgetVO> dboxBudgets;
 }

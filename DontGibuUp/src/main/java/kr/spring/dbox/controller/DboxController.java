@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class DboxController {
 	@Autowired
-	private DboxMapper dboxMapper;
+	private DboxMapper DboxMapper;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -100,10 +100,8 @@ public class DboxController {
 	public String proposeStep2(HttpSession session) {
 		//로그인 체크
 		MemberVO user = (MemberVO)session.getAttribute("user");
-		DboxVO dbox = (DboxVO)session.getAttribute("dbox");
-		log.debug("<<Step2 회원정보>> : " + user);
-		log.debug("<<Step2 세션에 저장된 dbox : >>" + dbox);
 		if(user==null) {
+		log.debug("<<Step2 회원정보>> : " + user);
 			//로그인 안한 경우
 			return "redirect:/member/login";
 		}
@@ -151,9 +149,7 @@ public class DboxController {
 	public String proposeStep3(HttpSession session) {
 		//로그인 체크
 		MemberVO user = (MemberVO)session.getAttribute("user");
-		DboxVO dbox = (DboxVO)session.getAttribute("dbox");
 		log.debug("<<Step3 회원정보>> : " + user);
-		log.debug("<<Step3 세션에 저장된 dbox : >>" + dbox);
 		if(user==null) {
 			//로그인 안한 경우
 			return "redirect:/member/login";
@@ -181,15 +177,12 @@ public class DboxController {
 		DboxVO s_dbox = (DboxVO)session.getAttribute("dbox"); 
 		log.debug("<<기부박스 제안 Step3 - 세션에서 불러온 정보>> : " + s_dbox);
 		
-		//회원번호 및 작성한 데이터 합치기
-		s_dbox.setMem_num(user.getMem_num());
-		s_dbox.setDbox_title(dboxVO.getDbox_title());
-		s_dbox.setDbox_photo(dboxVO.getDbox_photo());
-		s_dbox.setDbox_content(dboxVO.getDbox_content());
+		//로그인한 회원의 mem_num을 dboxVO에 저장
+		dboxVO.setMem_num(user.getMem_num());
 		
 		//제출되는 dboxVO 확인
-		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + s_dbox);
-		dboxMapper.insertDbox(s_dbox);
+		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + dboxVO);
+		
 		//다음페이지로 이동
 		return "dboxProposeEnd";
 	}
