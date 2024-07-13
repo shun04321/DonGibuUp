@@ -9,4 +9,5 @@ public interface CartService {
 	public void insertOrUpdateCart(CartVO cartVO); // 메서드 이름 변경
 	public List<CartVO> cartList(Map<String,Object>map);
 	public Integer cartRowCount (Map<String,Object>map);
+	public void deleteCart(int cart_num);
 }

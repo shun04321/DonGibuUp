@@ -18,6 +18,6 @@ public interface CartMapper {
     void updateCartQuantity(CartVO cartVO); // 수량 업데이트
     void insertCart(CartVO cartVO); // 항목 삽입
 	//장바구니 아이템 삭제
-	@Delete("DELETE FROM cart WHERE cart_num")
+	@Delete("DELETE FROM cart WHERE cart_num=#{cart_num}")
 	public void deleteCart(int cart_num);
 }

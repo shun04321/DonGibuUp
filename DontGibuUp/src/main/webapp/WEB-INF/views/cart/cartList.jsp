@@ -5,6 +5,38 @@
 <script type="text/javascript"
     src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 
+<script type="text/javascript">
+    function deleteSelectedCarts() {
+        var selectedCarts = [];
+        $('input[name="cart_num"]:checked').each(function() {
+            selectedCarts.push($(this).val());
+        });
+
+        if (selectedCarts.length === 0) {
+            alert('삭제할 항목을 선택해주세요.');
+            return;
+        }
+
+        $.ajax({
+            url: '${pageContext.request.contextPath}/cart/deleteSelected',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(selectedCarts),
+            success: function(response) {
+                if(response === 'success') {
+                    alert('선택된 항목들이 장바구니에서 삭제되었습니다.');
+                    location.reload();
+                } else {
+                    alert('삭제 실패. 다시 시도해주세요.');
+                }
+            },
+            error: function() {
+                alert('에러가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
+    }
+</script>
+
 <div class="page-main">
     <h2>장바구니</h2>
     <form action="list" id="search_form" method="get">
@@ -17,6 +49,7 @@
     <table class="striped-table">
         <thead>
             <tr>
+                <th>선택</th>
                 <th>사진</th>
                 <th>장바구니번호</th>
                 <th width="400">상품명</th>
@@ -28,6 +61,9 @@
         <tbody>
             <c:forEach var="cart" items="${list}">
                 <tr>
+                    <td class="align-center">
+                        <input type="checkbox" name="cart_num" value="${cart.cart_num}">
+                    </td>
                     <td class="align-center">
                         <img src="${pageContext.request.contextPath}${cart.goods.item_photo}" class="my-photo" width="100px" height="100px">
                     </td>
@@ -42,6 +78,9 @@
             </c:forEach>
         </tbody>
     </table>
+    <div align="center">
+        <button type="button" onclick="deleteSelectedCarts()">선택 항목 삭제</button>
+    </div>
  	  <div align="center">${page}</div>
     </c:if>
 </div>

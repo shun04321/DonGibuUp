@@ -7,9 +7,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.spring.cart.service.CartService;
 import kr.spring.cart.vo.CartVO;
@@ -91,6 +92,30 @@ public class CartController {
     	
     	return "cartList";
     }
-    
-    
+    /*===================================
+     *          장바구니 항목 삭제
+     *==================================*/
+    @GetMapping("/delete")
+    @ResponseBody
+    public String deleteCart(@RequestParam("cart_num") int cart_num) {
+        cartService.deleteCart(cart_num);
+        return "success";
+    }
+
+    /*===================================
+     *   선택된 장바구니 항목들 삭제
+     *==================================*/
+    @PostMapping("/cart/deleteSelected")
+    @ResponseBody
+    public String deleteSelectedCarts(@RequestBody List<Integer> cartNums) {
+        try {
+            for (int cart_num : cartNums) {
+                cartService.deleteCart(cart_num);
+            }
+            return "success";
+        } catch (Exception e) {
+            log.error("장바구니 항목 삭제 중 에러 발생: ", e);
+            return "fail";
+        }
+    }
 }
