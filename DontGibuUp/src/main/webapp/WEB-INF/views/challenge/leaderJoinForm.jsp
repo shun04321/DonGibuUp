@@ -12,10 +12,6 @@
         <p>${challenge.chal_freq}</p>
         <p>${challenge.chal_sdate} ~ ${challenge.chal_edate}</p>
         
-        <p>참여금 <span id="chal_fee">${challenge.chal_fee}</span>원</p>
-        <p>100% 성공 : <span class="chal_fee_90"></span>원 + 추가 (??)원 환급, <span class="chal_fee_10"></span>원 기부</p>
-        <p>90% 이상 성공 : <span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</p>
-        <p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
     </div>
     <form:form action="leaderJoin" id="joinAndPay" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
@@ -29,6 +25,13 @@
             <li>
                 <label>기부처:</label>
                 <span id="charityInfo"></span>
+            </li>
+            <li>
+            	<p>사용할 포인트 <input type="number" ></p>
+        			<p>참여금 <span id="chal_fee">${challenge.chal_fee}</span>원</p>
+        			<p>100% 성공 : <span class="chal_fee_90"></span>원 + 추가 (??)원 환급, <span class="chal_fee_10"></span>원 기부</p>
+        			<p>90% 이상 성공 : <span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</p>
+        			<p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
             </li>
         </ul>
         <div class="align-center">
@@ -94,7 +97,7 @@
 				    name: "${challenge.chal_title}",
 				    pay_method: "card",
 				    escrow: false,
-				    amount: 109000,
+				    amount: "${challenge.chal_fee}",
 				    buyer_name: "${member.mem_nick}",
 				    buyer_email: "${member.email}",
 				    currency: "KRW",
@@ -109,14 +112,22 @@
 				    },
 				  },
 				  (rsp) => {
-					  console.log("결제 응답 객체: ", rsp); // 응답 객체 전체를 콘솔에 출력하여 디버깅
-
-			            if (rsp.success) {
-			                console.log('success');
-			            } else {		            	
-			            	console.log('rsp');
-			            }
-				  },
+			      if(rsp.error_code){
+			    	  alert(`결제에 실패하였습니다. 에러 메시지 : ${rsp.error_msg}`);			    	  
+			      }else{
+			    	  	//결제 로직(리더): 결제 요청 -> 결제 검증 -> 결제 처리 및 완료 (REST API 이용)
+			    	  	//결제 로직(회원): 사전 검증 -> 결제 요청 -> 사후 검증 -> 결제 처리 및 완료
+			    	  	//OR 검증 구현 안하고 바로 처리하기
+			    	  	
+			    	  	//결제 검증하기
+			          $.ajax({
+			              url: '/challenge/paymentVerify/'+rsp.imp_uid,
+			              method: 'POST',			        
+			          }).done(function(data){
+			        	  console.log(data);
+			          });
+			      }
+				  }
 				);
   }			
 </script>
