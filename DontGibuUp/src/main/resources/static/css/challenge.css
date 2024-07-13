@@ -134,6 +134,20 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.month-section {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.month-section h2 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
 }
 
 .challenge-card {
@@ -143,8 +157,8 @@ h2 {
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 600px;
     background-color: #fff;
+    position: relative;
 }
 
 .challenge-card .card-header {

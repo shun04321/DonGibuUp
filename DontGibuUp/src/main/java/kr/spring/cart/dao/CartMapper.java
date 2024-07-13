@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.cart.vo.CartVO;
@@ -18,6 +19,10 @@ public interface CartMapper {
     void updateCartQuantity(CartVO cartVO); // 수량 업데이트
     void insertCart(CartVO cartVO); // 항목 삽입
 	//장바구니 아이템 삭제
-	@Delete("DELETE FROM cart WHERE cart_num")
+	@Delete("DELETE FROM cart WHERE cart_num=#{cart_num}")
 	public void deleteCart(int cart_num);
+	
+	 // 장바구니 아이템 수량 업데이트
+    @Update("UPDATE cart SET cart_quantity = #{cart_quantity} WHERE cart_num = #{cart_num}")
+    public void updateCartQuantityByCartNum(@Param("cart_num") int cart_num, @Param("cart_quantity") int cart_quantity);
 }

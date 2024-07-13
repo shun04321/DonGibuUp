@@ -3,9 +3,12 @@ package kr.spring.challenge.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +17,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -186,26 +191,41 @@ public class ChallengeController {
     }
     
     //리더
-    
+
     /*==========================
      *  챌린지 현황
      *==========================*/
     @GetMapping("/challenge/join/list")
-    public ModelAndView list(@RequestParam("status") String status, HttpSession session) {
+    public ModelAndView list(@RequestParam("status") String status,
+                             @RequestParam(value = "month", required = false) String month,
+                             HttpSession session) {
         MemberVO member = (MemberVO) session.getAttribute("user");
         Map<String, Object> map = new HashMap<>();
         map.put("mem_num", member.getMem_num());
         map.put("status", status);
 
-        List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map);
+        // 현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
+        LocalDate currentMonth = month != null ? LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")) : LocalDate.now().withDayOfMonth(1);
+        String currentMonthString = currentMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+
+        // 이번 달의 챌린지만 필터링
+        List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map).stream()
+            .filter(challenge -> {
+                if (challenge.getChal_sdate() == null) {
+                    return false;
+                }
+                return challenge.getChal_sdate().substring(0, 7).equals(currentMonthString);
+            })
+            .collect(Collectors.toList());
 
         ModelAndView mav = new ModelAndView("challengeJoinList");
-        mav.addObject("list", list);
+        mav.addObject("challengesByMonth", Map.of(currentMonthString, list));
         mav.addObject("status", status);
+        mav.addObject("currentMonth", currentMonthString);
         
         return mav;
     }
-
+    
     /*==========================
      *  챌린지 참가 상세
      *==========================*/
@@ -215,4 +235,16 @@ public class ChallengeController {
 	 * challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); return
 	 * new ModelAndView("challengeJoinView", "challengeJoin", challengeJoin); }
 	 */
+    
+    @PostMapping("/challenge/join/delete")
+    public ResponseEntity<String> deleteChallengeJoin(@RequestParam("chal_joi_num") Long chal_joi_num) {
+        try {
+            challengeService.deleteChallengeJoin(chal_joi_num);
+            return ResponseEntity.ok("챌린지가 취소되었습니다.");
+        } catch (Exception e) {
+            log.error("챌린지 취소 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
+        }
+    }
+    
 }

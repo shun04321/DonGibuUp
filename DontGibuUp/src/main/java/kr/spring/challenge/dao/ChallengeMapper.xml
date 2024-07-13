@@ -88,12 +88,12 @@
 	</select>
 	
 <!-- 	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
-		SELECT * FROM challenge_join WHERE chal_joi_num = #{chal_joi_num}
-	</select>
+		SELECT * FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
+	</select> -->
 	
 	<delete id="deleteChallengeJoin" parameterType="long">
-		DELETE FROM challenge_join WHERE chal_joi_num = #{chal_joi_num}
-	</delete> -->
+		DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
+	</delete>
 	
 	<!-- 챌린지 결제 -->
     <insert id="insertChallengePayment" parameterType="challengePaymentVO">

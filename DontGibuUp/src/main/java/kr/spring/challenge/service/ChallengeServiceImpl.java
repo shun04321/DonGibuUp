@@ -73,16 +73,19 @@ public class ChallengeServiceImpl implements ChallengeService{
 	/*
 	 * @Override public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
 	 * return challengeMapper.selectChallengeJoin(chal_joi_num); }
-	 * 
-	 * @Override public void deleteChallengeJoin(Long chal_joi_num) {
-	 * challengeMapper.deleteChallengeJoin(chal_joi_num); }
 	 */
     
+	@Override public void deleteChallengeJoin(Long chal_joi_num) {
+		challengeMapper.deleteChallengeJoin(chal_joi_num); 
+	}
+	
+    //기부 카테고리 목록 가져오기
     @Override
     public List<DonationCategoryVO> selectDonaCategories() {
         return challengeMapper.selectDonaCategories();
     }
     
+    //챌린지 결제//
     @Override
     public void insertChallengePayment(ChallengePaymentVO chalPayVO) {
         challengeMapper.insertChallengePayment(chalPayVO);

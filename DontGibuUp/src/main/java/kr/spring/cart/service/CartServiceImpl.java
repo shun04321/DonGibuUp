@@ -39,4 +39,16 @@ public class CartServiceImpl implements CartService {
 		return cartMapper.cartRowCount(map);
 	}
 
+	@Override
+	public void deleteCart(int cart_num) {
+		cartMapper.deleteCart(cart_num);;
+		
+	}
+
+
+	
+	 @Override
+	    public void updateCartQuantity(int cart_num, int cart_quantity) {
+	        cartMapper.updateCartQuantityByCartNum(cart_num, cart_quantity);
+	}
 }

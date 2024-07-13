@@ -33,7 +33,7 @@
 		<div>주문</div>
 		<ul class="side-menu-sub">
 			<li>주문/배송조회</li>
-			<li>장바구니</li>
+			<li><a href="${pageContext.request.contextPath}/cart/list">장바구니</a></li>
 		</ul>
 	</li>
 	<li class="side-menu">
