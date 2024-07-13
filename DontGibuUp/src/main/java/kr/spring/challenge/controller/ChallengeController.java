@@ -17,6 +17,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -223,7 +225,7 @@ public class ChallengeController {
         
         return mav;
     }
-
+    
     /*==========================
      *  챌린지 참가 상세
      *==========================*/
@@ -233,4 +235,16 @@ public class ChallengeController {
 	 * challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); return
 	 * new ModelAndView("challengeJoinView", "challengeJoin", challengeJoin); }
 	 */
+    
+    @PostMapping("/challenge/join/delete")
+    public ResponseEntity<String> deleteChallengeJoin(@RequestParam("chal_joi_num") Long chal_joi_num) {
+        try {
+            challengeService.deleteChallengeJoin(chal_joi_num);
+            return ResponseEntity.ok("챌린지가 취소되었습니다.");
+        } catch (Exception e) {
+            log.error("챌린지 취소 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
+        }
+    }
+    
 }

@@ -30,7 +30,7 @@
                             <h3>${challengeJoin.chal_title}</h3>
                             <div class="view-detail">
                                 <c:choose>
-                                    <c:when test="${status == 'pre'}"><a href="#">챌린지취소</a></c:when>
+                                    <c:when test="${status == 'pre'}"><a href="#" onclick="deleteChallenge(${challengeJoin.chal_joi_num})">챌린지취소</a></c:when>
                                     <c:when test="${status == 'on'}"><a href="#">인증내역</a> <a href="#">단체톡방</a></c:when>
                                     <c:when test="${status == 'post'}"><a href="#">인증내역</a> <a href="#">후기작성</a></c:when>
                                 </c:choose>
