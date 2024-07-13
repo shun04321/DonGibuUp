@@ -8,12 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.spring.dbox.dao.DboxMapper;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.dbox.vo.DboxValidationGroup_2;
+import kr.spring.dbox.vo.DboxValidationGroup_3;
 import kr.spring.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -78,8 +81,6 @@ public class DboxController {
 			return "dboxProposeStep1";
 		}
 
-		//로그인한 회원의 mem_num을 dboxVO에 저장
-		dboxVO.setMem_num(user.getMem_num());
 		
 		//dboxVO를 세션에 "dbox"명칭으로 저장
 		session.setAttribute("dbox", dboxVO);
@@ -107,7 +108,7 @@ public class DboxController {
 		return "dboxProposeStep2";
 	}
 	@PostMapping("/dbox/propose/step2")
-	public String Step2Submit(@Valid DboxVO dboxVO,
+	public String Step2Submit(@Validated(DboxValidationGroup_2.class) DboxVO dboxVO,
 							  BindingResult result,
 							  HttpSession session) {
 		//dboxVO에 dcate_num이 담겼는지 확인
@@ -120,7 +121,7 @@ public class DboxController {
 			return "redirect:/member/login";
 		}
 		//유효성 체크 결과 오류가 있으면 폼 호출
-		if(result.hasFieldErrors("dbox_business_rnum")) {
+		if(result.hasErrors()) {
 			return "dboxProposeStep2";
 		}
 		//세션에 저장된 dbox 불러오기
@@ -128,7 +129,8 @@ public class DboxController {
 		log.debug("<<기부박스 제안 Step2 - 세션에서 불러온 정보>> : " + s_dbox);
 		
 		//dboxVO에 세션정보 넣기
-		
+
+		dboxVO.setDcate_num(s_dbox.getDcate_num());
 		
 		//dboxVO를 세션에 "dbox"명칭으로 저장
 		session.setAttribute("dbox", dboxVO);
@@ -141,7 +143,7 @@ public class DboxController {
 	}
 	
 	/*===================================
-	 * 		기부박스 제안하기 : 3.내용 작성
+	 * 		기부박스 제안하기 : 3.내용 작성 
 	 *==================================*/
 	@GetMapping("/dbox/propose/step3")
 	public String proposeStep3(HttpSession session) {
@@ -155,7 +157,7 @@ public class DboxController {
 		return "dboxProposeStep3";
 	}
 	@PostMapping("/dbox/propose/step3")
-	public String Step3Submit(@Valid DboxVO dboxVO,
+	public String Step3Submit(@Validated(DboxValidationGroup_3.class) DboxVO dboxVO,
 							  BindingResult result,
 							  HttpSession session) {
 		//기부박스 제목, 대표이미지, 내용작성 체크
@@ -167,12 +169,16 @@ public class DboxController {
 			//로그인 안한 경우
 			return "redirect:/member/login";
 		}
+		//유효성 체크 결과 오류가 있으면 폼 호출
+		if(result.hasErrors()) {
+			return "dboxProposeStep3";
+		}
 		//세션에 저장된 dbox 불러오기
 		DboxVO s_dbox = (DboxVO)session.getAttribute("dbox"); 
 		log.debug("<<기부박스 제안 Step3 - 세션에서 불러온 정보>> : " + s_dbox);
 		
-		//dboxVO에 세션정보 넣기(카테고리,회원번호)
-
+		//로그인한 회원의 mem_num을 dboxVO에 저장
+		dboxVO.setMem_num(user.getMem_num());
 		
 		//제출되는 dboxVO 확인
 		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + dboxVO);

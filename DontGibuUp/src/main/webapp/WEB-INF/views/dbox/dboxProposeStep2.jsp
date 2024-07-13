@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>    
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/js/dbox/dbox.propose.step2.js"></script>
 <!-- Step2 시작 -->
 <div class="page-main">
 	<form:form action="step2" id="step2" modelAttribute="dboxVO">	
@@ -9,9 +11,10 @@
 		<ul>
 			<%-- 팀 유형 --%>
 			<li>
-				<form:label path="dbox_team_name"><h3>팀 유형<span class="validation-check">*필수</span></h3></form:label>
-				<form:radiobutton path="dbox_team_type" value="1"/>기관<br>
-				<form:radiobutton path="dbox_team_type" value="2"/>개인
+				 <label><h3>팀 유형<span class="validation-check">*필수</span></h3></label>
+   				 <input type="radio" name="dbox_team_type" value="1"/> 기관<br>
+   				 <input type="radio" name="dbox_team_type" value="2"/> 개인
+   				 <span id="dbox_team_type" class="form-error"></span>
 			</li>
 			<%-- 팀명 --%>
 			<li>
@@ -20,11 +23,7 @@
 				<form:errors path="dbox_team_name" cssClass="form-error"></form:errors>				
 			</li>
 			<!-- 팀 유형=기관일 시, 사업자등록번호  -->
-			<li>
-				<form:label path="dbox_business_rnum"><h3>사업자등록번호(기관)</h3></form:label>
-				<form:input path="dbox_business_rnum" placeholder="숫자10자리"/>		
-				<form:errors path="dbox_business_rnum" cssClass="form-error"></form:errors>				
-			</li>
+			<li id="dbox_business"></li>
 			<%-- 팀 대표이미지 등록 --%>
 			<li>
 				<form:label path="dbox_team_photo"><h3>팀 대표이미지 등록</h3></form:label>
@@ -95,6 +94,7 @@
 				<h3>자료 첨부</h3>
 				<form:label path="dbox_business_plan">세부사업계획서<span class="validation-check"><b>*필수</b></span></h3></form:label><br>
 				<input type="file" name="dbox_business_plan" id="dbox_business_plan"><br>
+				<form:errors path="dbox_business_plan" cssClass="form-error"></form:errors><br>
 				<form:label path="dbox_budget_data">금액 책정 근거자료</form:label><br>
 				<input type="file" name="dbox_budget_data" id="dbox_budget_data">
 			</li>

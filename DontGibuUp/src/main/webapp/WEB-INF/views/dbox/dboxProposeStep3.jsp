@@ -22,6 +22,7 @@
 			<li>
 				<form:label path="dbox_photo"><h3>기부박스 대표이미지</h3></form:label>
 				<input type="file" name="dbox_photo" id="dbox_photo">
+				<form:errors path="dbox_photo" cssClass="error-color"/>
 			</li>
 			<%-- 기부박스 내용 작성 --%>
 			<li>

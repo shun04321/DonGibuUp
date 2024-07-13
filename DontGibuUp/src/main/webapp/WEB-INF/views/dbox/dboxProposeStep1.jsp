@@ -8,11 +8,13 @@
 $(function(){
 	$('#step1').submit(function(event){
 
-   /*      //카테고리 검사
+/*      
+ 		//카테고리 검사
         if ($('#dcate_num').val() == null) {
             alert('카테고리를 선택해주세요.');
             return false;
-        } */
+        }
+*/
 		//체크박스 검사
 		if($('.validation_checkbox:checked').length!=3){
 			alert('안내사항을 읽고 체크박스를 체크해주세요.');
@@ -59,7 +61,6 @@ $(function(){
 			</li>
 		</ul>	
 		<div class="align-center">
-<!-- 		<input type="button" value="임시버튼(다음단계)" onclick="location.href='step2'"> -->
 			<form:button>다음 단계로</form:button>
 		</div>
 	</form:form>
