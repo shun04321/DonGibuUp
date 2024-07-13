@@ -33,7 +33,7 @@
         </ul>
         <div class="align-center">
             결제 조건 및 서비스 약관에 동의합니다
-            <form:button type="submit">결제하기</form:button>
+            <button type="button" id="pay">결제하기</button>
         </div>
     </form:form>
 </div>
@@ -41,46 +41,82 @@
 <script>
 	setChallengePointRules();
 	$('input[type="radio"]').prop('checked', false);
+	console.log("${member}");
 	
 	$('input[type="radio"]').click(function(){
+		$('.error-color').hide();
 		let charityName = $(this).attr('data-charity');
 		$('#charityInfo').text(charityName);
 	});
-
-    function formatNumber(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-
-    function setChallengePointRules() {
-        let chalFeeElement = document.getElementById('chal_fee');
-        let chalFee90Element = document.querySelectorAll('.chal_fee_90');
-        let chalFee10Element = document.querySelectorAll('.chal_fee_10');
-
-        if (chalFeeElement) {
-            var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
-            var chalFee90 = (chalFee * 0.9).toFixed(0);
-            var chalFee10 = chalFee - chalFee90;
-
-            chalFeeElement.innerText = formatNumber(chalFee);
-            
-            chalFee90Element.forEach(function(e){
-            	e.innerText = formatNumber(chalFee90);
-            });
-            chalFee10Element.forEach(function(e){
-            	e.innerText = formatNumber(chalFee10);
-            });
-        }
-    }
-</script>
-<script type="text/javascript">
-	$('#joinAndPay').submit(function(){
+	
+	$('#pay').click(function(){
 		if($('input[name="dcate_num"]:checked').length < 1){
 			$('.error-color').show();
-			return false;
+			return;
 		}
-		$('.error-color').hide();
+		
+		payAndEnroll();
 	});
 	
-	//결제 함수 불러오기
-	
+  function formatNumber(num) {
+  	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function setChallengePointRules() {
+  	let chalFeeElement = document.getElementById('chal_fee');
+    let chalFee90Element = document.querySelectorAll('.chal_fee_90');
+    let chalFee10Element = document.querySelectorAll('.chal_fee_10');
+
+    if (chalFeeElement) {
+      var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
+      var chalFee90 = (chalFee * 0.9).toFixed(0);
+      var chalFee10 = chalFee - chalFee90;
+
+      chalFeeElement.innerText = formatNumber(chalFee);
+            
+      chalFee90Element.forEach(function(e){
+            	e.innerText = formatNumber(chalFee90);
+      });
+      chalFee10Element.forEach(function(e){
+            	e.innerText = formatNumber(chalFee10);
+      });
+    }
+  }
+  
+  function payAndEnroll(){
+		
+		IMP.init("imp71075330");
+		
+		IMP.request_pay(
+				  {
+				    pg: "tosspayments", // 반드시 "tosspayments"임을 명시해주세요.
+				    merchant_uid: "merchant_" + new Date().getTime(),
+				    name: "${challenge.chal_title}",
+				    pay_method: "card",
+				    escrow: false,
+				    amount: 109000,
+				    buyer_name: "${member.mem_nick}",
+				    buyer_email: "${member.email}",
+				    currency: "KRW",
+				    locale: "ko",
+				    custom_data: { userId: 30930 },
+				    appCard: false,
+				    useCardPoint: false,
+				    bypass: {
+				      tosspayments: {
+				        useInternationalCardOnly: false, // 영어 결제창 활성화
+				      },
+				    },
+				  },
+				  (rsp) => {
+					  console.log("결제 응답 객체: ", rsp); // 응답 객체 전체를 콘솔에 출력하여 디버깅
+
+			            if (rsp.success) {
+			                console.log('success');
+			            } else {		            	
+			            	console.log('rsp');
+			            }
+				  },
+				);
+  }			
 </script>
