@@ -197,15 +197,12 @@ public class ChallengeController {
         map.put("mem_num", member.getMem_num());
         map.put("status", status);
 
-        System.out.println("Status: " + status); // 로그 추가
-
         List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map);
 
-        System.out.println("List size: " + list.size()); // 로그 추가
-
-        ModelAndView mav = new ModelAndView("challenge/challengeJoinList");
+        ModelAndView mav = new ModelAndView("challengeJoinList");
         mav.addObject("list", list);
         mav.addObject("status", status);
+        
         return mav;
     }
 

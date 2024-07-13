@@ -1,11 +1,147 @@
 @charset "UTF-8";
 
+/* YJ */
 input[name="chal_public"]{
 	
 }
-.line{
-	width:600px;
-	margin:0 auto;
-	border:1px solid #000;
-	padding:10px 10px 30px 10px;
+
+/* SY */
+body {
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: white;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.line {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    margin: 10px 0;
+    display: flex; /* 플렉스 박스 레이아웃 적용 */
+    align-items: center; /* 이미지와 텍스트를 수직 중앙 정렬 */
+}
+
+.line img {
+    width: 100px; /* 이미지 크기 조정 */
+    height: 100px; /* 이미지 크기 조정 */
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.line .text-content {
+    flex-grow: 1;
+}
+
+.line h3 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.line p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.line .chal_fee {
+    font-size: 20px;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+.align-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.align-center button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.align-center button:hover {
+    background-color: #0056b3;
+}
+
+.error-color {
+    color: red;
+    font-size: 14px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.form-section {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    background-color: #f9f9f9;
+}
+
+.form-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-section input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form-section .error-color {
+    display: block;
+    margin-top: 5px;
+}
+
+.form-section .align-center {
+    margin-top: 20px;
+}
+
+/* 왼쪽, 오른쪽 정렬 */
+.result-details {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.result-details p {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
 }
