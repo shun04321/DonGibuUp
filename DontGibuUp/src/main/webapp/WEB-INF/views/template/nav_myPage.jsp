@@ -5,14 +5,14 @@
 <ul class="side-bar">
 	<li class="side-menu">
 		<div>나의 정보</div>
-		<ul class="side-menu-sub">
-			<li><a href="memberInfo">회원정보 수정</a></li>
-			<c:if test="${user.mem_reg_type == 1}">
-			<li><a href="changePassword">비밀번호 수정</a></li>
-			</c:if>
-			<li><a href="inviteFriendEvent">친구초대</a></li>
-			<li><a href="point">포인트</a></li>
-		</ul>
+        <ul class="side-menu-sub">
+            <li><a href="${pageContext.request.contextPath}/member/myPage/memberInfo">회원정보 수정</a></li>
+            <c:if test="${user.mem_reg_type == 1}">
+            <li><a href="${pageContext.request.contextPath}/member/myPage/changePassword">비밀번호 수정</a></li>
+            </c:if>
+            <li><a href="${pageContext.request.contextPath}/member/myPage/inviteFriendEvent">친구초대</a></li>
+            <li><a href="${pageContext.request.contextPath}/member/myPage/point">포인트</a></li>
+        </ul>
 	</li>
 	<li class="side-menu">
 		<div>기부</div>
@@ -25,7 +25,7 @@
 		<div>챌린지</div>
 		<ul class="side-menu-sub">
 	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=pre">시작 전 챌린지</a></li>
-	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=on">참가중 챌린지</a></li>
+	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=on">참가중인 챌린지</a></li>
 	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=post">완료된 챌린지</a></li>
 		</ul>
 	</li>
