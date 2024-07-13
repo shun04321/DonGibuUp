@@ -5,10 +5,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.dbox.dao.DboxMapper;
+import kr.spring.dbox.vo.DboxVO;
 
 @Service
 @Transactional
 public class DboxServiceImpl implements DboxService {
 	@Autowired
-	DboxMapper DboxMapper;
+	DboxMapper dboxMapper;
+
+	@Override
+	public void insertDbox(DboxVO dbox) {
+		dboxMapper.insertDbox(dbox);
+	}
 }

@@ -3,5 +3,48 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.dbox.dao.DboxMapper">
-
+	<insert id="insertDbox" parameterType="dboxVO">
+		INSERT INTO dbox(
+		 	dbox_num,
+			mem_num,
+			dcate_num,
+			dbox_team_type,
+			dbox_team_name,
+			dbox_team_detail,
+			dbox_team_photo,
+			dbox_business_rnum,
+			dbox_title,
+			dbox_photo,
+			dbox_content,
+			dbox_business_plan,
+			dbox_budget_data,
+			dbox_bank,
+			dbox_account,
+			dbox_account_name,
+			dbox_comment,
+			dbox_goal,
+			dbox_sdate,
+			dbox_edate)
+		VALUES (
+		 	dbox_seq.nextval,
+			#{mem_num},
+			#{dcate_num},
+			#{dbox_team_type},
+			#{dbox_team_name},
+			#{dbox_team_detail},
+			#{dbox_team_photo},
+			#{dbox_business_rnum},
+			#{dbox_title},
+			#{dbox_photo},
+			#{dbox_content},
+			#{dbox_business_plan},
+			#{dbox_budget_data},
+			#{dbox_bank},
+			#{dbox_account},
+			#{dbox_account_name},
+			#{dbox_comment},
+			#{dbox_goal},
+			#{dbox_sdate},
+			#{dbox_edate})
+	</insert>
 </mapper>

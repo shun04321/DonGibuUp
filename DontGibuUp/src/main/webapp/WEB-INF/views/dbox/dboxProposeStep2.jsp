@@ -11,10 +11,10 @@
 		<ul>
 			<%-- 팀 유형 --%>
 			<li>
-				 <label><h3>팀 유형<span class="validation-check">*필수</span></h3></label>
+				 <form:label path="dbox_team_name"><h3>팀 유형<span class="validation-check">*필수</span></h3></form:label>
    				 <input type="radio" name="dbox_team_type" value="1"/> 기관<br>
-   				 <input type="radio" name="dbox_team_type" value="2"/> 개인
-   				 <span id="dbox_team_type" class="form-error"></span>
+   				 <input type="radio" name="dbox_team_type" value="2"/> 개인<br>
+   				 <form:errors path="dbox_team_type" cssClass="form-error"></form:errors>
 			</li>
 			<%-- 팀명 --%>
 			<li>
@@ -68,7 +68,7 @@
 			</li>
 			<%-- 모금액 사용 계획 --%>
 			<li>
-				<form:label path=""><h3>모금액 사용 계획<span class="validation-check">*필수</span></h3></form:label>
+				<form:label path="dboxBudget.dbox_bud_purpose"><h3>모금액 사용 계획<span class="validation-check">*필수</span></h3></form:label>
 				<p>
 				세부내역을 구체적으로 입력해주세요.<br>
 				아래 사항 위반시 심사를 통해 환수 조치 될 수 있습니다.<br><br>
@@ -77,10 +77,8 @@
 				 · 동일한 스토리 및 예산 항목으로 이중 모금 진행시<br>
 				 · 모금액을 입금 받기 전 과거 지출한 내용을 포함한 경우
 				</p>
-<%-- 				<form:input path="" placeholder="사용용도 및 산출근거"/>		
-				<form:errors path="" cssClass="form-error"></form:errors>				
-				<form:input path="" placeholder="금액(원)"/>		
-				<form:errors path="" cssClass="form-error"></form:errors>	 --%>			
+				<span id="dbox_budget"></span>
+				<input type="button" id="dbox_budget_add" name="dbox_budget_add" value="지출항목 추가">
 			</li>
 			<%-- 심사위원에게 남길 말 --%>
 			<li>
@@ -92,7 +90,7 @@
 			<%-- 자료 첨부 --%>
 			<li>
 				<h3>자료 첨부</h3>
-				<form:label path="dbox_business_plan">세부사업계획서<span class="validation-check"><b>*필수</b></span></h3></form:label><br>
+				<form:label path="dbox_business_plan">세부사업계획서<span class="validation-check"><b>*필수</b></span></form:label><br>
 				<input type="file" name="dbox_business_plan" id="dbox_business_plan"><br>
 				<form:errors path="dbox_business_plan" cssClass="form-error"></form:errors><br>
 				<form:label path="dbox_budget_data">금액 책정 근거자료</form:label><br>
