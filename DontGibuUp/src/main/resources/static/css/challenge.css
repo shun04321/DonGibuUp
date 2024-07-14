@@ -1,198 +1,279 @@
 @charset "UTF-8";
 
 /* YJ */
-input[name="chal_public"]{
+input[name="chal_public"] {
 	
 }
 
 /* SY */
 /* 챌린지 참가 */
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    background-color: white;
+	max-width: 600px;
+	margin: 50px auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	background-color: white;
 }
 
 h2 {
-    text-align: center;
+	text-align: center;
 }
 
 .line {
-    border-bottom: 1px solid #eee;
-    padding: 10px 0;
-    margin: 10px 0;
-    display: flex; /* 플렉스 박스 레이아웃 적용 */
-    align-items: center; /* 이미지와 텍스트를 수직 중앙 정렬 */
+	border-bottom: 1px solid #eee;
+	padding: 10px 0;
+	margin: 10px 0;
+	display: flex; /* 플렉스 박스 레이아웃 적용 */
+	align-items: center; /* 이미지와 텍스트를 수직 중앙 정렬 */
 }
 
 .line img {
-    width: 100px; /* 이미지 크기 조정 */
-    height: 100px; /* 이미지 크기 조정 */
-    border-radius: 8px;
-    margin-right: 10px;
+	width: 100px; /* 이미지 크기 조정 */
+	height: 100px; /* 이미지 크기 조정 */
+	border-radius: 8px;
+	margin-right: 10px;
 }
 
 .line .text-content {
-    flex-grow: 1;
+	flex-grow: 1;
 }
 
 .line h3 {
-    font-size: 24px;
-    margin: 10px 0;
+	font-size: 24px;
+	margin: 10px 0;
 }
 
 .line p {
-    font-size: 16px;
-    margin: 5px 0;
+	font-size: 16px;
+	margin: 5px 0;
 }
 
 .line .chal_fee {
-    font-size: 20px;
-    font-weight: bold;
-    color: #007BFF;
+	font-size: 20px;
+	font-weight: bold;
+	color: #007BFF;
 }
 
 .align-center {
-    text-align: center;
+	text-align: center;
 }
 
 .align-center button {
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+	background-color: #007BFF;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 .align-center button:hover {
-    background-color: #0056b3;
+	background-color: #0056b3;
 }
 
 .error-color {
-    color: red;
-    font-size: 14px;
+	color: red;
+	font-size: 14px;
 }
 
 .form-section {
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 20px;
-    background-color: #f9f9f9;
+	border: 1px solid #ddd;
+	padding: 15px;
+	border-radius: 8px;
+	margin-top: 20px;
+	background-color: #f9f9f9;
 }
 
 .form-section label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
 }
 
 .form-section input[type="radio"] {
-    margin-right: 5px;
+	margin-right: 5px;
 }
 
 .form-section .error-color {
-    display: block;
-    margin-top: 5px;
+	display: block;
+	margin-top: 5px;
 }
 
 .form-section .align-center {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 /* 왼쪽, 오른쪽 정렬 */
 .result-details {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	border-radius: 8px;
+	background-color: #f9f9f9;
 }
 
 .result-details p {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .left {
-    text-align: left;
+	text-align: left;
 }
 
 .right {
-    text-align: right;
+	text-align: right;
 }
 
 /* 챌린지 현황 */
 .challenge-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-left: 100px;
-    margin-right: 100px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-left: 100px;
+	margin-right: 100px;
 }
 
 .month-section {
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 40px;
+	width: 100%;
+	max-width: 600px;
+	margin-bottom: 40px;
 }
 
 .month-section h2 {
-    text-align: center;
-    font-size: 1.5em;
-    margin-bottom: 20px;
+	text-align: center;
+	font-size: 1.5em;
+	margin-bottom: 20px;
 }
 
 .challenge-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    background-color: #fff;
-    position: relative;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	padding: 20px;
+	margin-bottom: 20px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 100%;
+	background-color: #fff;
+	position: relative;
 }
 
 .challenge-card .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .challenge-card h3 {
-    margin: 0;
+	margin: 0;
 }
 
 .challenge-card .details {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
 }
 
 .challenge-card .details div {
-    margin-right: 20px;
-    text-align: center;
+	margin-right: 20px;
+	text-align: center;
 }
 
 .challenge-card .details div:last-child {
-    margin-right: 0;
+	margin-right: 0;
 }
 
 .challenge-card .details span {
-    display: block;
-    text-align: center;
+	display: block;
+	text-align: center;
 }
 
 .challenge-card .view-detail a {
-    text-decoration: none;
-    color: #17a2b8;
-    font-weight: bold;
+	text-decoration: none;
+	color: #17a2b8;
+	font-weight: bold;
+}
+
+/* 챌린지 상세 */
+.challenge-detail {
+	width: 60%;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	font-family: Arial, sans-serif;
+}
+
+.challenge-header {
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.challenge-header img {
+	width: 100%;
+	height: auto;
+	max-height: 200px;
+	border-radius: 10px;
+	object-fit: cover;
+}
+
+.challenge-info {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.challenge-info .author-info {
+	display: flex;
+	align-items: center;
+}
+
+.challenge-info img {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.challenge-info .details {
+	flex-grow: 1;
+}
+
+.challenge-stats {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+	padding: 10px 0;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	font-size: 14px;
+}
+
+.challenge-stats div {
+	text-align: center;
+	flex-grow: 1;
+}
+
+.challenge-stats div:not(:last-child) {
+	border-right: 1px solid #ddd;
+}
+
+.challenge-content {
+	margin-top: 20px;
+}
+
+.challenge-content h3 {
+	margin-bottom: 10px;
+	font-size: 18px;
+}
+
+.challenge-content p {
+	margin-bottom: 20px;
+	line-height: 1.6;
+	font-size: 14px;
 }
