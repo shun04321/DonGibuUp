@@ -7,6 +7,7 @@ import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyVO;
 
 public interface ChallengeService {
 	
@@ -19,7 +20,7 @@ public interface ChallengeService {
 	public void deleteChallenge(Long chal_num);
 	public void deleteChalPhoto(Long chal_num);
 	
-	//챌린지 참가 및 현황
+	//챌린지 참가
 	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
 	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
 	//public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
@@ -31,10 +32,13 @@ public interface ChallengeService {
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
 	
 	//챌린지 인증
-	
-	//챌린지 톡방
-	
-	//챌린지 후기
+    public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
+    public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
+    //public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
+    
+	//챌린지 후기	
+    
+	//챌린지 채팅
 	
 	//챌린지...
 }

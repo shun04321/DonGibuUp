@@ -20,7 +20,7 @@
         var memberNum = "${member.mem_num}";
         var pageContextPath = "${pageContext.request.contextPath}";
     </script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.form.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.write.js"></script>
 </head>
 <body>
 <h2>챌린지 참가</h2>

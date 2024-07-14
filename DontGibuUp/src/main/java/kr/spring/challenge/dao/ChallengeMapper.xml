@@ -38,7 +38,7 @@
 		]]>		
 	</select>
 	
-	<!-- 챌린지 상세 -->
+	<!-- 챌린지 개설 상세 -->
     <select id="selectChallenge" parameterType="Long" resultType="challengeVO">
         SELECT c.*, 
         m.mem_nick, md.mem_photo 
@@ -58,7 +58,7 @@
 		(chal_join_seq.nextval, #{chal_num}, #{mem_num}, #{dcate_num}, 0, SYSDATE, #{chal_joi_ip})
 	</insert>
 	
-	<!-- 챌린지 현황 -->
+	<!-- 챌린지 참가 목록 -->
 	<select id="selectChallengeJoinList" parameterType="map" resultType="challengeJoinVO">
 	    <![CDATA[
 	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_fee, dc.dcate_charity
@@ -92,6 +92,7 @@
 		SELECT * FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
 	</select> -->
 	
+	<!-- 챌린지 참가 삭제 -->
 	<delete id="deleteChallengeJoin" parameterType="long">
 		DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
 	</delete>
@@ -103,6 +104,25 @@
         VALUES
         (chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, 0, SYSDATE, #{chal_pay_status})
     </insert>
+    
+    <!-- 챌린지 인증 -->
+    <insert id="insertChallengeVerify" parameterType="challengeVerifyVO">
+        INSERT INTO CHAL_VERIFY
+        (chal_ver_num, chal_joi_num, mem_num, chal_content, chal_ver_photo, chal_ver_status, chal_ver_report, chal_reg_date)
+        VALUES
+        (chal_verify_seq.nextval, #{chal_joi_num}, #{mem_num}, #{chal_content}, #{chal_ver_photo}, #{chal_ver_status}, #{chal_ver_report}, #{chal_reg_date})
+    </insert>
+
+	<!-- 챌린지 인증 목록 -->
+     <select id="selectChallengeVerifyList" parameterType="map" resultType="challengeVerifyVO">
+        SELECT * FROM CHAL_VERIFY
+        WHERE chal_joi_num = #{chal_joi_num}
+        ORDER BY chal_reg_date DESC
+    </select>
+
+<!--    <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO">
+        SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num}
+    </select> -->
 </mapper>
 
 

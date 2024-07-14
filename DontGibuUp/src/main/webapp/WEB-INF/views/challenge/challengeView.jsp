@@ -17,7 +17,7 @@
         const memberNum = '${member.mem_num}';
         const pageContextPath = '${pageContext.request.contextPath}';
     </script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.form.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.write.js"></script>
 </head>
 <body>
 <h2>챌린지 상세</h2>
@@ -39,7 +39,7 @@
                     <button disabled>참가중</button>
                 </c:when>
                 <c:otherwise>
-                    <button onclick="location.href='join?chal_num=${challenge.chal_num}'">참가하기</button>
+                    <button onclick="location.href='join/write?chal_num=${challenge.chal_num}'">참가하기</button>
                 </c:otherwise>
             </c:choose>
 	    </div>

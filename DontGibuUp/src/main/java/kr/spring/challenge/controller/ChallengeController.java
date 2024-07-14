@@ -35,6 +35,7 @@ import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -62,14 +63,15 @@ public class ChallengeController {
     }
 
     /*==========================
-     *  챌린지 개설하기
+     *  챌린지 개설
      *==========================*/
+    //챌린지 개설 폼
     @GetMapping("/challenge/write")
     public String form() {
         return "challengeWrite";
     }
     
-    //챌린지 개설 유효성 검사 확인 후, 세션에 저장
+    //챌린지 개설 (챌린지 개설 유효성 검사 확인 후, 세션에 저장)
     @PostMapping("/challenge/write")
     public String checkValidation(@Valid ChallengeVO challengeVO, BindingResult result, 
                                   HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
@@ -95,17 +97,13 @@ public class ChallengeController {
         return "redirect:/challenge/leaderJoin";
     }
 
-    /*==========================
-     *  챌린지 목록
-     *==========================*/
+    //챌린지 개설 목록
     @GetMapping("/challenge/list")
     public String list() {
         return "challengeList";
     }
 
-    /*==========================
-     *  챌린지 상세
-     *==========================*/
+    //챌린지 개설 상세
     @GetMapping("/challenge/detail")
     public ModelAndView chalDetail(@RequestParam("chal_num") long chal_num, HttpSession session) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);
@@ -127,9 +125,10 @@ public class ChallengeController {
     }
 
     /*==========================
-     *  챌린지 참가 폼
+     *  챌린지 참가
      *==========================*/
-    @GetMapping("/challenge/join")
+    //챌린지 참가 폼
+    @GetMapping("/challenge/join/write")
     public String joinForm(@RequestParam("chal_num") long chal_num, Model model) {
         ChallengeVO challengeVO = challengeService.selectChallenge(chal_num);
         List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
@@ -141,10 +140,10 @@ public class ChallengeController {
         challengeJoinVO.setChal_num(chal_num);//챌린지 번호 설정
         model.addAttribute("challengeJoinVO", challengeJoinVO);
 
-        return "challengeJoinForm";
+        return "challengeJoinWrite";
     }
     
-    //리더
+    //챌린지 참가 폼 (리더)
     @GetMapping("/challenge/leaderJoin")
     public String joinForm(Model model,HttpSession session) {
         List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
@@ -156,10 +155,8 @@ public class ChallengeController {
         return "leaderJoinForm";
     }    
     
-    /*==========================
-     *  챌린지 참가 및 결제
-     *==========================*/
-    @PostMapping("/challenge/join")
+    //챌린지 참가 및 결제
+    @PostMapping("/challenge/join/write")
     public String join(@Valid @ModelAttribute("challengeJoinVO") ChallengeJoinVO challengeJoinVO, BindingResult result,
                        HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
         log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
@@ -167,7 +164,7 @@ public class ChallengeController {
         //유효성 체크
         if (result.hasErrors()) {
             log.debug("<<유효성 검사 실패>> : " + result.getAllErrors());
-            return "challengeJoinForm";
+            return "challengeJoinWrite";
         }
 
         //회원번호
@@ -204,11 +201,11 @@ public class ChallengeController {
         return "common/resultAlert";
     }
     
-    //리더
-
-    /*==========================
-     *  챌린지 현황
-     *==========================*/
+    //챌린지 참가 및 결제 (리더)
+    
+    
+    
+    //챌린지 참가 목록
     @GetMapping("/challenge/join/list")
     public ModelAndView list(@RequestParam("status") String status,
                              @RequestParam(value = "month", required = false) String month,
@@ -240,9 +237,6 @@ public class ChallengeController {
         return mav;
     }
     
-    /*==========================
-     *  챌린지 참가 상세
-     *==========================*/
 	/*
 	 * @GetMapping("/challenge/joinDetail") public ModelAndView
 	 * joinDetail(@RequestParam("chal_joi_num") Long chal_joi_num) { ChallengeJoinVO
@@ -250,6 +244,7 @@ public class ChallengeController {
 	 * new ModelAndView("challengeJoinView", "challengeJoin", challengeJoin); }
 	 */
     
+    //챌린지 참가 삭제
     @PostMapping("/challenge/join/delete")
     public ResponseEntity<String> deleteChallengeJoin(@RequestParam("chal_joi_num") Long chal_joi_num) {
         try {
@@ -259,6 +254,60 @@ public class ChallengeController {
             log.error("챌린지 취소 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
         }
+    }
+    
+    /*==========================
+     *  챌린지 인증
+     *==========================*/
+    //챌린지 인증 폼
+    @GetMapping("/challenge/verify/write")
+    public String verifyForm(@RequestParam("chal_joi_num") long chal_joi_num, Model model) {
+        ChallengeVerifyVO challengeVerifyVO = new ChallengeVerifyVO();
+        challengeVerifyVO.setChal_joi_num(chal_joi_num);
+        model.addAttribute("challengeVerifyVO", challengeVerifyVO);
+        return "challenge/challengeVerifyWrite";
+    }
+
+    //챌린지 인증 등록
+    @PostMapping("/challenge/verify/write")
+    public String submitVerify(@Valid ChallengeVerifyVO challengeVerifyVO, BindingResult result,
+                               HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
+        log.debug("<<챌린지 인증 등록>> : " + challengeVerifyVO);
+
+        // 유효성 체크
+        if (result.hasErrors()) {
+            return "challenge/challengeVerifyWrite";
+        }
+
+        // 회원 번호 설정
+        MemberVO member = (MemberVO) session.getAttribute("user");
+        challengeVerifyVO.setMem_num(member.getMem_num());
+
+        // 인증 사진 업로드 및 파일 저장
+        String filename = FileUtil.createFile(request, challengeVerifyVO.getUpload());
+        challengeVerifyVO.setChal_ver_photo(filename);
+
+        // 챌린지 인증 등록
+        challengeService.insertChallengeVerify(challengeVerifyVO);
+
+        //view에 메시지 추가
+        model.addAttribute("message", "챌린지 인증이 완료되었습니다!");
+        model.addAttribute("url", request.getContextPath() + "/challenge/verify/list?chal_joi_num=" + challengeVerifyVO.getChal_joi_num());
+
+        return "common/resultAlert";
+    }
+    
+    //챌린지 인증 목록
+    @GetMapping("/challenge/verify/list")
+    public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("chal_joi_num", chal_joi_num);
+
+        List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
+        ModelAndView mav = new ModelAndView("challenge/challengeVerifyList");
+        mav.addObject("verifyList", verifyList);
+        mav.addObject("chal_joi_num", chal_joi_num);
+        return mav;
     }
     
 }
