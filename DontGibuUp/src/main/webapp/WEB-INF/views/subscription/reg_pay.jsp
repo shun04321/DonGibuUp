@@ -154,8 +154,8 @@ div {
 								<c:forEach var="card" items="${list}">
 									<div>
 										<input type="radio" id="card_nickname"
-											name="selectedCard" value="${card.card_nickname}"><label
-											for="card_${card.card_nickname}">${card.card_nickname}</label>
+											name="selectedCard" value=" ${card.card_nickname}"><label
+											for="card_${card.card_nickname}"> ${card.card_nickname}</label>
 									</div>
 								</c:forEach>
 								<div>
@@ -197,6 +197,7 @@ div {
 		// 익명 여부 체크박스 상태 변경 시 이벤트 처리
 		$('#anonymousCheck').change(function () {
 			if ($(this).is(':checked')) {
+				$('#sub_name').val(''); // 익명 체크시 입력했던 내용 삭제
 				$('#sub_name').prop('disabled', true); // 기부자 이름 입력 필드 비활성화
 			} else {
 				$('#sub_name').prop('disabled', false); // 기부자 이름 입력 필드 활성화
@@ -211,18 +212,20 @@ div {
 	            $('.payment-method').removeClass('selected');
 	            $(this).addClass('selected');
 	            
-	            if (radio.val() === 'easy-pay') {
+	            if (radio.val() === 'easy-pay') { //간편결제 선택시
 	                $('#card-options').slideUp();
 	                $('.easypay-container').slideDown();
 	                // 선택된 카드의 체크 해제
 	                $('input[name="selectedCard"]').prop('checked', false);
-	            } else {
+	            } else { 		//카드 결제 선택시
 	                $('.easypay-container').slideUp();
 	                $('#card-options').slideDown();
+	             // 선택된 이지페이 수단 체크 해제
+	                $('.easypay-method').removeClass('selected');
 	            }
 	        }
 	    });
-
+	
 	    $('.easypay-method').click(function() {
 	        var radio = $(this).find('input[type="radio"]');
 	        if (radio.length) {
@@ -231,15 +234,8 @@ div {
 	            $(this).addClass('selected');
 	        }
 	    });
-		$('.easypay-method').click(function () {
-			var radio = $(this).find('input[type="radio"]');
-			if (radio.length) {
-				radio.prop('checked', true);
-				$('.easypay-method').removeClass('selected');
-				$(this).addClass('selected');
-			}
-		});
 		
+		//조건체크
 		$('#registerSubscription').submit(function(event) {
 	        // 기부 금액 체크박스 중 하나가 선택되었는지 확인
 	        if (!$("input[name='sub_price']").is(":checked")) {
@@ -249,6 +245,12 @@ div {
 	        if(!$("input[name='sub_method']").is(":checked")){
 	       		alert("결제수단을 선택해주세요");
 	         	return false;
+	        }
+	        if(!$("input[type='checkbox']").is(":checked")){
+	       		if($('#sub_name').val().trim()==''){
+	        	alert("익명 기부 선택이나 기부하실 이름을 입력해주세요.");
+	         	return false;
+	       		}
 	        }
 		});
 	});
