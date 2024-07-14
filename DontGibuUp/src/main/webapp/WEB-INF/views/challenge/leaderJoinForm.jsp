@@ -58,6 +58,8 @@
 			return;
 		}
 		
+		//로그인 여부 검증하기
+		
 		payAndEnroll();
 	});
 	
@@ -102,7 +104,7 @@
 				    buyer_email: "${member.email}",
 				    currency: "KRW",
 				    locale: "ko",
-				    custom_data: { userId: 30930 },
+				    custom_data: { usedPoints: 500 },
 				    appCard: false,
 				    useCardPoint: false,
 				    bypass: {
@@ -124,7 +126,40 @@
 			              url: '/challenge/paymentVerify/'+rsp.imp_uid,
 			              method: 'POST',			        
 			          }).done(function(data){
-			        	  console.log(data);
+			        	  if(data.response.status == 'paid'){
+			        		  console.log('success');
+			        		  
+			        		  //결제 정보에 넣을 데이터 가공하기
+			        		  let customData = JSON.parse(data.response.customData);
+			        		  let dcate_num = "${category.dcate_num}";
+			        		  
+			        		  //결제 정보 처리 및 완료하기
+			        		  $.ajax({
+			        			  url: '/challenge/payAndEnroll',
+			        			  method:'POST',
+			        			  data:JSON.stringify({
+			        				  od_imp_uid:rsp.imp_uid,
+			        				  chal_pay_price:data.response.amount,
+			        				  chal_point:customData.usedPoints,
+			        				  chal_pay_status:0,
+			        				  dcate_num:dcate_num
+			        			  }),
+			        			  contentType: 'application/json; charset=utf-8',
+			        			  dataType:'json',
+			        			  success:function(param){
+			        					alert('챌린지 개설 및 신청이 완료되었습니다!');//모달창으로 바꿀까?
+				        				//마이페이지 챌린지 현황으로 이동하기 vs 결제 영수증을 보여주는 페이지 vs 개설된 챌린지 목록
+				        				window.location.href = '이동할 페이지 url';
+			        			  },
+			        			  error:function(){
+			        				  alert('결제 처리 오류 발생');
+			        			  }
+			        		  });
+			        	  }else if(data.response.status == 'failed'){
+			        		  console.log('fail');
+			        	  }else{
+			        		  console.log('notPayed');
+			        	  }
 			          });
 			      }
 				  }
