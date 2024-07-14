@@ -44,47 +44,43 @@ public class GoodsController {
 	/*===================================
 	 * 				상품 목록 호출
 	 *==================================*/
-	//요청
-	@GetMapping("/goods/list")
-	public String getlist(@RequestParam(defaultValue="1")int pageNum,
-						  @RequestParam(defaultValue="1")int order,
-						  @RequestParam(defaultValue="1")int dcate_num,
-						  String keyfield, String keyword, Model model){
-		
-		log.debug("<<상품 목록 - category>> : " + dcate_num);
-		log.debug("<<게시판 목록 - order>> :" + order);
-		
-		Map<String,Object> map = new HashMap<String,Object>();
-		
-		map.put("dcate_num", dcate_num);
-		map.put("keyfield", keyfield);
-		map.put("keyword", keyword);
+	// 요청
+    @GetMapping("/goods/list")
+    public String getlist(@RequestParam(defaultValue="1") int pageNum,
+                          @RequestParam(defaultValue="0") int order,
+                          @RequestParam(defaultValue="0") int dcate_num,
+                          String keyfield, String keyword, Model model) {
 
-		//전체, 검색 레코드 수
-		int count = goodsService.selectRowCount(map);
+        log.debug("<<상품 목록 - category>> : " + dcate_num);
+        log.debug("<<상품 목록 - order>> : " + order);
 
-		//페이지 처리
-		PagingUtil page = new PagingUtil(keyfield,keyword,pageNum,
-										count,20,10,"list","&dcate_num="+dcate_num+"&order="+order);
-		
-		List<GoodsVO> list = null;
-		if(count > 0) {
-			map.put("order", order);
-			map.put("start", page.getStartRow());
-			map.put("end", page.getEndRow());
-			
-			list= goodsService.selectList(map);
-		}
-		 
-		model.addAttribute("count",count);
-		model.addAttribute("list",list);
-		model.addAttribute("page",page.getPage());
-		
-		
-		return "goodsList";
-	}	
-	
-	
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("dcate_num", dcate_num);
+        map.put("keyfield", keyfield);
+        map.put("keyword", keyword);
+
+        // 전체, 검색 레코드 수
+        int count = goodsService.selectRowCount(map);
+
+        // 페이지 처리
+        PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "list", "&dcate_num=" + dcate_num + "&order=" + order);
+
+        List<GoodsVO> list = null;
+        if (count > 0) {
+            map.put("order", order);
+            map.put("start", page.getStartRow());
+            map.put("end", page.getEndRow());
+
+            list = goodsService.selectList(map);
+        }
+
+        model.addAttribute("count", count);
+        model.addAttribute("list", list);
+        model.addAttribute("page", page.getPage());
+        model.addAttribute("dcate_num", dcate_num); // dcate_num 값을 뷰로 전달
+
+        return "goodsList";
+    }
 	
 	/*===================================
 	 * 				상품 상세

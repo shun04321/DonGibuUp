@@ -42,12 +42,18 @@ public class CartController {
 	 /*===================================
      *          장바구니 등록
      *==================================*/
-    @PostMapping("/cart/insert")
+	@PostMapping("/cart/insert")
     public String insertCart(@RequestParam("item_num") long itemNum,
                              @RequestParam("cart_quantity") long cartQuantity,
-                             @RequestParam("mem_num") long memNum,
+                             @RequestParam(value = "mem_num", required = false) Long memNum,
                              HttpServletRequest request,
                              Model model) throws IllegalStateException, IOException {
+
+        if (memNum == null) {
+            model.addAttribute("message", "로그아웃 상태입니다. 로그인 해주세요.");
+            model.addAttribute("url", request.getContextPath() + "/member/login");
+            return "common/resultAlert";
+        }
 
         CartVO cart = new CartVO();
         cart.setItem_num(itemNum);
@@ -56,11 +62,10 @@ public class CartController {
         
         cartService.insertOrUpdateCart(cart);
         
-
         model.addAttribute("message", "성공적으로 상품이 등록되었습니다.");
-        model.addAttribute("uri", request.getContextPath() + "/cart/list");
+        model.addAttribute("url", request.getContextPath() + "/cart/list");
         
-        return "common/resultAlertcart";
+        return "common/resultAlert";
     }
     /*===================================
      *          장바구니 목록 호출

@@ -17,8 +17,8 @@
 		 	<form:label path="dcate_num">분류</form:label>
 		 	<form:select path="dcate_num">
 		 		<option disabled="disabled" selected>선택하세요</option>
-		 		<form:option value="24">구미요양원</form:option>
-		 		<form:option value="2">아동</form:option>
+		 		<form:option value="1">노약자</form:option>
+		 		<form:option value="2">청소년</form:option>
 		 		<form:option value="3">다문화</form:option>
 		 		<form:option value="4">정신영기부좀요</form:option>
 		 	</form:select>

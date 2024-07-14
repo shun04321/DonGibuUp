@@ -25,13 +25,16 @@
 		#{item_status})
 	</insert>
 	<!-- sql 태그와 include 태그를 이용한 SQL문 재사용 -->
-	<sql id="goodsSearch">
-		<where>
-			<if test="item_name != null and item_num != ''">
-				item_name = #{item_name}
-			</if>
-		</where>
-	</sql>
+    <sql id="goodsSearch">
+    <where>
+        <if test="dcate_num != null and dcate_num != 0">
+            dcate_num = #{dcate_num}
+        </if>
+        <if test="item_name != null and item_name != ''">
+            AND item_name LIKE '%' || #{item_name} || '%'
+        </if>
+    </where>
+</sql>
 	<!-- 총 등록 상품수 / 검색 상품 수 -->
 	<select id="selectRowCount" parameterType="map"
 		resultType="integer">
