@@ -102,7 +102,14 @@
 	                <p><strong>${challenge.mem_nick}</strong></p>
 	            </div>
 	        </div>
-	        <button onclick="location.href='join?chal_num=${challenge.chal_num}'">참가하기</button>
+	        <c:choose>
+                <c:when test="${isJoined}">
+                    <button disabled>참가중</button>
+                </c:when>
+                <c:otherwise>
+                    <button onclick="location.href='join?chal_num=${challenge.chal_num}'">참가하기</button>
+                </c:otherwise>
+            </c:choose>
 	    </div>
 	    <div class="challenge-stats">
 	        <div>

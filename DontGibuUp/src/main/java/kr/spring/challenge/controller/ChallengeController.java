@@ -107,9 +107,23 @@ public class ChallengeController {
      *  챌린지 상세
      *==========================*/
     @GetMapping("/challenge/detail")
-    public ModelAndView chalDetail(@RequestParam("chal_num") long chal_num) {
+    public ModelAndView chalDetail(@RequestParam("chal_num") long chal_num, HttpSession session) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);
-        return new ModelAndView("challengeView", "challenge", challenge);
+        MemberVO member = (MemberVO) session.getAttribute("user");
+
+        boolean isJoined = false;
+        if (member != null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("chal_num", chal_num);
+            map.put("mem_num", member.getMem_num());
+            List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(map);
+            isJoined = !joinList.isEmpty();
+        }
+
+        ModelAndView mav = new ModelAndView("challengeView");
+        mav.addObject("challenge", challenge);
+        mav.addObject("isJoined", isJoined);
+        return mav;
     }
 
     /*==========================
