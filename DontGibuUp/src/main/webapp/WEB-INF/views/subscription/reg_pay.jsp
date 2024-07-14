@@ -90,7 +90,7 @@ div {
 							</div>
 							<!-- 기부자 이름 입력 필드 -->
 							<div class="form-group">
-								<label for="sub_name">기부자 이름</label>
+								<label for="sub_name">기부자명</label>
 								<form:input type="text" class="form-control" id="sub_name"
 									path="sub_name" value="${user.mem_nick}"/>
 							</div>
