@@ -239,6 +239,7 @@ div {
 				$(this).addClass('selected');
 			}
 		});
+		
 		$('#registerSubscription').submit(function(event) {
 	        // 기부 금액 체크박스 중 하나가 선택되었는지 확인
 	        if (!$("input[name='sub_price']").is(":checked")) {
@@ -249,7 +250,7 @@ div {
 	       		alert("결제수단을 선택해주세요");
 	         	return false;
 	        }
-		}
+		});
 	});
 	</script>
 </body>

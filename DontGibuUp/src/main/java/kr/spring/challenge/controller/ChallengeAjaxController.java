@@ -1,6 +1,7 @@
 package kr.spring.challenge.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -14,15 +15,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
 import kr.spring.challenge.service.ChallengeService;
+import kr.spring.challenge.vo.ChallengeJoinVO;
+import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.PagingUtil;
@@ -67,6 +72,9 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 	
+	/*==========================
+	 *  챌린지 결제
+	 *==========================*/
 	//IamportClient 초기화 하기
 	private IamportClient impClient; 
 	
@@ -78,11 +86,61 @@ public class ChallengeAjaxController {
 		this.impClient = new IamportClient(apiKey,secretKey);
 	}
 	
-	//결제 정보 검증하기
+	//리더 결제 정보 검증하기
 	@PostMapping("/challenge/paymentVerify/{imp_uid}")
 	@ResponseBody
-	public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid) throws IamportResponseException, IOException{
+	public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid,HttpSession session) throws IamportResponseException, IOException{        
 		IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
+        
+		//로그인 여부 확인하기
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		
+		//세션에 저장된 결제 금액 가져오기
+		ChallengeVO challengeVO = (ChallengeVO) session.getAttribute("challengeVO");
+		long expectedAmount = challengeVO.getChal_fee();
+		
+		//실 결제 금액 가져오기
+		long paidAmount = payment.getResponse().getAmount().longValue();
+		
+		//예정 결제 금액과 실 결제 금액 비교하기
+		if(expectedAmount != paidAmount || member == null) {
+			//결제 취소 요청하기
+			CancelData cancelData = new CancelData(imp_uid, true);
+			impClient.cancelPaymentByImpUid(cancelData);
+		}
 		return payment;
+	}
+	
+	//챌린지 개설,신청 및 리더 결제 정보 저장하기
+	@PostMapping("/challenge/payAndEnroll")
+	@ResponseBody
+	public Map<String,String> saveChallengeInfo(@RequestBody Map<String, Object> data,ChallengeVO challengeVO, 
+			ChallengeJoinVO challengeJoinVO,ChallengePaymentVO challengePaymentVO, HttpSession session){
+		String odImpUid = (String) data.get("od_imp_uid");
+	    int chalPayPrice = (Integer) data.get("chal_pay_price");
+	    int chalPoint = (Integer) data.get("chal_point");
+	    int chalPayStatus = (Integer) data.get("chal_pay_status");
+	    int dcateNum = (Integer) data.get("dcate_num");
+		
+		Map<String,String> mapJson = new HashMap<>();
+		
+		//세션 데이터 가져오기
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");
+		
+		if(member == null) {
+			mapJson.put("result", "logout");
+		}else {
+			//챌린지 개설하기
+			challengeService.insertChallenge(challenge);
+			session.removeAttribute("challengeVO");
+			
+			//챌린지 참가하기
+			challengeJoinVO.setMem_num(member.getMem_num());
+			challengeJoinVO.setChal_num(challenge.getChal_num());
+			challengeJoinVO.setDcate_num(dcateNum);
+		}
+		
+		return mapJson;
 	}
 }
