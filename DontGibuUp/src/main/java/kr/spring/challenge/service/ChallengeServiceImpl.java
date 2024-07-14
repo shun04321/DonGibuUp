@@ -12,6 +12,7 @@ import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyVO;
 
 @Service
 @Transactional
@@ -59,7 +60,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		
 	}
 
-	//챌린지 참가 및 현황//
+	//챌린지 참가//
     @Override
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO) {
         challengeMapper.insertChallengeJoin(chalJoinVO);
@@ -90,5 +91,21 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void insertChallengePayment(ChallengePaymentVO chalPayVO) {
         challengeMapper.insertChallengePayment(chalPayVO);
     }
+    
+    //챌린지 인증//
+    @Override
+    public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO) {
+        challengeMapper.insertChallengeVerify(chalVerifyVO);
+    }
+
+    @Override
+    public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map) {
+        return challengeMapper.selectChallengeVerifyList(map);
+    }
+
+	/*
+	 * @Override public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num) {
+	 * return challengeMapper.selectChallengeVerify(chal_ver_num); }
+	 */
     
 }
