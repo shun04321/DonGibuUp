@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +26,14 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 
+import kr.spring.category.service.CategoryService;
 import kr.spring.challenge.service.ChallengeService;
+import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,17 +43,23 @@ public class ChallengeAjaxController {
 	@Autowired
 	private ChallengeService challengeService;
 	
+	@Autowired
+	private CategoryService categoryService;
+	
 	/*==========================
 	 *  챌린지 목록
 	 *==========================*/
 	@GetMapping("/challenge/addlist")
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
-			@RequestParam(defaultValue="1") int rowCount){
+			@RequestParam(defaultValue="1") int rowCount,@RequestParam(defaultValue="1") int order,
+			  String chal_type,String freqOrder,String keyfield,String keyword){
+		log.debug("chal_type : "+chal_type);
 		Map<String,Object> map = new HashMap<>();
 		//map에 검색할 자기계발 카테고리 넣기
-		
-		
+		List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
+		map.put("categories", categories);
+				
 		//총 챌린지 개수
 		int count = challengeService.selectRowCount(map);
 		
@@ -57,6 +67,8 @@ public class ChallengeAjaxController {
 		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
 		map.put("start", page.getStartRow());
 		map.put("end", page.getEndRow());
+		map.put("chal_type", chal_type);
+		map.put("freqOrder", freqOrder);
 		
 		List<ChallengeVO> list = null;
 		if(count > 0) {
@@ -66,6 +78,7 @@ public class ChallengeAjaxController {
 		}
 		
 		Map<String,Object> mapJson = new HashMap<>();
+		mapJson.put("freqOrder", freqOrder);
 		mapJson.put("count", count);
 		mapJson.put("list", list);
 		
@@ -114,8 +127,8 @@ public class ChallengeAjaxController {
 	//챌린지 개설,신청 및 리더 결제 정보 저장하기
 	@PostMapping("/challenge/payAndEnroll")
 	@ResponseBody
-	public Map<String,String> saveChallengeInfo(@RequestBody Map<String, Object> data,ChallengeVO challengeVO, 
-			ChallengeJoinVO challengeJoinVO,ChallengePaymentVO challengePaymentVO, HttpSession session){
+	public Map<String,String> saveChallengeInfo(@RequestBody Map<String, Object> data, 
+			HttpSession session, HttpServletRequest request) throws IllegalStateException, IOException{
 		String odImpUid = (String) data.get("od_imp_uid");
 	    int chalPayPrice = (Integer) data.get("chal_pay_price");
 	    int chalPoint = (Integer) data.get("chal_point");
@@ -132,13 +145,30 @@ public class ChallengeAjaxController {
 			mapJson.put("result", "logout");
 		}else {
 			//챌린지 개설하기
+			//대표 사진 업로드 및 파일 저장
+			challenge.setChal_photo(FileUtil.createFile(request, challenge.getUpload()));
 			challengeService.insertChallenge(challenge);
 			session.removeAttribute("challengeVO");
 			
 			//챌린지 참가하기
+			ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
 			challengeJoinVO.setMem_num(member.getMem_num());
 			challengeJoinVO.setChal_num(challenge.getChal_num());
 			challengeJoinVO.setDcate_num(dcateNum);
+			challengeService.insertChallengeJoin(challengeJoinVO);
+			
+			//챌린지 결제 정보 저장하기
+			ChallengePaymentVO challengePaymentVO = new ChallengePaymentVO();
+			challengePaymentVO.setMem_num(member.getMem_num());
+			challengePaymentVO.setChal_pay_price(chalPayPrice);
+			challengePaymentVO.setChal_point(chalPoint);
+			//Q. 결제 테이블에 chal_joi_num이 꼭 필요한지?
+			//ChallengeJoinVO db_join = challengeService.
+			//challengePaymentVO.setChal_joi_num();
+			
+			//challengeService.insertChallengePayment(challengePaymentVO);
+			
+			mapJson.put("result", "success");
 		}
 		
 		return mapJson;

@@ -16,11 +16,25 @@
 		)
 	</insert>
 	
-	<!-- 챌린지 개설 수 -->
+	<!-- 챌린지 검색 조건 -->
+		<sql id="challengeSearch">
+		<where>
+			TO_DATE(chal_sdate, 'YYYY-MM-DD') > SYSDATE
+			<if test="chal_type != null and chal_type != ''">
+				AND chal_type = #{chal_type}
+			</if>
+			<if test="freqOrder != null and freqOrder != ''">
+				AND chal_freq = #{freqOrder}
+			</if>
+		</where>
+	</sql>
+	
+		<!-- 챌린지 개설 수 -->
 	<select id="selectRowCount" parameterType="map" resultType="Integer">
 		SELECT COUNT(*) FROM challenge
 		JOIN member USING (mem_num)
 		<!-- 검색 조건 sql문 -->
+		<include refid="challengeSearch"></include>
 	</select>
 	
 	<!-- 챌린지 개설 목록 -->
@@ -31,6 +45,7 @@
 				JOIN member m ON c.mem_num=m.mem_num
 				LEFT OUTER JOIN member_detail md ON c.mem_num=md.mem_num
 				<!-- 검색 조건 sql문 -->
+				<include refid="challengeSearch"></include>
 			)a
 		)
 		<![CDATA[

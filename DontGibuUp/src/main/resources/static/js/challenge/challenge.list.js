@@ -3,28 +3,35 @@ $(function(){
 	let currentPage=1;
 	let loading = false;
 	let hasMoreData = true;
+	let chal_type = '';
+	//let keyword = '';
+	let freqOrder = '';
+	//let order = '';
 	
 	/*---------------------
 	 * 챌린지 목록
 	 *---------------------*/
 	window.onscroll = function() {
     	if (hasMoreData && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        	currentPage++;
+        currentPage++;
     		selectList(currentPage);
-        }
-    };
-  
-	function selectList(currentPage){
-		
+      }
+  };
+        
+	function selectList(currentPage){            
 		$.ajax({
 			url:'addlist',
 			type:'get',
-			data:{pageNum:currentPage,rowCount:rowCount},
+			data:{
+				pageNum:currentPage,
+				rowCount:rowCount,
+				chal_type:chal_type,
+				freqOrder:freqOrder
+			},
 			dataType:'json',
 			success:function(param){
 				
 				loading = true;
-				
 				if(currentPage > param.count){
 					loading = false;
 					hasMoreData = false;	
@@ -97,4 +104,21 @@ $(function(){
 	 * 초기 데이터 호출
 	 *---------------------*/
 	selectList(1);
+	
+	// 카테고리 링크 클릭 이벤트
+	$('.category-link').on('click', function(e) {
+  	e.preventDefault();
+    chal_type = $(this).data('category');
+    hasMoreData = true;
+    $('#output').empty();
+    selectList(1);
+  });
+  
+  //인증 빈도 선택 이벤트
+  $('.freqOrder').on('change',function(){
+		freqOrder = $(this).val();
+    hasMoreData = true;
+    $('#output').empty();
+    selectList(1);
+	});
 });

@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import kr.spring.category.service.CategoryService;
+import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeJoinVO;
@@ -46,6 +48,9 @@ public class ChallengeController {
 
     @Autowired
     private ChallengeService challengeService;
+    
+    @Autowired
+	private CategoryService categoryService;
 
     @ModelAttribute("challengeVO")
     public ChallengeVO initChallengeVO() {
@@ -74,7 +79,7 @@ public class ChallengeController {
     //챌린지 개설 (챌린지 개설 유효성 검사 확인 후, 세션에 저장)
     @PostMapping("/challenge/write")
     public String checkValidation(@Valid ChallengeVO challengeVO, BindingResult result, 
-                                  HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
+                                  HttpServletRequest request, HttpSession session, Model model) {
         log.debug("<<챌린지 개설 정보 확인>> : " + challengeVO);
 
         // 유효성 체크
@@ -87,8 +92,6 @@ public class ChallengeController {
 		challengeVO.setMem_num(member.getMem_num());
 		//ip
 		challengeVO.setChal_ip(request.getRemoteAddr());
-		//대표 사진 업로드 및 파일 저장
-		//challengeVO.setChal_photo(FileUtil.createFile(request, challengeVO.getUpload()));
 		//챌린지 종료일 계산
         challengeVO.calculateChalEdate();
         
@@ -99,7 +102,9 @@ public class ChallengeController {
 
     //챌린지 개설 목록
     @GetMapping("/challenge/list")
-    public String list() {
+    public String list(Model model) {
+    	List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
+		model.addAttribute("categories", categories);
         return "challengeList";
     }
 
