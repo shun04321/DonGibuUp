@@ -101,37 +101,37 @@ div {
 								<div class="form-check">
 									<form:radiobutton class="form-check-input" id="radio1"
 										path="sub_price" value="3000" />
-									<label class="form-check-label" for="radio1"> 유기견보호소
+									<label class="form-check-label" for="radio1"> ${category.dcate_charity}
 										3,000원/월 지원 </label>
 								</div>
 								<div class="form-check">
 									<form:radiobutton class="form-check-input" id="radio2"
 										path="sub_price" value="5000" />
-									<label class="form-check-label" for="radio2"> 유기견보호소
+									<label class="form-check-label" for="radio2"> ${category.dcate_charity}
 										5,000원/월 지원 </label>
 								</div>
 								<div class="form-check">
 									<form:radiobutton class="form-check-input" id="radio3"
 										path="sub_price" value="10000" />
-									<label class="form-check-label" for="radio3"> 유기견보호소
+									<label class="form-check-label" for="radio3"> ${category.dcate_charity}
 										10,000원/월 지원 </label>
 								</div>
 								<div class="form-check">
 									<form:radiobutton class="form-check-input" id="radio4"
 										path="sub_price" value="20000" />
-									<label class="form-check-label" for="radio4"> 유기견보호소
+									<label class="form-check-label" for="radio4"> ${category.dcate_charity}
 										20,000원/월 지원 </label>
 								</div>
 								<div class="form-check">
 									<form:radiobutton class="form-check-input" id="radio4"
 										path="sub_price" value="30000" />
-									<label class="form-check-label" for="radio4"> 유기견보호소
+									<label class="form-check-label" for="radio4"> ${category.dcate_charity}
 										30,000원/월 지원 </label>
 								</div>
 								<div class="form-check">
 									<form:radiobutton class="form-check-input" id="radio5"
 										path="sub_price" value="50000" />
-									<label class="form-check-label" for="radio5"> 유기견보호소
+									<label class="form-check-label" for="radio5"> ${category.dcate_charity}
 										50,000원/월 지원 </label>
 								</div>
 								  <form:errors path="sub_price" cssClass="text-danger"/>
