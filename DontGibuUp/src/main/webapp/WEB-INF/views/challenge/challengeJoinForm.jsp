@@ -23,7 +23,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.form.js"></script>
 </head>
 <body>
-<h2 class="align-left">챌린지 참가</h2>
+<h2>챌린지 참가</h2>
 <div class="container">
     <div class="line">
         <img src="<c:url value='/images/${challengeVO.chal_photo}'/>"/>

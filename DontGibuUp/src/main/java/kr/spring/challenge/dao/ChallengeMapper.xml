@@ -39,15 +39,16 @@
 	</select>
 	
 	<!-- 챌린지 상세 -->
-	<select id="selectChallenge" parameterType="Long" resultType="challengeVO">
-		SELECT 
-			* 
-		FROM challenge
-		LEFT OUTER JOIN member_detail USING(mem_num)
-		<!-- 후기 join -->
+    <select id="selectChallenge" parameterType="Long" resultType="challengeVO">
+        SELECT c.*, 
+        m.mem_nick, md.mem_photo 
+        FROM challenge c
+        JOIN member m ON c.mem_num = m.mem_num
+        LEFT OUTER JOIN member_detail md ON c.mem_num = md.mem_num
+        	<!-- 후기 join -->
 		<!-- 좋아요 join -->
-		WHERE chal_num=#{chal_num}
-	</select>
+        WHERE c.chal_num = #{chal_num}
+    </select>
 	
 	<!-- 챌린지 참가 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
