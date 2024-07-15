@@ -58,6 +58,9 @@ public class SubscriptionController {
 	    log.debug("정기기부 등록 subscriptionVO : " + subscriptionVO);
 
 	    MemberVO user = (MemberVO) session.getAttribute("user");
+	    if(user==null) {
+	    	return "redirect:/member/login";
+	    }
 	    MemberVO member_db = memberService.selectMember(user.getMem_num()); 
 	    PayuidVO payuid = new PayuidVO();
 	    payuid.setMem_num(user.getMem_num());
@@ -87,19 +90,21 @@ public class SubscriptionController {
 	        subscriptionService.insertSubscription(subscriptionVO);
 	        
 	        redirectAttributes.addFlashAttribute("user", member_db);
-	        redirectAttributes.addFlashAttribute("payuidVO", reg_payuid);
-	        
-	        log.debug("getCardpayuid로 이동하나?");
+	        redirectAttributes.addFlashAttribute("payuidVO", reg_payuid);        
+
 	        return "redirect:/subscription/getCardpayuid";
 	    }
 
 	    return "redirect:/category/success"; // 성공시 리다이렉트
 	}
 	
+	//카드 payuid 발급 이동
 	@GetMapping("/subscription/getCardpayuid")
 	public String getCardpayuid(@ModelAttribute("user") MemberVO user,
 	                            @ModelAttribute("payuidVO") PayuidVO payuidVO,
 	                            Model model) {
+		log.debug("payuid 발급 페이지로 전달되는 유저 정보 : " + user);
+		
 	    // user와 payuidVO 데이터를 사용하여 로직을 처리합니다.
 	    model.addAttribute("user", user);
 	    model.addAttribute("payuidVO", payuidVO);
