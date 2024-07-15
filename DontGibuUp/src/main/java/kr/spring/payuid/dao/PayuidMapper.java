@@ -18,7 +18,7 @@ public interface PayuidMapper {
 	
 	// 결제 카드 삭제 (빌링키 삭제, 수정불가능 재발급 필요)
 	@Delete("DELETE FROM pay_uid WHERE mem_num=#{mem_num}")
-	public void deletePayUId (long mem_num,);
+	public void deletePayUId (long mem_num);
 	
 	//등록된 카드 가져오기
 	@Select("SELECT * FROM pay_uid WHERE mem_num=#{mem_num}")
