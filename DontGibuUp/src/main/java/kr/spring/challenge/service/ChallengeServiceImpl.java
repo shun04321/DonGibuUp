@@ -50,8 +50,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public void deleteChallenge(Long chal_num) {
-		// TODO Auto-generated method stub
-		
+		challengeMapper.deleteChallenge(chal_num);
 	}
 
 	@Override
@@ -71,10 +70,9 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeMapper.selectChallengeJoinList(map);
     }
 
-	/*
-	 * @Override public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
-	 * return challengeMapper.selectChallengeJoin(chal_joi_num); }
-	 */
+	@Override public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
+		return challengeMapper.selectChallengeJoin(chal_joi_num); 
+	}
     
 	@Override public void deleteChallengeJoin(Long chal_joi_num) {
 		challengeMapper.deleteChallengeJoin(chal_joi_num); 
@@ -84,6 +82,19 @@ public class ChallengeServiceImpl implements ChallengeService{
     @Override
     public List<DonationCategoryVO> selectDonaCategories() {
         return challengeMapper.selectDonaCategories();
+    }
+    
+    //챌린지 ID로 챌린지 참가 데이터 삭제
+    @Override
+    public void deleteChallengeJoinsByChallengeId(Long chal_num) {
+        challengeMapper.deleteChallengeJoinsByChallengeId(chal_num);
+    }
+    
+    //리더 여부 확인
+    @Override
+    public boolean isChallengeLeader(Long chal_num, Long mem_num) {
+        ChallengeVO challenge = challengeMapper.selectChallenge(chal_num);
+        return challenge != null && challenge.getMem_num() == mem_num;
     }
     
     //챌린지 결제//

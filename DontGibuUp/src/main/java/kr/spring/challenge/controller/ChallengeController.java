@@ -246,9 +246,24 @@ public class ChallengeController {
     
     //챌린지 참가 삭제
     @PostMapping("/challenge/join/delete")
-    public ResponseEntity<String> deleteChallengeJoin(@RequestParam("chal_joi_num") Long chal_joi_num) {
+    public ResponseEntity<String> deleteChallengeJoin(@RequestParam("chal_joi_num") Long chal_joi_num, HttpSession session) {
         try {
-            challengeService.deleteChallengeJoin(chal_joi_num);
+            MemberVO member = (MemberVO) session.getAttribute("user");
+            ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+            
+            // 참가 정보가 없거나 회원 정보가 일치하지 않는 경우 처리
+            if (challengeJoin == null || challengeJoin.getMem_num() != member.getMem_num()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("챌린지 참가 정보가 없거나 권한이 없습니다.");
+            }
+            
+            // 리더인 경우 챌린지와 참가 데이터 모두 삭제
+            if (challengeService.isChallengeLeader(challengeJoin.getChal_num(), member.getMem_num())) {
+                challengeService.deleteChallengeJoinsByChallengeId(challengeJoin.getChal_num());
+                challengeService.deleteChallenge(challengeJoin.getChal_num());
+            } else {
+                // 리더가 아닌 경우 챌린지 참가 데이터만 삭제
+                challengeService.deleteChallengeJoin(chal_joi_num);
+            }
             return ResponseEntity.ok("챌린지가 취소되었습니다.");
         } catch (Exception e) {
             log.error("챌린지 취소 중 오류 발생", e);

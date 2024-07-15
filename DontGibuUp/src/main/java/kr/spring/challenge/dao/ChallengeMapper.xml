@@ -19,7 +19,7 @@
 	<!-- 챌린지 검색 조건 -->
 		<sql id="challengeSearch">
 		<where>
-			TO_DATE(chal_sdate, 'YYYY-MM-DD') > SYSDATE
+			TO_DATE(chal_sdate, 'YYYY-MM-DD') >= SYSDATE
 			<if test="chal_type != null and chal_type != ''">
 				AND chal_type = #{chal_type}
 			</if>
@@ -29,7 +29,7 @@
 		</where>
 	</sql>
 	
-		<!-- 챌린지 개설 수 -->
+	<!-- 챌린지 개설 수 -->
 	<select id="selectRowCount" parameterType="map" resultType="Integer">
 		SELECT COUNT(*) FROM challenge
 		JOIN member USING (mem_num)
@@ -64,6 +64,11 @@
 		<!-- 좋아요 join -->
         WHERE c.chal_num = #{chal_num}
     </select>
+    
+    <!-- 챌린지 개설 삭제 -->
+    <delete id="deleteChallenge" parameterType="long">
+        DELETE FROM challenge WHERE chal_num = #{chal_num}
+    </delete>
 	
 	<!-- 챌린지 참가 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
@@ -103,14 +108,19 @@
 	    ]]>
 	</select>
 	
-<!-- 	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
+	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
 		SELECT * FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
-	</select> -->
+	</select>
 	
 	<!-- 챌린지 참가 삭제 -->
 	<delete id="deleteChallengeJoin" parameterType="long">
 		DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
 	</delete>
+	
+	<!-- 챌린지 ID로 챌린지 참가 데이터 삭제 -->
+    <delete id="deleteChallengeJoinsByChallengeId" parameterType="long">
+        DELETE FROM chal_join WHERE chal_num = #{chal_num}
+    </delete>
 	
 	<!-- 챌린지 결제 -->
     <insert id="insertChallengePayment" parameterType="challengePaymentVO">

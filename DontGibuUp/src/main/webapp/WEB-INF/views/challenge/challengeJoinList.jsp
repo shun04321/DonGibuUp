@@ -44,11 +44,11 @@
                             </div>
                             <div>
                                 <span>환급포인트</span>
-                                <span>0p</span>
+                                <span>( )p</span>
                             </div>
                             <div>
                                 <span>기부금</span>
-                                <span>${challengeJoin.chal_fee}원</span>
+                                <span>( )원</span>
                             </div>                
                             <div>
                                 <span>기부처</span>
