@@ -43,6 +43,14 @@ public class GoodsServiceImpl implements GoodsService {
 		return goodsMapper.detailGoods(item_num);
 	}
 
+	 @Override
+	    public void deleteGoods(long item_num) {
+	        // 자식 레코드 먼저 삭제
+	        goodsMapper.deleteCartItems(item_num);
+	        // 부모 레코드 삭제
+	        goodsMapper.deleteGoods(item_num);
+	    }
+
 
 	
 }

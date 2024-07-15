@@ -3,6 +3,7 @@ package kr.spring.goods.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -20,5 +21,10 @@ public interface GoodsMapper {
 	public GoodsVO detailGoods(long item_num);
 	//@Update("UPDATE item SET item_name=#{item_name}, item_price=#{item_price},item_stock=#{item_stock}, item_photo=#{item_photo,jdbcType=VARCHAR}, item_detail=#{item_detail}, dcate_num=#{dcate_num}, item_status=#{item_status} WHERE item_num=#{item_num}")
 	public void updateGoods(GoodsVO goods);
-	
+	 @Delete("DELETE FROM item WHERE item_num=#{item_num}")
+	public void deleteGoods(long item_num);
+
+	  // 자식 레코드 삭제 메서드 추가
+	    @Delete("DELETE FROM cart WHERE item_num = #{item_num}")
+	    public void deleteCartItems(long item_num);
 }

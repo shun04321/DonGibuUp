@@ -19,10 +19,10 @@
 		#{dcate_num},
 		#{item_name},
 		#{item_photo,jdbcType=VARCHAR},
-		#{item_detail},
+		#{item_detail,jdbcType=VARCHAR},
 		#{item_price},
 		#{item_stock},
-		#{item_status})
+		#{item_status,jdbcType=INTEGER})
 	</insert>
 	<!-- sql 태그와 include 태그를 이용한 SQL문 재사용 -->
     <sql id="goodsSearch">
@@ -72,14 +72,14 @@
 	
 	   <!-- 상품 수정 -->
     <update id="updateGoods" parameterType="goodsVO">
-        UPDATE item 
-        SET item_name=#{item_name}, 
-            item_price=#{item_price}, 
-            item_stock=#{item_stock}, 
-            item_photo=#{item_photo,jdbcType=VARCHAR}, 
-            item_detail=#{item_detail}, 
-            dcate_num=#{dcate_num}, 
-            item_status=#{item_status} 
-        WHERE item_num=#{item_num}
-    </update>
+     UPDATE item 
+    SET item_name = #{item_name}, 
+        item_price = #{item_price}, 
+        item_stock = #{item_stock}, 
+        item_photo = #{item_photo,jdbcType=VARCHAR}, 
+        item_detail = #{item_detail,jdbcType=CLOB}, 
+        dcate_num = #{dcate_num}, 
+        item_status = #{item_status,jdbcType=INTEGER} 
+    WHERE item_num = #{item_num}
+</update>
 </mapper>

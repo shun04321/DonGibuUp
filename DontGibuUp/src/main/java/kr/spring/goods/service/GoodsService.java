@@ -11,6 +11,7 @@ public interface GoodsService {
 	public Integer selectRowCount(Map<String,Object> map);
 	public void updateGoods(GoodsVO goodsVO);
 	public GoodsVO detailGoods(long item_num);
+	public void deleteGoods(long item_num);
 
 	
 	//상품이미지 수정
