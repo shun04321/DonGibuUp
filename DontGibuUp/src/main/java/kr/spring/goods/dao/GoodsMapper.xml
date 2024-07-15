@@ -59,12 +59,12 @@
 		item_price,
 		item_photo,
 		item_stock,
-		dcate_num
+		dcate_num,
+		item_status
 		FROM item
 
 		<include refid="goodsSearch"></include>
-<!-- 		<include refid="goodsOrder"></include>
-		 이거 없어서 에러떠서 주석처리 해뒀어용 감사용-->)a)
+		)a)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>

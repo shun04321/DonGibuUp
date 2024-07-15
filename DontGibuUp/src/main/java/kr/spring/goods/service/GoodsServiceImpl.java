@@ -22,7 +22,11 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public List<GoodsVO> selectList(Map<String, Object> map) {
+	public List<GoodsVO> selectList(Map<String, Object> map, Integer mem_status) {
+		if (mem_status == null || mem_status != 9) {
+	        // 일반 사용자라면 item_status가 1인 상품만 조회하도록 필터링
+	        map.put("item_status", 1);
+	    }
 		return goodsMapper.selectList(map);
 	}
 

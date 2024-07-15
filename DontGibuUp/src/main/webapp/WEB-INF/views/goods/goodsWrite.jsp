@@ -19,8 +19,7 @@
 		 		<option disabled="disabled" selected>선택하세요</option>
 		 		<form:option value="1">노약자</form:option>
 		 		<form:option value="2">청소년</form:option>
-		 		<form:option value="3">다문화</form:option>
-		 		<form:option value="4">정신영기부좀요</form:option>
+		 		
 		 	</form:select>
 		 	<form:errors path="dcate_num" cssClass="error-color"/>
 		</li>
@@ -63,6 +62,14 @@
 		 	<input type="file" name="upload" id="upload">
 		 	<form:errors path="upload" cssClass="error-color"/>
 		</li>
+		 <li>
+            <form:label path="item_status">판매 상태</form:label>
+            <form:select path="item_status">
+                <form:option value="1">판매 중</form:option>
+                <form:option value="0">미판매</form:option>
+            </form:select>
+            <form:errors path="item_status" cssClass="error-color"/>
+        </li>
 	</ul>						
 	<div class="align-center">
 		<form:button class="default-btn">등록</form:button>

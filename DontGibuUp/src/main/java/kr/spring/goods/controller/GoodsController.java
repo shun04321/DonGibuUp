@@ -46,42 +46,47 @@ public class GoodsController {
 	 * 				상품 목록 호출
 	 *==================================*/
 	// 요청
-    @GetMapping("/goods/list")
-    public String getlist(@RequestParam(defaultValue="1") int pageNum,
-                          @RequestParam(defaultValue="0") int order,
-                          @RequestParam(defaultValue="0") int dcate_num,
-                          String keyfield, String keyword, Model model) {
+	@GetMapping("/goods/list")
+	public String getlist(@RequestParam(defaultValue="1") int pageNum,
+	                      @RequestParam(defaultValue="0") int order,
+	                      @RequestParam(defaultValue="0") int dcate_num,
+	                      String keyfield, String keyword, Model model, HttpSession session) {
 
-        log.debug("<<상품 목록 - category>> : " + dcate_num);
-        log.debug("<<상품 목록 - order>> : " + order);
+	    MemberVO user = (MemberVO) session.getAttribute("user");
+	    Integer mem_status = user != null ? user.getMem_status() : null;
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("dcate_num", dcate_num);
-        map.put("keyfield", keyfield);
-        map.put("keyword", keyword);
+	    log.debug("<<mem_status>> : " + mem_status);
 
-        // 전체, 검색 레코드 수
-        int count = goodsService.selectRowCount(map);
+	    log.debug("<<상품 목록 - category>> : " + dcate_num);
+	    log.debug("<<상품 목록 - order>> : " + order);
 
-        // 페이지 처리
-        PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "list", "&dcate_num=" + dcate_num + "&order=" + order);
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    map.put("dcate_num", dcate_num);
+	    map.put("keyfield", keyfield);
+	    map.put("keyword", keyword);
 
-        List<GoodsVO> list = null;
-        if (count > 0) {
-            map.put("order", order);
-            map.put("start", page.getStartRow());
-            map.put("end", page.getEndRow());
+	    // 전체, 검색 레코드 수
+	    int count = goodsService.selectRowCount(map);
 
-            list = goodsService.selectList(map);
-        }
+	    // 페이지 처리
+	    PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "list", "&dcate_num=" + dcate_num + "&order=" + order);
 
-        model.addAttribute("count", count);
-        model.addAttribute("list", list);
-        model.addAttribute("page", page.getPage());
-        model.addAttribute("dcate_num", dcate_num); // dcate_num 값을 뷰로 전달
+	    List<GoodsVO> list = null;
+	    if (count > 0) {
+	        map.put("order", order);
+	        map.put("start", page.getStartRow());
+	        map.put("end", page.getEndRow());
 
-        return "goodsList";
-    }
+	        list = goodsService.selectList(map, mem_status);
+	    }
+
+	    model.addAttribute("count", count);
+	    model.addAttribute("list", list);
+	    model.addAttribute("page", page.getPage());
+	    model.addAttribute("dcate_num", dcate_num); // dcate_num 값을 뷰로 전달
+
+	    return "goodsList";
+	}
 	
 	/*===================================
 	 * 				상품 상세
