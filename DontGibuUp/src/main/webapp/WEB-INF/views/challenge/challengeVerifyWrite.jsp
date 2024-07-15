@@ -10,20 +10,31 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
 </head>
 <body>
-<h2>챌린지 인증</h2>
 <div class="container">
+    <div class="header">
+        <h2>[	${chal_title}	]</h2>
+    </div>
     <form:form id="challenge_verify" enctype="multipart/form-data" modelAttribute="challengeVerifyVO">
         <form:hidden path="chal_joi_num"/>
+        
         <div class="form-section">
-            <form:label path="chal_content">인증 한줄평</form:label>
-            <form:textarea path="chal_content" rows="5" cols="50"/>
+            <label>인증 방법</label>
+            <p>${chal_verify}</p>
         </div>
+        
         <div class="form-section">
-            <form:label path="upload">인증 사진</form:label>
+            <form:label path="upload">인증 사진<span class="mandatory">*</span></form:label>
             <form:input type="file" path="upload"/>
+            <form:errors path="upload" cssClass="error"/>
         </div>
+        
+        <div class="form-section">
+            <form:label path="chal_content">한줄평</form:label>
+            <form:textarea path="chal_content" rows="5" placeholder="오늘 인증은 어떠셨나요?"/>
+        </div>
+        
         <div class="align-center">
-            <button type="submit">인증하기</button>
+            <button type="submit">등록</button>
         </div>
     </form:form>
 </div>

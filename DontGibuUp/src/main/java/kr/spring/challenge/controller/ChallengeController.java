@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import kr.spring.category.service.CategoryService;
@@ -280,29 +281,54 @@ public class ChallengeController {
         ChallengeVerifyVO challengeVerifyVO = new ChallengeVerifyVO();
         challengeVerifyVO.setChal_joi_num(chal_joi_num);
         model.addAttribute("challengeVerifyVO", challengeVerifyVO);
-        
+
+        ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+        if (challengeJoin != null) {
+            ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
+            if (challenge != null) {
+                model.addAttribute("chal_title", challenge.getChal_title());
+                model.addAttribute("chal_verify", challenge.getChal_verify());
+            }
+        }
+
         return "challengeVerifyWrite";
     }
-    //챌린지 인증 등록
     @PostMapping("/challenge/verify/write")
-    public String submitVerify(@Valid ChallengeVerifyVO challengeVerifyVO, BindingResult result,
+    public String submitVerify(@Valid @ModelAttribute("challengeVerifyVO") ChallengeVerifyVO challengeVerifyVO, BindingResult result,
                                HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
         log.debug("<<챌린지 인증 등록>> : " + challengeVerifyVO);
 
-        // 유효성 체크
+        //인증 사진 유효성 검사
+        MultipartFile uploadFile = challengeVerifyVO.getUpload();
+        if (uploadFile == null || uploadFile.isEmpty()) {
+            result.rejectValue("upload", "error.upload", "인증 사진 필수 입력");
+        }
+
+        //유효성 체크
         if (result.hasErrors()) {
+            ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(challengeVerifyVO.getChal_joi_num());
+            if (challengeJoin != null) {
+                ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
+                if (challenge != null) {
+                    model.addAttribute("chal_title", challenge.getChal_title());
+                    model.addAttribute("chal_verify", challenge.getChal_verify());
+                }
+            }
             return "challengeVerifyWrite";
         }
 
-        // 회원 번호 설정
+        //회원 번호 설정
         MemberVO member = (MemberVO) session.getAttribute("user");
         challengeVerifyVO.setMem_num(member.getMem_num());
 
-        // 인증 사진 업로드 및 파일 저장
-        String filename = FileUtil.createFile(request, challengeVerifyVO.getUpload());
+        //인증 사진 업로드 및 파일 저장
+        String filename = FileUtil.createFile(request, uploadFile);
         challengeVerifyVO.setChal_ver_photo(filename);
 
-        // 챌린지 인증 등록
+        //등록 날짜 설정
+        challengeVerifyVO.setChal_reg_date(new Date(System.currentTimeMillis()));
+
+        //챌린지 인증 등록
         challengeService.insertChallengeVerify(challengeVerifyVO);
 
         //view에 메시지 추가
@@ -314,7 +340,7 @@ public class ChallengeController {
     
     //챌린지 인증 목록
     @GetMapping("/challenge/verify/list")
-    public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num) {
+    public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num, HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         map.put("chal_joi_num", chal_joi_num);
 
@@ -322,7 +348,15 @@ public class ChallengeController {
         ModelAndView mav = new ModelAndView("challengeVerifyList");
         mav.addObject("verifyList", verifyList);
         mav.addObject("chal_joi_num", chal_joi_num);
-        
+
+        // 오늘 날짜의 인증이 있는지 확인
+        boolean hasTodayVerify = verifyList.stream()
+            .anyMatch(verify -> {
+                LocalDate regDate = verify.getChal_reg_date().toLocalDate();
+                return regDate.equals(LocalDate.now());
+            });
+        mav.addObject("hasTodayVerify", hasTodayVerify);
+
         return mav;
     }
     

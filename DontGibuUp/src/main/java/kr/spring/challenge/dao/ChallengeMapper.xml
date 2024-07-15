@@ -135,7 +135,7 @@
         INSERT INTO CHAL_VERIFY
         (chal_ver_num, chal_joi_num, mem_num, chal_content, chal_ver_photo, chal_ver_status, chal_ver_report, chal_reg_date)
         VALUES
-        (chal_verify_seq.nextval, #{chal_joi_num}, #{mem_num}, #{chal_content}, #{chal_ver_photo}, #{chal_ver_status}, #{chal_ver_report}, #{chal_reg_date})
+        (chal_verify_seq.nextval, #{chal_joi_num}, #{mem_num}, #{chal_content}, #{chal_ver_photo,jdbcType=VARCHAR}, #{chal_ver_status}, #{chal_ver_report}, SYSDATE)
     </insert>
 
 	<!-- 챌린지 인증 목록 -->

@@ -20,12 +20,13 @@ public class ChallengeVerifyVO {
     @NotNull
     private long mem_num;
     private String chal_content;
-    private MultipartFile upload; //파일 업로드를 위한 필드
-    private String chal_ver_photo; //파일명
     @NotNull
-    private int chal_ver_status = 0; //기본값:0 (인증완료)
+    private MultipartFile upload; 		//파일 업로드를 위한 필드
+    private String chal_ver_photo; 		//파일명
     @NotNull
-    private int chal_ver_report = 0; //기본값:0 (신고안됨)
+    private int chal_ver_status = 0; 	//기본값:0 (인증완료)
+    @NotNull
+    private int chal_ver_report = 0;	//기본값:0 (신고안됨)
     private Date chal_reg_date;
 
 }
