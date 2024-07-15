@@ -6,7 +6,9 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.config.validation.ValidationSequence;
@@ -35,6 +38,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberOAuthService memberOAuthService;
+	
+    @Autowired
+    private RestTemplate restTemplate;
 
 	//카카오 로그인 API 정보
 	@Value("${kakao.client_id}")
@@ -116,7 +122,7 @@ public class MemberController {
 
 		return "signupResultPage";
 	}
-	
+
 	//카카오 로그인/회원가입 api
 	@GetMapping("/member/oauth/kakao")
 	public String getKakaoLogin() {
@@ -196,7 +202,6 @@ public class MemberController {
 			return new ResponseEntity<>("Exception occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
 
 	//카카오/네이버 회원가입 폼으로 redirect
 	@GetMapping("/member/signup/oauth")
@@ -269,16 +274,16 @@ public class MemberController {
 
 	//네이버 로그인/회원가입 api 콜백
 	@GetMapping("/member/callback/naver")
-	ResponseEntity<?> naverCallback(@RequestParam("code") String code, @RequestParam(name = "state") String state, RedirectAttributes redirectAttributes,
-			HttpSession session) {
+	ResponseEntity<?> naverCallback(@RequestParam("code") String code, @RequestParam(name = "state") String state,
+			RedirectAttributes redirectAttributes, HttpSession session) {
 		try {
 			// 2. 접근 토큰 발급 요청
 			String accessToken = memberOAuthService.getNaverAccessToken(code, state);
 			// 3. 사용자 정보 받기
 			UserInfo naverMember = memberOAuthService.getNaverInfo(accessToken);
-			
+
 			log.debug("<<네이버 로그인 정보>> : " + naverMember);
-			
+
 			// 이메일을 통해 기존 회원 정보 조회
 			MemberVO existingMember = memberService.selectMemberByEmail(naverMember.getEmail());
 
@@ -296,11 +301,11 @@ public class MemberController {
 					redirectUrl = "/member/login";
 				} else { // 정상 회원인 경우
 					// TODO: 자동 로그인 체크 로직 추가
-					
+
 					// 로그인 처리
 					session.setAttribute("user", existingMember);
 					session.setMaxInactiveInterval(60 * 30); //30분
-					session.setAttribute("kakaoToken", accessToken);
+					session.setAttribute("naverToken", accessToken);
 
 					log.debug("<<인증 성공>>");
 
@@ -315,7 +320,7 @@ public class MemberController {
 						redirectUrl = "/main/main";
 					}
 				}
-				
+
 			} else { // 기존 회원이 없는 경우 회원가입 폼으로 이동
 
 				MemberVO memberVO = new MemberVO();
@@ -403,16 +408,19 @@ public class MemberController {
 	//로그아웃
 	@GetMapping("/member/logout")
 	public String logout(HttpSession session) {
-		String accessToken = (String) session.getAttribute("kakaoToken");
-		if (accessToken != null && !"".equals(accessToken)) { //소셜(카카오) 로그인 
+		String kakaoToken = (String) session.getAttribute("kakaoToken");
+		String naverToken = (String) session.getAttribute("naverToken");
+		if (kakaoToken != null && !"".equals(kakaoToken)) { //카카오 로그인 
 			try {
 				// =====TODO 자동로그인 체크 시작====//
 				// =====TODO 자동로그인 체크 끝====//
-				memberOAuthService.kakaoDisconnect(accessToken);
+				memberOAuthService.kakaoDisconnect(kakaoToken);
 			} catch (Exception e) {
 				// 예외 처리
 				return "Exception occurred: " + e.getMessage();
 			}
+		} else if (naverToken != null && !"".equals(naverToken)) { //네이버 로그인
+			return "redirect:/member/logout/naver";
 		}
 
 		//로그아웃
@@ -420,4 +428,38 @@ public class MemberController {
 
 		return "redirect:/main/main";
 	}
+
+	//네이버 로그아웃
+    @GetMapping("/member/logout/naver")
+    public String logoutNaver(HttpSession session) {
+    	String naverToken = (String) session.getAttribute("naverToken");
+    	if (naverToken != null && !"".equals(naverToken)) {
+    		try {
+                String url = String.format(
+                        "https://nid.naver.com/oauth2.0/token?grant_type=%s&client_id=%s&client_secret=%s&access_token=%s&service_provider=%s",
+                        "delete", n_client_id, n_client_secret, naverToken, "Naver");
+
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("Content-Type", "application/x-www-form-urlencoded");
+
+                HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+
+                ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+                
+                if (responseEntity.getStatusCode().is2xxSuccessful()) {
+                	// 로그아웃 처리 로직
+                	session.invalidate();
+                	log.debug("<<네이버 로그아웃 성공>>");
+                    return "redirect:/main/main";
+                } else {
+                	throw new Exception();
+                }
+    		} catch (Exception e) {
+				// 예외 처리
+				return "Exception occurred: " + e.getMessage();
+    		}
+    	} else {
+    		return "redirect:/main/main";
+    	}
+    }
 }
