@@ -51,7 +51,7 @@
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>		
-	</select>
+	</select> 
 	
 	<!-- 챌린지 개설 상세 -->
     <select id="selectChallenge" parameterType="Long" resultType="challengeVO">
