@@ -74,8 +74,7 @@ public class ChallengeController {
     @GetMapping("/challenge/write")
     public String form() {
         return "challengeWrite";
-    }
-    
+    } 
     //챌린지 개설 (챌린지 개설 유효성 검사 확인 후, 세션에 저장)
     @PostMapping("/challenge/write")
     public String checkValidation(@Valid ChallengeVO challengeVO, BindingResult result, 
@@ -147,7 +146,6 @@ public class ChallengeController {
 
         return "challengeJoinWrite";
     }
-    
     //챌린지 참가 폼 (리더)
     @GetMapping("/challenge/leaderJoin")
     public String joinForm(Model model,HttpSession session) {
@@ -159,7 +157,6 @@ public class ChallengeController {
         
         return "leaderJoinForm";
     }    
-    
     //챌린지 참가 및 결제
     @PostMapping("/challenge/join/write")
     public String join(@Valid @ModelAttribute("challengeJoinVO") ChallengeJoinVO challengeJoinVO, BindingResult result,
@@ -205,9 +202,7 @@ public class ChallengeController {
 
         return "common/resultAlert";
     }
-    
     //챌린지 참가 및 결제 (리더)
-    
     
     
     //챌린지 참가 목록
@@ -270,9 +265,9 @@ public class ChallengeController {
         ChallengeVerifyVO challengeVerifyVO = new ChallengeVerifyVO();
         challengeVerifyVO.setChal_joi_num(chal_joi_num);
         model.addAttribute("challengeVerifyVO", challengeVerifyVO);
-        return "challenge/challengeVerifyWrite";
+        
+        return "challengeVerifyWrite";
     }
-
     //챌린지 인증 등록
     @PostMapping("/challenge/verify/write")
     public String submitVerify(@Valid ChallengeVerifyVO challengeVerifyVO, BindingResult result,
@@ -281,7 +276,7 @@ public class ChallengeController {
 
         // 유효성 체크
         if (result.hasErrors()) {
-            return "challenge/challengeVerifyWrite";
+            return "challengeVerifyWrite";
         }
 
         // 회원 번호 설정
@@ -309,9 +304,10 @@ public class ChallengeController {
         map.put("chal_joi_num", chal_joi_num);
 
         List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
-        ModelAndView mav = new ModelAndView("challenge/challengeVerifyList");
+        ModelAndView mav = new ModelAndView("challengeVerifyList");
         mav.addObject("verifyList", verifyList);
         mav.addObject("chal_joi_num", chal_joi_num);
+        
         return mav;
     }
     
