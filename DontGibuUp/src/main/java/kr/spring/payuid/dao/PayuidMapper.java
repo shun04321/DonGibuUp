@@ -24,9 +24,11 @@ public interface PayuidMapper {
 	@Select("SELECT * FROM pay_uid WHERE mem_num=#{mem_num}")
 	public List<PayuidVO> getPayUId(long mem_num);
 	
-	//easypay_method와 mem_num으로 payuid 유무 확인 (카드는 이미 존재하는 카드나, 새카드 등록임)
+	//선택한 결제수단과 mem_num으로 payuid 유무 확인
+	public PayuidVO getPayuidByMethod(PayuidVO payuidVO);
 	// 없으면 해당하는 플랫폼의 payuid 발급 페이지, 
 	// 새카드 등록 눌렀을때도 토스의 카드 payuid 발급 페이지,   
+
 	//--> payuid 발급 페이지는 무조건 getPayuid.jsp 하지만 subscriptionVO로 받아온
 	// sub_method와 easypay_method에 따라 pg를 다르게 전달함.
 	

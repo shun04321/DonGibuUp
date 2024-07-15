@@ -22,11 +22,15 @@
  		</if>
  		 <if test="card_nickname != null">
  		   ,#{card_nickname}
- 		</if>
- 		
+ 		</if>	
 		 )
-		
 	</insert>
+	<select id="getPayuidByMethod" resultType="payuidVO" parameterType="payuidVO">
+		SELECT * FROM pay_uid WHERE mem_num=#{mem_num}  
+		<if test="easypay_method != null">
+ 		   AND easypay_method=#{easypay_method}
+ 		</if>
+	</select>
 </mapper>
 
 

@@ -18,8 +18,7 @@ public class PayuidServiceImpl implements PayuidService{
 	
 	@Override
 	public void registerPayUId(PayuidVO payuidVO) {
-		// TODO Auto-generated method stub
-		
+		payuidMapper.registerPayUId(payuidVO);
 	}
 
 	@Override
@@ -31,6 +30,11 @@ public class PayuidServiceImpl implements PayuidService{
 	@Override
 	public List<PayuidVO> getPayUId(long mem_num) {
 		return payuidMapper.getPayUId(mem_num);
+	}
+
+	@Override
+	public PayuidVO getPayuidByMethod(PayuidVO payuidVO) {
+		return payuidMapper.getPayuidByMethod(payuidVO);
 	}
 
 

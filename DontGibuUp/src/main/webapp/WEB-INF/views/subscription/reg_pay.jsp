@@ -39,8 +39,7 @@
 	border-color: #007bff;
 }
 
-.payment-method input[type="radio"], .easypay-method input[type="radio"]
-	{
+.payment-method input[type="radio"], .easypay-method input[type="radio"] {
 	display: none;
 }
 
@@ -134,7 +133,7 @@ div {
 									<label class="form-check-label" for="radio5"> ${category.dcate_charity}
 										50,000원/월 지원 </label>
 								</div>
-								  <form:errors path="sub_price" cssClass="text-danger"/>
+								<form:errors path="sub_price" cssClass="text-danger"/>
 							</div>
 							
 							<!-- 결제 수단 라디오 버튼 -->
@@ -152,15 +151,21 @@ div {
 							<!-- 이미 등록된 카드 목록, 새 카드 등록 -->
 							<div id="card-options"  style="display: none;">
 								<c:forEach var="card" items="${list}">
-									<div>
-										<input type="radio" id="card_nickname"
-											name="selectedCard" value=" ${card.card_nickname}"><label
-											for="card_${card.card_nickname}"> ${card.card_nickname}</label>
-									</div>
+									<c:if test="${!empty card.card_nickname}">
+										<div>
+											<input type="radio" id="card_${card.card_nickname}"
+												name="selectedCard" value="${card.card_nickname}"><label
+												for="card_${card.card_nickname}"> ${card.card_nickname}</label>
+										</div>
+									</c:if>
 								</c:forEach>
 								<div>
 									<input type="radio" id="newCard" name="selectedCard"
 										value="newCard"> <label for="newCard">새 카드 등록</label>
+								</div>
+								<!-- 새 카드 별명 입력 필드 -->
+								<div id="newCardNickname" style="display: none;">
+									<input type="text" class="form-control" name="card_nickname" placeholder="새 카드 별명">
 								</div>
 							</div>
 
@@ -217,12 +222,22 @@ div {
 	                $('.easypay-container').slideDown();
 	                // 선택된 카드의 체크 해제
 	                $('input[name="selectedCard"]').prop('checked', false);
+	                $('#newCardNickname').slideUp();
 	            } else { 		//카드 결제 선택시
 	                $('.easypay-container').slideUp();
 	                $('#card-options').slideDown();
 	             // 선택된 이지페이 수단 체크 해제
 	                $('.easypay-method').removeClass('selected');
 	            }
+	        }
+	    });
+
+	    // 새 카드 등록 클릭 시 이벤트 처리
+	    $('input[name="selectedCard"]').change(function() {
+	        if ($(this).val() === 'newCard') {
+	            $('#newCardNickname').slideDown();
+	        } else {
+	            $('#newCardNickname').slideUp();
 	        }
 	    });
 	
@@ -257,3 +272,4 @@ div {
 	</script>
 </body>
 </html>
+
