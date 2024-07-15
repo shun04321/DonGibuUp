@@ -59,11 +59,10 @@ public class SubscriptionController {
 		 */
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		
-		if(payuidService.getPayUId() {
-			//payuid가 없는 결제수단을 선택한 경우
-		}
-		// 이미 payuid가 있는 결제수단을 선택한 경우
-		
+		/*
+		 * if(payuidService.getPayUId()) { //payuid가 없는 결제수단을 선택한 경우 } // 이미 payuid가 있는
+		 * 결제수단을 선택한 경우
+		 */
 	
         // 프로세스 처리
         return "redirect:/category/success"; // 성공시 리다이렉트
