@@ -11,15 +11,15 @@
             IMP.request_pay({
                 pg: "tosspayments.iamporttest_4",
                 pay_method: "card", // 'card'만 지원됩니다.
-                merchant_uid: "order_monthly_0002", // 상점에서 관리하는 주문 번호
+                merchant_uid: ${sub_num}, // 상점에서 관리하는 주문 번호
                 name: "최초인증결제",
                 amount: 0, // 실제 승인은 발생되지 않고 오직 빌링키만 발급됩니다.
-                customer_uid: "your-customer-e-id", // 필수 입력.
-                buyer_email: "test@portone.io",
-                buyer_name: "포트원",
-                buyer_tel: "02-1234-1234",
+                customer_uid: ${payuidVO.pay_uid}, // 필수 입력.
+                buyer_email: ${user.mem_email},
+                buyer_name: ${user.mem_name},
+                buyer_tel: ${user.mem_phone},
                 m_redirect_url: "{모바일에서 결제 완료 후 리디렉션 될 URL}",
-                customer_id: "matthew" // 고객사가 회원에게 부여한 고유 ID
+                customer_id: ${user.mem_num} // 고객사가 회원에게 부여한 고유 ID
             }, function (rsp) {
                 if (rsp.success) {
                     alert('결제 수단을 등록했습니다.');

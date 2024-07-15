@@ -3,13 +3,15 @@ package kr.spring.subscription.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import kr.spring.member.vo.MemberVO;
 import kr.spring.subscription.vo.SubscriptionVO;
 
 @Mapper
 public interface SubscriptionMapper {
 	//정기기부 등록
 	public void insertSubscription(SubscriptionVO subscriptionVO);
+	//등록된 정기기부 번호 가져오기
+	@Select("SELECT sub_num FROM subscription WHERE mem_num=#{mem_num} AND dcate_num=#{dcate_num}")
+	public long getSubscriptionNum(long mem_num, long dcate_num);
 	//정기기부 종료
 	public void endSubscription(long mem_num, long sub_num);
 	//정기기부 수정 (결제일, 기부금)

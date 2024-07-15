@@ -8,4 +8,5 @@ public interface SubscriptionService {
 		//정기기부 종료
 		public void endSubscription(long mem_num, long sub_num);
 		//정기기부 수정 (결제일, 기부금)
+		public long getSubscriptionNum(long mem_num, long dcate_num);
 }

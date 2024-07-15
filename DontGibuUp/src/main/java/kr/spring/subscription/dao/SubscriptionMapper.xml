@@ -3,7 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
 <mapper namespace="kr.spring.subscription.dao.SubscriptionMapper">
-	<insert id="insertSubscription" parameterType="SubscriptionVO">
+	<insert id="insertSubscription" parameterType="subscriptionVO">
  		INSERT INTO subscription(
  		sub_num,
  		mem_num,
@@ -13,11 +13,25 @@
  		sub_price,
  		sub_ndate,
  		sub_status,
+ 		sub_method
+ 		<if test="easypay_method != null">
+ 		,easypay_method 	  
+ 		</if>
  		)
- 		   <if test="dcate_icon != null">
- 		   dcate_icon = #{dcate_icon},
- 		   </if>
- 		   
+ 		VALUES(
+ 		subscription_seq.nextval,
+ 		#{mem_num},
+ 		#{dcate_num},
+ 		#{sub_name},
+ 		#{sub_annoy},
+ 		#{sub_price},
+ 		#{sub_ndate},
+ 		#{sub_status},
+ 		#{sub_method}
+ 		<if test="easypay_method != null">
+ 		,#{easypay_method} 	  
+ 		</if>
+ 		)   
  	</insert>       
  </mapper>
 

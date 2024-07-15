@@ -77,6 +77,8 @@ div {
 							method="post" style="width: 465px;">
 							<input type="hidden" name="dcate_num"
 								value="${category.dcate_num}">
+							<input type="hidden" name="mem_num"
+								value="${user.mem_num}" id="mem_num">	
 							<!-- 익명 여부 체크박스 -->
 							<div class="form-group">
 								<label>익명 여부</label>
@@ -268,6 +270,18 @@ div {
 	       		}
 	        }
 		});
+		$('#paybutton').click(function() {
+	        // mem_num의 값을 가져옴
+	        var mem_num = $('#mem_num').val();
+	        // 만약 mem_num이 비어있으면(로그인되어 있지 않으면)
+	        if (!mem_num) {
+	            // 로그인 페이지로 리다이렉트
+	            window.location.href = '/member/login'; // 로그인 페이지의 URL로 수정 필요
+	        } else {
+	            // mem_num이 존재하면 정상적으로 기부 시작하기 로직 실행
+	            $('#staticBackdrop').modal('show'); // 모달 창 열기 등
+	        }
+	    });
 	});
 	</script>
 </body>

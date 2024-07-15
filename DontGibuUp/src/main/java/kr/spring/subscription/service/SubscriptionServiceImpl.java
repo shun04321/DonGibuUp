@@ -24,5 +24,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		
 	}
 
+	@Override
+	public long getSubscriptionNum(long mem_num, long dcate_num) {
+		return SubscriptionMapper.getSubscriptionNum(mem_num, dcate_num);
+	}
+
 	
 }
