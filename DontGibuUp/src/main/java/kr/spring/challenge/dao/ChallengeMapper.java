@@ -16,6 +16,8 @@ import kr.spring.challenge.vo.ChallengeVerifyVO;
 public interface ChallengeMapper {
 	
 	//챌린지 개설
+	@Select("SELECT challenge_seq.nextval FROM dual")
+	public Long selectChal_num(); 
 	public void insertChallenge(ChallengeVO chalVO);
 	public List<ChallengeVO> selectList(Map<String,Object> map);
 	public Integer selectRowCount(Map<String,Object> map);
@@ -25,6 +27,8 @@ public interface ChallengeMapper {
 	public void deleteChalPhoto(Long chal_num);
 	
 	//챌린지 참가
+	@Select("SELECT chal_join_seq.nextval FROM dual")
+	public Long selectChal_joi_num();
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
     public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
     //public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
