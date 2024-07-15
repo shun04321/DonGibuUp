@@ -19,7 +19,6 @@ public class GoodsServiceImpl implements GoodsService {
 	@Override
 	public void insertGoods(GoodsVO goods) {
 		goodsMapper.insertGoods(goods);
-		
 	}
 
 	@Override
