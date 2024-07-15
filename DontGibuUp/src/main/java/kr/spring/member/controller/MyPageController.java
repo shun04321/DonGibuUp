@@ -2,7 +2,9 @@ package kr.spring.member.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +28,7 @@ import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
+import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -179,11 +183,27 @@ public class MyPageController {
 	
 	//포인트 페이지
 	@GetMapping("/member/myPage/point")
-	public String memberPoint(HttpSession session, Model model) {
+	public String memberPoint(@RequestParam(defaultValue="1") int pageNum, HttpSession session, Model model) {
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		List<PointVO> list = pointService.getMemberPointList(user.getMem_num());
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mem_num", user.getMem_num());
 		
+		int count = pointService.getMPointRowCount(map);
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "memberPoint");
+		
+		List<PointVO> list = null;
+		
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = pointService.getMemberPointList(map);
+		}
+		
+		model.addAttribute("count", count);
 		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
 		
         // ObjectMapper를 사용하여 JSON 형식으로 변환
         ObjectMapper objectMapper = new ObjectMapper();

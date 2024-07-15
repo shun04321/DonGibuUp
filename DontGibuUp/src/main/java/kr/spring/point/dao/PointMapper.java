@@ -1,6 +1,7 @@
 package kr.spring.point.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -14,10 +15,11 @@ public interface PointMapper {
 	@Insert("INSERT INTO point_log(point_num,mem_num,pevent_type,point_amount) VALUES(point_log_seq.nextval,#{mem_num},#{pevent_type},#{point_amount})")
 	public void insertPointLog(PointVO pointVO);
 
-	//마이페이지 포인트 가져오기
-	@Select("SELECT a.*, b.mem_point, c.* FROM point_log a JOIN member_detail b ON a.mem_num = b.mem_num JOIN db_point_event c ON a.pevent_type = c.pevent_type WHERE a.mem_num=#{mem_num}")
-	public List<PointVO> getMemberPointList(long mem_num);
-	
+	//마이페이지 포인트 목록
+	public List<PointVO> getMemberPointList(Map<String, Object> map);
+
 	//마이페이지 포인트 개수
+	@Select("SELECT COUNT(*) FROM point_log WHERE mem_num=#{mem_num}")
+	public Integer getMPointRowCount(Map<String, Object> map);
 	
 }

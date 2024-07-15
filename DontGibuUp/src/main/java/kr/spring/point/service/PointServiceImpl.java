@@ -1,6 +1,7 @@
 package kr.spring.point.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,13 @@ public class PointServiceImpl implements PointService {
 	}
 
 	@Override
-	public List<PointVO> getMemberPointList(long mem_num) {
-		return pointMapper.getMemberPointList(mem_num);
+	public List<PointVO> getMemberPointList(Map<String, Object> map) {
+		return pointMapper.getMemberPointList(map);
+	}
+
+	@Override
+	public Integer getMPointRowCount(Map<String, Object> map) {
+		return pointMapper.getMPointRowCount(map);
 	}
 	
 }

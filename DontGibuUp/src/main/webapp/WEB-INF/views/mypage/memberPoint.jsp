@@ -31,6 +31,10 @@
 </script>
 <div class="page-main">
 	<h2>포인트</h2>
+	<c:if test="${count == 0}">
+	<div class="result-display">표시할 게시물이 없습니다.</div>
+	</c:if>
+	<c:if test="${count > 0}">
 	<table>
 		<thead>
 			<tr>
@@ -67,4 +71,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
+	<div class="align-center">${page}</div>
+	</c:if>
 </div>
