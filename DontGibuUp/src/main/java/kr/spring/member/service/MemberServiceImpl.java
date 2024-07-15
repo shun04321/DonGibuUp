@@ -36,9 +36,11 @@ public class MemberServiceImpl implements MemberService {
 		//추천인 코드지정
 		memberVO.setMem_rcode(generateUniqueRCode());
 		
-		//비밀번호 해싱
-		String encpassword = pwEncoder.encode(memberVO.getMem_pw());
-		memberVO.setMem_pw(encpassword);
+		//일반 회원가입 비밀번호 해싱
+		if (memberVO.getMem_reg_type() == 1) {
+			String encpassword = pwEncoder.encode(memberVO.getMem_pw());
+			memberVO.setMem_pw(encpassword);
+		}
 		
 		//member 추가
 		memberMapper.insertMember(memberVO);

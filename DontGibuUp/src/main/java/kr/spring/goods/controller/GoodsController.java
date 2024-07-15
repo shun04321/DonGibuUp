@@ -103,7 +103,7 @@ public class GoodsController {
 	
 	
 	/*===================================
-	 * 				상품 등록
+	 * 				상품 등록(관리자)
 	 *==================================*/
 	//등록 폼 호출
 	@GetMapping("/goods/write")
@@ -118,6 +118,17 @@ public class GoodsController {
 						HttpServletRequest request,
 						HttpSession session,
 						Model model)throws IllegalStateException, IOException{
+		
+		//세션에서 Member_status 가져오기
+		Integer member_status = (Integer)session.getAttribute("member_status");
+		
+		//Member_status가 9가 아닌경우 접근을 거부
+		if(member_status == null || member_status !=9) {
+			model.addAttribute("message","관리자만 접근 가능합니다.");
+			model.addAttribute("uri","/goods/list");
+			return "common/resultAlert";
+		}
+		
 		log.debug("<<상품 등록>> : " + goodsVO);
 		
 		if(goodsVO.getUpload()==null || goodsVO.getUpload().isEmpty()) {
@@ -144,13 +155,10 @@ public class GoodsController {
 	    return "common/resultAlert";
 	}
 	/*===================================
-	 * 				상품 구매하기
+	 * 			상품 삭제하기(관리자)
 	 *==================================*/
 	
 	
 	
-	/*===================================
-	 * 				상품 장바구니
-	 *==================================*/
 	
 }

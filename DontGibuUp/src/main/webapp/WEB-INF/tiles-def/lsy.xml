@@ -22,4 +22,14 @@
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinView.jsp"/>
 	</definition> -->
+	<definition name="challengeVerifyWrite" extends="memberInfo">
+		<put-attribute name="title" value="챌린지 인증"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeVerifyWrite.jsp"/>
+	</definition>	
+	<definition name="challengeVerifyList" extends="memberInfo">
+		<put-attribute name="title" value="챌린지 인증 목록"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeVerifyList.jsp"/>
+	</definition>		
 </tiles-definitions>

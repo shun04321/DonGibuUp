@@ -10,7 +10,7 @@
 		(chal_num,mem_num,chal_type,chal_public,chal_title,chal_content,
 		 chal_photo,chal_verify,chal_freq,chal_sdate,chal_edate,chal_fee,chal_max,chal_ip)
 			 VALUES(
-			 challenge_seq.nextval,#{mem_num},#{chal_type},#{chal_public},#{chal_title},
+			 #{chal_num},#{mem_num},#{chal_type},#{chal_public},#{chal_title},
 			 #{chal_content,jdbcType=CLOB},#{chal_photo,jdbcType=VARCHAR},#{chal_verify},#{chal_freq},#{chal_sdate},
 			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_ip}
 		)
@@ -19,7 +19,7 @@
 	<!-- 챌린지 검색 조건 -->
 		<sql id="challengeSearch">
 		<where>
-			TO_DATE(chal_sdate, 'YYYY-MM-DD') > SYSDATE
+			TO_DATE(chal_sdate, 'YYYY-MM-DD') >= SYSDATE
 			<if test="chal_type != null and chal_type != ''">
 				AND chal_type = #{chal_type}
 			</if>
@@ -29,7 +29,7 @@
 		</where>
 	</sql>
 	
-		<!-- 챌린지 개설 수 -->
+	<!-- 챌린지 개설 수 -->
 	<select id="selectRowCount" parameterType="map" resultType="Integer">
 		SELECT COUNT(*) FROM challenge
 		JOIN member USING (mem_num)
@@ -51,7 +51,7 @@
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>		
-	</select>
+	</select> 
 	
 	<!-- 챌린지 개설 상세 -->
     <select id="selectChallenge" parameterType="Long" resultType="challengeVO">
@@ -64,13 +64,18 @@
 		<!-- 좋아요 join -->
         WHERE c.chal_num = #{chal_num}
     </select>
+    
+    <!-- 챌린지 개설 삭제 -->
+    <delete id="deleteChallenge" parameterType="long">
+        DELETE FROM challenge WHERE chal_num = #{chal_num}
+    </delete>
 	
 	<!-- 챌린지 참가 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
 		INSERT INTO chal_join
 		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_status, chal_joi_date, chal_joi_ip)
 		VALUES 
-		(chal_join_seq.nextval, #{chal_num}, #{mem_num}, #{dcate_num}, 0, SYSDATE, #{chal_joi_ip})
+		(#{chal_joi_num}, #{chal_num}, #{mem_num}, #{dcate_num}, 0, SYSDATE, #{chal_joi_ip})
 	</insert>
 	
 	<!-- 챌린지 참가 목록 -->
@@ -103,14 +108,19 @@
 	    ]]>
 	</select>
 	
-<!-- 	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
+	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
 		SELECT * FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
-	</select> -->
+	</select>
 	
 	<!-- 챌린지 참가 삭제 -->
 	<delete id="deleteChallengeJoin" parameterType="long">
 		DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
 	</delete>
+	
+	<!-- 챌린지 ID로 챌린지 참가 데이터 삭제 -->
+    <delete id="deleteChallengeJoinsByChallengeId" parameterType="long">
+        DELETE FROM chal_join WHERE chal_num = #{chal_num}
+    </delete>
 	
 	<!-- 챌린지 결제 -->
     <insert id="insertChallengePayment" parameterType="challengePaymentVO">

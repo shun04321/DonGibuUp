@@ -27,7 +27,7 @@
                     location.href = 'list?category=${param.category}&keyfield=' + $('#keyfield').val() + '&keyword=' + $('#keyword').val() + '&order=' + $('#order').val();
                 });
             </script>
-            <c:if test="${!empty user}">
+            <c:if test="${member_status == 9}">
                 <input type="button" value="상품 등록" onclick="location.href='write'">
             </c:if>
         </div>

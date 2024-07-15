@@ -59,8 +59,8 @@ public class MemberController {
 	 *==================================*/
 	//일반 회원가입 폼
 	@GetMapping("/member/signup")
-	public String signupForm(@RequestParam(value = "rcode", required = false) String rcode, Model model) {
-		model.addAttribute("rcode", rcode);
+	public String signupForm(@RequestParam(value = "rcode", required = false) String rcode, HttpSession session) {
+		session.setAttribute("rcode", rcode);
 		return "memberSignup";
 	}
 	
@@ -80,7 +80,7 @@ public class MemberController {
 	//일반 회원가입
 	@PostMapping("/member/signup")
 	public String signup(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result, Model model,
-			HttpServletRequest request) {
+			HttpServletRequest request, HttpSession session) {
 		log.debug("<<회원가입>> : " + memberVO);
 
 		if (result.hasErrors()) {
@@ -116,6 +116,7 @@ public class MemberController {
 
 		//회원가입
 		memberService.insertMember(memberVO);
+		session.invalidate(); //추천인코드 초기화
 
 		model.addAttribute("accessTitle", "회원가입 완료");
 		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
@@ -160,6 +161,7 @@ public class MemberController {
 
         // 회원가입 처리
         memberService.insertMember(memberVO);
+        session.invalidate(); //추천인코드 초기화
         
         // 메인으로 redirect
 		model.addAttribute("accessTitle", "회원가입 완료");
@@ -167,17 +169,16 @@ public class MemberController {
 		model.addAttribute("accessBtn", "로그인하기");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
 
-		session.invalidate();
 		return "signupResultPage";
 	}
 	
 
 	//카카오 로그인/회원가입 api
 	@GetMapping("/member/oauth/kakao")
-	public String getKakaoLogin(@RequestParam(value = "rcode", required = false) String rcode) {
+	public String getKakaoLogin(String rcode) {
 		String url = String.format(
-				"https://kauth.kakao.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s&rcode=%s", client_id,
-				redirect_uri, rcode);
+				"https://kauth.kakao.com/oauth/authorize?client_id=%s&response_type=code&redirect_uri=%s", client_id,
+				redirect_uri);
 		return "redirect:" + url;
 	}
 
@@ -240,19 +241,6 @@ public class MemberController {
 				//회원가입 폼으로 redirect
 				session.setAttribute("memberVO", memberVO);
 				redirectUrl = "/member/signup/kakao";
-				
-				
-				// rcode 파라미터가 있으면 리다이렉트 URL에 추가
-		        String url = "https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26rcode%3DDIOBOGP7%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8000%252Fmember%252Fcallback%252Fkakao%26through_account%3Dtrue%26client_id%3D361a53f841ae7d3b7fc4a74f0535dba2#login";
-		        try {
-		            // URL 디코딩
-		            String decodedURL = URLDecoder.decode(url, StandardCharsets.UTF_8.toString());
-		            // rcode 값 추출
-		            String rcode = KakaoURLParameterExtractor.extractRcode(decodedURL);
-		            session.setAttribute("rcode", rcode);
-		        } catch (Exception e) {
-		            e.printStackTrace();
-		        }
 			}
 			
 
