@@ -9,7 +9,7 @@ public interface GoodsService {
 	public List<GoodsVO> selectList(Map<String,Object>map);
 	public void insertGoods(GoodsVO goodsVO);
 	public Integer selectRowCount(Map<String,Object> map);
-	public void updateGoods(GoodsVO goods);
+	public void updateGoods(GoodsVO goodsVO);
 	public GoodsVO detailGoods(long item_num);
 
 	

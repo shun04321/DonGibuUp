@@ -155,9 +155,58 @@ public class GoodsController {
 	    return "common/resultAlert";
 	}
 	/*===================================
-	 * 			상품 삭제하기(관리자)
+	 * 			상품 수정하기
 	 *==================================*/
+	//상품 수정 폼 가져오기
+	@GetMapping("/goods/update")
+	public String updateForm(@RequestParam("item_num")long item_num,
+							 HttpSession session, Model model) {
+		Integer member_status = (Integer)session.getAttribute("member_status");
+		
+		if(member_status == null || member_status !=9) {
+			model.addAttribute("message","관리자만 접근 가능.");
+			model.addAttribute("uri","/goods/list");
+			
+			return "common/resultAlert";
+		}
+		
+		GoodsVO goods = goodsService.detailGoods(item_num);
+		model.addAttribute("goodsVO", goods);
+		
+		return "goodsUpdate";
+	}
 	
+	//상품 수정 데이터 처리
+	@PostMapping("/goods/update")
+	public String updateSubmit(@Valid GoodsVO goodsVO,
+							   BindingResult result,
+							   HttpSession session,
+							   Model model, HttpServletRequest request) throws IllegalStateException,
+								IOException{
+		Integer member_status =(Integer)session.getAttribute("member_status");
+		
+		if (member_status == null || member_status != 9) {
+	        model.addAttribute("message", "관리자만 접근 가능합니다.");
+	        model.addAttribute("uri", "/goods/list");
+	        return "common/resultAlert";
+	    }
+	    
+	    if (result.hasErrors()) {
+	        return "goodsUpdate";
+	    }
+
+	    if (goodsVO.getUpload() != null && !goodsVO.getUpload().isEmpty()) {
+	        String uploadedFileName = fileUtil.createFile(request, goodsVO.getUpload());
+	        goodsVO.setItem_photo(uploadedFileName);
+	    }
+	    
+	    goodsService.updateGoods(goodsVO);
+	    model.addAttribute("message", "상품 정보가 성공적으로 수정되었습니다.");
+	    model.addAttribute("uri", "/goods/list");
+	    
+	    return "common/resultAlert";
+		
+	}
 	
 	
 	

@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!-- 상품 목록 출력 -->
 <script type="text/javascript"
     src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-
 <div class="page-main">
     <h2>상품 목록</h2>
     <div>
@@ -27,8 +27,9 @@
                     location.href = 'list?category=${param.category}&keyfield=' + $('#keyfield').val() + '&keyword=' + $('#keyword').val() + '&order=' + $('#order').val();
                 });
             </script>
-            <c:if test="${member_status == 9}">
-                <input type="button" value="상품 등록" onclick="location.href='write'">
+            
+            <c:if test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
+                <input type="button" value="상품 등록" onclick="location.href='write'">  
             </c:if>
         </div>
     </form>
@@ -72,6 +73,11 @@
                         </td>
                         <td class="align-center">${goods.item_price}</td>
                         <td class="align-center">${goods.item_stock}</td>
+                         <c:if test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
+                        <td class="align-center">
+                            <a href="${pageContext.request.contextPath}/goods/update?item_num=${goods.item_num}">상품정보 변경</a>
+                        </td>
+                    </c:if>
                     </tr>
              </c:forEach>
     </tbody>

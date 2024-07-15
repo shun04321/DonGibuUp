@@ -33,8 +33,8 @@ public class GoodsServiceImpl implements GoodsService {
 	}
 
 	@Override
-	public void updateGoods(GoodsVO goods) {
-		// TODO Auto-generated method stub
+	public void updateGoods(GoodsVO goodsVO) {
+		goodsMapper.updateGoods(goodsVO);
 		
 	}
 
