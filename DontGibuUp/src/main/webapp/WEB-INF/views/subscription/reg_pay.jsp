@@ -176,13 +176,13 @@ div {
 								<label>간편 결제</label><br>
 								<div class="easypay-methods">
 									<label class="easypay-method" for="kakao"> <form:radiobutton
-											path="easypay_method" id="kakao" value="카카오" /><img
+											path="easypay_method" id="kakao" value="kakao" /><img
 										src="../upload/카카오 페이 로고.png" width="60">
 									</label> <label class="easypay-method" for="toss"> <form:radiobutton
 											path="easypay_method" id="toss" value="toss" /><img
 										src="../upload/토스 페이 로고.jpg" width="60">
 									</label> <label class="easypay-method" for="naver"> <form:radiobutton
-											path="easypay_method" id="naver" value="네이버" /><img
+											path="easypay_method" id="naver" value="naver" /><img
 										src="../upload/네이버 페이 로고.png" width="60">
 									</label>
 								</div>

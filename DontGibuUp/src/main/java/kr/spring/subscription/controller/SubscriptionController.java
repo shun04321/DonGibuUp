@@ -61,7 +61,7 @@ public class SubscriptionController {
 	    if(user==null) {
 	    	return "redirect:/member/login";
 	    }
-	    MemberVO member_db = memberService.selectMember(user.getMem_num()); 
+	    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
 	    PayuidVO payuid = new PayuidVO();
 	    payuid.setMem_num(user.getMem_num());
 	    
@@ -89,27 +89,43 @@ public class SubscriptionController {
 	        subscriptionVO.setSub_ndate(getTodayDateString());
 	        subscriptionService.insertSubscription(subscriptionVO);
 	        
+	        redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 	        redirectAttributes.addFlashAttribute("user", member_db);
 	        redirectAttributes.addFlashAttribute("payuidVO", reg_payuid);        
 
-	        return "redirect:/subscription/getCardpayuid";
+	        return "redirect:/subscription/getpayuid";
 	    }
 
 	    return "redirect:/category/success"; // 성공시 리다이렉트
 	}
 	
+	
+	
+	
 	//카드 payuid 발급 이동
-	@GetMapping("/subscription/getCardpayuid")
-	public String getCardpayuid(@ModelAttribute("user") MemberVO user,
-	                            @ModelAttribute("payuidVO") PayuidVO payuidVO,
+	@GetMapping("/subscription/getpayuid")
+	public String getpayuid(@ModelAttribute("user") MemberVO user,
+	                        @ModelAttribute("payuidVO") PayuidVO payuidVO,
+	                        @ModelAttribute("subscriptionVO") SubscriptionVO subscriptionVO,
 	                            Model model) {
 		log.debug("payuid 발급 페이지로 전달되는 유저 정보 : " + user);
+		log.debug("payuid 발급 페이지로 전달되는 정기기부 정보 : " + subscriptionVO);
 		
 	    // user와 payuidVO 데이터를 사용하여 로직을 처리합니다.
 	    model.addAttribute("user", user);
+	    model.addAttribute("subscriptionVO",subscriptionVO);
 	    model.addAttribute("payuidVO", payuidVO);
-	    return "/subscription/getCardpayuid";
+	    return "/subscription/getpayuid";
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
      //payuid 생성 메소드
 	 private String generateUUIDFromMem_num(long mem_num) {
