@@ -462,4 +462,10 @@ public class MemberController {
     		return "redirect:/main/main";
     	}
     }
+    
+    //비밀번호 찾기 폼
+    @GetMapping("/member/findPassword")
+    public String findPasswordForm() {
+    	return "memberFindPassword";
+    }
 }

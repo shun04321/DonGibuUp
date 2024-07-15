@@ -9,7 +9,6 @@
 	<ul>
 	<form:errors element="div" cssClass="form-error" />
 	<c:if test="${not empty error}"><div class="form-error">${error}</div></c:if>
-	<script>console.log("${error}")</script>
 		<li>
 			<form:label path="mem_email">이메일</form:label>
 			<form:input path="mem_email"/>
@@ -23,7 +22,7 @@
 	</ul>
 	<div class="align-center">
 		<form:button class="default-btn">Login</form:button>
-		<input type="button" value="계정찾기" class="default-btn" onclick="location.href='findAccount'">
+		<input type="button" value="비밀번호 찾기" class="default-btn" onclick="location.href='findPassword'">
 		<input type="button" value="회원가입" class="default-btn" onclick="location.href='signup'">
 	</div>
 	<div class="align-center">
