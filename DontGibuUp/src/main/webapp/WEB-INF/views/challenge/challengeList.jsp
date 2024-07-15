@@ -12,7 +12,7 @@
 			<a href="#" class="category-link" data-category="${cate.ccate_num}" >${cate.ccate_name}</a>
 		</c:forEach>
 	</div>
-	<form id="searchTitle">
+	<form id="searchTitle" >
 			<ul class="align-right">
 				<li>
 				<%-- 인기순 -> 좋아요 완료시 적용 가능, 참여인원수 -> 참가 인원 생성후 적용 가능 --%>
@@ -47,5 +47,5 @@
 			<input type="button" value="챌린지 개설하기" onclick="location.href='write'">
 		</c:if>
 	</div>	
-	<span id="output"></span>
+	<div id="output"></div>
 </div>

@@ -53,12 +53,17 @@ public class ChallengeAjaxController {
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
 			@RequestParam(defaultValue="1") int rowCount,@RequestParam(defaultValue="0") int order,
-			  String chal_type,String freqOrder,String keyword){
+			  String chal_type,@RequestParam(defaultValue="") String freqOrder,@RequestParam(defaultValue="") String keyword){
 		log.debug("chal_type : "+chal_type);
 		Map<String,Object> map = new HashMap<>();
 		//map에 검색할 자기계발 카테고리 넣기
 		List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
 		map.put("categories", categories);
+		
+		map.put("chal_type", chal_type);
+		map.put("freqOrder", freqOrder);
+		map.put("keyword", keyword);
+		map.put("order", order);
 				
 		//총 챌린지 개수
 		int count = challengeService.selectRowCount(map);
@@ -67,14 +72,10 @@ public class ChallengeAjaxController {
 		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
 		map.put("start", page.getStartRow());
 		map.put("end", page.getEndRow());
-		map.put("chal_type", chal_type);
-		map.put("freqOrder", freqOrder);
-		map.put("keyword", keyword);
-		map.put("order", order);
-		
-		
+				
 		log.debug("keyword : "+keyword);
 		log.debug("order : "+order);
+		log.debug("start : "+page.getStartRow());
 		log.debug("end : "+page.getEndRow());
 		
 		List<ChallengeVO> list = null;
