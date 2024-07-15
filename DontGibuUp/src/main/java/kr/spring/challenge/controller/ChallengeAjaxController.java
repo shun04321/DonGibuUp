@@ -70,6 +70,10 @@ public class ChallengeAjaxController {
 		map.put("chal_type", chal_type);
 		map.put("freqOrder", freqOrder);
 		
+		log.debug("pageNum : "+pageNum);
+		log.debug("start : "+page.getStartRow());
+		log.debug("end : "+page.getEndRow());
+		
 		List<ChallengeVO> list = null;
 		if(count > 0) {
 			list = challengeService.selectList(map);			
@@ -121,6 +125,7 @@ public class ChallengeAjaxController {
 			CancelData cancelData = new CancelData(imp_uid, true);
 			impClient.cancelPaymentByImpUid(cancelData);
 		}
+		log.debug("payment"+payment);
 		return payment;
 	}
 	
@@ -133,8 +138,13 @@ public class ChallengeAjaxController {
 	    int chalPayPrice = (Integer) data.get("chal_pay_price");
 	    int chalPoint = (Integer) data.get("chal_point");
 	    int chalPayStatus = (Integer) data.get("chal_pay_status");
-	    int dcateNum = (Integer) data.get("dcate_num");
-		
+	    int dcateNum = Integer.parseInt((String) data.get("dcate_num"));
+		log.debug("odImpUid : "+odImpUid);
+		log.debug("chalPayPrice : "+chalPayPrice);
+		log.debug("chalPoint : "+chalPoint);
+		log.debug("chalPayStatus : "+chalPayStatus);
+		log.debug("dcateNum : "+dcateNum);
+	    
 		Map<String,String> mapJson = new HashMap<>();
 		
 		//세션 데이터 가져오기
@@ -144,31 +154,32 @@ public class ChallengeAjaxController {
 		if(member == null) {
 			mapJson.put("result", "logout");
 		}else {
-			//챌린지 개설하기
+			//챌린지 개설정보 저장
 			//대표 사진 업로드 및 파일 저장
 			challenge.setChal_photo(FileUtil.createFile(request, challenge.getUpload()));
-			challengeService.insertChallenge(challenge);
-			session.removeAttribute("challengeVO");
 			
-			//챌린지 참가하기
+			//챌린지 참가 정보 저장
 			ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
 			challengeJoinVO.setMem_num(member.getMem_num());
 			challengeJoinVO.setChal_num(challenge.getChal_num());
 			challengeJoinVO.setDcate_num(dcateNum);
-			challengeService.insertChallengeJoin(challengeJoinVO);
+			challengeJoinVO.setChal_joi_ip(request.getRemoteAddr());
 			
 			//챌린지 결제 정보 저장하기
 			ChallengePaymentVO challengePaymentVO = new ChallengePaymentVO();
 			challengePaymentVO.setMem_num(member.getMem_num());
 			challengePaymentVO.setChal_pay_price(chalPayPrice);
 			challengePaymentVO.setChal_point(chalPoint);
-			//Q. 결제 테이블에 chal_joi_num이 꼭 필요한지?
-			//ChallengeJoinVO db_join = challengeService.
-			//challengePaymentVO.setChal_joi_num();
+			challengePaymentVO.setOd_imp_uid(odImpUid);
 			
-			//challengeService.insertChallengePayment(challengePaymentVO);
+			challengeService.insertChallenge(challenge,challengeJoinVO,challengePaymentVO);
+			
+			String sdate = challenge.getChal_sdate();
+			
+			session.removeAttribute("challengeVO");
 			
 			mapJson.put("result", "success");
+			mapJson.put("sdate", sdate);
 		}
 		
 		return mapJson;

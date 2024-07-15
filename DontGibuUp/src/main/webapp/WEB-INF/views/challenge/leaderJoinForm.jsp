@@ -89,34 +89,34 @@
   }
   
   function payAndEnroll(){
+	let contextPath = '${pageContext.request.contextPath}';
+	IMP.init("imp71075330");
 		
-		IMP.init("imp71075330");
-		
-		IMP.request_pay(
-				  {
-				    pg: "tosspayments", // 반드시 "tosspayments"임을 명시해주세요.
-				    merchant_uid: "merchant_" + new Date().getTime(),
-				    name: "${challenge.chal_title}",
-				    pay_method: "card",
-				    escrow: false,
-				    amount: "${challenge.chal_fee}",
-				    buyer_name: "${member.mem_nick}",
-				    buyer_email: "${member.email}",
-				    currency: "KRW",
-				    locale: "ko",
-				    custom_data: { usedPoints: 500 },
-				    appCard: false,
-				    useCardPoint: false,
-				    bypass: {
-				      tosspayments: {
+	IMP.request_pay(
+		{
+			pg: "tosspayments", // 반드시 "tosspayments"임을 명시해주세요.
+			merchant_uid: "merchant_" + new Date().getTime(),
+				name: "${challenge.chal_title}",
+				pay_method: "card",
+				escrow: false,
+				amount: "${challenge.chal_fee}",
+				buyer_name: "${member.mem_nick}",
+				buyer_email: "${member.email}",
+				currency: "KRW",
+				locale: "ko",
+				custom_data: { usedPoints: 500 },
+				appCard: false,
+				useCardPoint: false,
+				bypass: {
+					tosspayments: {
 				        useInternationalCardOnly: false, // 영어 결제창 활성화
-				      },
 				    },
 				  },
-				  (rsp) => {
-			      if(rsp.error_code){
-			    	  alert(`결제에 실패하였습니다. 에러 메시지 : ${rsp.error_msg}`);			    	  
-			      }else{
+				},
+				(rsp) => {
+			    	if(rsp.error_code){
+			    		alert(`결제에 실패하였습니다. 에러 메시지 : ${rsp.error_msg}`);			    	  
+			      	}else{
 			    	  	//결제 로직(리더): 결제 요청 -> 결제 검증 -> 결제 처리 및 완료 (REST API 이용)
 			    	  	//결제 로직(회원): 사전 검증 -> 결제 요청 -> 사후 검증 -> 결제 처리 및 완료
 			    	  	//OR 검증 구현 안하고 바로 처리하기
@@ -131,7 +131,8 @@
 			        		  
 			        		  //결제 정보에 넣을 데이터 가공하기
 			        		  let customData = JSON.parse(data.response.customData);
-			        		  let dcate_num = "${category.dcate_num}";
+			        		  let dcate_num = $('input[type="radio"]').val();
+			        		  console.log(dcate_num);
 			        		  
 			        		  //결제 정보 처리 및 완료하기
 			        		  $.ajax({
@@ -147,18 +148,28 @@
 			        			  contentType: 'application/json; charset=utf-8',
 			        			  dataType:'json',
 			        			  success:function(param){
-			        					alert('챌린지 개설 및 신청이 완료되었습니다!');//모달창으로 바꿀까?
-				        				//마이페이지 챌린지 현황으로 이동하기 vs 결제 영수증을 보여주는 페이지 vs 개설된 챌린지 목록
-				        				window.location.href = '이동할 페이지 url';
+			        				  if(param.result == 'logout'){
+			        					  alert('오류 발생! 고객센터에 문의하세요');
+			        				  }else if(param.result == 'success'){
+			        					  let sdate = new Date(param.sdate);
+			        					  let now = new Date();
+			        					  now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
+			        					  sdate.setHours(0, 0, 0, 0);
+			        					  if(sdate.getTime() == now.getTime()){
+			        						  window.location.href = contextPath+'/challenge/join/list?status=on';
+			        					  }else if(sdate > now){
+			        						  window.location.href = contextPath+'/challenge/join/list?status=pre';			        						  
+			        					  }
+			        				  }
 			        			  },
 			        			  error:function(){
-			        				  alert('결제 처리 오류 발생');
+			        				  alert('챌린지 개설 오류 발생');
 			        			  }
 			        		  });
 			        	  }else if(data.response.status == 'failed'){
-			        		  console.log('fail');
+			        		  alert('결제 오류 발생');
 			        	  }else{
-			        		  console.log('notPayed');
+			        		  alert('개설이 완료되지 않았습니다.');
 			        	  }
 			          });
 			      }

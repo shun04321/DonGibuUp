@@ -26,6 +26,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO) {
 		chalVO.setChal_num(challengeMapper.selectChal_num());
 		challengeMapper.insertChallenge(chalVO);
+		joinVO.setChal_num(chalVO.getChal_num());
 		joinVO.setChal_joi_num(challengeMapper.selectChal_joi_num());
 		challengeMapper.insertChallengeJoin(joinVO);
 		payVO.setChal_joi_num(joinVO.getChal_joi_num());
