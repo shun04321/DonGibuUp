@@ -52,8 +52,8 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/addlist")
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
-			@RequestParam(defaultValue="1") int rowCount,@RequestParam(defaultValue="1") int order,
-			  String chal_type,String freqOrder,String keyfield,String keyword){
+			@RequestParam(defaultValue="1") int rowCount,@RequestParam(defaultValue="0") int order,
+			  String chal_type,String freqOrder,String keyword){
 		log.debug("chal_type : "+chal_type);
 		Map<String,Object> map = new HashMap<>();
 		//map에 검색할 자기계발 카테고리 넣기
@@ -69,9 +69,12 @@ public class ChallengeAjaxController {
 		map.put("end", page.getEndRow());
 		map.put("chal_type", chal_type);
 		map.put("freqOrder", freqOrder);
+		map.put("keyword", keyword);
+		map.put("order", order);
 		
-		log.debug("pageNum : "+pageNum);
-		log.debug("start : "+page.getStartRow());
+		
+		log.debug("keyword : "+keyword);
+		log.debug("order : "+order);
 		log.debug("end : "+page.getEndRow());
 		
 		List<ChallengeVO> list = null;
@@ -82,7 +85,10 @@ public class ChallengeAjaxController {
 		}
 		
 		Map<String,Object> mapJson = new HashMap<>();
+		
 		mapJson.put("freqOrder", freqOrder);
+		mapJson.put("keyword", keyword);
+		mapJson.put("order", order);
 		mapJson.put("count", count);
 		mapJson.put("list", list);
 		

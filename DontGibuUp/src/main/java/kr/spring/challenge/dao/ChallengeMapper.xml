@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper   
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.spring.challenge.dao.ChallengeMapper">
 
-	<!-- 챌린지 개설 -->	
+	<!-- 챌린지 개설 -->
 	<insert id="insertChallenge" parameterType="challengeVO">
 		INSERT INTO challenge
 		(chal_num,mem_num,chal_type,chal_public,chal_title,chal_content,
-		 chal_photo,chal_verify,chal_freq,chal_sdate,chal_edate,chal_fee,chal_max,chal_ip)
-			 VALUES(
-			 #{chal_num},#{mem_num},#{chal_type},#{chal_public},#{chal_title},
-			 #{chal_content,jdbcType=CLOB},#{chal_photo,jdbcType=VARCHAR},#{chal_verify},#{chal_freq},#{chal_sdate},
-			 #{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_ip}
+		chal_photo,chal_verify,chal_freq,chal_sdate,chal_edate,chal_fee,chal_max,chal_ip)
+		VALUES(
+		#{chal_num},#{mem_num},#{chal_type},#{chal_public},#{chal_title},
+		#{chal_content,jdbcType=CLOB},#{chal_photo,jdbcType=VARCHAR},#{chal_verify},#{chal_freq},#{chal_sdate},
+		#{chal_edate},#{chal_fee},#{chal_max,jdbcType=DECIMAL},#{chal_ip}
 		)
 	</insert>
-	
+
 	<!-- 챌린지 검색 조건 -->
-		<sql id="challengeSearch">
+	<sql id="challengeSearch">
 		<where>
 			TO_DATE(chal_sdate, 'YYYY-MM-DD') >= SYSDATE
 			<if test="chal_type != null and chal_type != ''">
@@ -26,60 +26,89 @@
 			<if test="freqOrder != null and freqOrder != ''">
 				AND chal_freq = #{freqOrder}
 			</if>
+			<if test="keyword != null and keyword != ''">
+				AND chal_title LIKE '%' || #{keyword} || '%'
+			</if>
 		</where>
 	</sql>
-	
+
+	<!-- 챌린지 분류 조건 -->
+	<sql id="challengeSort">
+		<if test="order != null and order != ''">
+			ORDER BY
+			<if test="order == 0">
+				chal_num
+			</if>
+			<if test="order == 1">
+			</if>
+			<if test="order == 2">
+				chal_sdate
+			</if>
+			<if test="order == 3">
+			</if>
+			DESC
+		</if>
+	</sql>
+
 	<!-- 챌린지 개설 수 -->
-	<select id="selectRowCount" parameterType="map" resultType="Integer">
+	<select id="selectRowCount" parameterType="map"
+		resultType="Integer">
 		SELECT COUNT(*) FROM challenge
 		JOIN member USING (mem_num)
 		<!-- 검색 조건 sql문 -->
 		<include refid="challengeSearch"></include>
+		<include refid="challengeSort"></include>
 	</select>
-	
+
 	<!-- 챌린지 개설 목록 -->
-	<select id="selectList" parameterType="map" resultType="challengeVO">
+	<select id="selectList" parameterType="map"
+		resultType="challengeVO">
 		SELECT * FROM(
-			SELECT a.*,rownum rnum FROM(
-				SELECT c.*,m.mem_nick,md.mem_photo FROM challenge c
-				JOIN member m ON c.mem_num=m.mem_num
-				LEFT OUTER JOIN member_detail md ON c.mem_num=md.mem_num
-				<!-- 검색 조건 sql문 -->
-				<include refid="challengeSearch"></include>
-			)a
+		SELECT a.*,rownum rnum FROM(
+		SELECT c.*,m.mem_nick,md.mem_photo FROM challenge c
+		JOIN member m ON c.mem_num=m.mem_num
+		LEFT OUTER JOIN member_detail md ON c.mem_num=md.mem_num
+		<!-- 검색 조건 sql문 -->
+		<include refid="challengeSearch"></include>
+		<include refid="challengeSort"></include>
+		)a
 		)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
-		]]>		
-	</select> 
-	
+		]]>
+	</select>
+
 	<!-- 챌린지 개설 상세 -->
-    <select id="selectChallenge" parameterType="Long" resultType="challengeVO">
-        SELECT c.*, 
-        m.mem_nick, md.mem_photo 
-        FROM challenge c
-        JOIN member m ON c.mem_num = m.mem_num
-        LEFT OUTER JOIN member_detail md ON c.mem_num = md.mem_num
-        <!-- 후기 join -->
+	<select id="selectChallenge" parameterType="Long"
+		resultType="challengeVO">
+		SELECT c.*,
+		m.mem_nick, md.mem_photo
+		FROM challenge c
+		JOIN member m ON c.mem_num = m.mem_num
+		LEFT OUTER JOIN member_detail md ON c.mem_num = md.mem_num
+		<!-- 후기 join -->
 		<!-- 좋아요 join -->
-        WHERE c.chal_num = #{chal_num}
-    </select>
-    
-    <!-- 챌린지 개설 삭제 -->
-    <delete id="deleteChallenge" parameterType="long">
-        DELETE FROM challenge WHERE chal_num = #{chal_num}
-    </delete>
-	
+		WHERE c.chal_num = #{chal_num}
+	</select>
+
+	<!-- 챌린지 개설 삭제 -->
+	<delete id="deleteChallenge" parameterType="long">
+		DELETE FROM challenge WHERE chal_num = #{chal_num}
+	</delete>
+
 	<!-- 챌린지 참가 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
-		INSERT INTO chal_join
-		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_status, chal_joi_date, chal_joi_ip)
-		VALUES 
+		INSERT INTO
+		chal_join
+		(chal_joi_num, chal_num, mem_num, dcate_num, chal_joi_status,
+		chal_joi_date, chal_joi_ip)
+		VALUES
 		(#{chal_joi_num}, #{chal_num}, #{mem_num}, #{dcate_num}, 0, SYSDATE, #{chal_joi_ip})
 	</insert>
-	
+
 	<!-- 챌린지 참가 목록 -->
-	<select id="selectChallengeJoinList" parameterType="map" resultType="challengeJoinVO">
+	<select id="selectChallengeJoinList" parameterType="map"
+		resultType="challengeJoinVO">
 	    <![CDATA[
 	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_fee, dc.dcate_charity
 	    FROM chal_join cj
@@ -87,74 +116,87 @@
 	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
 	    WHERE cj.mem_num = #{mem_num}
 	    ]]>
-	    <if test="status == 'pre'">
+		<if test="status == 'pre'">
 	        <![CDATA[
 	        AND c.chal_sdate > TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	        ]]>
-	    </if>
-	    <if test="status == 'on'">
+		</if>
+		<if test="status == 'on'">
 	        <![CDATA[
 	        AND c.chal_sdate <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	        AND c.chal_edate >= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	        ]]>
-	    </if>
-	    <if test="status == 'post'">
+		</if>
+		<if test="status == 'post'">
 	        <![CDATA[
 	        AND c.chal_edate < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	        ]]>
-	    </if>
+		</if>
 	    <![CDATA[
 	    ORDER BY cj.chal_joi_date DESC
 	    ]]>
 	</select>
-	
-	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
-		SELECT * FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
+
+	<select id="selectChallengeJoin" parameterType="long"
+		resultType="challengeJoinVO">
+		SELECT * FROM chal_join WHERE chal_joi_num =
+		#{chal_joi_num}
 	</select>
-	
+
 	<!-- 챌린지 참가 삭제 -->
 	<delete id="deleteChallengeJoin" parameterType="long">
-		DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}
+		DELETE FROM
+		chal_join WHERE chal_joi_num = #{chal_joi_num}
 	</delete>
-	
+
 	<!-- 챌린지 ID로 챌린지 참가 데이터 삭제 -->
-    <delete id="deleteChallengeJoinsByChallengeId" parameterType="long">
-        DELETE FROM chal_join WHERE chal_num = #{chal_num}
-    </delete>
-	
+	<delete id="deleteChallengeJoinsByChallengeId"
+		parameterType="long">
+		DELETE FROM chal_join WHERE chal_num = #{chal_num}
+	</delete>
+
 	<!-- 챌린지 결제 -->
-    <insert id="insertChallengePayment" parameterType="challengePaymentVO">
-        INSERT INTO chal_payment
-        (chal_pay_num, chal_joi_num, mem_num, od_imp_uid, chal_pay_price, chal_point, chal_pay_date, chal_pay_status)
-        VALUES
-        (chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, 0, SYSDATE, #{chal_pay_status})
-    </insert>
-    
-    <!-- 챌린지 인증 -->
-    <insert id="insertChallengeVerify" parameterType="challengeVerifyVO">
-        INSERT INTO CHAL_VERIFY
-        (chal_ver_num, chal_joi_num, mem_num, chal_content, chal_ver_photo, chal_ver_status, chal_ver_report, chal_reg_date)
-        VALUES
-        (chal_verify_seq.nextval, #{chal_joi_num}, #{mem_num}, #{chal_content}, #{chal_ver_photo,jdbcType=VARCHAR}, #{chal_ver_status}, #{chal_ver_report}, SYSDATE)
-    </insert>
+	<insert id="insertChallengePayment"
+		parameterType="challengePaymentVO">
+		INSERT INTO chal_payment
+		(chal_pay_num, chal_joi_num, mem_num, od_imp_uid, chal_pay_price, chal_point,
+		chal_pay_date, chal_pay_status)
+		VALUES
+		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, 0,
+		SYSDATE, #{chal_pay_status})
+	</insert>
+
+	<!-- 챌린지 인증 -->
+	<insert id="insertChallengeVerify"
+		parameterType="challengeVerifyVO">
+		INSERT INTO CHAL_VERIFY
+		(chal_ver_num, chal_joi_num, mem_num, chal_content, chal_ver_photo, chal_ver_status,
+		chal_ver_report, chal_reg_date)
+		VALUES
+		(chal_verify_seq.nextval, #{chal_joi_num}, #{mem_num}, #{chal_content},
+		#{chal_ver_photo,jdbcType=VARCHAR}, #{chal_ver_status},
+		#{chal_ver_report}, SYSDATE)
+	</insert>
 
 	<!-- 챌린지 인증 목록 -->
-     <select id="selectChallengeVerifyList" parameterType="map" resultType="challengeVerifyVO">
-        SELECT * FROM CHAL_VERIFY
-        WHERE chal_joi_num = #{chal_joi_num}
-        ORDER BY chal_reg_date DESC
-    </select>
+	<select id="selectChallengeVerifyList" parameterType="map"
+		resultType="challengeVerifyVO">
+		SELECT * FROM CHAL_VERIFY
+		WHERE chal_joi_num = #{chal_joi_num}
+		ORDER BY chal_reg_date DESC
+	</select>
 
-<!--    <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO">
-        SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num}
-    </select> -->
-    
-    <!-- 챌린지 주별 인증 횟수 -->
-    <select id="countWeeklyVerifications" parameterType="long" resultType="int">
-	    SELECT COUNT(*)
-	    FROM CHAL_VERIFY
-	    WHERE chal_joi_num = #{chal_joi_num}
-	      AND chal_reg_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+	<!-- <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO"> 
+		SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num} </select> -->
+
+	<!-- 챌린지 주별 인증 횟수 -->
+	<select id="countWeeklyVerifications" parameterType="long"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM CHAL_VERIFY
+		WHERE chal_joi_num = #{chal_joi_num}
+		AND chal_reg_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') +
+		6
 	</select>
 </mapper>
 

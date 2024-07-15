@@ -4,9 +4,9 @@ $(function(){
 	let loading = false;
 	let hasMoreData = true;
 	let chal_type = '';
-	//let keyword = '';
+	let keyword = '';
 	let freqOrder = '';
-	//let order = '';
+	let order = '';
 	
 	/*---------------------
 	 * 챌린지 목록
@@ -26,14 +26,13 @@ $(function(){
 				pageNum:currentPage,
 				rowCount:rowCount,
 				chal_type:chal_type,
-				freqOrder:freqOrder
+				freqOrder:freqOrder,
+				keyword:keyword,
+				order:order
 			},
 			dataType:'json',
 			success:function(param){
 				loading = true;
-				console.log("currentPage : "+currentPage);
-				console.log("param.list.length : "+param.list.length);
-				console.log("param.count : "+param.count);
 				if(currentPage * param.list.length > param.count){
 					loading = false;
 					hasMoreData = false;	
@@ -122,6 +121,19 @@ $(function(){
   $('.freqOrder').on('change',function(){
 		freqOrder = $(this).val();
     hasMoreData = true;
+    $('#output').empty();
+    selectList(1);
+	});
+	
+	//검색 클릭 이벤트
+	$('#searchTitle').on('submit',function(){
+		keyword = $(this).find('input[type="search"]').val();
+		if(keyword == ''){
+			alert('검색어를 입력하세요');
+			return false;
+		}
+		
+		hasMoreData = true;
     $('#output').empty();
     selectList(1);
 	});
