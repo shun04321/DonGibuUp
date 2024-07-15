@@ -4,12 +4,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script>
+	let chalTitle = "${challenge.chal_title}";
+	let chalFee = ${challenge.chal_fee};
+	let memberNum = "${member.mem_num}";
+	let memberNick = "${member.mem_nick}";
+	let memberEmail = "${member.email}";
+	//let memberPhone = "${member.phone}";
+	let pageContextPath = "${pageContext.request.contextPath}";		
+</script>
 <div class="line">
     <h2>챌린지 참가하기</h2>
     <div>
         <img src="<c:url value='/images/${challenge.chal_photo}' />" alt="${challenge.chal_title}" />
         <h3>${challenge.chal_title}</h3>
-        <p>${challenge.chal_freq}</p>
+        <c:if test="${challenge.chal_freq == 0}">
+        	<p>매일</p>
+        </c:if>
+        <c:if test="${challenge.chal_freq != 0}">
+        	<p>주 ${challenge.chal_freq}일</p>
+        </c:if>
         <p>${challenge.chal_sdate} ~ ${challenge.chal_edate}</p>
         
     </div>
@@ -40,140 +54,4 @@
         </div>
     </form:form>
 </div>
-
-<script>
-	setChallengePointRules();
-	$('input[type="radio"]').prop('checked', false);
-	console.log("${member}");
-	
-	$('input[type="radio"]').click(function(){
-		$('.error-color').hide();
-		let charityName = $(this).attr('data-charity');
-		$('#charityInfo').text(charityName);
-	});
-	
-	$('#pay').click(function(){
-		if($('input[name="dcate_num"]:checked').length < 1){
-			$('.error-color').show();
-			return;
-		}
-		
-		//로그인 여부 검증하기
-		
-		payAndEnroll();
-	});
-	
-  function formatNumber(num) {
-  	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  }
-
-  function setChallengePointRules() {
-  	let chalFeeElement = document.getElementById('chal_fee');
-    let chalFee90Element = document.querySelectorAll('.chal_fee_90');
-    let chalFee10Element = document.querySelectorAll('.chal_fee_10');
-
-    if (chalFeeElement) {
-      var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
-      var chalFee90 = (chalFee * 0.9).toFixed(0);
-      var chalFee10 = chalFee - chalFee90;
-
-      chalFeeElement.innerText = formatNumber(chalFee);
-            
-      chalFee90Element.forEach(function(e){
-            	e.innerText = formatNumber(chalFee90);
-      });
-      chalFee10Element.forEach(function(e){
-            	e.innerText = formatNumber(chalFee10);
-      });
-    }
-  }
-  
-  function payAndEnroll(){
-	let contextPath = '${pageContext.request.contextPath}';
-	IMP.init("imp71075330");
-		
-	IMP.request_pay(
-		{
-			pg: "tosspayments", // 반드시 "tosspayments"임을 명시해주세요.
-			merchant_uid: "merchant_" + new Date().getTime(),
-				name: "${challenge.chal_title}",
-				pay_method: "card",
-				escrow: false,
-				amount: "${challenge.chal_fee}",
-				buyer_name: "${member.mem_nick}",
-				buyer_email: "${member.email}",
-				currency: "KRW",
-				locale: "ko",
-				custom_data: { usedPoints: 500 },
-				appCard: false,
-				useCardPoint: false,
-				bypass: {
-					tosspayments: {
-				        useInternationalCardOnly: false, // 영어 결제창 활성화
-				    },
-				  },
-				},
-				(rsp) => {
-			    	if(rsp.error_code){
-			    		alert(`결제에 실패하였습니다. 에러 메시지 : ${rsp.error_msg}`);			    	  
-			      	}else{
-			    	  	//결제 로직(리더): 결제 요청 -> 결제 검증 -> 결제 처리 및 완료 (REST API 이용)
-			    	  	//결제 로직(회원): 사전 검증 -> 결제 요청 -> 사후 검증 -> 결제 처리 및 완료
-			    	  	//OR 검증 구현 안하고 바로 처리하기
-			    	  	
-			    	  	//결제 검증하기
-			          $.ajax({
-			              url: '/challenge/paymentVerify/'+rsp.imp_uid,
-			              method: 'POST',			        
-			          }).done(function(data){
-			        	  if(data.response.status == 'paid'){
-			        		  console.log('success');
-			        		  
-			        		  //결제 정보에 넣을 데이터 가공하기
-			        		  let customData = JSON.parse(data.response.customData);
-			        		  let dcate_num = $('input[type="radio"]').val();
-			        		  console.log(dcate_num);
-			        		  
-			        		  //결제 정보 처리 및 완료하기
-			        		  $.ajax({
-			        			  url: '/challenge/payAndEnroll',
-			        			  method:'POST',
-			        			  data:JSON.stringify({
-			        				  od_imp_uid:rsp.imp_uid,
-			        				  chal_pay_price:data.response.amount,
-			        				  chal_point:customData.usedPoints,
-			        				  chal_pay_status:0,
-			        				  dcate_num:dcate_num
-			        			  }),
-			        			  contentType: 'application/json; charset=utf-8',
-			        			  dataType:'json',
-			        			  success:function(param){
-			        				  if(param.result == 'logout'){
-			        					  alert('오류 발생! 고객센터에 문의하세요');
-			        				  }else if(param.result == 'success'){
-			        					  let sdate = new Date(param.sdate);
-			        					  let now = new Date();
-			        					  now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
-			        					  sdate.setHours(0, 0, 0, 0);
-			        					  if(sdate.getTime() == now.getTime()){
-			        						  window.location.href = contextPath+'/challenge/join/list?status=on';
-			        					  }else if(sdate > now){
-			        						  window.location.href = contextPath+'/challenge/join/list?status=pre';			        						  
-			        					  }
-			        				  }
-			        			  },
-			        			  error:function(){
-			        				  alert('챌린지 개설 오류 발생');
-			        			  }
-			        		  });
-			        	  }else if(data.response.status == 'failed'){
-			        		  alert('결제 오류 발생');
-			        	  }else{
-			        		  alert('개설이 완료되지 않았습니다.');
-			        	  }
-			          });
-			      }
-				  }
-				);
-  }			
-</script>
+<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>

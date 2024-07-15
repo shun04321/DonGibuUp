@@ -51,7 +51,7 @@ public class ChallengeVO {
 	
 	public void calculateChalEdate() {
 		LocalDate sdate = LocalDate.parse(chal_sdate,DateTimeFormatter.ISO_LOCAL_DATE);
-		LocalDate edate = sdate.plusDays(chal_period * 7);
+		LocalDate edate = sdate.plusDays(chal_period * 7 - 1);
 		this.chal_edate = edate.toString();
 	}
 }
