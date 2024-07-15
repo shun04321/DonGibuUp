@@ -155,19 +155,19 @@ div {
 								<c:forEach var="card" items="${list}">
 									<c:if test="${!empty card.card_nickname}">
 										<div>
-											<input type="radio" id="card_${card.card_nickname}"
+											<input type="radio" class="oldCard"
 												name="selectedCard" value="${card.card_nickname}"><label
 												for="card_${card.card_nickname}"> ${card.card_nickname}</label>
 										</div>
 									</c:if>
 								</c:forEach>
 								<div>
-									<input type="radio" id="newCard" name="selectedCard"
+									<input type="radio" id="newCard" name="selectedCard" 
 										value="newCard"> <label for="newCard">새 카드 등록</label>
 								</div>
 								<!-- 새 카드 별명 입력 필드 -->
 								<div id="newCardNickname" style="display: none;">
-									<input type="text" class="form-control" name="card_nickname" placeholder="새 카드 별명">
+									<input type="text" class="form-control" id="newCardname" name="card_nickname" class="newCard" placeholder="새 카드 별명">
 								</div>
 							</div>
 
@@ -224,6 +224,7 @@ div {
 	                $('.easypay-container').slideDown();
 	                // 선택된 카드의 체크 해제
 	                $('input[name="selectedCard"]').prop('checked', false);
+	                $('#newCardname').val('');
 	                $('#newCardNickname').slideUp();
 	            } else { 		//카드 결제 선택시
 	                $('.easypay-container').slideUp();
@@ -234,55 +235,57 @@ div {
 	        }
 	    });
 
-	    // 새 카드 등록 클릭 시 이벤트 처리
-	    $('input[name="selectedCard"]').change(function() {
-	        if ($(this).val() === 'newCard') {
-	            $('#newCardNickname').slideDown();
-	        } else {
-	            $('#newCardNickname').slideUp();
-	        }
-	    });
-	
-	    $('.easypay-method').click(function() {
-	        var radio = $(this).find('input[type="radio"]');
-	        if (radio.length) {
-	            radio.prop('checked', true);
-	            $('.easypay-method').removeClass('selected');
-	            $(this).addClass('selected');
-	        }
-	    });
-		
-		//조건체크
-		$('#registerSubscription').submit(function(event) {
-	        // 기부 금액 체크박스 중 하나가 선택되었는지 확인
-	        if (!$("input[name='sub_price']").is(":checked")) {
-	        	alert("기부 금액을 선택해주세요.");
-	        	return false;
-	        }
-	        if(!$("input[name='sub_method']").is(":checked")){
-	       		alert("결제수단을 선택해주세요");
-	         	return false;
-	        }
-	        if(!$("input[type='checkbox']").is(":checked")){
-	       		if($('#sub_name').val().trim()==''){
-	        	alert("익명 기부 선택이나 기부하실 이름을 입력해주세요.");
-	         	return false;
-	       		}
-	        }
+	    // 새 카드 등록 클릭 시 이벤트 처리 
+		$('#newCard').click(function() {
+                    $('#newCardNickname').slideDown();
+        $('.oldCard').click(function(){
+                    $('#newCardNickname').slideUp(function() {
+                        $('#newCardname').val('');
+                    });
+				});
+			});
+	    
+		$('.easypay-method').click(function() {
+			var radio = $(this).find('input[type="radio"]');
+			if (radio.length) {
+				radio.prop('checked', true);
+				$('.easypay-method').removeClass('selected');
+				$(this).addClass('selected');
+			}
 		});
-		$('#paybutton').click(function() {
-	        // mem_num의 값을 가져옴
-	        var mem_num = $('#mem_num').val();
-	        // 만약 mem_num이 비어있으면(로그인되어 있지 않으면)
-	        if (!mem_num) {
-	            // 로그인 페이지로 리다이렉트
-	            window.location.href = '/member/login'; // 로그인 페이지의 URL로 수정 필요
-	        } else {
-	            // mem_num이 존재하면 정상적으로 기부 시작하기 로직 실행
-	            $('#staticBackdrop').modal('show'); // 모달 창 열기 등
-	        }
-	    });
-	});
+
+			//조건체크
+			$('#registerSubscription').submit(function(event) {
+				// 기부 금액 체크박스 중 하나가 선택되었는지 확인
+				if (!$("input[name='sub_price']").is(":checked")) {
+					alert("기부 금액을 선택해주세요.");
+					return false;
+				}
+				if (!$("input[name='sub_method']").is(":checked")) {
+					alert("결제수단을 선택해주세요");
+					return false;
+				}
+				if (!$("input[type='checkbox']").is(":checked")) {
+					if ($('#sub_name').val().trim() == '') {
+						alert("익명 기부 선택이나 기부하실 이름을 입력해주세요.");
+						return false;
+					}
+				}
+			});
+
+			$('#paybutton').click(function() {
+				// mem_num의 값을 가져옴
+				var mem_num = $('#mem_num').val();
+				// 만약 mem_num이 비어있으면(로그인되어 있지 않으면)
+				if (!mem_num) {
+					// 로그인 페이지로 리다이렉트
+					window.location.href = '/member/login'; // 로그인 페이지의 URL로 수정 필요
+				} else {
+					// mem_num이 존재하면 정상적으로 기부 시작하기 로직 실행
+					$('#staticBackdrop').modal('show'); // 모달 창 열기 등
+				}
+			});
+		});
 	</script>
 </body>
 </html>
