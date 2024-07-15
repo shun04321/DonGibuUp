@@ -17,6 +17,7 @@ public class PointVO {
 	public long mem_num;
 	public int pevent_type;
 	public int point_amount;
+	public String pevent_detail;
 	public Date point_date;
 	
 	public PointVO(int pevent_type, int point_amount) {

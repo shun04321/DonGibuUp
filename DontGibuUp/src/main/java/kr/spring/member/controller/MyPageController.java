@@ -2,11 +2,11 @@ package kr.spring.member.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +17,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.service.PointService;
+import kr.spring.point.vo.PointVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,6 +32,9 @@ import lombok.extern.slf4j.Slf4j;
 public class MyPageController {
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	PointService pointService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -171,7 +179,23 @@ public class MyPageController {
 	
 	//포인트 페이지
 	@GetMapping("/member/myPage/point")
-	public String memberPoint() {
+	public String memberPoint(HttpSession session, Model model) {
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		List<PointVO> list = pointService.getMemberPointList(user.getMem_num());
+		
+		model.addAttribute("list", list);
+		
+        // ObjectMapper를 사용하여 JSON 형식으로 변환
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+			String listJson = objectMapper.writeValueAsString(list);
+			log.debug("listJson : " + listJson);
+			model.addAttribute("listJson", listJson);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return "memberPoint";
 	}
 }
