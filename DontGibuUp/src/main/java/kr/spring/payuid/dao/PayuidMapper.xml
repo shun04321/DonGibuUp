@@ -25,8 +25,8 @@
  		</if>	
 		 )
 	</insert>
-	<select id="getPayuidByMethod" resultType="payuidVO" parameterType="payuidVO">
-		SELECT * FROM pay_uid WHERE mem_num=#{mem_num}  
+	<select id="getCountPayuidByMethod" resultType="int" parameterType="payuidVO">
+		SELECT count(*) FROM pay_uid WHERE mem_num=#{mem_num}  
 		<if test="easypay_method != null">
  		   AND easypay_method=#{easypay_method}
  		</if>

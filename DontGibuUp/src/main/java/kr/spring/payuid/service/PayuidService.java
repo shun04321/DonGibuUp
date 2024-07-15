@@ -8,5 +8,5 @@ public interface PayuidService {
 	public void registerPayUId(PayuidVO payuidVO);
 	public void deletePayUId (long mem_num);
 	public List<PayuidVO> getPayUId(long mem_num);
-	public PayuidVO getPayuidByMethod(PayuidVO payuidVO);
+	public int getCountPayuidByMethod(PayuidVO payuidVO);
 }

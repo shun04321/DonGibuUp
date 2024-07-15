@@ -25,7 +25,7 @@ public interface PayuidMapper {
 	public List<PayuidVO> getPayUId(long mem_num);
 	
 	//선택한 결제수단과 mem_num으로 payuid 유무 확인
-	public PayuidVO getPayuidByMethod(PayuidVO payuidVO);
+	public int getCountPayuidByMethod(PayuidVO payuidVO);
 	// 없으면 해당하는 플랫폼의 payuid 발급 페이지, 
 	// 새카드 등록 눌렀을때도 토스의 카드 payuid 발급 페이지,   
 

@@ -30,12 +30,6 @@
 		<put-attribute name="reg_Pay" value="/WEB-INF/views/subscription/reg_pay.jsp"/>
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
-	</definition>
-	<definition name="getCardpayuid" template="/WEB-INF/views/category/categoryDetail.jsp">
-		<put-attribute name="title" value="결제수단 등록"/>
-		<put-attribute name="reg_Pay" value="/WEB-INF/views/subscription/getCardPayuid.jsp"/>
-		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
-		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
 	</definition>	
 </tiles-definitions>
 

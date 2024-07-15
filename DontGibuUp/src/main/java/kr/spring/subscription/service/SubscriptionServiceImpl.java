@@ -19,8 +19,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public void endSubscription(long mem_num, long sub_num) {
-		SubscriptionMapper.endSubscription(mem_num, sub_num);
+	public void endSubscription(long sub_num) {
+		SubscriptionMapper.endSubscription(sub_num);
 		
 	}
 
