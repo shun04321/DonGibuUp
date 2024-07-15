@@ -57,4 +57,5 @@ public class DboxVO {
 	private DboxBudgetVO dboxBudget;
 	
 	private List<DboxBudgetVO> dboxBudgets;
+	
 }

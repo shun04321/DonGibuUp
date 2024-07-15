@@ -26,8 +26,8 @@ $(function(){
 			return false;
 		}
 		//모금액 사용계획 유효성 체크
-		let purpose = $('input[name="dboxBudget.dbox_budget_purpose"]');
-		let price = $('input[name="dboxBudget.dbox_budget_price"]');
+		let purpose = $('.bud_purpose');
+		let price = $('.bud_price');
 		//유효성체크 플래그
 		let valid = true;
 		
@@ -48,11 +48,11 @@ $(function(){
 				$(this).focus();
 				valid=false;
 				return false;
-			}			
+			}		
 		});
 		
 		if(!valid) return false;
-		
+			
 	});//end of submit
 	
 	//기부박스 사용계획
@@ -61,8 +61,8 @@ $(function(){
 	function dboxBudgetAdd(bud_num){
 		let output = '';
 			output += '<div id="bud_num'+bud_num+'">';
-			output += '<input type="text" name="dboxBudget.dbox_bud_purpose" placeholder="사용용도 및 산출근거" style="width:40%">';
-			output += ' <input type="text" name="dboxBudget.dbox_bud_price" placeholder="금액(원)" style="width:20%">';
+			output += '<input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_purpose" class="bud_purpose" placeholder="사용용도 및 산출근거" style="width:40%">';
+			output += ' <input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_price" class="bud_price" placeholder="금액(원)" style="width:20%">';
 			output += ' <input type="button" data-bud_num="'+bud_num+'" class="bud_delete_btn" value="삭제"><br>';
 			output += '</div>';
 		$('#dbox_budget').append(output);
