@@ -6,7 +6,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.signup.js"></script>
 <h2>회원가입</h2>
-<form:form action="kakao" id="member_social_signup"  modelAttribute="memberVO">
+<form:form action="oauth" id="member_social_signup"  modelAttribute="memberVO">
+	<input type="hidden" name="mem_reg_type" value="${memberVO.mem_reg_type}"/>
 	<input type="hidden" name="mem_social_id" value="${memberVO.mem_social_id}"/>
 	<input type="hidden" name="mem_email" value="${memberVO.mem_email}" />
 	<ul>

@@ -9,11 +9,11 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class KakaoInfo {
-	private Long id;
+public class UserInfo {
+	private String id;
 	private String email;
 
-	public KakaoInfo(Long id, String email) {
+	public UserInfo(String id, String email) {
 		this.id = id;
 		this.email = email;
 	}

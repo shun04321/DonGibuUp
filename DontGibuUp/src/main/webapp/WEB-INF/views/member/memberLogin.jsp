@@ -30,7 +30,7 @@
 		<span>SNS로 로그인하기</span>
 		<div>
 			<a href="${pageContext.request.contextPath}/member/oauth/kakao"><img alt="카카오톡 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/kakaotalk_logo.png"></a>
-			<a id="naverIdLogin_loginButton"><img alt="네이버 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/naver_logo.png"></a>
+			<a href="${pageContext.request.contextPath}/member/oauth/naver"><img alt="네이버 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/naver_logo.png"></a>
 		</div>
 	</div>
 </form:form>

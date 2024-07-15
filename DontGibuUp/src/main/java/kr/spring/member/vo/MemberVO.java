@@ -19,7 +19,7 @@ import lombok.ToString;
 public class MemberVO {
 	private Long mem_num;
 	private Integer auth_num;
-	private Long mem_social_id;
+	private String mem_social_id;
 	@NotBlank(groups = ValidationGroups.NotNullGroup.class)
 	@Email(groups = ValidationGroups.TypeCheckGroup.class)
 	private String mem_email;
