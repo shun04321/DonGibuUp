@@ -12,7 +12,7 @@ import kr.spring.challenge.vo.ChallengeVerifyVO;
 public interface ChallengeService {
 	
 	//챌린지 개설
-	public void insertChallenge(ChallengeVO chalVO);
+	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO);
 	public List<ChallengeVO> selectList(Map<String,Object> map);
 	public Integer selectRowCount(Map<String,Object> map);
 	public ChallengeVO selectChallenge(Long chal_num);
