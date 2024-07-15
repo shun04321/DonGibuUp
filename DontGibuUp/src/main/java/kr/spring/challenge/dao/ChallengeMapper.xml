@@ -60,7 +60,7 @@
         FROM challenge c
         JOIN member m ON c.mem_num = m.mem_num
         LEFT OUTER JOIN member_detail md ON c.mem_num = md.mem_num
-        	<!-- 후기 join -->
+        <!-- 후기 join -->
 		<!-- 좋아요 join -->
         WHERE c.chal_num = #{chal_num}
     </select>
@@ -148,6 +148,14 @@
 <!--    <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO">
         SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num}
     </select> -->
+    
+    <!-- 챌린지 주별 인증 횟수 -->
+    <select id="countWeeklyVerifications" parameterType="long" resultType="int">
+	    SELECT COUNT(*)
+	    FROM CHAL_VERIFY
+	    WHERE chal_joi_num = #{chal_joi_num}
+	      AND chal_reg_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+	</select>
 </mapper>
 
 

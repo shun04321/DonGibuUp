@@ -125,4 +125,9 @@ public class ChallengeServiceImpl implements ChallengeService{
 	 * return challengeMapper.selectChallengeVerify(chal_ver_num); }
 	 */
     
+    //주별 인증 횟수
+    @Override
+    public int countWeeklyVerifications(Long chal_joi_num) {
+        return challengeMapper.countWeeklyVerifications(chal_joi_num);
+    }
 }

@@ -36,4 +36,5 @@ public class ChallengeJoinVO {
     private String chal_edate;
     private Long chal_fee;
     private String dcate_charity;
+    private int chal_freq;
 }

@@ -34,7 +34,10 @@
 <div class="align-center">
     <c:choose>
         <c:when test="${hasTodayVerify}">
-            <button class="disabled-button" disabled>인증완료</button>
+            <button class="disabled-button" disabled>오늘 인증 완료</button>
+        </c:when>
+        <c:when test="${hasCompletedWeeklyVerifications}">
+            <button class="disabled-button" disabled>이번주 인증 완료</button>
         </c:when>
         <c:otherwise>
             <button class="active-button" onclick="location.href='${pageContext.request.contextPath}/challenge/verify/write?chal_joi_num=${chal_joi_num}'">인증하기</button>

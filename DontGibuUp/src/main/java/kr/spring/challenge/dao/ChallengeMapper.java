@@ -37,7 +37,7 @@ public interface ChallengeMapper {
     @Select("SELECT dcate_num,dcate_name,dcate_charity FROM DONA_CATEGORY")
     List<DonationCategoryVO> selectDonaCategories();
     //챌린지 ID로 챌린지 참가 데이터 삭제
-    void deleteChallengeJoinsByChallengeId(Long chal_num);
+    public void deleteChallengeJoinsByChallengeId(Long chal_num);
     
 	//챌린지 결제
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
@@ -46,6 +46,8 @@ public interface ChallengeMapper {
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
     //public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
+    //주별 인증 횟수
+    public int countWeeklyVerifications(Long chal_joi_num);
     
 	//챌린지 후기
     

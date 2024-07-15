@@ -126,6 +126,7 @@ public class ChallengeController {
         ModelAndView mav = new ModelAndView("challengeView");
         mav.addObject("challenge", challenge);
         mav.addObject("isJoined", isJoined);
+        
         return mav;
     }
 
@@ -293,6 +294,7 @@ public class ChallengeController {
 
         return "challengeVerifyWrite";
     }
+    //챌린지 인증
     @PostMapping("/challenge/verify/write")
     public String submitVerify(@Valid @ModelAttribute("challengeVerifyVO") ChallengeVerifyVO challengeVerifyVO, BindingResult result,
                                HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
@@ -356,6 +358,15 @@ public class ChallengeController {
                 return regDate.equals(LocalDate.now());
             });
         mav.addObject("hasTodayVerify", hasTodayVerify);
+
+        // 챌린지 정보 가져오기
+        ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+        int chalFreq = challengeJoin.getChal_freq();
+
+        // 주별 인증 횟수 확인
+        int weeklyVerifications = challengeService.countWeeklyVerifications(chal_joi_num);
+        boolean hasCompletedWeeklyVerifications = weeklyVerifications >= chalFreq;
+        mav.addObject("hasCompletedWeeklyVerifications", hasCompletedWeeklyVerifications);
 
         return mav;
     }
