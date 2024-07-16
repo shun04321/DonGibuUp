@@ -1,8 +1,17 @@
 @charset "UTF-8";
 
 /* YJ */
-input[name="chal_public"] {
-	
+/* 챌린지 목록 */
+#output{
+	width:800px;
+	margin:0 auto;
+	text-align:center;
+}
+.chal_listElement{
+	display:inline-block;
+	width:200px;
+	padding:0 10px;
+	text-align:left;
 }
 
 /* SY */

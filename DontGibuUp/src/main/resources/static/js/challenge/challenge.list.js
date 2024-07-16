@@ -43,7 +43,7 @@ $(function() {
 					now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
 					sdate.setHours(0, 0, 0, 0);
 					if (sdate > now) {
-						output = '<span>';
+						output = '<span class="chal_listElement">';
 						output += '<a href="detail?chal_num=' + item.chal_num + '">';
 						output += '<ul>';
 						output += '<li>';
