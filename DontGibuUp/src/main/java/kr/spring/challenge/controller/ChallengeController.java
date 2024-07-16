@@ -383,7 +383,7 @@ public class ChallengeController {
     }
     
     //챌린지 인증 삭제
-    @PostMapping("/verify/delete")
+    @PostMapping("/challenge/verify/delete")
     public ResponseEntity<String> deleteVerify(@RequestParam("chal_ver_num") long chal_ver_num) {
         try {
             challengeService.deleteChallengeVerify(chal_ver_num);
