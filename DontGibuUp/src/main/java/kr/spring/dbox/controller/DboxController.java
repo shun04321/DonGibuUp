@@ -1,5 +1,7 @@
 package kr.spring.dbox.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -13,7 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import kr.spring.dbox.dao.DboxMapper;
+import kr.spring.category.service.CategoryService;
+import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxVO;
@@ -27,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DboxController {
 	@Autowired
 	private DboxService dboxService;
+	@Autowired
+	private CategoryService categoryService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -56,14 +61,18 @@ public class DboxController {
 	 * 		기부박스 제안하기 : 1.나의 다짐
 	 *==================================*/
 	@GetMapping("/dbox/propose/step1")
-	public String proposeStep1(HttpSession session) {
+	public String proposeStep1(HttpSession session,Model model) {
 		//로그인체크
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		log.debug("<<Step1 회원번호>> : " + user);
 		if(user==null) {
 			return "redirect:/member/login";
 		}
-		return "dboxProposeStep1";
+		List<DonationCategoryVO> list = categoryService.selectListNoPage();
+		
+		model.addAttribute("list",list);
+		
+		return "dboxProposeStep1";		
 	}
 	@PostMapping("/dbox/propose/step1")
 	public String Step1Submit(@Valid DboxVO dboxVO,
@@ -91,7 +100,7 @@ public class DboxController {
 		log.debug("<<기부박스 제안 Step1 - 세션 저장>> : " + dboxVO);
 		
 		//다음페이지로 이동
-		return "dboxProposeStep2";
+		return "redirect:/dbox/propose/step2";
 	}
 	
 	
@@ -143,7 +152,7 @@ public class DboxController {
 		log.debug("<<기부박스 제안 Step3 - 세션 저장>> : " + dboxVO);
 		
 		//다음페이지로 이동
-		return "dboxProposeStep3";
+		return "redirect:/dbox/propose/step3";
 	}
 	
 	/*===================================

@@ -15,6 +15,34 @@ $(function(){
 		}
 	});
 	
+	//기부박스 사용계획
+	
+	//사용계획 입력 한줄 생성 함수
+	function dboxBudgetAdd(bud_num){
+		let output = '';
+			output += '<div id="bud_num'+bud_num+'">';
+			output += '<input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_purpose" class="bud_purpose" placeholder="사용용도 및 산출근거" style="width:40%">';
+			output += ' <input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_price" class="bud_price" placeholder="금액(원)" style="width:20%">';
+			output += ' <input type="button" data-bud_num="'+bud_num+'" class="bud_delete_btn" value="삭제"><br>';
+			output += '</div>';
+		$('#dbox_budget').append(output);
+	}
+	
+	//첫 줄은 기본적으로 생성	
+	dboxBudgetAdd(1);
+	//지출항목 추가 버튼 누를시
+	let cnt=2;
+	$('#dbox_budget_add').on('click',function(){
+		dboxBudgetAdd(cnt);
+		cnt++;
+	});
+	
+	//사용계획 삭제
+	$(document).on('click','.bud_delete_btn',function(){
+		let bud_num = $(this).attr('data-bud_num');
+		$('#bud_num'+bud_num).remove();
+	});
+	
 	//submit 이벤트 발생시
 	$('#step2').submit(function(){
 
@@ -52,34 +80,6 @@ $(function(){
 		});
 		
 		if(!valid) return false;
-			
+		
 	});//end of submit
-	
-	//기부박스 사용계획
-	
-	//사용계획 입력 한줄 생성 함수
-	function dboxBudgetAdd(bud_num){
-		let output = '';
-			output += '<div id="bud_num'+bud_num+'">';
-			output += '<input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_purpose" class="bud_purpose" placeholder="사용용도 및 산출근거" style="width:40%">';
-			output += ' <input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_price" class="bud_price" placeholder="금액(원)" style="width:20%">';
-			output += ' <input type="button" data-bud_num="'+bud_num+'" class="bud_delete_btn" value="삭제"><br>';
-			output += '</div>';
-		$('#dbox_budget').append(output);
-	}
-	
-	//첫 줄은 기본적으로 생성	
-	dboxBudgetAdd(1);
-	//지출항목 추가 버튼 누를시
-	let cnt=2;
-	$('#dbox_budget_add').on('click',function(){
-		dboxBudgetAdd(cnt);
-		cnt++;
-	});
-	
-	//사용계획 삭제
-	$(document).on('click','.bud_delete_btn',function(){
-		let bud_num = $(this).attr('data-bud_num');
-		$('#bud_num'+bud_num).remove();
-	});
 });

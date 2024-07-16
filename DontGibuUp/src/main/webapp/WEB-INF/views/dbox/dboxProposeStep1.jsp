@@ -7,14 +7,6 @@
 <script type="text/javascript">
 $(function(){
 	$('#step1').submit(function(event){
-
-/*      
- 		//카테고리 검사
-        if ($('#dcate_num').val() == null) {
-            alert('카테고리를 선택해주세요.');
-            return false;
-        }
-*/
 		//체크박스 검사
 		if($('.validation_checkbox:checked').length!=3){
 			alert('안내사항을 읽고 체크박스를 체크해주세요.');

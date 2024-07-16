@@ -20,6 +20,9 @@ public interface CategoryMapper {
 	public int getListCount(Map<String,Object> map);
 	// 기부 카테고리 목록
 	public List<DonationCategoryVO> selectList(Map<String,Object> map);
+	// 기부 카테고리 목록(페이지처리x)
+	@Select("SELECT * FROM dona_category")
+	public List<DonationCategoryVO> selectListNoPage();
 	// 기부 카테고리 상세
 	@Select("SELECT * FROM dona_category WHERE dcate_num=#{dcate_num}")
 	public DonationCategoryVO selectDonationCategory(Long dcate_num);

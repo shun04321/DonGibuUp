@@ -12,6 +12,8 @@ public interface CategoryService {
 	public int getListCount(Map<String,Object> map);
 	// 기부 카테고리 목록
 	public List<DonationCategoryVO> selectList(Map<String,Object> map);
+	// 카테고리 목록 (페이지처리x)
+	public List<DonationCategoryVO> selectListNoPage();
 	// 기부 카테고리 상세
 	public DonationCategoryVO selectDonationCategory(Long dcate_num);
 	// 기부 카테고리 수정 
@@ -32,5 +34,6 @@ public interface CategoryService {
 	//챌린지 카테고리 수정 
 	public void updateChallengeCategory(ChallengeCategoryVO challengeCategoryVO);
 	//챌린지 카테고리 삭제
-	public void deleteChallengeCategory(Long ccate_num); 
+	public void deleteChallengeCategory(Long ccate_num);
+	
 }

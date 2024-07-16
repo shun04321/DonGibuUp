@@ -26,7 +26,12 @@ public class CategoryServiceImpl implements CategoryService {
 	public List<DonationCategoryVO> selectList(Map<String, Object> map) {
 		return categoryMapper.selectList(map);
 	}
-
+	
+	@Override
+	public List<DonationCategoryVO> selectListNoPage() {
+		return categoryMapper.selectListNoPage();
+	}
+	
 	@Override
 	public DonationCategoryVO selectDonationCategory(Long dcate_num) {
 		return categoryMapper.selectDonationCategory(dcate_num);
