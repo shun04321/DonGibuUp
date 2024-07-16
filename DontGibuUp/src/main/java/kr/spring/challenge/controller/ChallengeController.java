@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,13 +121,14 @@ public class ChallengeController {
             map.put("chal_num", chal_num);
             map.put("mem_num", member.getMem_num());
             List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(map);
-            isJoined = !joinList.isEmpty();
+            // Check if the user is specifically joined to this challenge
+            isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == chal_num);
         }
 
         ModelAndView mav = new ModelAndView("challengeView");
         mav.addObject("challenge", challenge);
         mav.addObject("isJoined", isJoined);
-        
+
         return mav;
     }
 
@@ -209,7 +211,7 @@ public class ChallengeController {
     
     //챌린지 참가 목록
     @GetMapping("/challenge/join/list")
-    public ModelAndView list(@RequestParam("status") String status,
+    public ModelAndView list(@RequestParam(value = "status", defaultValue = "pre") String status,
                              @RequestParam(value = "month", required = false) String month,
                              HttpSession session) {
         MemberVO member = (MemberVO) session.getAttribute("user");
@@ -217,11 +219,11 @@ public class ChallengeController {
         map.put("mem_num", member.getMem_num());
         map.put("status", status);
 
-        // 현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
+        //현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
         LocalDate currentMonth = month != null ? LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")) : LocalDate.now().withDayOfMonth(1);
         String currentMonthString = currentMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
-        // 이번 달의 챌린지만 필터링
+        //이번 달의 챌린지만 필터링
         List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map).stream()
             .filter(challenge -> {
                 if (challenge.getChal_sdate() == null) {
@@ -235,7 +237,7 @@ public class ChallengeController {
         mav.addObject("challengesByMonth", Map.of(currentMonthString, list));
         mav.addObject("status", status);
         mav.addObject("currentMonth", currentMonthString);
-        
+
         return mav;
     }
     
@@ -253,12 +255,12 @@ public class ChallengeController {
             MemberVO member = (MemberVO) session.getAttribute("user");
             ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
             
-            // 참가 정보가 없거나 회원 정보가 일치하지 않는 경우 처리
+            //참가 정보가 없거나 회원 정보가 일치하지 않는 경우 처리
             if (challengeJoin == null || challengeJoin.getMem_num() != member.getMem_num()) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("챌린지 참가 정보가 없거나 권한이 없습니다.");
             }
             
-            // 리더인 경우 챌린지와 참가 데이터 모두 삭제
+            //리더인 경우 챌린지와 참가 데이터 모두 삭제
             if (challengeService.isChallengeLeader(challengeJoin.getChal_num(), member.getMem_num())) {
                 challengeService.deleteChallengeJoinsByChallengeId(challengeJoin.getChal_num());
                 challengeService.deleteChallenge(challengeJoin.getChal_num());
@@ -342,7 +344,9 @@ public class ChallengeController {
     
     //챌린지 인증 목록
     @GetMapping("/challenge/verify/list")
-    public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num, HttpSession session) {
+    public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num,
+                                   @RequestParam(value = "status", defaultValue = "pre") String status,
+                                   HttpSession session) {
         Map<String, Object> map = new HashMap<>();
         map.put("chal_joi_num", chal_joi_num);
 
@@ -350,6 +354,7 @@ public class ChallengeController {
         ModelAndView mav = new ModelAndView("challengeVerifyList");
         mav.addObject("verifyList", verifyList);
         mav.addObject("chal_joi_num", chal_joi_num);
+        mav.addObject("status", status);  // 추가된 status 값
 
         // 오늘 날짜의 인증이 있는지 확인
         boolean hasTodayVerify = verifyList.stream()
@@ -362,9 +367,23 @@ public class ChallengeController {
         // 챌린지 정보 가져오기
         ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
         int chalFreq = challengeJoin.getChal_freq();
+        String chal_sdate = challengeJoin.getChal_sdate();
 
-        // 주별 인증 횟수 확인
-        int weeklyVerifications = challengeService.countWeeklyVerifications(chal_joi_num);
+        // 디버깅: chal_freq 및 chal_sdate 값 출력
+        System.out.println("chal_freq: " + chalFreq);
+        System.out.println("chal_sdate: " + chal_sdate);
+
+        if (chal_sdate == null) {
+            throw new IllegalArgumentException("챌린지 시작 날짜가 설정되지 않았습니다.");
+        }
+
+        LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
+        int weekNumber = (int) ChronoUnit.WEEKS.between(startDate, LocalDate.now());
+        int weeklyVerifications = challengeService.countWeeklyVerifications(chal_joi_num, startDate, weekNumber);
+
+        // 디버깅: weeklyVerifications 값 출력
+        System.out.println("weeklyVerifications: " + weeklyVerifications);
+
         boolean hasCompletedWeeklyVerifications = weeklyVerifications >= chalFreq;
         mav.addObject("hasCompletedWeeklyVerifications", hasCompletedWeeklyVerifications);
 

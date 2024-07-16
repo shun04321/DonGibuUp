@@ -33,6 +33,9 @@
 </div>
 <div class="align-center">
     <c:choose>
+        <c:when test="${status == 'post'}">
+            <!-- 완료된 챌린지의 경우 버튼 숨김 -->
+        </c:when>
         <c:when test="${hasTodayVerify}">
             <button class="disabled-button" disabled>오늘 인증 완료</button>
         </c:when>
@@ -40,9 +43,13 @@
             <button class="disabled-button" disabled>이번주 인증 완료</button>
         </c:when>
         <c:otherwise>
-            <button class="active-button" onclick="location.href='${pageContext.request.contextPath}/challenge/verify/write?chal_joi_num=${chal_joi_num}'">인증하기</button>
+            <button class="active-button" onclick="location.href='${pageContext.request.contextPath}/challenge/verify/write?chal_joi_num=${chal_joi_num}&status=${status}'">인증하기</button>
         </c:otherwise>
     </c:choose>
+    <div>
+        <!-- 디버깅: hasCompletedWeeklyVerifications 값 출력 -->
+        hasCompletedWeeklyVerifications: ${hasCompletedWeeklyVerifications}
+    </div>
 </div>
 </body>
 </html>

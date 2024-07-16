@@ -1,5 +1,7 @@
 package kr.spring.challenge.service;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,9 +127,13 @@ public class ChallengeServiceImpl implements ChallengeService{
 	 * return challengeMapper.selectChallengeVerify(chal_ver_num); }
 	 */
     
-    //주별 인증 횟수
+    //주별 인증 횟수 확인
     @Override
-    public int countWeeklyVerifications(Long chal_joi_num) {
-        return challengeMapper.countWeeklyVerifications(chal_joi_num);
+    public int countWeeklyVerifications(Long chal_joi_num, LocalDate startDate, int weekNumber) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("chal_joi_num", chal_joi_num);
+        params.put("startDate", startDate.toString());
+        params.put("weekNumber", weekNumber);
+        return challengeMapper.countWeeklyVerifications(params);
     }
 }
