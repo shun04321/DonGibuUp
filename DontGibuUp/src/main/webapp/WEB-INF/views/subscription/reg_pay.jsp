@@ -78,7 +78,7 @@ div {
 							<input type="hidden" name="dcate_num"
 								value="${category.dcate_num}">
 							<input type="hidden" name="mem_num"
-								value="${user.mem_num}" id="mem_num">	
+								value="${user.mem_num}" id="mem_num">
 							<!-- 익명 여부 체크박스 -->
 							<div class="form-group">
 								<label>익명 여부</label>
@@ -144,8 +144,8 @@ div {
 								<div class="payment-methods">
 									<label class="payment-method" for="card"> <form:radiobutton
 											path="sub_method" id="card" value="card"/>카드
-									</label> <label class="payment-method" for="easy-pay"> <form:radiobutton
-											path="sub_method" id="easy-pay" value="easy-pay" />간편결제
+									</label> <label class="payment-method" for="easy_pay"> <form:radiobutton
+											path="sub_method" id="easy_pay" value="easy_pay" />간편결제
 									</label>
 								</div>
 							</div>
@@ -177,13 +177,10 @@ div {
 								<div class="easypay-methods">
 									<label class="easypay-method" for="kakao"> <form:radiobutton
 											path="easypay_method" id="kakao" value="kakao" /><img
-										src="../upload/카카오 페이 로고.png" width="60">
-									</label> <label class="easypay-method" for="toss"> <form:radiobutton
-											path="easypay_method" id="toss" value="toss" /><img
-										src="../upload/토스 페이 로고.jpg" width="60">
-									</label> <label class="easypay-method" for="naver"> <form:radiobutton
-											path="easypay_method" id="naver" value="naver" /><img
-										src="../upload/네이버 페이 로고.png" width="60">
+										src="../upload/카카오페이 로고.jpg" width="40" style="border-radius:25%">										
+									</label> <label class="easypay-method" for="payco"> <form:radiobutton
+											path="easypay_method" id="payco" value="payco" /><img
+										src="../upload/페이코 로고.jpg" width="40" style="border-radius:25%">
 									</label>
 								</div>
 							</div>
@@ -202,14 +199,13 @@ div {
 	<script>
 	$(document).ready(function () {
 		// 익명 여부 체크박스 상태 변경 시 이벤트 처리
-		$('#anonymousCheck').change(function () {
-			if ($(this).is(':checked')) {
-				$('#sub_name').val(''); // 익명 체크시 입력했던 내용 삭제
-				$('#sub_name').prop('disabled', true); // 기부자 이름 입력 필드 비활성화
-			} else {
-				$('#sub_name').prop('disabled', false); // 기부자 이름 입력 필드 활성화
-			}
-		});
+		$('#anonymousCheck').change(function() {
+				if ($(this).is(':checked')) {
+					$('#sub_name').val('익명');
+				} else {
+					$('#sub_name').val('${user.mem_nick}');
+				}
+			});
 
 		// 결제 수단 변경 시 이벤트 처리
 	    $('.payment-method').click(function() {
@@ -219,7 +215,7 @@ div {
 	            $('.payment-method').removeClass('selected');
 	            $(this).addClass('selected');
 	            
-	            if (radio.val() === 'easy-pay') { //간편결제 선택시
+	            if (radio.val() === 'easy_pay') { //간편결제 선택시
 	                $('#card-options').slideUp();
 	                $('.easypay-container').slideDown();
 	                // 선택된 카드의 체크 해제
@@ -270,6 +266,21 @@ div {
 						alert("익명 기부 선택이나 기부하실 이름을 입력해주세요.");
 						return false;
 					}
+				}
+				// 간편결제를 선택했으나, 간편결제 플랫폼을 선택하지 않은 경우
+				if($('#easy_pay').is(":checked") && !$("input[name='easypay_method']").is(":checked")){
+					alert('사용하실 간편결제 플랫폼을 선택해주세요.');
+					return false;
+				}
+				// 카드를 선택했으나, 어떤 카드를 사용할지 선택하지 않은 경우
+				if($('#card').is(":checked") && !$("input[name='selectedCard']").is(":checked")){
+					alert('사용하실 카드를 선택해주세요.');
+					return false;
+				}
+				//  새 카드 등록을 선택했으나, 카드 별명을 입력하지 않았을 때
+				if($('#card').is(":checked") && $('#newCard').is(":checked") && $('#newCardname').val().trim() == ''){
+					alert('등록하실 카드의 별명을 명시해주세요.');
+					return false;
 				}
 			});
 
