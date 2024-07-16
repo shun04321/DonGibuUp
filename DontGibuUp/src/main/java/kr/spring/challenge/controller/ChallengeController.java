@@ -375,11 +375,22 @@ public class ChallengeController {
 
         LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
         int weekNumber = (int) ChronoUnit.WEEKS.between(startDate, LocalDate.now());
-        int weeklyVerifications = challengeService.countWeeklyVerifications(chal_joi_num, startDate, weekNumber);
+        int weeklyVerifications = challengeService.countWeeklyVerify(chal_joi_num, startDate, weekNumber);
         boolean hasCompletedWeeklyVerifications = weeklyVerifications >= chalFreq;
         mav.addObject("hasCompletedWeeklyVerifications", hasCompletedWeeklyVerifications);
 
         return mav;
+    }
+    
+    //챌린지 인증 삭제
+    @PostMapping("/verify/delete")
+    public ResponseEntity<String> deleteVerify(@RequestParam("chal_ver_num") long chal_ver_num) {
+        try {
+            challengeService.deleteChallengeVerify(chal_ver_num);
+            return new ResponseEntity<>("인증이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("인증 삭제 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }

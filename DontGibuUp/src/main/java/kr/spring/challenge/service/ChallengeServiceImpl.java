@@ -127,13 +127,18 @@ public class ChallengeServiceImpl implements ChallengeService{
 	 * return challengeMapper.selectChallengeVerify(chal_ver_num); }
 	 */
     
+    @Override
+    public void deleteChallengeVerify(Long chal_ver_num) {
+        challengeMapper.deleteChallengeVerify(chal_ver_num);
+    }
+    
     //주별 인증 횟수 확인
     @Override
-    public int countWeeklyVerifications(Long chal_joi_num, LocalDate startDate, int weekNumber) {
+    public int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber) {
         Map<String, Object> params = new HashMap<>();
         params.put("chal_joi_num", chal_joi_num);
         params.put("startDate", startDate.toString());
         params.put("weekNumber", weekNumber);
-        return challengeMapper.countWeeklyVerifications(params);
+        return challengeMapper.countWeeklyVerify(params);
     }
 }

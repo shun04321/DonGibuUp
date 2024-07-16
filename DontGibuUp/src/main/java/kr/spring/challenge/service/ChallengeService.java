@@ -40,7 +40,8 @@ public interface ChallengeService {
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
     //public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
-    int countWeeklyVerifications(Long chal_joi_num, LocalDate startDate, int weekNumber);
+    public void deleteChallengeVerify(Long chal_ver_num);
+    int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);
     
 	//챌린지 후기	
     

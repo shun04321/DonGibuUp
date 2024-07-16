@@ -46,8 +46,9 @@ public interface ChallengeMapper {
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
     //public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
+    public void deleteChallengeVerify(Long chal_ver_num);
     //주별 인증 횟수 확인
-    int countWeeklyVerifications(Map<String, Object> params);
+    int countWeeklyVerify(Map<String, Object> params);
     
 	//챌린지 후기
     

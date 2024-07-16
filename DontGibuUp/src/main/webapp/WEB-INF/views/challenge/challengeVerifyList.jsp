@@ -7,6 +7,25 @@
     <meta charset="UTF-8">
     <title>챌린지 인증내역</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
+    <script src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function deleteVerify(chal_ver_num) {
+            if (confirm('인증을 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '${pageContext.request.contextPath}/challenge/verify/delete',
+                    type: 'POST',
+                    data: { chal_ver_num: chal_ver_num },
+                    success: function(response) {
+                        alert('인증이 성공적으로 삭제되었습니다.');
+                        location.reload();  // 페이지를 새로고침하여 삭제된 내용을 반영
+                    },
+                    error: function(xhr, status, error) {
+                        alert('인증 삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        }
+    </script>
 </head>
 <body>
 <h2>챌린지 인증내역</h2>
@@ -27,6 +46,10 @@
                     </c:choose>
                 </div>
                 <div class="comment">${verify.chal_content}</div>
+                <div class="buttons">
+                    <button onclick="location.href='${pageContext.request.contextPath}/challenge/verify/update?chal_ver_num=${verify.chal_ver_num}'">수정</button>
+                    <button onclick="deleteVerify(${verify.chal_ver_num})">삭제</button>
+                </div>
             </div>
         </div>
     </c:forEach>
@@ -39,7 +62,7 @@
         <c:when test="${hasTodayVerify}">
             <button class="disabled-button" disabled>오늘 인증 완료</button>
         </c:when>
-        <c:when test="${hasCompletedWeeklyVerifications}">
+        <c:when test="${hasCompletedWeeklyVerify}">
             <button class="disabled-button" disabled>이번주 인증 완료</button>
         </c:when>
         <c:otherwise>

@@ -191,8 +191,13 @@
 	<!-- <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO"> 
 		SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num} </select> -->
 		
+	<!-- 챌린지 인증 삭제 -->
+	<delete id="deleteChallengeVerify" parameterType="long">
+    	DELETE FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num}
+	</delete>
+
 	<!-- 주별 인증 횟수 확인 -->
-	<select id="countWeeklyVerifications" parameterType="map" resultType="int">
+	<select id="countWeeklyVerify" parameterType="map" resultType="int">
 	    SELECT COUNT(*)
 	    FROM CHAL_VERIFY
 	    WHERE chal_joi_num = #{chal_joi_num}
