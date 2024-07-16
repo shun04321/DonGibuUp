@@ -51,6 +51,7 @@ public class SubscriptionController {
 	public String subScriptionMain() {
 		return "subscriptionMain";
 	}
+	
 	@PostMapping("/category/registerSubscription")
 	public String signup(@Validated(ValidationSequence.class) SubscriptionVO subscriptionVO,
 	                     Model model,
@@ -59,18 +60,13 @@ public class SubscriptionController {
 	                     @RequestParam(value = "card_nickname", required = false) String cardNickname,
 	                     RedirectAttributes redirectAttributes) {
 	    log.debug("정기기부 등록 subscriptionVO : " + subscriptionVO);
-	   
+	    log.debug("선택한 card_nickname : " + cardNickname);
 	    MemberVO user = (MemberVO) session.getAttribute("user");
 	    //비로그인 상태면 로그인 페이지로 이동
 	    if(user==null) {
 	    	return "redirect:/member/login";
 	    }
-	    //sub_ndate생성
-	    subscriptionVO.setSub_ndate(getTodayDateString());
-        //sub_num 생성
-        subscriptionVO.setSub_num(subscriptionService.getSub_num());
-        //subscription 등록
-        subscriptionService.insertSubscription(subscriptionVO);
+	   
         
 	    //로그인한 회원 정보 저장
 	    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
@@ -79,6 +75,7 @@ public class SubscriptionController {
 	    payuid.setMem_num(user.getMem_num());
 	    
 	    if(!cardNickname.equals("")) { //결제수단 카드 선택(카드 이름 셋팅)
+	    	subscriptionVO.setCard_nickname(cardNickname);
 	        payuid.setCard_nickname(cardNickname);
 	    } else{// 결제수단 이지페이 선택 (플랫폼 셋팅) 
 	        payuid.setEasypay_method(subscriptionVO.getEasypay_method());	       
@@ -109,7 +106,14 @@ public class SubscriptionController {
 	    redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
         redirectAttributes.addFlashAttribute("user", member_db);
         redirectAttributes.addFlashAttribute("payuidVO", payuid); // 이미 존재하는 payuid로 결제 예약 페이지 이동 
-
+        
+        //sub_ndate생성
+	    subscriptionVO.setSub_ndate(getTodayDateString());
+        //sub_num 생성
+        subscriptionVO.setSub_num(subscriptionService.getSub_num());
+        //subscription 등록
+        subscriptionService.insertSubscription(subscriptionVO);
+        
 	    return "redirect:/subscription/paymentReservation";
 	}
 	
@@ -157,7 +161,7 @@ public class SubscriptionController {
 		    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
 		    PayuidVO payuidVO = payuidService.getPayuidVOByPayuid(pay_uid);
 		    
-		    session.setAttribute("user", user);
+		    session.setAttribute("user", member_db);
 		    session.setAttribute("subscriptionVO", subscriptionVO);
 		    session.setAttribute("payuidVO", payuidVO);
 		    

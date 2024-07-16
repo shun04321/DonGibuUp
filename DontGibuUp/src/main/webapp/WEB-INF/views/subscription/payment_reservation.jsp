@@ -33,9 +33,12 @@
                 name: "정기기부 결제 예약",           
                 customer_id: "${user.mem_num}", // 고객사가 회원에게 부여한 고유 ID
                 schedules: 
-                	[{ merchant_uid: "12",
+                	[{ merchant_uid: "${subscriptionVO.sub_num}",
                       schedule_at: 1821106274,
-                      currency: "KRW",     
+                      currency: "KRW",
+                      buyer_name: "${user.mem_name}",
+                      buyer_email: "${user.mem_email}",
+                      buyer_tel: "${user.mem_phone}",                      
                     }]
             }, function (rsp) {
                 if (rsp.success) {

@@ -17,6 +17,9 @@
  		<if test="easypay_method != null">
  		,easypay_method 	  
  		</if>
+ 		<if test="card_nickname != null and card_nickname != ''">
+ 		,card_nickname
+ 		</if>
  		)
  		VALUES(
  		#{sub_num},
@@ -30,6 +33,9 @@
  		#{sub_method}
  		<if test="easypay_method != null">
  		,#{easypay_method} 	  
+ 		</if>
+ 		<if test="card_nickname != null and card_nickname != ''">
+ 		,#{card_nickname}
  		</if>
  		)   
  	</insert>       
