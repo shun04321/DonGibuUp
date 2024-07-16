@@ -94,7 +94,7 @@ public class PortOneServiceImpl implements PortOneService {
 
         ResponseEntity<Map> response = restTemplate.postForEntity(url, entity, Map.class);
         Map responseBody = (Map) response.getBody().get("response");
-        return (String) responseBody.get("access_token");ㄴ
+        return (String) responseBody.get("access_token");
     }
 
     @Override
