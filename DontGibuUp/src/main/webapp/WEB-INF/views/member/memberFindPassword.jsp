@@ -11,7 +11,7 @@
         <li>
             <label for="mem_email">이메일</label>
             <input type="text" id="mem_email" name="mem_email" maxlength="50"/>
-            <span id="email_check_msg" style="color:red;"><c:if test="${!empty emailNotExists}">${emailNotExists}</c:if></span>
+            <span id="email_check_msg" style="color:red;"><c:if test="${!empty email_msg}">${email_msg}</c:if></span>
         </li>
     </ul>
     <div class="align-center">

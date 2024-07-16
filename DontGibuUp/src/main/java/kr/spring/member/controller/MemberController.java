@@ -491,6 +491,16 @@ public class MemberController {
 		log.debug("<<비밀번호 찾기>> : " + memberVO);
 
 		if (memberVO != null) {
+			if (memberVO.getMem_reg_type() == 2) {
+				//네이버 로그인
+				model.addAttribute("email_msg","네이버로 소셜로그인된 계정입니다");
+				return "memberFindPassword";
+			} else if (memberVO.getMem_reg_type() == 3) {
+				//카카오 로그인
+				model.addAttribute("email_msg","카카오로 소셜로그인된 계정입니다");
+				return "memberFindPassword";
+			}
+			
 			//임시 비밀번호 설정
 			String tempPassword = memberService.SetTempPassword(memberVO);
 
@@ -510,7 +520,7 @@ public class MemberController {
 				e.printStackTrace();
 			}
 		} else {
-			model.addAttribute("emailNotExists", "가입된 이메일이 없습니다");
+			model.addAttribute("email_msg", "가입된 이메일이 없습니다");
 			return "memberFindPassword";
 		}
 
