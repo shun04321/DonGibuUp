@@ -58,7 +58,7 @@
         </div>
         <div>
             <span>참여금</span>
-            <p><span style="color: blue;">${challenge.chal_fee}</span>원</p>
+            <p><span style="color: blue;">${formattedFee}</span>원</p>
         </div>
         <div>
             <span>모집 인원</span>

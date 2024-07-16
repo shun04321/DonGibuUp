@@ -109,7 +109,7 @@
 	<select id="selectChallengeJoinList" parameterType="map"
 		resultType="challengeJoinVO">
 	    <![CDATA[
-	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_fee, dc.dcate_charity
+	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_freq, c.chal_fee, dc.dcate_charity
 	    FROM chal_join cj
 	    JOIN challenge c ON cj.chal_num = c.chal_num
 	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num

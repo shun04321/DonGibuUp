@@ -2,12 +2,14 @@ package kr.spring.challenge.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -129,9 +131,14 @@ public class ChallengeController {
             isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == chal_num);
         }
 
+        //참여금을 포맷팅
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+        String formattedFee = numberFormat.format(challenge.getChal_fee());
+
         ModelAndView mav = new ModelAndView("challengeView");
         mav.addObject("challenge", challenge);
         mav.addObject("isJoined", isJoined);
+        mav.addObject("formattedFee", formattedFee); // 포맷팅된 참여금 추가
 
         return mav;
     }
@@ -237,13 +244,54 @@ public class ChallengeController {
             })
             .collect(Collectors.toList());
 
+        //각 챌린지에 대한 달성률과 참여금 계산
+        List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
+            Map<String, Object> challengeData = new HashMap<>();
+            long chal_joi_num = challengeJoin.getChal_joi_num();
+            Map<String, Object> verifyMap = new HashMap<>();
+            verifyMap.put("chal_joi_num", chal_joi_num);
+            List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(verifyMap);
+
+            //인증 성공 횟수
+            long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+
+            //전체 주 수 계산
+            LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
+            long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+
+            //전체 인증 횟수
+            long totalCount = totalWeeks * challengeJoin.getChal_freq();
+
+            //달성률 계산
+            int achieveRate = totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
+
+            //참여금 관련 계산
+            Long chal_fee = challengeJoin.getChal_fee();
+            int returnPoint = (int) (achieveRate / 100.0 * chal_fee);
+            int donaAmount = (int) (chal_fee - returnPoint);
+
+            //숫자를 포맷팅
+            NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+
+            //챌린지 데이터 추가
+            challengeData.put("challengeJoin", challengeJoin);
+            challengeData.put("achieveRate", achieveRate);
+            challengeData.put("returnPoint", numberFormat.format(returnPoint));
+            challengeData.put("donaAmount", numberFormat.format(donaAmount));
+            challengeData.put("formattedFee", numberFormat.format(chal_fee));
+
+            return challengeData;
+        }).collect(Collectors.toList());
+
         ModelAndView mav = new ModelAndView("challengeJoinList");
-        mav.addObject("challengesByMonth", Map.of(currentMonthString, list));
+        mav.addObject("challengesByMonth", Map.of(currentMonthString, challengeDataList));
         mav.addObject("status", status);
         mav.addObject("currentMonth", currentMonthString);
 
         return mav;
     }
+
     
 	/*
 	 * @GetMapping("/challenge/joinDetail") public ModelAndView
@@ -346,7 +394,6 @@ public class ChallengeController {
         return "common/resultAlert";
     }
     
-    //챌린지 인증 목록
     //챌린지 인증 목록
     @GetMapping("/challenge/verify/list")
     public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num,

@@ -24,7 +24,8 @@
         </h2>
         <div class="challenge-list">
             <c:forEach var="entry" items="${challengesByMonth}">
-                <c:forEach var="challengeJoin" items="${entry.value}">
+                <c:forEach var="challengeData" items="${entry.value}">
+                    <c:set var="challengeJoin" value="${challengeData.challengeJoin}" />
                     <div class="challenge-card">
                         <div class="card-header">
                             <h3>${challengeJoin.chal_title}</h3>
@@ -37,18 +38,22 @@
                             </div>
                         </div>
                         <p>${challengeJoin.chal_sdate} - ${challengeJoin.chal_edate}</p>
-                        <div class="details">
+                        <div><b>
+                        		<span>달성률</span>
+                        		<span>${challengeData.achieveRate}%</span>
+                        </b></div>
+						<div class="details">
                             <div>
                                 <span>참여금</span>
-                                <span>${challengeJoin.chal_fee}원</span>
+                                <span>${challengeData.formattedFee}원</span>
                             </div>
                             <div>
                                 <span>환급포인트</span>
-                                <span>( )p</span>
+                                <span>${challengeData.returnPoint}p</span>
                             </div>
                             <div>
                                 <span>기부금</span>
-                                <span>( )원</span>
+                                <span>${challengeData.donaAmount}원</span>
                             </div>                
                             <div>
                                 <span>기부처</span>
