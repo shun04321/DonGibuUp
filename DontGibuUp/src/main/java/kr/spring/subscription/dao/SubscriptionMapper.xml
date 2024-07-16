@@ -19,7 +19,7 @@
  		</if>
  		)
  		VALUES(
- 		subscription_seq.nextval,
+ 		#{sub_num},
  		#{mem_num},
  		#{dcate_num},
  		#{sub_name},

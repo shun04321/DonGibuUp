@@ -37,14 +37,15 @@
                 customer_id: "${user.mem_num}" // 고객사가 회원에게 부여한 고유 ID
             }, function (rsp) {
                 if (rsp.success) {
-                    alert('결제 수단을 등록했습니다.');                
-                    // 성공 시 로직
+                    alert('결제 수단을 등록했습니다.');
+                    
+                    location.href = '/subscription/paymentReservation';
                 } else {
                     $.ajax({
                         url: 'failGetpayId',
                         dataType: 'json',
                         type: 'POST',
-                        data: {pay_uid: "${payuidVO.pay_uid}"},
+                        data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},
                         success: function (param) {
                         	if(param.result=='success'){
                         		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
