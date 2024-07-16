@@ -2,8 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/js/challenge/challenge.list.js"></script>
+<script src="${pageContext.request.contextPath}/js/challenge/challenge.list.js"></script>
+<script>
+	let pageContext = "${pageContext.request.contextPath}";
+</script>
 <div>
 	<h2>챌린지 목록</h2>
 	<div class="align-center">

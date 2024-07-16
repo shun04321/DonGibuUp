@@ -13,40 +13,50 @@
 	//let memberPhone = "${member.phone}";
 	let pageContextPath = "${pageContext.request.contextPath}";		
 </script>
-<div class="line">
-    <h2>챌린지 참가하기</h2>
-    <div>
-        <img src="<c:url value='/images/${challenge.chal_photo}' />" alt="${challenge.chal_title}" />
-        <h3>${challenge.chal_title}</h3>
-        <c:if test="${challenge.chal_freq == 0}">
-        	<p>매일</p>
+<div class="container">
+    <h2>챌린지 참가</h2>
+    <div class="line">
+    	<c:if test="${empty challenge.chal_photo}">
+        		<img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진">
         </c:if>
-        <c:if test="${challenge.chal_freq != 0}">
-        	<p>주 ${challenge.chal_freq}일</p>
+        <c:if test="${!empty challenge.chal_photo}">
+        	<img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진">
         </c:if>
-        <p>${challenge.chal_sdate} ~ ${challenge.chal_edate}</p>
-        
+        <div class="text-content">
+        	<h3>${challenge.chal_title}</h3>
+        	<c:if test="${challenge.chal_freq == 0}">
+        		<p>매일</p>
+        	</c:if>        
+        	<c:if test="${challenge.chal_freq != 0}">
+        		<p>주 ${challenge.chal_freq}일</p>
+        	</c:if>
+        	<p>${challenge.chal_sdate} ~ ${challenge.chal_edate}</p>
+        </div>
     </div>
-    <form:form action="leaderJoin" id="joinAndPay" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
+    <form:form action="leaderJoin" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
             <li>
                 <form:label path="dcate_num">기부 카테고리</form:label>
+                <span class="error-color" style="display:none;">기부카테고리를 선택하세요</span>
+            	<span id="charityInfo"></span>
+            </li>
+            <li>
                 <c:forEach var="category" items="${categories}">
                     <form:radiobutton path="dcate_num" value="${category.dcate_num}" label="${category.dcate_name}" data-charity="${category.dcate_charity}"/>
                 </c:forEach>
-                <span class="error-color" style="display:none;">기부카테고리를 선택하세요</span>
             </li>
-            <li>
-                <label>기부처:</label>
-                <span id="charityInfo"></span>
+            <li class="result-details">
+        		<p>100% 성공 : <span class="chal_fee_90"></span>원 + 추가 (??)원 환급, <span class="chal_fee_10"></span>원 기부</p>
+        		<p>90% 이상 성공 : <span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</p>
+        		<p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
             </li>
-            <li>
-            	<p>사용할 포인트 <input type="number" ></p>
-        			<p>참여금 <span id="chal_fee">${challenge.chal_fee}</span>원</p>
-        			<p>100% 성공 : <span class="chal_fee_90"></span>원 + 추가 (??)원 환급, <span class="chal_fee_10"></span>원 기부</p>
-        			<p>90% 이상 성공 : <span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</p>
-        			<p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
-            </li>
+        </ul>
+        <ul>
+        	<li>참여금 <span id="chal_fee">${challenge.chal_fee}</span>원</li>
+        	<li>보유 포인트 <span>포인트 표시할 예정</span></li>
+        	<li>사용할 포인트 <input type="number"></li>
+        	<hr width="100%" size="1" noshade="noshade">
+        	<li>결제금액 <span>최종 금액 표시할 예정</span></li>
         </ul>
         <div class="align-center">
             결제 조건 및 서비스 약관에 동의합니다

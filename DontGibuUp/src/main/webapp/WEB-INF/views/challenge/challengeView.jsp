@@ -13,12 +13,22 @@
 <br>
 <div class="challenge-detail">
     <div class="challenge-header">
-        <img src="${challenge.chal_photo}" alt="챌린지 사진">
+        <c:if test="${empty challenge.chal_photo}">
+        		<img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진">
+        </c:if>
+        <c:if test="${!empty challenge.chal_photo}">
+        	<img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진">
+        </c:if>
         <h2 class="align-left">${challenge.chal_title}</h2>
     </div>
     <div class="challenge-info">
         <div class="author-info">
-            <img src="${challenge.mem_photo}" alt="작성자 사진">
+        	<c:if test="${empty challenge.mem_photo}">
+        		<img src="${pageContext.request.contextPath}/images/basicProfile.png" alt="작성자 프사">
+        	</c:if>
+        	<c:if test="${!empty challenge.mem_photo}">
+        		<img src="${pageContext.request.contextPath}/upload/${challenge.mem_photo}" alt="작성자 프사">
+        	</c:if>
             <div class="details">
                 <p><strong>${challenge.mem_nick}</strong></p>
             </div>
@@ -35,7 +45,12 @@
     <div class="challenge-stats">
         <div>
             <span>인증 빈도</span>
-            <p><span id="chal_freq"></span></p>
+            <c:if test="${challenge.chal_freq == 0}">
+        		<p>매일</p>
+        	</c:if>
+        	<c:if test="${challenge.chal_freq != 0}">
+        		<p>주 ${challenge.chal_freq}일</p>
+        	</c:if>
         </div>
         <div>
             <span>기간</span>

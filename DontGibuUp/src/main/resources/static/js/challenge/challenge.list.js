@@ -89,13 +89,21 @@ $(function() {
 						output += '<a href="detail?chal_num=' + item.chal_num + '">';
 						output += '<ul>';
 						output += '<li>';
-						//output += '<img src="">'; //챌린지 썸네일
+						if(item.chal_photo){
+							output += '<img src="'+pageContext+'/upload/'+item.chal_photo+'" width="100" height="40">'; //챌린지 썸네일
+						}else{
+							output += '<img src="'+pageContext+'/images/챌린지_기본이미지.jpg" width="100" height="40">'; //챌린지 썸네일 - 기본 이미지
+						}
 						output += '</li>';
 						output += '<li>';
 						output += '<span>' + item.chal_title + '</span>';
 						output += '</li>';
 						output += '<li>';
-						//output += '<img src="../member/">'; //프로필 사진
+						if(item.mem_photo){
+							output += '<img src="'+pageContext+'/upload/'+item.mem_photo+'" width="20" height="20">'; //
+						}else{
+							output += '<img src="'+pageContext+'/images/basicProfile.png" width="20" height="20">'; //챌린지 썸네일 - 기본 이미지
+						}
 						output += '<span>' + item.mem_nick + '</span>';
 						output += '</li>';
 						output += '<li>';
