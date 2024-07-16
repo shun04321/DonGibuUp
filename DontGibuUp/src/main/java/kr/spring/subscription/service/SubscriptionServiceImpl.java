@@ -25,7 +25,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	}
 
 	@Override
-	public long getSubscription(long sub_num) {
+	public SubscriptionVO getSubscription(long sub_num) {
 		return SubscriptionMapper.getSubscription(sub_num);
 	}
 

@@ -37,9 +37,28 @@
                 customer_id: "${user.mem_num}" // 고객사가 회원에게 부여한 고유 ID
             }, function (rsp) {
                 if (rsp.success) {
-                    alert('결제 수단을 등록했습니다.');
-                    
-                    location.href = '/subscription/paymentReservation';
+                    alert('결제 수단을 등록했습니다.');         
+                    // Ajax로 데이터 서버로 전송
+                    $.ajax({
+                        url: '/subscription/paymentReservation', // 서버 요청을 처리할 URL
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            sub_num: ${subscriptionVO.sub_num},
+                            pay_uid: "${payuidVO.pay_uid}"
+                        },
+                        success: function (param) {
+                            if (param.result=='success') {
+                                location.href = param.redirectUrl;
+                            } else {
+                                // 기본적으로 처리할 로직
+                                alert('오류 발생 관리자에게 문의하세요.');
+                            }
+                        },
+                        error: function () {
+                            alert('서버 요청 중 오류가 발생했습니다.');
+                        }
+                    });
                 } else {
                     $.ajax({
                         url: 'failGetpayId',

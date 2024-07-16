@@ -9,4 +9,5 @@ public interface PayuidService {
 	public void deletePayuid (String pay_uid);
 	public List<PayuidVO> getPayUId(long mem_num);
 	public int getCountPayuidByMethod(PayuidVO payuidVO);
+	public PayuidVO getPayuidVOByPayuid(String pay_uid);
 }

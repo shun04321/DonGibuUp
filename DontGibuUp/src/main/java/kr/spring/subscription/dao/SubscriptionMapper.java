@@ -15,7 +15,7 @@ public interface SubscriptionMapper {
 	public void insertSubscription(SubscriptionVO subscriptionVO);
 	//등록된 정기기부 정보 가져오기
 	@Select("SELECT * FROM subscription WHERE sub_num=#{sub_num}")
-	public long getSubscription(long sub_num);
+	public SubscriptionVO getSubscription(long sub_num);
 	//정기기부 종료
 	public void endSubscription(long sub_num);
 	//정기기부 수정 (결제일, 기부금)

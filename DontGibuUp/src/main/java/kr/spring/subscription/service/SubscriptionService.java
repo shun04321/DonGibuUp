@@ -9,8 +9,8 @@ public interface SubscriptionService {
 	public void insertSubscription(SubscriptionVO subscriptionVO);
 	//정기기부 종료
 	public void endSubscription(long sub_num);
-	//정기기부 수정 (결제일, 기부금)
-	public long getSubscription(long sub_num);
+	
+	public SubscriptionVO getSubscription(long sub_num);
 	//정기기부 삭제
 	public void deleteSubscription(long sub_num);
 		

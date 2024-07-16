@@ -65,6 +65,13 @@ public class SubscriptionController {
 	    if(user==null) {
 	    	return "redirect:/member/login";
 	    }
+	    //sub_ndate생성
+	    subscriptionVO.setSub_ndate(getTodayDateString());
+        //sub_num 생성
+        subscriptionVO.setSub_num(subscriptionService.getSub_num());
+        //subscription 등록
+        subscriptionService.insertSubscription(subscriptionVO);
+        
 	    //로그인한 회원 정보 저장
 	    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
 	    //존재하는 payuid와 대조할 payuidVO 생성후 데이터 셋팅
@@ -92,10 +99,6 @@ public class SubscriptionController {
 
 	        log.debug("payuid 등록 테스트 : " + reg_payuid);
 	        payuidService.registerPayUId(reg_payuid);
-	        subscriptionVO.setSub_ndate(getTodayDateString());
-	        //sub_num 생성하고 subscription 등록
-	        subscriptionVO.setSub_num(subscriptionService.getSub_num());
-	        subscriptionService.insertSubscription(subscriptionVO);
 	        
 	        redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 	        redirectAttributes.addFlashAttribute("user", member_db);
@@ -111,7 +114,7 @@ public class SubscriptionController {
 	}
 	
 		
-		//카드 payuid 발급 이동
+		//결제수단 등록 페이지로 이동
 		@GetMapping("/subscription/getpayuid")
 		public String getpayuid(@ModelAttribute("user") MemberVO user,
 		                        @ModelAttribute("payuidVO") PayuidVO payuidVO,
@@ -127,7 +130,7 @@ public class SubscriptionController {
 		    return "/subscription/getpayuid";
 		}
 	
-		//정기결제 결제 예약
+		//과거에 등록한 결제수단으로 결제 페이지 이동
 		@GetMapping("/subscription/paymentReservation")
 		public String sign_up(@ModelAttribute("user") MemberVO user,
 		                      @ModelAttribute("payuidVO") PayuidVO payuidVO,
@@ -142,6 +145,47 @@ public class SubscriptionController {
 		    model.addAttribute("payuidVO", payuidVO);
 		    return "/subscription/payment_reservation";
 		}
+		
+		@PostMapping("/subscription/paymentReservation")
+		@ResponseBody
+		public Map<String, Object> sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {
+		    log.debug("결제수단 성공후 전달받은 pay_uid : " + pay_uid);
+		    log.debug("결제수단 성공후 전달받은 sub_num : " + sub_num);
+		    
+		    SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+		    MemberVO user = (MemberVO) session.getAttribute("user");
+		    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
+		    PayuidVO payuidVO = payuidService.getPayuidVOByPayuid(pay_uid);
+		    
+		    session.setAttribute("user", user);
+		    session.setAttribute("subscriptionVO", subscriptionVO);
+		    session.setAttribute("payuidVO", payuidVO);
+		    
+		    Map<String, Object> mapJson = new HashMap<>();
+		    mapJson.put("result", "success");
+		    mapJson.put("redirectUrl", "/subscription/payReservation"); // 이동할 URL
+		    
+		    return mapJson;
+		}
+		@GetMapping("/subscription/payReservation")
+		public String paymentReservationPage(HttpSession session, Model model) {
+		    MemberVO user = (MemberVO) session.getAttribute("user");
+		    SubscriptionVO subscriptionVO = (SubscriptionVO) session.getAttribute("subscriptionVO");
+		    PayuidVO payuidVO = (PayuidVO) session.getAttribute("payuidVO");
+		    
+		    if (user == null || subscriptionVO == null || payuidVO == null) {
+		        return "redirect:/errorPage"; // 필요한 데이터가 없으면 에러 페이지로 리다이렉트
+		    }
+		    
+		    model.addAttribute("user", user);
+		    model.addAttribute("subscriptionVO", subscriptionVO);
+		    model.addAttribute("payuidVO", payuidVO);
+		    
+		    return "subscription/payment_reservation";
+		}
+
+		
+		
 	
 		//빌링키 발급 실패(중단)시 생성한 payuid 삭제
 		@PostMapping("/subscription/failGetpayId")
@@ -161,12 +205,6 @@ public class SubscriptionController {
 			}	
 			return mapJson;
 		}
-	
-	
-	
-	
-	
-	
 	
 	
      //payuid 생성 메소드
