@@ -39,6 +39,23 @@ public class FileUtil {
 		}		
 		return filename;
 	}
+	//원래 이름 보존
+	public static String createFileInquiry(
+            HttpServletRequest request,
+            MultipartFile file)
+          throws IllegalStateException,
+                 IOException{
+		//컨텍스트 루트상의 절대 경로 구하기
+		String path = 
+			request.getServletContext().getRealPath(UPLOAD_PATH+"/inquiry");
+		String filename = null;
+		if(file!=null && !file.isEmpty()) {
+			//파일명이 중복되지 않도록 파일명 변경
+			filename = UUID.randomUUID()+"_"+file.getOriginalFilename();
+			file.transferTo(new File(path+"/"+filename));
+		}
+		return filename;
+	}
 	//파일 삭제
 	public static void removeFile(HttpServletRequest request,
 			                            String filename) {
@@ -46,6 +63,17 @@ public class FileUtil {
 			//컨텍스트 루트상의 절대 경로 구하기
 			String path = request.getServletContext()
 					             .getRealPath(UPLOAD_PATH);
+			File file = new File(path+"/"+filename);
+			if(file.exists()) file.delete();
+		}
+	}
+	//파일 삭제
+	public static void removeFileInquiry(HttpServletRequest request,
+			                            String filename) {
+		if(filename!=null) {
+			//컨텍스트 루트상의 절대 경로 구하기
+			String path = request.getServletContext()
+					             .getRealPath(UPLOAD_PATH+"/inquiry");
 			File file = new File(path+"/"+filename);
 			if(file.exists()) file.delete();
 		}

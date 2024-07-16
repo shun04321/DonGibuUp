@@ -24,6 +24,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
+import kr.spring.cs.service.CSService;
+import kr.spring.cs.vo.InquiryVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.point.service.PointService;
@@ -39,6 +41,9 @@ public class MyPageController {
 	
 	@Autowired
 	PointService pointService;
+	
+	@Autowired
+	CSService csService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -217,5 +222,16 @@ public class MyPageController {
 		}
 		
 		return "memberPoint";
+	}
+	
+	//문의/신고 페이지
+	@GetMapping("/member/myPage/inquiry")
+	public String memberInquiry(Model model, HttpSession session) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		List<InquiryVO> list = csService.selectInquiryListByMemNum(user.getMem_num());
+		
+		model.addAttribute("list", list);
+		
+		return "memberInquiry";
 	}
 }

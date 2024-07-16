@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import kr.spring.cs.vo.InquiryVO;
 
@@ -18,6 +19,7 @@ public interface CSMapper {
 	//문의 개수
 	public int selectInquiryListCount(Map<String, Object> map);
 	//회원별 문의 목록
+	@Select("SELECT * FROM inquiry WHERE mem_num=#{mem_num}")
 	public List<InquiryVO> selectInquiryListByMemNum(long mem_num);
 	//문의 수정
 	public void updateInquiry(InquiryVO inquiryVO);

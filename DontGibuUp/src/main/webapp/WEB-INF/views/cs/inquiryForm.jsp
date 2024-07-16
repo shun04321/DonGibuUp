@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <h2>1:1문의</h2>
-<form:form action="inquiry" id="inquiry" modelAttribute="inquiryVO">
+<form:form action="inquiry" id="inquiry" enctype="multipart/form-data" modelAttribute="inquiryVO">
 	<ul>
 	<form:hidden path="mem_num" value="${user.mem_num}" />
 		<li>
@@ -24,15 +24,15 @@
         	<form:errors path="inquiry_category" cssClass="form-error"></form:errors>
 		</li>
 		<li>
-			<form:input path="inquiry_title" placeholder="문의 제목"/>
+			<form:input path="inquiry_title" placeholder="문의 제목" maxlength="20"/>
 			<form:errors path="inquiry_title" cssClass="form-error"></form:errors>
 		</li>
 		<li>
 			<label for="upload">파일 업로드</label>
-			<input type="file" id="upload">
+			<input type="file" name="upload" id="upload">
 		</li>
 		<li>
-			<form:textarea path="inquiry_content" placeholder="문의 내용"/>
+			<form:textarea path="inquiry_content" placeholder="문의 내용" maxlength="1333"/>
 			<form:errors path="inquiry_content" cssClass="form-error"></form:errors>
 		</li>
 	</ul>

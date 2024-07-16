@@ -529,7 +529,7 @@ public class MemberController {
 		model.addAttribute("accessBtn", "로그인");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
 
-		return "signupResultPage";
+		return "passwordResultPage";
 	}
 
 	private String loadHtmlTemplate(String path, String tempPassword) throws IOException {

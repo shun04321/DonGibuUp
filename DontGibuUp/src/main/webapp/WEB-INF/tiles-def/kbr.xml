@@ -36,6 +36,9 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/member/memberFindPasswordResult.jsp"/>
 	</definition>
+	<definition name="passwordResultPage" extends="signupResultPage">
+		<put-attribute name="title" value="비밀번호 찾기"/>
+	</definition>
 	<!-- 마이페이지 -->
 	<definition name="memberInfo" template="/WEB-INF/views/template/layout_myPage.jsp">
 		<put-attribute name="title" value="MyPage - 회원정보" />
@@ -65,6 +68,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/mypage/memberPoint.jsp"/>
 	</definition>
+	<definition name="memberInquiry" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 1:1문의" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberInquiry.jsp"/>
+	</definition>
 	<!-- 고객센터 -->
 	<definition name="faqlist" extends="main">
 		<put-attribute name="title" value="자주하는 질문(FAQ)" />
@@ -75,6 +83,10 @@
 		<put-attribute name="title" value="1:1문의" />
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/cs/inquiryForm.jsp"/>
+	</definition>
+		<definition name="inquiryResultPage" extends="signupResultPage">
+		<put-attribute name="title" value="문의 전송 완료"/>
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 	</definition>
 </tiles-definitions>
 

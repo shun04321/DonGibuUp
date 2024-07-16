@@ -37,7 +37,7 @@
 		</ul>
 	</li>
 	<li class="side-menu">
-		<div>문의/신고</div>
+		<div><a href="${pageContext.request.contextPath}/member/myPage/inquiry">문의/신고</a></div>
 	</li>
 </ul>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>

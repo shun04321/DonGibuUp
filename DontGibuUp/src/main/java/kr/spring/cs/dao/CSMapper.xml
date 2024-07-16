@@ -17,7 +17,7 @@
 			#{mem_num},
 			#{inquiry_category},
 			#{inquiry_title},
-			#{inquiry_filename},
+			#{inquiry_filename, jdbcType=VARCHAR},
 			#{inquiry_content})
 	</insert>
 </mapper>

@@ -3,14 +3,22 @@ package kr.spring.cs.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.spring.cs.dao.CSMapper;
 import kr.spring.cs.vo.InquiryVO;
 
+@Service
+@Transactional
 public class CSServiceImpl implements CSService {
+	@Autowired
+	CSMapper csMapper;
 
 	@Override
 	public void insertInquiry(InquiryVO inquiryVO) {
-		// TODO Auto-generated method stub
-		
+		csMapper.insertInquiry(inquiryVO);
 	}
 
 	@Override
@@ -33,8 +41,7 @@ public class CSServiceImpl implements CSService {
 
 	@Override
 	public List<InquiryVO> selectInquiryListByMemNum(long mem_num) {
-		// TODO Auto-generated method stub
-		return null;
+		return csMapper.selectInquiryListByMemNum(mem_num);
 	}
 
 	@Override
