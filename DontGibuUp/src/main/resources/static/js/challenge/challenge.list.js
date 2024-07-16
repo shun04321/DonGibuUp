@@ -29,10 +29,6 @@ $(function() {
 			},
 			dataType: 'json',
 			success: function(param) {
-				
-				console.log('param.count : ' + param.count);
-				console.log('currentPage * param.list.length : ' + currentPage * param.list.length);
-				console.log('param.list.length : ' + param.list.length)
 				if (currentPage * param.list.length >= param.count) {
 					hasMoreData = false;
 					observer.unobserve(document.querySelector('#scroll-target'));
@@ -41,13 +37,6 @@ $(function() {
 				//챌린지 목록 작업
 				let output = '';
 				$(param.list).each(function(index, item) {
-					//한 줄에 요소 3개씩 보이게 하기
-					if (index % 3 == 0) {
-        		if (index != 0) { // 처음이 아닌 경우 이전 div 닫기
-            	output += '</div>';
-        		}
-        		output += '<div>';
-    			}
     			
 					let sdate = new Date(item.chal_sdate);
 					let now = new Date();
@@ -98,14 +87,8 @@ $(function() {
 						output += '</span>';
 												
 					}
-					
-					// 마지막 요소인 경우 닫기
-    			if (index == param.list.length - 1) {
-						output += '</div>';
-    			}
-
-				});
-				$('#output').append(output);
+					$('#output').append(output);
+				});				
 				
 				$('#output').append($('#scroll-target'));
 				
