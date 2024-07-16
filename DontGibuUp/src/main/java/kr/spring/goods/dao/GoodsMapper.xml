@@ -82,4 +82,9 @@
         item_status = #{item_status,jdbcType=INTEGER} 
     WHERE item_num = #{item_num}
 </update>
+	<!-- 새로운 메서드 추가 -->
+    <insert id="insertPaymentInfo" parameterType="kr.spring.goods.vo.PaymentVO">
+        INSERT INTO payment_info (merchant_uid, amount, status, card_number, expiry, birth, pwd2digit)
+        VALUES (#{merchantUid}, #{amount}, #{status}, #{cardNumber}, #{expiry}, #{birth}, #{pwd2digit})
+    </insert>
 </mapper>

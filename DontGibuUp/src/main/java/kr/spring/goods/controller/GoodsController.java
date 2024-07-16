@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,13 +15,18 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import kr.spring.cart.service.CartService;
+import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.service.GoodsService;
+import kr.spring.goods.service.PortOneService;
 import kr.spring.goods.util.fileUtil;
 import kr.spring.goods.vo.GoodsVO;
+import kr.spring.goods.vo.PaymentVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
@@ -33,81 +36,108 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class GoodsController {
-	@Autowired
-	private GoodsService goodsService;
+    @Autowired
+    private GoodsService goodsService;
 
-	//자바빈 초기화
-	@ModelAttribute
-	public GoodsVO initCommand() {
-		return new GoodsVO();
-	}
+    @Autowired
+    private PortOneService portOneService;
 
-	/*===================================
-	 * 				상품 목록 호출
-	 *==================================*/
-	// 요청
-	@GetMapping("/goods/list")
-	public String getlist(@RequestParam(defaultValue="1") int pageNum,
-	                      @RequestParam(defaultValue="0") int order,
-	                      @RequestParam(defaultValue="0") int dcate_num,
-	                      String keyfield, String keyword, Model model, HttpSession session) {
+    // 자바빈 초기화
+    @ModelAttribute
+    public GoodsVO initCommand() {
+        return new GoodsVO();
+    }
 
-	    MemberVO user = (MemberVO) session.getAttribute("user");
-	    Integer mem_status = user != null ? user.getMem_status() : null;
+    /*===================================
+     * 상품 목록 호출
+     *==================================*/
+    @GetMapping("/goods/list")
+    public String getlist(@RequestParam(defaultValue="1") int pageNum,
+                          @RequestParam(defaultValue="0") int order,
+                          @RequestParam(defaultValue="0") int dcate_num,
+                          String keyfield, String keyword, Model model, HttpSession session) {
 
-	    log.debug("<<mem_status>> : " + mem_status);
+        MemberVO user = (MemberVO) session.getAttribute("user");
+        Integer mem_status = user != null ? user.getMem_status() : null;
 
-	    log.debug("<<상품 목록 - category>> : " + dcate_num);
-	    log.debug("<<상품 목록 - order>> : " + order);
+        log.debug("<<mem_status>> : " + mem_status);
+        log.debug("<<상품 목록 - category>> : " + dcate_num);
+        log.debug("<<상품 목록 - order>> : " + order);
 
-	    Map<String, Object> map = new HashMap<String, Object>();
-	    map.put("dcate_num", dcate_num);
-	    map.put("keyfield", keyfield);
-	    map.put("keyword", keyword);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("dcate_num", dcate_num);
+        map.put("keyfield", keyfield);
+        map.put("keyword", keyword);
 
-	    // 전체, 검색 레코드 수
-	    int count = goodsService.selectRowCount(map);
+        int count = goodsService.selectRowCount(map);
 
-	    // 페이지 처리
-	    PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "list", "&dcate_num=" + dcate_num + "&order=" + order);
+        PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "list", "&dcate_num=" + dcate_num + "&order=" + order);
 
-	    List<GoodsVO> list = null;
-	    if (count > 0) {
-	        map.put("order", order);
-	        map.put("start", page.getStartRow());
-	        map.put("end", page.getEndRow());
+        List<GoodsVO> list = null;
+        if (count > 0) {
+            map.put("order", order);
+            map.put("start", page.getStartRow());
+            map.put("end", page.getEndRow());
 
-	        list = goodsService.selectList(map, mem_status);
-	    }
+            list = goodsService.selectList(map, mem_status);
+        }
 
-	    model.addAttribute("count", count);
-	    model.addAttribute("list", list);
-	    model.addAttribute("page", page.getPage());
-	    model.addAttribute("dcate_num", dcate_num); // dcate_num 값을 뷰로 전달
+        model.addAttribute("count", count);
+        model.addAttribute("list", list);
+        model.addAttribute("page", page.getPage());
+        model.addAttribute("dcate_num", dcate_num);
 
-	    return "goodsList";
-	}
-	
-	/*===================================
-	 * 				상품 상세
-	 *==================================*/
-	@GetMapping("/goods/detail")
-	public ModelAndView process(long item_num) {
-		log.debug("<<게시판 글 상세 - item_num>> :" + item_num);
-		
-		
-		GoodsVO goods = goodsService.detailGoods(item_num);
-		
-		//제목에 태그를 허용하지 않음
-		goods.setItem_name(StringUtil.useNoHTML(goods.getItem_name()));
-		
-		//내용에 태그를 허용하지 않으면서 줄바꿈 처리(ck에디터 사용시 주석처리해야함)
-		//board.setContent( StringUtil.useBrNoHTML(board.getContent()));
-		
-		return new ModelAndView("goodsView","goods",goods);
-	}
-	
-	
+        return "goodsList";
+    }
+    
+    /*===================================
+     * 상품 상세
+     *==================================*/
+    @GetMapping("/goods/detail")
+    public ModelAndView process(long item_num) {
+        log.debug("<<게시판 글 상세 - item_num>> :" + item_num);
+
+        GoodsVO goods = goodsService.detailGoods(item_num);
+        goods.setItem_name(StringUtil.useNoHTML(goods.getItem_name()));
+
+        return new ModelAndView("goodsView", "goods", goods);
+    }
+
+    @PostMapping("/goods/purchase")
+    public String purchase(@RequestParam String merchantUid, @RequestParam int amount, @RequestParam String cardNumber, @RequestParam String expiry, @RequestParam String birth, @RequestParam String pwd2digit, Model model) {
+        Map<String, Object> response = portOneService.requestPayment(merchantUid, amount, cardNumber, expiry, birth, pwd2digit);
+
+        log.info("Payment response: {}", response);
+
+        String status = (String) response.get("status");
+
+        if ("paid".equals(status)) {
+            model.addAttribute("message", "결제가 완료되었습니다.");
+        } else {
+            model.addAttribute("message", "결제에 실패하였습니다. 응답: " + response);
+        }
+        model.addAttribute("uri", "/goods/list");
+
+        return "common/resultAlert";
+    }
+
+    @PostMapping("/goods/refund")
+    public String refund(@RequestParam String impUid, @RequestParam int amount, @RequestParam String reason, Model model) {
+        Map<String, Object> response = portOneService.requestRefund(impUid, amount, reason);
+
+        log.info("Refund response: {}", response);
+
+        String status = (String) response.get("status");
+
+        if ("cancelled".equals(status)) {
+            model.addAttribute("message", "환불이 완료되었습니다.");
+        } else {
+            model.addAttribute("message", "환불에 실패하였습니다. 응답: " + response);
+        }
+        model.addAttribute("uri", "/goods/list");
+
+        return "common/resultAlert";
+    }
 	/*===================================
 	 * 				상품 등록(관리자)
 	 *==================================*/
@@ -273,4 +303,13 @@ public class GoodsController {
 	    model.addAttribute("uri", "/goods/list");
 	    return "common/resultAlert";
 	}
+	 @GetMapping("/payments/request")
+	    public String showPaymentRequestForm() {
+	        return "paymentRequest"; // paymentRequest.jsp를 반환
+	    }
+
+	    @GetMapping("/payments/refund")
+	    public String showRefundRequestForm() {
+	        return "refundRequest"; // refundRequest.jsp를 반환
+	    }
 }

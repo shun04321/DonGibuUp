@@ -59,6 +59,36 @@ function updateCartQuantity(cart_num) {
         }
     });
 }
+
+function purchaseSelectedCarts() {
+    var selectedCarts = [];
+    $('input[name="cart_num"]:checked').each(function() {
+        selectedCarts.push($(this).val());
+    });
+
+    if (selectedCarts.length === 0) {
+        alert('구매할 항목을 선택해주세요.');
+        return;
+    }
+
+    $.ajax({
+        url: '${pageContext.request.contextPath}/cart/purchaseSelected',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(selectedCarts),
+        success: function(response) {
+            if(response === 'success') {
+                alert('선택된 항목들이 구매되었습니다.');
+                location.reload();
+            } else {
+                alert('구매 실패. 다시 시도해주세요.');
+            }
+        },
+        error: function() {
+            alert('에러가 발생했습니다. 다시 시도해주세요.');
+        }
+    });
+}
 </script>
 
 <div class="page-main">
@@ -110,6 +140,7 @@ function updateCartQuantity(cart_num) {
 </table>
 <div align="center">
     <button type="button" onclick="deleteSelectedCarts()">선택 항목 삭제</button>
+    <button type="button" onclick="purchaseSelectedCarts()">선택 항목 구매</button>
 </div>
 <div align="center">${page}</div>
 </c:if>

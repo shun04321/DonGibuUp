@@ -75,8 +75,9 @@ naver:
   client_id: inEolviFM4LB9sPu34jX
   redirect_uri: http://localhost:8000/member/callback/naver
   client_secret: zIDSLvMlCb
-    
-    
-    
-    
+       
+portone:
+  customer_code: imp63281573
+  api_key: 2501776226527075
+  api_secret: OrWUbmbvFpQCa46c02NKaS5r8NpVEVIVDcp1zrL7OijXgzbrOjyMGnfzS7eXiQulmPoLe16uS0YX6tsa
     

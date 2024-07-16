@@ -13,48 +13,43 @@ import kr.spring.goods.vo.GoodsVO;
 @Service
 @Transactional
 public class GoodsServiceImpl implements GoodsService {
-	@Autowired
-	GoodsMapper goodsMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
 
-	@Override
-	public void insertGoods(GoodsVO goods) {
-		goodsMapper.insertGoods(goods);
-	}
+    @Override
+    public void insertGoods(GoodsVO goods) {
+        goodsMapper.insertGoods(goods);
+    }
 
-	@Override
-	public List<GoodsVO> selectList(Map<String, Object> map, Integer mem_status) {
-		if (mem_status == null || mem_status != 9) {
-	        // 일반 사용자라면 item_status가 1인 상품만 조회하도록 필터링
-	        map.put("item_status", 1);
-	    }
-		return goodsMapper.selectList(map);
-	}
+    @Override
+    public List<GoodsVO> selectList(Map<String, Object> map, Integer mem_status) {
+        if (mem_status == null || mem_status != 9) {
+            // 일반 사용자라면 item_status가 1인 상품만 조회하도록 필터링
+            map.put("item_status", 1);
+        }
+        return goodsMapper.selectList(map);
+    }
 
-	@Override
-	public Integer selectRowCount(Map<String, Object> map) {
+    @Override
+    public Integer selectRowCount(Map<String, Object> map) {
+        return goodsMapper.selectRowCount(map);
+    }
 
-		return goodsMapper.selectRowCount(map);
-	}
+    @Override
+    public void updateGoods(GoodsVO goodsVO) {
+        goodsMapper.updateGoods(goodsVO);
+    }
 
-	@Override
-	public void updateGoods(GoodsVO goodsVO) {
-		goodsMapper.updateGoods(goodsVO);
-		
-	}
+    @Override
+    public GoodsVO detailGoods(long item_num) {
+        return goodsMapper.detailGoods(item_num);
+    }
 
-	@Override
-	public GoodsVO detailGoods(long item_num) {
-		return goodsMapper.detailGoods(item_num);
-	}
-
-	 @Override
-	    public void deleteGoods(long item_num) {
-	        // 자식 레코드 먼저 삭제
-	        goodsMapper.deleteCartItems(item_num);
-	        // 부모 레코드 삭제
-	        goodsMapper.deleteGoods(item_num);
-	    }
-
-
-	
+    @Override
+    public void deleteGoods(long item_num) {
+        // 자식 레코드 먼저 삭제
+        goodsMapper.deleteCartItems(item_num);
+        // 부모 레코드 삭제
+        goodsMapper.deleteGoods(item_num);
+    }
 }
