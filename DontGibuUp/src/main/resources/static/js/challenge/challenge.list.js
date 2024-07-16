@@ -7,7 +7,46 @@ $(function() {
 	let keyword = '';
 	let freqOrder = '';
 	let order = '';
+	
+	// 카테고리 링크 클릭 이벤트
+	$('.category-link').on('click', function(e) {
+		e.preventDefault();
+		chal_type = $(this).data('category');
+		hasMoreData = true;
+		$('#output').empty();
+		selectList(1);
+	});
 
+	//인증 빈도 선택 이벤트
+	$('.freqOrder').on('change', function() {
+		freqOrder = $(this).val();
+		hasMoreData = true;
+		$('#output').empty();
+		selectList(1);
+	});
+
+	//검색 이벤트
+	$('#searchTitle').on('submit', function(e) {
+		e.preventDefault();
+		keyword = $(this).find('input[type="search"]').val();
+		if (keyword == '') {
+			alert('검색어를 입력하세요');
+			return false;
+		}
+
+		hasMoreData = true;
+		$('#output').empty();
+		selectList(1);
+	});
+	
+	//정렬 선택 이벤트
+	$('.order').on('change',function(){
+		order = $(this).val();
+		hasMoreData = true;
+		$('#output').empty();
+		selectList(1);
+	});
+	
 	/*---------------------
 	 * 챌린지 목록
 	 *---------------------*/
@@ -31,7 +70,10 @@ $(function() {
 			success: function(param) {
 				if (currentPage * param.list.length >= param.count) {
 					hasMoreData = false;
-					observer.unobserve(document.querySelector('#scroll-target'));
+					const scrollTarget = document.querySelector('#scroll-target');
+					if (scrollTarget) {
+						observer.unobserve(scrollTarget);
+					}
 				}
 
 				//챌린지 목록 작업
@@ -84,8 +126,7 @@ $(function() {
 						output += '</li>';
 						output += '</ul>';
 						output += '</a>';
-						output += '</span>';
-												
+						output += '</span>';																		
 					}
 					$('#output').append(output);
 				});				
@@ -125,44 +166,5 @@ $(function() {
 	 * 초기 데이터 호출
 	 *---------------------*/
 	selectList(1);
-
-	// 카테고리 링크 클릭 이벤트
-	$('.category-link').on('click', function(e) {
-		e.preventDefault();
-		chal_type = $(this).data('category');
-		hasMoreData = true;
-		$('#output').empty();
-		selectList(1);
-	});
-
-	//인증 빈도 선택 이벤트
-	$('.freqOrder').on('change', function() {
-		freqOrder = $(this).val();
-		hasMoreData = true;
-		$('#output').empty();
-		selectList(1);
-	});
-
-	//검색 이벤트
-	$('#searchTitle').on('submit', function(e) {
-		e.preventDefault();
-		keyword = $(this).find('input[type="search"]').val();
-		if (keyword == '') {
-			alert('검색어를 입력하세요');
-			return false;
-		}
-
-		hasMoreData = true;
-		$('#output').empty();
-		selectList(1);
-	});
-	
-	//정렬 선택 이벤트
-	$('.order').on('change',function(){
-		order = $(this).val();
-		hasMoreData = true;
-		$('#output').empty();
-		selectList(1);
-	});
 	
 });

@@ -38,7 +38,6 @@
 	<table>
 		<thead>
 			<tr>
-				<th></th>
 				<th>분류</th>
 				<th>일자</th>
 				<th>내역</th>

@@ -1,5 +1,6 @@
 package kr.spring.challenge.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +40,7 @@ public interface ChallengeService {
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
     //public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
-    //주별 인증 횟수
-    public int countWeeklyVerifications(Long chal_joi_num);
+    int countWeeklyVerifications(Long chal_joi_num, LocalDate startDate, int weekNumber);
     
 	//챌린지 후기	
     

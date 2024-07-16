@@ -136,10 +136,13 @@
 	    ]]>
 	</select>
 
-	<select id="selectChallengeJoin" parameterType="long"
-		resultType="challengeJoinVO">
-		SELECT * FROM chal_join WHERE chal_joi_num =
-		#{chal_joi_num}
+	<!-- 챌린지 참가 상세 -->
+	<select id="selectChallengeJoin" parameterType="long" resultType="challengeJoinVO">
+	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_fee, c.chal_freq, dc.dcate_charity
+	    FROM chal_join cj
+	    JOIN challenge c ON cj.chal_num = c.chal_num
+	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
+	    WHERE cj.chal_joi_num = #{chal_joi_num}
 	</select>
 
 	<!-- 챌린지 참가 삭제 -->
@@ -187,15 +190,14 @@
 
 	<!-- <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO"> 
 		SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num} </select> -->
-
-	<!-- 챌린지 주별 인증 횟수 -->
-	<select id="countWeeklyVerifications" parameterType="long"
-		resultType="int">
-		SELECT COUNT(*)
-		FROM CHAL_VERIFY
-		WHERE chal_joi_num = #{chal_joi_num}
-		AND chal_reg_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') +
-		6
+		
+	<!-- 주별 인증 횟수 확인 -->
+	<select id="countWeeklyVerifications" parameterType="map" resultType="int">
+	    SELECT COUNT(*)
+	    FROM CHAL_VERIFY
+	    WHERE chal_joi_num = #{chal_joi_num}
+	    AND chal_reg_date BETWEEN TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD')) + (#{weekNumber} * 7)
+	    AND TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD')) + ((#{weekNumber} + 1) * 7) - 1
 	</select>
 </mapper>
 
