@@ -65,6 +65,17 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/mypage/memberPoint.jsp"/>
 	</definition>
+	<!-- 고객센터 -->
+	<definition name="faqlist" extends="main">
+		<put-attribute name="title" value="자주하는 질문(FAQ)" />
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/cs/faqlist.jsp"/>
+	</definition>
+	<definition name="inquiryForm" extends="main">
+		<put-attribute name="title" value="1:1문의" />
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/cs/inquiryForm.jsp"/>
+	</definition>
 </tiles-definitions>
 
 
