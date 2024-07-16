@@ -5,6 +5,8 @@ import java.sql.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,4 +27,6 @@ public class InquiryVO {
 	private String inquiry_reply;		//문의답변
 	private Date inquiry_date;			//문의날짜
 	private Date inquiry_rdate;			//답변날짜
+	
+	private MultipartFile upload;	//파일
 }
