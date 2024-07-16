@@ -369,10 +369,6 @@ public class ChallengeController {
         int chalFreq = challengeJoin.getChal_freq();
         String chal_sdate = challengeJoin.getChal_sdate();
 
-        // 디버깅: chal_freq 및 chal_sdate 값 출력
-        System.out.println("chal_freq: " + chalFreq);
-        System.out.println("chal_sdate: " + chal_sdate);
-
         if (chal_sdate == null) {
             throw new IllegalArgumentException("챌린지 시작 날짜가 설정되지 않았습니다.");
         }
@@ -380,10 +376,6 @@ public class ChallengeController {
         LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
         int weekNumber = (int) ChronoUnit.WEEKS.between(startDate, LocalDate.now());
         int weeklyVerifications = challengeService.countWeeklyVerifications(chal_joi_num, startDate, weekNumber);
-
-        // 디버깅: weeklyVerifications 값 출력
-        System.out.println("weeklyVerifications: " + weeklyVerifications);
-
         boolean hasCompletedWeeklyVerifications = weeklyVerifications >= chalFreq;
         mav.addObject("hasCompletedWeeklyVerifications", hasCompletedWeeklyVerifications);
 

@@ -46,10 +46,6 @@
             <button class="active-button" onclick="location.href='${pageContext.request.contextPath}/challenge/verify/write?chal_joi_num=${chal_joi_num}&status=${status}'">인증하기</button>
         </c:otherwise>
     </c:choose>
-    <div>
-        <!-- 디버깅: hasCompletedWeeklyVerifications 값 출력 -->
-        hasCompletedWeeklyVerifications: ${hasCompletedWeeklyVerifications}
-    </div>
 </div>
 </body>
 </html>
