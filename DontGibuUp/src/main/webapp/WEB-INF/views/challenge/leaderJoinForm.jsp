@@ -11,7 +11,8 @@
 	let memberNick = "${member.mem_nick}";
 	let memberEmail = "${member.email}";
 	//let memberPhone = "${member.phone}";
-	let pageContextPath = "${pageContext.request.contextPath}";		
+	let pageContextPath = "${pageContext.request.contextPath}";	
+	let chalPhoto = "${challenge.chal_photo}";
 </script>
 <div class="container">
     <h2>챌린지 참가</h2>
@@ -65,3 +66,16 @@
     </form:form>
 </div>
 <script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
+<script>
+	$(window).on('beforeunload', function(e){
+		e.preventDefault();
+    	const url = '/challenge/deleteImage';
+            
+        // 전송할 데이터
+        const data = new URLSearchParams();
+        data.append('imagePath', pageContextPath + '/upload/'+chalPhoto);
+            
+        // 서버에 이미지 삭제 요청을 POST 방식으로 보냅니다.
+        navigator.sendBeacon(url, data);	        
+	}); 
+</script>

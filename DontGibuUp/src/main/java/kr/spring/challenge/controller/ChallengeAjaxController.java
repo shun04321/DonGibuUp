@@ -113,11 +113,13 @@ public class ChallengeAjaxController {
 	//리더 결제 정보 검증하기
 	@PostMapping("/challenge/paymentVerify/{imp_uid}")
 	@ResponseBody
-	public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid,HttpSession session) throws IamportResponseException, IOException{        
+	public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid,HttpSession session,
+			HttpServletRequest request) throws IamportResponseException, IOException{        
 		IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
         
 		//로그인 여부 확인하기
 		MemberVO member = (MemberVO) session.getAttribute("user");
+		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");
 		
 		//세션에 저장된 결제 금액 가져오기
 		ChallengeVO challengeVO = (ChallengeVO) session.getAttribute("challengeVO");
@@ -131,6 +133,8 @@ public class ChallengeAjaxController {
 			//결제 취소 요청하기
 			CancelData cancelData = new CancelData(imp_uid, true);
 			impClient.cancelPaymentByImpUid(cancelData);
+			//대표 사진 업로드 및 파일 저장
+			FileUtil.removeFile(request, challenge.getChal_photo());
 		}
 		log.debug("payment"+payment);
 		return payment;
@@ -190,5 +194,17 @@ public class ChallengeAjaxController {
 		}
 		
 		return mapJson;
+	}
+	
+	//챌린지 참가 창 벗어날시 이미지 삭제
+	@PostMapping("/challenge/deleteImage")
+	public void deleteImg(HttpSession session, HttpServletRequest request) {		
+		//세션에 저장된 파일 이름 가져오기
+		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");
+		
+		if (challenge != null) {
+            // 파일 삭제
+            FileUtil.removeFile(request, challenge.getChal_photo());
+        }
 	}
 }

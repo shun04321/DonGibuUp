@@ -78,10 +78,11 @@ public class ChallengeController {
     public String form() {
         return "challengeWrite";
     } 
+
     //챌린지 개설 (챌린지 개설 유효성 검사 확인 후, 세션에 저장)
     @PostMapping("/challenge/write")
     public String checkValidation(@Valid ChallengeVO challengeVO, BindingResult result, 
-                                  HttpServletRequest request, HttpSession session, Model model) {
+                                  HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
         log.debug("<<챌린지 개설 정보 확인>> : " + challengeVO);
 
         // 유효성 체크
@@ -96,12 +97,14 @@ public class ChallengeController {
 		challengeVO.setChal_ip(request.getRemoteAddr());
 		//챌린지 종료일 계산
         challengeVO.calculateChalEdate();
+        //대표 사진 업로드 및 파일 저장
+      	challengeVO.setChal_photo(FileUtil.createFile(request, challengeVO.getUpload()));
         
         session.setAttribute("challengeVO", challengeVO);
 
         return "redirect:/challenge/leaderJoin";
     }
-
+    
     //챌린지 개설 목록
     @GetMapping("/challenge/list")
     public String list(Model model) {
