@@ -347,6 +347,7 @@ public class ChallengeController {
     }
     
     //챌린지 인증 목록
+    //챌린지 인증 목록
     @GetMapping("/challenge/verify/list")
     public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num,
                                    @RequestParam(value = "status", defaultValue = "pre") String status,
@@ -358,7 +359,19 @@ public class ChallengeController {
         ModelAndView mav = new ModelAndView("challengeVerifyList");
         mav.addObject("verifyList", verifyList);
         mav.addObject("chal_joi_num", chal_joi_num);
-        mav.addObject("status", status);  // 추가된 status 값
+        mav.addObject("status", status);//추가
+        
+        //오늘 날짜 추가
+        LocalDate today = LocalDate.now();
+        mav.addObject("today", today.toString());
+
+        //오늘 날짜의 인증이 있는지 확인
+        boolean hasTodayVerify = verifyList.stream()
+            .anyMatch(verify -> {
+                LocalDate regDate = verify.getChal_reg_date().toLocalDate();
+                return regDate.equals(LocalDate.now());
+            });
+        mav.addObject("hasTodayVerify", hasTodayVerify);
 
         //챌린지 정보 가져오기
         ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
@@ -372,6 +385,10 @@ public class ChallengeController {
         mav.addObject("chal_sdate", chal_sdate);
         mav.addObject("chal_edate", chal_edate);
 
+        if (chal_sdate == null) {
+            throw new IllegalArgumentException("챌린지 시작 날짜가 설정되지 않았습니다.");
+        }
+        
         //인증 성공 횟수
         long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
         mav.addObject("successCount", successCount);
@@ -380,7 +397,7 @@ public class ChallengeController {
         long failureCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 1).count();
         mav.addObject("failureCount", failureCount);
 
-        //전체 주 수
+        //전체 주 수 계산
         LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
         LocalDate endDate = LocalDate.parse(chal_edate, DateTimeFormatter.ISO_LOCAL_DATE);
         long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1; 
@@ -392,6 +409,10 @@ public class ChallengeController {
         //남은 인증 횟수
         long remainingCount = totalCount - successCount - failureCount;
         mav.addObject("remainingCount", remainingCount);
+        
+        //달성률 계산 (정수로 변환)
+        int achievementRate = (int) ((double) successCount / totalCount * 100);
+        mav.addObject("achievementRate", achievementRate);
 
         return mav;
     }

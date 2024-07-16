@@ -355,8 +355,11 @@ h2 {
 
 /* 챌린지 인증 목록 */
 .challenge-summary {
+	width:80%;
     display: flex;
     align-items: center;
+    margin-left: 50px;
+    margin-right: 50px;
     margin-bottom: 20px;
     padding: 20px;
     border: 1px solid #ddd;
@@ -366,11 +369,11 @@ h2 {
 }
 
 .challenge-thumbnail {
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
-    margin-right: 20px;
-    object-fit: cover;
+	width: 100%;
+	height: auto;
+	max-height: 200px;
+	border-radius: 10px;
+	object-fit: cover;
 }
 
 .challenge-info {
@@ -410,7 +413,29 @@ h2 {
     background-color: #f5f5f5;
     border-radius: 5px;
     padding: 10px;
-    width: 300px;
+    width: 250px;
+    text-align: center;
+}
+
+.challenge-stat-item1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    width: 500px;
+    text-align: center;
+}
+
+.challenge-stat-item2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100px;
     text-align: center;
 }
 
@@ -419,7 +444,27 @@ h2 {
     color: #888;
 }
 
+.challenge-stat-item1 span:first-child {
+    font-size: 12px;
+    color: #888;
+}
+
+.challenge-stat-item2 span:first-child {
+    font-size: 12px;
+    color: #888;
+}
+
 .challenge-stat-item span:last-child {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.challenge-stat-item1 span:last-child {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.challenge-stat-item2 span:last-child {
     font-size: 14px;
     font-weight: bold;
 }
@@ -516,7 +561,7 @@ h2 {
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 16px;
+    font-size: 10px;
     cursor: not-allowed;
 }
 
@@ -526,7 +571,7 @@ h2 {
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 16px;
+    font-size: 10px;
     cursor: pointer;
 }
 
