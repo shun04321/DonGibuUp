@@ -3,6 +3,8 @@ package kr.spring.subscription.controller;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.category.service.CategoryService;
@@ -118,7 +121,21 @@ public class SubscriptionController {
 	    return "/subscription/getpayuid";
 	}
 	
-	
+	//빌링키 발급 실패(중단)시 생성한 payuid 삭제
+	@PostMapping("/subscription/failGetpayId")
+	@ResponseBody
+	public Map<String,String> deletePayuid(String pay_uid, HttpSession session) throws Exception {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
+		try {
+			payuidService.deletePayuid(pay_uid);
+			mapJson.put("result", "success");
+		}catch(Exception e) {
+			mapJson.put("result", "fail");
+			throw new Exception(e);
+		}	
+		return mapJson;
+	}
 	
 	
 	

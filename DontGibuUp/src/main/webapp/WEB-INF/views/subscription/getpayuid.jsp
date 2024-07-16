@@ -44,9 +44,13 @@
                         url: 'failGetpayId',
                         dataType: 'json',
                         type: 'POST',
-                        data: { pay_uid: "${payuidVO.pay_uid}" },
+                        data: {pay_uid: "${payuidVO.pay_uid}"},
                         success: function (param) {
-                            alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
+                        	if(param.result=='success'){
+                        		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
+                        	}else if(param.result =='fail'){
+                        		alert('관리자에게 문의해주세요. 에러내용 : ' + rsp.error_msg);
+                        	}
                         },
                         error: function () {
                             alert('네트워크 오류 발생');

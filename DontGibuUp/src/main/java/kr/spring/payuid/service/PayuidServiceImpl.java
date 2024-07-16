@@ -22,9 +22,8 @@ public class PayuidServiceImpl implements PayuidService{
 	}
 
 	@Override
-	public void deletePayUId(long mem_num) {
-		// TODO Auto-generated method stub
-		
+	public void deletePayuid(String pay_uid) {
+		payuidMapper.deletePayuid(pay_uid);
 	}
 
 	@Override
