@@ -5,7 +5,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         IMP.init("imp02085565");
-
+		let pg = "";
+		if(!${payuidVO.card_nickname == null})
         const onClickPay = async () => {
             IMP.request_pay({
             	pg : "tosspayments.iamporttest_4",
@@ -34,7 +35,6 @@
                     	error:function(){
                     		alert('네트워크 오류 발생');
                     	}
-            
                     })
                     // 실패 시 로직
                 }

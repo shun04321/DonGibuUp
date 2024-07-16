@@ -277,6 +277,11 @@ div {
 					alert('사용하실 카드를 선택해주세요.');
 					return false;
 				}
+				//  새 카드 등록을 선택했으나, 카드 별명을 입력하지 않았을 때
+				if($('#card').is(":checked") && $('#newCard').is(":checked") && $('#newCardname').val().trim() == ''){
+					alert('등록하실 카드의 별명을 명시해주세요.');
+					return false;
+				}
 			});
 
 			$('#paybutton').click(function() {
