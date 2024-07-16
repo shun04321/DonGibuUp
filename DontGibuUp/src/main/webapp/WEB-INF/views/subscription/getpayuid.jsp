@@ -8,8 +8,8 @@
 
         const onClickPay = async () => {
             IMP.request_pay({
-                pg: "payco.AUTOPAY",
-                pay_method: "EASY_PAY", // 'card'만 지원됩니다.
+            	pg : "tosspayments.iamporttest_4",
+            	pay_method : "card",
                 name: "최초인증결제",
                 amout : "0", // 실제 승인은 발생되지 않고 오직 빌링키만 발급됩니다.
                 customer_uid: "${payuidVO.pay_uid}", // 필수 입력.
