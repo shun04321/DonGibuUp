@@ -114,6 +114,12 @@ public class ChallengeController {
 		model.addAttribute("categories", categories);
         return "challengeList";
     }
+    @GetMapping("/challenge/pastList")
+    public String pastList(Model model) {
+    	List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
+		model.addAttribute("categories", categories);
+        return "challengePastList";
+    }
 
     //챌린지 개설 상세
     @GetMapping("/challenge/detail")
