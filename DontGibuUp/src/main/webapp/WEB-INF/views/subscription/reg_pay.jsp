@@ -17,12 +17,12 @@
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 	crossorigin="anonymous"></script>
 <style>
-.payment-methods, .easypay-methods {
+.payment-methods, .easypay_methods {
 	display: flex;
 	gap: 10px;
 }
 
-.payment-method, .easypay-method {
+.payment-method, .easypay_method {
 	padding: 10px 20px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
@@ -33,13 +33,13 @@
 	align-items: center;
 }
 
-.payment-method.selected, .easypay-method.selected {
+.payment-method.selected, .easypay_method.selected {
 	background-color: #007bff;
 	color: white;
 	border-color: #007bff;
 }
 
-.payment-method input[type="radio"], .easypay-method input[type="radio"] {
+.payment-method input[type="radio"], .easypay_method input[type="radio"] {
 	display: none;
 }
 
@@ -174,11 +174,11 @@ div {
 							<!-- 간편 결제 수단 라디오 버튼 -->
 							<div class="form-group easypay-container" style="display: none;">
 								<label>간편 결제</label><br>
-								<div class="easypay-methods">
-									<label class="easypay-method" for="kakao"> <form:radiobutton
+								<div class="easypay_methods">
+									<label class="easypay_method" for="kakao"> <form:radiobutton
 											path="easypay_method" id="kakao" value="kakao" /><img
 										src="../upload/카카오페이 로고.jpg" width="40" style="border-radius:25%">										
-									</label> <label class="easypay-method" for="payco"> <form:radiobutton
+									</label> <label class="easypay_method" for="payco"> <form:radiobutton
 											path="easypay_method" id="payco" value="payco" /><img
 										src="../upload/페이코 로고.jpg" width="40" style="border-radius:25%">
 									</label>
@@ -226,7 +226,7 @@ div {
 	                $('.easypay-container').slideUp();
 	                $('#card-options').slideDown();
 	             // 선택된 이지페이 수단 체크 해제
-	                $('.easypay-method').removeClass('selected');
+	                $('.easypay_method').removeClass('selected');
 	            }
 	        }
 	    });
@@ -241,11 +241,11 @@ div {
 				});
 			});
 	    
-		$('.easypay-method').click(function() {
+		$('.easypay_method').click(function() {
 			var radio = $(this).find('input[type="radio"]');
 			if (radio.length) {
 				radio.prop('checked', true);
-				$('.easypay-method').removeClass('selected');
+				$('.easypay_method').removeClass('selected');
 				$(this).addClass('selected');
 			}
 		});

@@ -78,7 +78,7 @@ public class SubscriptionController {
 	        reg_payuid.setPay_uid(newpayuid);
 	        reg_payuid.setMem_num(user.getMem_num());
 	        
-	        if ("easy-pay".equals(subscriptionVO.getSub_method())) {
+	        if ("easy_pay".equals(subscriptionVO.getSub_method())) {
 	            reg_payuid.setEasypay_method(subscriptionVO.getEasypay_method());
 	        } else {
 	            reg_payuid.setCard_nickname(cardNickname);
