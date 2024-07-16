@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- Step1 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript">
@@ -23,8 +24,9 @@ $(function(){
 				<form:label path="dcate_num"><h3>카테고리 선택<span class="validation-check">*필수</span></h3></form:label>
 				<form:select path="dcate_num">
 					<option disabled="disabled" selected>선택해주세요.</option>
-					<form:option value="1">노약자</form:option>
-					<form:option value="2">동물</form:option>
+					<c:forEach var="category" items="${list}">
+						<form:option value="${category.dcate_num}">${category.dcate_name}</form:option>
+					</c:forEach>
 				</form:select>
 				<form:errors path="dcate_num" cssClass="error-color"/>
 			</li>

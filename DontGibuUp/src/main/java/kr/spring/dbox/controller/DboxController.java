@@ -1,5 +1,6 @@
 package kr.spring.dbox.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -123,7 +125,8 @@ public class DboxController {
 	@PostMapping("/dbox/propose/step2")
 	public String Step2Submit(@Validated(DboxValidationGroup_2.class) DboxVO dboxVO,
 							  BindingResult result,
-							  HttpSession session) {
+							  HttpSession session,
+							  HttpServletRequest request) throws IllegalStateException, IOException {
 		//dboxVO에 dcate_num이 담겼는지 확인
 		log.debug("<<기부박스 제안 Step2>> : " + dboxVO);
 		
@@ -141,8 +144,12 @@ public class DboxController {
 		DboxVO s_dbox = (DboxVO)session.getAttribute("dbox"); 
 		log.debug("<<기부박스 제안 Step2 - 세션에서 불러온 정보>> : " + s_dbox);
 		
+		//파일처리
+		dboxVO.setDbox_team_photo(FileUtil.createFile(request, dboxVO.getDbox_team_photo_file()));
+		dboxVO.setDbox_business_plan(FileUtil.createFile(request, dboxVO.getDbox_business_plan_file()));
+		dboxVO.setDbox_budget_data(FileUtil.createFile(request, dboxVO.getDbox_budget_data_file()));
+		
 		//dboxVO에 세션정보 넣기
-
 		dboxVO.setDcate_num(s_dbox.getDcate_num());
 		
 		//dboxVO를 세션에 "dbox"명칭으로 저장
@@ -174,7 +181,8 @@ public class DboxController {
 	@PostMapping("/dbox/propose/step3")
 	public String Step3Submit(@Validated(DboxValidationGroup_3.class) DboxVO dboxVO,
 							  BindingResult result,
-							  HttpSession session) {
+							  HttpSession session,
+							  HttpServletRequest request) throws IllegalStateException, IOException {
 		//기부박스 제목, 대표이미지, 내용작성 체크
 		log.debug("<<기부박스 제안 Step3>> : " + dboxVO);
 		
@@ -197,7 +205,10 @@ public class DboxController {
 		s_dbox.setDbox_title(dboxVO.getDbox_title());
 		s_dbox.setDbox_photo(dboxVO.getDbox_photo());
 		s_dbox.setDbox_content(dboxVO.getDbox_content());
-
+		
+		//파일처리
+		s_dbox.setDbox_photo(FileUtil.createFile(request, dboxVO.getDbox_photo_file()));
+		
 		//제출되는 dboxVO 확인
 		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + s_dbox);
 		dboxService.insertDbox(s_dbox);
