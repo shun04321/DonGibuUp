@@ -357,32 +357,38 @@ public class ChallengeController {
         mav.addObject("chal_joi_num", chal_joi_num);
         mav.addObject("status", status);  // 추가된 status 값
 
-        // 오늘 날짜 추가
-        LocalDate today = LocalDate.now();
-        mav.addObject("today", today.toString());
-
-        // 오늘 날짜의 인증이 있는지 확인
-        boolean hasTodayVerify = verifyList.stream()
-            .anyMatch(verify -> {
-                LocalDate regDate = verify.getChal_reg_date().toLocalDate();
-                return regDate.equals(LocalDate.now());
-            });
-        mav.addObject("hasTodayVerify", hasTodayVerify);
-
-        // 챌린지 정보 가져오기
+        //챌린지 정보 가져오기
         ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+        ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
         int chalFreq = challengeJoin.getChal_freq();
         String chal_sdate = challengeJoin.getChal_sdate();
+        String chal_edate = challengeJoin.getChal_edate();
+        
+        mav.addObject("challenge", challenge);
+        mav.addObject("chalFreq", chalFreq);
+        mav.addObject("chal_sdate", chal_sdate);
+        mav.addObject("chal_edate", chal_edate);
 
-        if (chal_sdate == null) {
-            throw new IllegalArgumentException("챌린지 시작 날짜가 설정되지 않았습니다.");
-        }
+        //인증 성공 횟수
+        long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+        mav.addObject("successCount", successCount);
+        
+        //인증 실패 횟수
+        long failureCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 1).count();
+        mav.addObject("failureCount", failureCount);
 
+        //전체 주 수
         LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
-        int weekNumber = (int) ChronoUnit.WEEKS.between(startDate, LocalDate.now());
-        int weeklyVerifications = challengeService.countWeeklyVerify(chal_joi_num, startDate, weekNumber);
-        boolean hasCompletedWeeklyVerifications = weeklyVerifications >= chalFreq;
-        mav.addObject("hasCompletedWeeklyVerifications", hasCompletedWeeklyVerifications);
+        LocalDate endDate = LocalDate.parse(chal_edate, DateTimeFormatter.ISO_LOCAL_DATE);
+        long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1; 
+        
+        //전체 인증 횟수
+        long totalCount = totalWeeks * chalFreq; 
+        mav.addObject("totalCount", totalCount);
+        
+        //남은 인증 횟수
+        long remainingCount = totalCount - successCount - failureCount;
+        mav.addObject("remainingCount", remainingCount);
 
         return mav;
     }
