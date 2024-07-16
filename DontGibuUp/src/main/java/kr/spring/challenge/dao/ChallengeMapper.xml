@@ -188,8 +188,17 @@
 		ORDER BY chal_reg_date DESC
 	</select>
 
-	<!-- <select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO"> 
-		SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num} </select> -->
+	<!-- 챌린지 인증 상세 -->
+	<select id="selectChallengeVerify" parameterType="long" resultType="challengeVerifyVO"> 
+		SELECT * FROM CHAL_VERIFY WHERE chal_ver_num = #{chal_ver_num} 
+	</select>
+	
+	<!-- 챌린지 인증 수정 -->
+    <update id="updateChallengeVerify" parameterType="challengeVerifyVO">
+        UPDATE CHAL_VERIFY
+        SET chal_content = #{chal_content}
+        WHERE chal_ver_num = #{chal_ver_num}
+    </update>
 		
 	<!-- 챌린지 인증 삭제 -->
 	<delete id="deleteChallengeVerify" parameterType="long">

@@ -122,11 +122,16 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeMapper.selectChallengeVerifyList(map);
     }
 
-	/*
-	 * @Override public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num) {
-	 * return challengeMapper.selectChallengeVerify(chal_ver_num); }
-	 */
-    
+	@Override 
+	public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num) {
+		return challengeMapper.selectChallengeVerify(chal_ver_num); 
+	}
+	
+    @Override
+    public void updateChallengeVerify(ChallengeVerifyVO challengeVerify) {
+        challengeMapper.updateChallengeVerify(challengeVerify);
+    }
+	 
     @Override
     public void deleteChallengeVerify(Long chal_ver_num) {
         challengeMapper.deleteChallengeVerify(chal_ver_num);

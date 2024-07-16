@@ -12,6 +12,9 @@
 	width:200px;
 	padding:0 10px;
 	text-align:left;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 /* SY */
@@ -358,14 +361,15 @@ h2 {
 }
 
 .challenge-verify-card {
-	margin-left:100px;
-	margin-right:100px;
+    margin-left: 100px;
+    margin-right: 100px;
     display: flex;
     align-items: center;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 5px;
     background-color: #f5f5f5;
+    position: relative;
 }
 
 .challenge-verify-card img {
@@ -378,6 +382,7 @@ h2 {
 .challenge-verify-card .content {
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 }
 
 .challenge-verify-card .content .date-status {
@@ -409,6 +414,27 @@ h2 {
     margin-top: 5px;
 }
 
+.challenge-verify-card .buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.challenge-verify-card .buttons button {
+    padding: 3px 8px; /* 버튼 크기 조정 */
+    border: none;
+    border-radius: 5px;
+    font-size: 12px; /* 글씨 크기 조정 */
+    cursor: pointer;
+}
+
+.challenge-verify-card .buttons button:hover {
+    background-color: #ddd;
+}
+
 .align-center {
     text-align: center;
     margin-top: 20px;
@@ -436,4 +462,43 @@ h2 {
 
 .align-center .active-button:hover {
     background-color: #0056b3;
+}
+textarea {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.edit-form button {
+    padding: 3px 8px; /* 버튼 크기 조정 */
+    border: none;
+    border-radius: 5px;
+    font-size: 12px; /* 글씨 크기 조정 */
+    cursor: pointer;
+}
+
+.edit-form button.save-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.edit-form button.save-button:hover {
+    background-color: #218838;
+}
+
+.edit-form button.cancel-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.edit-form button.cancel-button:hover {
+    background-color: #c82333;
 }

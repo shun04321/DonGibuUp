@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -356,6 +357,10 @@ public class ChallengeController {
         mav.addObject("chal_joi_num", chal_joi_num);
         mav.addObject("status", status);  // 추가된 status 값
 
+        // 오늘 날짜 추가
+        LocalDate today = LocalDate.now();
+        mav.addObject("today", today.toString());
+
         // 오늘 날짜의 인증이 있는지 확인
         boolean hasTodayVerify = verifyList.stream()
             .anyMatch(verify -> {
@@ -382,12 +387,40 @@ public class ChallengeController {
         return mav;
     }
     
+    //챌린지 인증 상세
+    @GetMapping("/challenge/verify/detail")
+    @ResponseBody
+    public String getVerify(@RequestParam("chal_ver_num") long chal_ver_num) {
+        ChallengeVerifyVO challengeVerify = challengeService.selectChallengeVerify(chal_ver_num);
+        String editForm = "<textarea id='textarea-" + chal_ver_num + "'>" + challengeVerify.getChal_content() + "</textarea>";
+        editForm += "<button onclick='updateContent(" + chal_ver_num + ")'>저장</button>";
+        editForm += "<button onclick='hideEditForm(" + chal_ver_num + ")'>취소</button>";
+        
+        return editForm;
+    }
+    
+    //챌린지 인증 수정
+    @PostMapping("/challenge/verify/update")
+    @ResponseBody
+    public ResponseEntity<String> updateVerify(@RequestParam("chal_ver_num") long chal_ver_num,
+                                               @RequestParam("chal_content") String chal_content) {
+        try {
+            ChallengeVerifyVO challengeVerify = new ChallengeVerifyVO();
+            challengeVerify.setChal_ver_num(chal_ver_num);
+            challengeVerify.setChal_content(chal_content);
+            challengeService.updateChallengeVerify(challengeVerify);
+            return new ResponseEntity<>("인증 내용이 성공적으로 수정되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("인증 내용 수정 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     //챌린지 인증 삭제
     @PostMapping("/challenge/verify/delete")
     public ResponseEntity<String> deleteVerify(@RequestParam("chal_ver_num") long chal_ver_num) {
         try {
             challengeService.deleteChallengeVerify(chal_ver_num);
-            return new ResponseEntity<>("인증이 성공적으로 삭제되었습니다.", HttpStatus.OK);
+            return new ResponseEntity<>("인증이 삭제되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("인증 삭제 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -9,6 +10,9 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
     <script src="${pageContext.request.contextPath}/js/jquery-3.6.0.min.js"></script>
     <script src="${pageContext.request.contextPath}/js/challenge/challenge.verify.js"></script>
+    <script>
+        var contextPath = '${pageContext.request.contextPath}';
+    </script>
 </head>
 <body>
 <h2>챌린지 인증내역</h2>
@@ -28,11 +32,14 @@
                         </c:when>
                     </c:choose>
                 </div>
-                <div class="comment">${verify.chal_content}</div>
-                <div class="buttons">
-                    <button onclick="location.href='${pageContext.request.contextPath}/challenge/verify/update?chal_ver_num=${verify.chal_ver_num}'">수정</button>
+                <div id="content-${verify.chal_ver_num}" class="comment">${verify.chal_content}</div>
+                <div id="edit-form-${verify.chal_ver_num}" class="edit-form" style="display:none;"></div>
+            </div>
+            <div class="buttons">
+                <button onclick="showEditForm(${verify.chal_ver_num})">수정</button>
+                <c:if test="${verify.chal_reg_date == today}">
                     <button onclick="deleteVerify(${verify.chal_ver_num})">삭제</button>
-                </div>
+                </c:if>
             </div>
         </div>
     </c:forEach>
