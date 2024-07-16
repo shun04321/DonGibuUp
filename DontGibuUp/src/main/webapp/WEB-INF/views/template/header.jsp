@@ -31,7 +31,8 @@
 	<c:if test="${empty user}">
 	<a href="${pageContext.request.contextPath}/member/signup">회원가입</a>
 	<a href="${pageContext.request.contextPath}/member/login">로그인</a>
-	</c:if>	
+	</c:if>
+	<a href="${pageContext.request.contextPath}/cs/faqlist">FAQ</a>
 	<a href="${pageContext.request.contextPath}/main/main">홈으로</a>
 </div>
 <!-- 상단 끝 -->

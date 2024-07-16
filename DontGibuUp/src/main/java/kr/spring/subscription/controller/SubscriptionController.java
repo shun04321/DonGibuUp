@@ -59,23 +59,26 @@ public class SubscriptionController {
 	                     @RequestParam(value = "card_nickname", required = false) String cardNickname,
 	                     RedirectAttributes redirectAttributes) {
 	    log.debug("정기기부 등록 subscriptionVO : " + subscriptionVO);
-
+	   
 	    MemberVO user = (MemberVO) session.getAttribute("user");
+	    //비로그인 상태면 로그인 페이지로 이동
 	    if(user==null) {
 	    	return "redirect:/member/login";
 	    }
+	    //로그인한 회원 정보 저장
 	    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
+	    //존재하는 payuid와 대조할 payuidVO 생성후 데이터 셋팅
 	    PayuidVO payuid = new PayuidVO();
 	    payuid.setMem_num(user.getMem_num());
 	    
-	    if(cardNickname != null) {
+	    if(!cardNickname.equals("")) { //결제수단 카드 선택(카드 이름 셋팅)
 	        payuid.setCard_nickname(cardNickname);
-	    } else if("easy-pay".equals(subscriptionVO.getSub_method())) {
-	        payuid.setEasypay_method(subscriptionVO.getEasypay_method());
-	        log.debug("payuid : " + payuid);
+	    } else{// 결제수단 이지페이 선택 (플랫폼 셋팅) 
+	        payuid.setEasypay_method(subscriptionVO.getEasypay_method());	       
 	    }
-
-	    if (payuidService.getCountPayuidByMethod(payuid) == 0) {
+	    log.debug("결제수단에 따른 payuidVO 셋팅 : " + payuid);
+	    
+	    if (payuidService.getCountPayuidByMethod(payuid) == 0) { //선택한 결제수단의 payuid가 없는 경우, payuid 생성 후 빌링키 발급 페이지로 이동
 	        PayuidVO reg_payuid = new PayuidVO();
 	        String newpayuid = generateUUIDFromMem_num(user.getMem_num());
 	        reg_payuid.setPay_uid(newpayuid);
@@ -90,52 +93,74 @@ public class SubscriptionController {
 	        log.debug("payuid 등록 테스트 : " + reg_payuid);
 	        payuidService.registerPayUId(reg_payuid);
 	        subscriptionVO.setSub_ndate(getTodayDateString());
+	        //sub_num 생성하고 subscription 등록
+	        subscriptionVO.setSub_num(subscriptionService.getSub_num());
 	        subscriptionService.insertSubscription(subscriptionVO);
 	        
 	        redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 	        redirectAttributes.addFlashAttribute("user", member_db);
-	        redirectAttributes.addFlashAttribute("payuidVO", reg_payuid);        
+	        redirectAttributes.addFlashAttribute("payuidVO", reg_payuid); // 등록되는 payuid 정보로 빌링키 발급 페이지 이동        
 
-	        return "redirect:/subscription/getpayuid";
+	        return "redirect:/subscription/getpayuid"; 
 	    }
+	    redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
+        redirectAttributes.addFlashAttribute("user", member_db);
+        redirectAttributes.addFlashAttribute("payuidVO", payuid); // 이미 존재하는 payuid로 결제 예약 페이지 이동 
 
-	    return "redirect:/category/success"; // 성공시 리다이렉트
+	    return "redirect:/subscription/paymentReservation";
 	}
 	
-	
-	
-	
-	//카드 payuid 발급 이동
-	@GetMapping("/subscription/getpayuid")
-	public String getpayuid(@ModelAttribute("user") MemberVO user,
-	                        @ModelAttribute("payuidVO") PayuidVO payuidVO,
-	                        @ModelAttribute("subscriptionVO") SubscriptionVO subscriptionVO,
-	                            Model model) {
-		log.debug("payuid 발급 페이지로 전달되는 유저 정보 : " + user);
-		log.debug("payuid 발급 페이지로 전달되는 정기기부 정보 : " + subscriptionVO);
 		
-	    // user와 payuidVO 데이터를 사용하여 로직을 처리합니다.
-	    model.addAttribute("user", user);
-	    model.addAttribute("subscriptionVO",subscriptionVO);
-	    model.addAttribute("payuidVO", payuidVO);
-	    return "/subscription/getpayuid";
-	}
+		//카드 payuid 발급 이동
+		@GetMapping("/subscription/getpayuid")
+		public String getpayuid(@ModelAttribute("user") MemberVO user,
+		                        @ModelAttribute("payuidVO") PayuidVO payuidVO,
+		                        @ModelAttribute("subscriptionVO") SubscriptionVO subscriptionVO,
+		                            Model model) {
+			log.debug("payuid 발급 페이지로 전달되는 유저 정보 : " + user);
+			log.debug("payuid 발급 페이지로 전달되는 정기기부 정보 : " + subscriptionVO);
+			
+		    // user와 payuidVO 데이터를 사용하여 로직을 처리합니다.
+		    model.addAttribute("user", user);
+		    model.addAttribute("subscriptionVO",subscriptionVO);
+		    model.addAttribute("payuidVO", payuidVO);
+		    return "/subscription/getpayuid";
+		}
 	
-	//빌링키 발급 실패(중단)시 생성한 payuid 삭제
-	@PostMapping("/subscription/failGetpayId")
-	@ResponseBody
-	public Map<String,String> deletePayuid(String pay_uid, HttpSession session) throws Exception {
-		Map<String,String> mapJson = new HashMap<String,String>();
-		log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
-		try {
-			payuidService.deletePayuid(pay_uid);
-			mapJson.put("result", "success");
-		}catch(Exception e) {
-			mapJson.put("result", "fail");
-			throw new Exception(e);
-		}	
-		return mapJson;
-	}
+		//정기결제 결제 예약
+		@GetMapping("/subscription/paymentReservation")
+		public String sign_up(@ModelAttribute("user") MemberVO user,
+		                      @ModelAttribute("payuidVO") PayuidVO payuidVO,
+		                      @ModelAttribute("subscriptionVO") SubscriptionVO subscriptionVO,
+		                      Model model) {
+			log.debug("결제 예약 페이지로 이동되는 유저정보 : " + user);
+			log.debug("결제예약 페이지로 이동되는 정기기부 정보 : " + subscriptionVO);
+			log.debug("결제예약 페이지로 이동되는 payuid 정보 : " + payuidVO);
+		    // user와 payuidVO 데이터를 사용하여 로직을 처리합니다.
+		    model.addAttribute("user", user);
+		    model.addAttribute("subscriptionVO",subscriptionVO);
+		    model.addAttribute("payuidVO", payuidVO);
+		    return "/subscription/payment_reservation";
+		}
+	
+		//빌링키 발급 실패(중단)시 생성한 payuid 삭제
+		@PostMapping("/subscription/failGetpayId")
+		@ResponseBody
+		public Map<String,String> deletePayuid(String pay_uid, long sub_num, HttpSession session) throws Exception {
+			Map<String,String> mapJson = new HashMap<String,String>();
+			log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
+			try {
+				//신청하려던 subscription 삭제
+				subscriptionService.deleteSubscription(sub_num);
+				//빌링키 발급 실패한 payuid 삭제
+				payuidService.deletePayuid(pay_uid);
+				mapJson.put("result", "success");
+			}catch(Exception e) {
+				mapJson.put("result", "fail");
+				throw new Exception(e);
+			}	
+			return mapJson;
+		}
 	
 	
 	

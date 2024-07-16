@@ -37,4 +37,7 @@ public interface MemberService {
 	
 	//비밀번호 수정
 	public void updatePassword(MemberVO memberVO);
+	
+	//임시 비밀번호 설정
+	public String SetTempPassword(MemberVO memberVO);
 }

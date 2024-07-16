@@ -1,5 +1,10 @@
 package kr.spring.member.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -23,8 +28,10 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.config.validation.ValidationSequence;
+import kr.spring.member.service.EmailService;
 import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
+import kr.spring.member.vo.EmailMessageVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.member.vo.UserInfo;
 import kr.spring.util.AuthCheckException;
@@ -38,9 +45,15 @@ public class MemberController {
 
 	@Autowired
 	private MemberOAuthService memberOAuthService;
-	
-    @Autowired
-    private RestTemplate restTemplate;
+
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Autowired
+	private EmailService emailService;
+
+	@Autowired
+	private ServletContext servletContext;
 
 	//카카오 로그인 API 정보
 	@Value("${kakao.client_id}")
@@ -430,50 +443,101 @@ public class MemberController {
 	}
 
 	//네이버 로그아웃
-    @GetMapping("/member/logout/naver")
-    public String logoutNaver(HttpSession session) {
-    	String naverToken = (String) session.getAttribute("naverToken");
-    	if (naverToken != null && !"".equals(naverToken)) {
-    		try {
-                String url = String.format(
-                        "https://nid.naver.com/oauth2.0/token?grant_type=%s&client_id=%s&client_secret=%s&access_token=%s&service_provider=%s",
-                        "delete", n_client_id, n_client_secret, naverToken, "Naver");
+	@GetMapping("/member/logout/naver")
+	public String logoutNaver(HttpSession session) {
+		String naverToken = (String) session.getAttribute("naverToken");
+		if (naverToken != null && !"".equals(naverToken)) {
+			try {
+				String url = String.format(
+						"https://nid.naver.com/oauth2.0/token?grant_type=%s&client_id=%s&client_secret=%s&access_token=%s&service_provider=%s",
+						"delete", n_client_id, n_client_secret, naverToken, "Naver");
 
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Content-Type", "application/x-www-form-urlencoded");
+				HttpHeaders headers = new HttpHeaders();
+				headers.add("Content-Type", "application/x-www-form-urlencoded");
 
-                HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
+				HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
 
-                ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
-                
-                if (responseEntity.getStatusCode().is2xxSuccessful()) {
-                	// 로그아웃 처리 로직
-                	session.invalidate();
-                	log.debug("<<네이버 로그아웃 성공>>");
-                    return "redirect:/main/main";
-                } else {
-                	throw new Exception();
-                }
-    		} catch (Exception e) {
+				ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity,
+						String.class);
+
+				if (responseEntity.getStatusCode().is2xxSuccessful()) {
+					// 로그아웃 처리 로직
+					session.invalidate();
+					log.debug("<<네이버 로그아웃 성공>>");
+					return "redirect:/main/main";
+				} else {
+					throw new Exception();
+				}
+			} catch (Exception e) {
 				// 예외 처리
 				return "Exception occurred: " + e.getMessage();
-    		}
-    	} else {
-    		return "redirect:/main/main";
-    	}
-    }
-    
-    //비밀번호 찾기 폼
-    @GetMapping("/member/findPassword")
-    public String findPasswordForm() {
-    	return "memberFindPassword";
-    }
-    
-    //비밀번호 찾기 결과
-    @GetMapping("/member/findPasswordResult")
-    public String findPassword(@RequestParam("mem_email") String mem_email, Model model) {
-    	MemberVO memberVO = memberService.selectMemberByEmail(mem_email);
-    	
-    	return "memberFindPasswordResult";
-    }
+			}
+		} else {
+			return "redirect:/main/main";
+		}
+	}
+
+	//비밀번호 찾기 폼
+	@GetMapping("/member/findPassword")
+	public String findPasswordForm() {
+		return "memberFindPassword";
+	}
+
+	//비밀번호 찾기 결과
+	@GetMapping("/member/findPasswordResult")
+	public String findPassword(@RequestParam("mem_email") String mem_email, Model model, HttpServletRequest request) {
+		log.debug("<<비밀번호 찾기>> : " + mem_email);
+		MemberVO memberVO = memberService.selectMemberByEmail(mem_email);
+		log.debug("<<비밀번호 찾기>> : " + memberVO);
+
+		if (memberVO != null) {
+			if (memberVO.getMem_reg_type() == 2) {
+				//네이버 로그인
+				model.addAttribute("email_msg","네이버로 소셜로그인된 계정입니다");
+				return "memberFindPassword";
+			} else if (memberVO.getMem_reg_type() == 3) {
+				//카카오 로그인
+				model.addAttribute("email_msg","카카오로 소셜로그인된 계정입니다");
+				return "memberFindPassword";
+			}
+			
+			//임시 비밀번호 설정
+			String tempPassword = memberService.SetTempPassword(memberVO);
+
+			// JSP 템플릿 로드
+			String htmlContent;
+			try {
+				htmlContent = loadHtmlTemplate("/WEB-INF/views/member/password-email.html", tempPassword);
+				//메일 전송
+				EmailMessageVO emailMessage = new EmailMessageVO();
+				emailMessage.setTo(mem_email);
+				emailMessage.setSubject("[Don Gibu Up] 임시 비밀번호 발급");
+				emailMessage.setMessage(htmlContent);
+				log.debug("<<email>> : " + emailMessage);
+				emailService.sendMail(emailMessage, "password");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			model.addAttribute("email_msg", "가입된 이메일이 없습니다");
+			return "memberFindPassword";
+		}
+
+		model.addAttribute("accessTitle", "임시비밀번호 발급 완료");
+		model.addAttribute("accessMsg", "가입한 이메일로 임시비밀번호가 전송되었습니다.");
+		model.addAttribute("accessBtn", "로그인");
+		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
+
+		return "signupResultPage";
+	}
+
+	private String loadHtmlTemplate(String path, String tempPassword) throws IOException {
+		InputStream inputStream = servletContext.getResourceAsStream(path);
+		if (inputStream == null) {
+			throw new IOException("HTML 템플릿을 찾을 수 없습니다: " + path);
+		}
+		String htmlTemplate = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+		return htmlTemplate.replace("${tempPassword}", tempPassword);
+	}
 }
