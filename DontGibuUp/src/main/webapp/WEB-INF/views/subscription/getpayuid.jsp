@@ -37,7 +37,7 @@
                 customer_id: "${user.mem_num}" // 고객사가 회원에게 부여한 고유 ID
             }, function (rsp) {
                 if (rsp.success) {
-                    alert('결제 수단을 등록했습니다.');
+                    alert('결제 수단을 등록했습니다.');                
                     // 성공 시 로직
                 } else {
                     $.ajax({
@@ -48,6 +48,7 @@
                         success: function (param) {
                         	if(param.result=='success'){
                         		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
+                        		location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num}; // 리다이렉트할 페이지 URL로 수정
                         	}else if(param.result =='fail'){
                         		alert('관리자에게 문의해주세요. 에러내용 : ' + rsp.error_msg);
                         	}
