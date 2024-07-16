@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="kr.spring.goods.dao.PaymentMapper">
-    
+
+    <!-- 결제 정보 저장 -->
+   <insert id="insertPaymentInfo">
+        INSERT INTO payments (merchant_uid, amount, card_number, expiry, birth, pwd_2digit, imp_uid, status)
+        VALUES (#{merchantUid}, #{amount}, #{cardNumber}, #{expiry}, #{birth}, #{pwd2digit}, #{impUid}, #{status})
+    </insert>
+
+    <!-- 환불 정보 저장 -->
+    <insert id="insertRefundInfo">
+        INSERT INTO refund (imp_uid, amount, reason)
+        VALUES (#{impUid}, #{amount}, #{reason})
+    </insert>
+
 </mapper>

@@ -1,7 +1,9 @@
 package kr.spring.goods.controller;
 
-import org.springframework.web.bind.annotation.*;
 import kr.spring.goods.service.PortOneService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @RestController
@@ -10,6 +12,7 @@ public class PaymentController {
 
     private final PortOneService portOneService;
 
+    @Autowired
     public PaymentController(PortOneService portOneService) {
         this.portOneService = portOneService;
     }

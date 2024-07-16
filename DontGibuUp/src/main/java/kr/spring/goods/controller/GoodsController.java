@@ -103,6 +103,16 @@ public class GoodsController {
         return new ModelAndView("goodsView", "goods", goods);
     }
 
+    @GetMapping("/goods/paymentForm")
+    public String showPaymentForm() {
+        return "paymentForm"; // JSP 파일의 이름
+    }
+
+    @GetMapping("/goods/refundForm")
+    public String showRefundForm() {
+        return "refundForm"; // JSP 파일의 이름
+    }
+
     @PostMapping("/goods/purchase")
     public String purchase(@RequestParam String merchantUid, @RequestParam int amount, @RequestParam String cardNumber, @RequestParam String expiry, @RequestParam String birth, @RequestParam String pwd2digit, Model model) {
         Map<String, Object> response = portOneService.requestPayment(merchantUid, amount, cardNumber, expiry, birth, pwd2digit);

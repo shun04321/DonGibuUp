@@ -1,11 +1,20 @@
 package kr.spring.goods.dao;
 
-import kr.spring.goods.vo.PaymentVO;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PaymentMapper {
-    @Insert("INSERT INTO payment_info (merchant_uid, amount, status, card_number, expiry, birth, pwd2digit) VALUES (#{merchantUid}, #{amount}, #{status}, #{cardNumber}, #{expiry}, #{birth}, #{pwd2digit})")
-    void insertPaymentInfo(PaymentVO paymentVO);
+
+    void insertPaymentInfo(@Param("merchantUid") String merchantUid,
+                           @Param("amount") int amount,
+                           @Param("cardNumber") String cardNumber,
+                           @Param("expiry") String expiry,
+                           @Param("birth") String birth,
+                           @Param("pwd2digit") String pwd2digit);
+
+    void insertRefundInfo(@Param("impUid") String impUid,
+                          @Param("amount") int amount,
+                          @Param("reason") String reason);
+
 }
