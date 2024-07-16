@@ -33,6 +33,19 @@ spring:
     multipart:
       max-file-size: 50MB #파일 한 개당 최대 사이즈
       max-request-size: 200MB #요청당 최대 파일 크기        
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: devforreum@gmail.com
+    password: skgjectpvvzvbizj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
     
 mybatis:
   type-aliases-package: kr.spring.**.vo
@@ -62,8 +75,6 @@ naver:
   client_id: inEolviFM4LB9sPu34jX
   redirect_uri: http://localhost:8000/member/callback/naver
   client_secret: zIDSLvMlCb
-    
-    
     
     
     

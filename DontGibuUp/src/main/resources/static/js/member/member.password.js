@@ -46,7 +46,7 @@ $(function() {
 	});
 
 	//현재 비밀번호 다시 입력시 알림 메세지 없애기
-	$('#current_pw').on('keyup', function() {
+	$('#current_pw').on('keydown', function() {
 		const feedbackElement = $('#password_feedback');
 		const inputElement = $('#current_pw');
 		cur_pw_checked = 0;
@@ -54,6 +54,13 @@ $(function() {
 		feedbackElement.css('color', 'black');
 
 		inputElement.css('border-color', 'black');
+	});
+	
+	//새 비밀번호 다시 입력시 알림 메세지 없애기
+	$('#mem_pw').on('keydown', function() {
+		const feedbackElement = $('.form-error');
+		feedbackElement.text('');
+		feedbackElement.css('color', 'black');
 	});
 	
 	/*===============================

@@ -1,6 +1,8 @@
 package kr.spring.member.service;
 
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -154,6 +156,39 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updatePassword(memberVO);
 	}
 
+	//임시 비밀번호 설정
+	@Override
+	public String SetTempPassword(MemberVO memberVO) {
+		//임시 비밀번호 생성
+		String tempPassword = createCode();
+		memberVO.setMem_pw(tempPassword);
+		
+		//비밀번호 해싱
+		String encpassword = pwEncoder.encode(memberVO.getMem_pw());
+		memberVO.setMem_pw(encpassword);
+		
+		memberMapper.updatePassword(memberVO);
+		
+		return tempPassword;
+	}
+	
+
+    //임시 비밀번호 생성 메서드
+    private String createCode() {
+        Random random = new Random();
+        StringBuffer key = new StringBuffer();
+
+        for (int i = 0; i < 8; i++) {
+            int index = random.nextInt(4);
+
+            switch (index) {
+                case 0: key.append((char) ((int) random.nextInt(26) + 97)); break;
+                case 1: key.append((char) ((int) random.nextInt(26) + 65)); break;
+                default: key.append(random.nextInt(9));
+            }
+        }
+        return key.toString();
+    }
 
 	
 }
