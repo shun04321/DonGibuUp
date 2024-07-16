@@ -468,4 +468,12 @@ public class MemberController {
     public String findPasswordForm() {
     	return "memberFindPassword";
     }
+    
+    //비밀번호 찾기 결과
+    @GetMapping("/member/findPasswordResult")
+    public String findPassword(@RequestParam("mem_email") String mem_email, Model model) {
+    	MemberVO memberVO = memberService.selectMemberByEmail(mem_email);
+    	
+    	return "memberFindPasswordResult";
+    }
 }

@@ -27,9 +27,14 @@
 		<put-attribute name="body" value="/WEB-INF/views/member/memberLogin.jsp"/>
 	</definition>
 	<definition name="memberFindPassword" extends="main">
-		<put-attribute name="title" value="계정찾기"/>
+		<put-attribute name="title" value="비밀번호 찾기"/>
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/member/memberFindPassword.jsp"/>
+	</definition>
+	<definition name="memberFindPasswordResult" extends="main">
+		<put-attribute name="title" value="비밀번호 찾기"/>
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/member/memberFindPasswordResult.jsp"/>
 	</definition>
 	<!-- 마이페이지 -->
 	<definition name="memberInfo" template="/WEB-INF/views/template/layout_myPage.jsp">
