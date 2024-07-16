@@ -13,7 +13,7 @@
 		        JOIN member_detail b ON a.mem_num = b.mem_num
 		        JOIN db_point_event c ON a.pevent_type = c.pevent_type
 		        WHERE a.mem_num = #{mem_num}
-		        ORDER BY a.point_date ASC)d)
+		        ORDER BY a.point_date DESC)d)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}	
 		]]>

@@ -1,7 +1,5 @@
 package kr.spring.member.service;
 
-import org.apache.ibatis.annotations.Update;
-
 import kr.spring.member.vo.MemberVO;
 
 public interface MemberService {

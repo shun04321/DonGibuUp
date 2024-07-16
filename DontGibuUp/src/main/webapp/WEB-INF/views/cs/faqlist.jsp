@@ -5,7 +5,7 @@
 <div class="page-main">
 	<h2>자주하는 질문(FAQ)</h2>
 	<div>
-		<button onclick="location.href='form'">1:1문의</button>
+		<button onclick="location.href='inquiry'">1:1문의</button>
 	</div>
 	<ul>
 		<li>
