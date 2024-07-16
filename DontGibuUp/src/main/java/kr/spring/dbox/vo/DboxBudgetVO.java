@@ -10,4 +10,6 @@ import lombok.ToString;
 public class DboxBudgetVO {
 	private String dbox_bud_purpose;
 	private long dbox_bud_price;
+	
+	private long dbox_num;
 }

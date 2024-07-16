@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.spring.dbox.dao.DboxMapper;
+import kr.spring.dbox.service.DboxService;
+import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
@@ -24,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class DboxController {
 	@Autowired
-	private DboxMapper dboxMapper;
+	private DboxService dboxService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -186,10 +188,11 @@ public class DboxController {
 		s_dbox.setDbox_title(dboxVO.getDbox_title());
 		s_dbox.setDbox_photo(dboxVO.getDbox_photo());
 		s_dbox.setDbox_content(dboxVO.getDbox_content());
-		
+
 		//제출되는 dboxVO 확인
 		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + s_dbox);
-		dboxMapper.insertDbox(s_dbox);
+		dboxService.insertDbox(s_dbox);
+		
 		//다음페이지로 이동
 		return "dboxProposeEnd";
 	}
