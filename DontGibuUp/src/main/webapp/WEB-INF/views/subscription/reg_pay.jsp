@@ -44,7 +44,7 @@
 								value="${category.dcate_num}">
 							<input type="hidden" name="mem_num"
 								value="${user.mem_num}" id="mem_num">
-									<input type="hidden" name="card_nickname" id="card_nickname">	
+							<input type="hidden" name="card_nickname" id="card_nickname">	
 							<!-- 익명 여부 체크박스 -->
 							<div class="form-group">
 								<label>익명 여부</label>
@@ -133,7 +133,7 @@
 								</div>
 								<!-- 새 카드 별명 입력 필드 -->
 								<div id="newCardNickname" style="display: none;">
-									<input type="text" class="form-control" id="newCardname" name="card_nickname" class="newCard" placeholder="새 카드 별명">
+									<input type="text" class="form-control" id="newCardname" class="newCard" placeholder="새 카드 별명">
 								</div>
 							</div>
 

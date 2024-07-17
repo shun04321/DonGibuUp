@@ -56,11 +56,9 @@ public class SubscriptionController {
 	public String signup(@Validated(ValidationSequence.class) SubscriptionVO subscriptionVO,
 	                     Model model,
 	                     HttpServletRequest request,
-	                     HttpSession session,
-	                     @RequestParam(value = "card_nickname", required = false) String cardNickname,
+	                     HttpSession session,                    
 	                     RedirectAttributes redirectAttributes) {
 	    log.debug("정기기부 등록 subscriptionVO : " + subscriptionVO);
-	    log.debug("선택한 card_nickname : " + cardNickname);
 	    MemberVO user = (MemberVO) session.getAttribute("user");
 	    //비로그인 상태면 로그인 페이지로 이동
 	    if(user==null) {
@@ -74,9 +72,8 @@ public class SubscriptionController {
 	    PayuidVO payuid = new PayuidVO();
 	    payuid.setMem_num(user.getMem_num());
 	    
-	    if(!cardNickname.equals("")) { //결제수단 카드 선택(카드 이름 셋팅)
-	    	subscriptionVO.setCard_nickname(cardNickname);
-	        payuid.setCard_nickname(cardNickname);
+	    if(!subscriptionVO.getCard_nickname().equals("")) { //결제수단 카드 선택(카드 이름 셋팅)
+	        payuid.setCard_nickname(subscriptionVO.getCard_nickname());
 	    } else{// 결제수단 이지페이 선택 (플랫폼 셋팅) 
 	        payuid.setEasypay_method(subscriptionVO.getEasypay_method());	       
 	    }
@@ -91,7 +88,7 @@ public class SubscriptionController {
 	        if ("easy_pay".equals(subscriptionVO.getSub_method())) {
 	            reg_payuid.setEasypay_method(subscriptionVO.getEasypay_method());
 	        } else {
-	            reg_payuid.setCard_nickname(cardNickname);
+	            reg_payuid.setCard_nickname(subscriptionVO.getCard_nickname());
 	        }
 
 	        log.debug("payuid 등록 테스트 : " + reg_payuid);
