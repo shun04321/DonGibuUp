@@ -53,5 +53,5 @@
 			<input type="button" value="챌린지 개설하기" onclick="location.href='write'">
 		</c:if>
 	</div>	
-	<div id="output"></div>
+	<div id="output" class="challenge-container"></div>
 </div>

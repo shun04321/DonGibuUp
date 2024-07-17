@@ -36,7 +36,7 @@ $('#pay').click(function() {
 		$('.error-color').show();
 		return;
 	}
-
+	$(window).off('beforeunload');
 	payAndEnroll();
 });
 

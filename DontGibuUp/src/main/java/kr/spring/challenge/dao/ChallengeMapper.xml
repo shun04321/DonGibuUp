@@ -18,8 +18,17 @@
 
 	<!-- 챌린지 검색 조건 -->
 	<sql id="challengeSearch">
-		<where>
-			TO_DATE(chal_sdate, 'YYYY-MM-DD') >= SYSDATE
+		<where>			
+			<if test="chal_sdate != null and chal_sdate == 'list'">
+				<![CDATA[
+					TO_DATE(chal_sdate, 'YYYY-MM-DD') >= TRUNC(SYSDATE)		
+				]]>		
+			</if>
+			<if test="chal_sdate != null and chal_sdate == 'pastList'">
+				<![CDATA[
+					TO_DATE(chal_sdate, 'YYYY-MM-DD') < TRUNC(SYSDATE)
+				]]>
+			</if>
 			<if test="chal_type != null and chal_type != ''">
 				AND chal_type = #{chal_type}
 			</if>
@@ -35,17 +44,18 @@
 	<!-- 챌린지 분류 조건 -->
 	<sql id="challengeSort">
 		<if test="order != null and order != ''">
-			<if test="order == 0">
-				ORDER BY chal_num DESC
-			</if>
-			<if test="order == 1">
-			</if>
-			<if test="order == 2">
-				ORDER BY chal_sdate
-			</if>
-			<if test="order == 3">
-			</if>
-			
+			<choose>
+				<when test="order == 0">
+					ORDER BY chal_num DESC
+				</when>
+				<when test="order == 1">
+				</when>
+				<when test="order == 2">
+					ORDER BY chal_sdate ASC
+				</when>
+				<when test="order == 3">
+				</when>
+			</choose>
 		</if>
 	</sql>
 

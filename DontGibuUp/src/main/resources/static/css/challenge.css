@@ -2,19 +2,24 @@
 
 /* YJ */
 /* 챌린지 목록 */
-#output{
-	width:800px;
-	margin:0 auto;
-	text-align:center;
+.challenge-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600px; /* 컨테이너 너비를 600px로 지정 */
+    margin: 0 auto; /* 중앙에 정렬 */
+    justify-content:space-around;
 }
-.chal_listElement{
-	display:inline-block;
-	width:200px;
-	padding:0 10px;
-	text-align:left;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+.chal_listElement {
+    flex: 0 1 150px;
+    margin: 10px 10px; /* 아래쪽에 간격을 둠 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    padding: 10px; /* 요소 내부 패딩 */
+    border-radius: 5px; /* 둥근 모서리 */
+    background-color: white; /* 배경색 */
+}
+.listElement_content{
+	padding:10px 10px;
 }
 
 /* SY */

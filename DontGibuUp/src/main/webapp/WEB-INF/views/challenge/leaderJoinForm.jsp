@@ -65,7 +65,6 @@
         </div>
     </form:form>
 </div>
-<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
 <script>
 	$(window).on('beforeunload', function(e){
 		e.preventDefault();
@@ -79,3 +78,4 @@
         navigator.sendBeacon(url, data);	        
 	}); 
 </script>
+<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
