@@ -253,7 +253,6 @@ public class ChallengeController {
 
         //각 챌린지에 대한 달성률과 참여금 계산
         List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
-        	log.debug("<<challengeJoin>> : "+challengeJoin);
             Map<String, Object> challengeData = new HashMap<>();
             long chal_joi_num = challengeJoin.getChal_joi_num();
             Map<String, Object> verifyMap = new HashMap<>();
