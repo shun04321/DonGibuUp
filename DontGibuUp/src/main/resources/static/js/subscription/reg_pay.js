@@ -4,7 +4,7 @@ $(document).ready(function () {
 				if ($(this).is(':checked')) {
 					$('#sub_name').val('익명');
 				} else {
-					$('#sub_name').val('${user.mem_nick}');
+					$('#sub_name').val('');
 				}
 			});
 

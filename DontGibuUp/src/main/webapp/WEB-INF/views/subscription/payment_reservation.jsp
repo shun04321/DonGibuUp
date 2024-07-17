@@ -45,8 +45,23 @@
                     alert('정기결제 등록에 성공했습니다.');
                     location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num};
                 } else {
-                    alert('결제 예약 실패이유 : '+rsp.error_msg);
-                    location.href= '/category/detail?dcate_num='+${subscriptionVO.dcate_num};
+                	   $.ajax({
+                           url: 'failGetpayId',
+                           dataType: 'json',
+                           type: 'POST',
+                           data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},
+                           success: function (param) {
+                           	if(param.result=='success'){
+                           		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
+                           		location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num}; // 리다이렉트할 페이지 URL로 수정
+                           	}else if(param.result =='fail'){
+                           		alert('관리자에게 문의해주세요. 에러내용 : ' + rsp.error_msg);
+                           	}
+                           },
+                           error: function () {
+                               alert('네트워크 오류 발생');
+                           }
+                       });
                 }
             });
         };

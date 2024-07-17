@@ -176,7 +176,7 @@ public class SubscriptionController {
 		    PayuidVO payuidVO = (PayuidVO) session.getAttribute("payuidVO");
 		    
 		    if (user == null || subscriptionVO == null || payuidVO == null) {
-		        return "redirect:/errorPage"; // 필요한 데이터가 없으면 에러 페이지로 리다이렉트
+		        return "redirect:/category/detail?dcate_num="+subscriptionVO.getDcate_num(); // 필요한 데이터가 없으면 에러 페이지로 리다이렉트
 		    }
 		    
 		    model.addAttribute("user", user);
