@@ -87,6 +87,7 @@
 	}); */
 	
 	$('#join_member_list').on('click',function(e){
+		console.log("chal_num : "+chal_num);
 		e.preventDefault();
 		$.ajax({
 			url:contextPath + '/challenge/verify/joinMemberList',

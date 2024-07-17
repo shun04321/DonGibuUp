@@ -309,7 +309,8 @@ public class ChallengeAjaxController {
 	@GetMapping("/challege/verify/joinMemberList")
 	@ResponseBody
 	public Map<String,Object> joinMemberList(long chal_num){
-		
+		log.debug("/challege/verify/joinMemberList 실행");
+		log.debug("chal_num"+chal_num);
 		Map<String,Object> mapJson = new HashMap<>();
 		
 		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(chal_num);

@@ -407,7 +407,7 @@ public class ChallengeController {
     
     //챌린지 인증 목록
     @GetMapping("/challenge/verify/list")
-    public ModelAndView verifyList( long chal_joi_num,
+    public ModelAndView verifyList( long chal_joi_num,long chal_num,
                                    @RequestParam(value = "status", defaultValue = "pre") String status,
                                    HttpSession session) {
         Map<String, Object> map = new HashMap<>();
