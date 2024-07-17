@@ -45,7 +45,7 @@ function formatNumber(num) {
 }
 
 function payAndEnroll() {
-	IMP.init("imp71075330");
+	IMP.init("imp41500674");
 
 	IMP.request_pay(
 		{
