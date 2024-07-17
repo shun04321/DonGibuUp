@@ -28,6 +28,9 @@ public interface GoodsMapper {
 	@Delete("DELETE FROM cart WHERE item_num = #{item_num}")
 	public void deleteCartItems(long item_num);
 	// 결제 정보 저장 메서드 추가
-	void insertPaymentInfo(PaymentVO paymentVO);
-	
+	void insertPayment(PaymentVO paymentVO);
+	void insertRefund(Map<String, Object> refundData);
+	// 결제 상태 업데이트 메서드
+    void updatePaymentStatus(Map<String, Object> params);
+
 }

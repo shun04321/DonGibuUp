@@ -76,16 +76,5 @@ naver:
   redirect_uri: http://localhost:8000/member/callback/naver
   client_secret: zIDSLvMlCb
   
-  
-  
-  mybatis:
-  type-aliases-package: kr.spring.goods.vo
-  mapper-locations: classpath:mapper/**/*.xml
-           
-import:
-  imp_key: 2501776226527075
-  imp_secret: OrWUbmbvFpQCa46c02NKaS5r8NpVEVIVDcp1zrL7OijXgzbrOjyMGnfzS7eXiQulmPoLe16uS0YX6tsa
-portone:
-  channel_key: channel-key-771ed96d-1ec4-4734-a20a-468b46264ed6
-  certi_key: OrWUbmbvFpQCa46c02NKaS5r8NpVEVIVDcp1zrL7OijXgzbrOjyMGnfzS7eXiQulmPoLe16uS0YX6tsa
-  customer_code: imp63281573
+
+

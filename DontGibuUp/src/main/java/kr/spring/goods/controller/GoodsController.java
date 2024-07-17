@@ -1,13 +1,17 @@
 package kr.spring.goods.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,11 +23,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import kr.spring.cart.service.CartService;
-import kr.spring.cart.vo.CartVO;
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import kr.spring.goods.service.GoodsService;
-import kr.spring.goods.service.PortOneService;
 import kr.spring.goods.util.fileUtil;
 import kr.spring.goods.vo.GoodsVO;
 import kr.spring.goods.vo.PaymentVO;
@@ -32,15 +37,16 @@ import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-
 @Slf4j
 @Controller
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
+    private IamportClient iamportClient;
+    private String apiKey = "2501776226527075";
+    private String apiSecret = "ICUCy6Nusg8jMZ2sAdnXqpTvBPr2Xecu6mal4nbWzegwMDwaPJ46SKznij8oOCjovXNXeG0xOBKQ7Jfs";
 
-    @Autowired
-    private PortOneService portOneService;
+    
 
     // 자바빈 초기화
     @ModelAttribute
@@ -102,52 +108,12 @@ public class GoodsController {
 
         return new ModelAndView("goodsView", "goods", goods);
     }
+    /*==================================
+     * 				상품 구매
+     *=================================*/
+ 
 
-    @GetMapping("/goods/paymentForm")
-    public String showPaymentForm() {
-        return "paymentForm"; // JSP 파일의 이름
-    }
 
-    @GetMapping("/goods/refundForm")
-    public String showRefundForm() {
-        return "refundForm"; // JSP 파일의 이름
-    }
-
-    @PostMapping("/goods/purchase")
-    public String purchase(@RequestParam String merchantUid, @RequestParam int amount, @RequestParam String cardNumber, @RequestParam String expiry, @RequestParam String birth, @RequestParam String pwd2digit, Model model) {
-        Map<String, Object> response = portOneService.requestPayment(merchantUid, amount, cardNumber, expiry, birth, pwd2digit);
-
-        log.info("Payment response: {}", response);
-
-        String status = (String) response.get("status");
-
-        if ("paid".equals(status)) {
-            model.addAttribute("message", "결제가 완료되었습니다.");
-        } else {
-            model.addAttribute("message", "결제에 실패하였습니다. 응답: " + response);
-        }
-        model.addAttribute("uri", "/goods/list");
-
-        return "common/resultAlert";
-    }
-
-    @PostMapping("/goods/refund")
-    public String refund(@RequestParam String impUid, @RequestParam int amount, @RequestParam String reason, Model model) {
-        Map<String, Object> response = portOneService.requestRefund(impUid, amount, reason);
-
-        log.info("Refund response: {}", response);
-
-        String status = (String) response.get("status");
-
-        if ("cancelled".equals(status)) {
-            model.addAttribute("message", "환불이 완료되었습니다.");
-        } else {
-            model.addAttribute("message", "환불에 실패하였습니다. 응답: " + response);
-        }
-        model.addAttribute("uri", "/goods/list");
-
-        return "common/resultAlert";
-    }
 	/*===================================
 	 * 				상품 등록(관리자)
 	 *==================================*/
@@ -313,13 +279,58 @@ public class GoodsController {
 	    model.addAttribute("uri", "/goods/list");
 	    return "common/resultAlert";
 	}
-	 @GetMapping("/payments/request")
-	    public String showPaymentRequestForm() {
-	        return "paymentRequest"; // paymentRequest.jsp를 반환
-	    }
+	/*===================================
+     * 상품 구매 및 환불
+     *==================================*/
+    // 결제 페이지 제공
+    @GetMapping("/purchase")
+    public String purchasePage() {
+        return "purchase";
+    }
 
-	    @GetMapping("/payments/refund")
-	    public String showRefundRequestForm() {
-	        return "refundRequest"; // refundRequest.jsp를 반환
-	    }
+    // 환불 페이지 제공
+    @GetMapping("/refund")
+    public String refundPage() {
+        return "refund";
+    }
+
+    // 상품 결제 처리
+    @PostMapping("/goods/purchase")
+    @ResponseBody
+    public ResponseEntity<String> purchase(
+            @RequestParam("impUid") String impUid,
+            @RequestParam("amount") int amount,
+            HttpSession session) {
+        try {
+            // 사용자 정보 확인
+            MemberVO user = (MemberVO) session.getAttribute("user");
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+            }
+
+            PaymentVO paymentVO = new PaymentVO();
+            paymentVO.setImpUid(impUid);
+            paymentVO.setAmount(amount);
+            paymentVO.setMemNum(user.getMem_num());
+
+            // 결제 처리
+            goodsService.processPayment(paymentVO);
+            return ResponseEntity.ok("결제가 성공적으로 완료되었습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 중 오류가 발생했습니다.");
+        }
+    }
+
+    // 결제 취소 처리
+    @PostMapping("/goods/refund")
+    @ResponseBody
+    public ResponseEntity<String> processRefund(@RequestParam("impUid") String impUid, @RequestParam("amount") int amount, @RequestParam("reason") String reason) {
+        try {
+            goodsService.processRefund(impUid, amount, reason);
+            return ResponseEntity.ok("환불 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("환불 실패: " + e.getMessage());
+        }
+    }
+    
 }
