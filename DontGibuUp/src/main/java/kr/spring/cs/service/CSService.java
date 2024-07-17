@@ -13,7 +13,7 @@ public interface CSService {
 	//문의 목록
 	public List<InquiryVO> selectInquiryList(Map<String, Object> map);
 	//문의 개수
-	public int selectInquiryListCount(Map<String, Object> map);
+	public int selectInquiryListCount();
 	//회원별 문의 목록
 	public List<InquiryVO> selectInquiryListByMemNum(long mem_num);
 	//문의 수정

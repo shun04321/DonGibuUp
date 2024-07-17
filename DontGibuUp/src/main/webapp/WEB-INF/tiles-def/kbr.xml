@@ -98,6 +98,15 @@
 		<put-attribute name="title" value="문의 전송 완료"/>
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 	</definition>
+	<!-- 관리자 -->
+	<definition name="adminInquiry" template="/WEB-INF/views/template/layout_admin.jsp">
+		<put-attribute name="title" value="1:1 문의 목록" />
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/template/nav_admin.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminInquiry.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+	</definition>
 </tiles-definitions>
 
 

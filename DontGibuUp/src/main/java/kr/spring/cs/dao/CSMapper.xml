@@ -29,4 +29,17 @@
 			 inquiry_content=#{inquiry_content}
 		WHERE inquiry_num=#{inquiry_num}
 	</update>
+	<!-- 관리자 문의목록 -->
+	<select id="getMemberPointList" parameterType="map" resultType="pointVO">
+		SELECT *
+		FROM (
+		    SELECT c.*, rownum rnum FROM (
+		        SELECT a.*,  b.mem_nick, b.mem_email
+		        FROM inquiry a
+		        JOIN member b ON a.mem_num = b.mem_num
+		        ORDER BY a.inquiry_date DESC)c)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}	
+		]]>
+	</select>
 </mapper>

@@ -93,4 +93,12 @@ public class CSController {
 
 		return "inquiryResultPage";
 	}
+	
+	
+	
+	//관리자
+	@GetMapping("admin/cs/inquiry")
+	public String adminInquiry() {
+		return "adminInquiry";
+	}
 }

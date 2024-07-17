@@ -33,7 +33,7 @@ public class CSServiceImpl implements CSService {
 	}
 	
 	@Override
-	public int selectInquiryListCount(Map<String, Object> map) {
+	public int selectInquiryListCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
