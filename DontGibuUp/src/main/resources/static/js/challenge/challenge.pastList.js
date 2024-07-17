@@ -83,7 +83,7 @@ $(function() {
 					let edate = new Date(item.chal_edate);
 					let now = new Date();
 					now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
-					sdate.setHours(0, 0, 0, 0);
+					edate.setHours(0, 0, 0, 0);
 					if (edate < now) {
 						output = '<span class="chal_listElement">';
 						output += '<a href="detail?chal_num=' + item.chal_num + '">';

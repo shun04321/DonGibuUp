@@ -9,8 +9,8 @@
 <div>
 	<h2>챌린지 목록</h2>
 	<div class="align-center">
-		<a href="${pageContext.request.contextPath}/challenge/list">참가 가능한 챌린지 목록</a>
-		<a href="${pageContext.request.contextPath}/challenge/pastList">지난 챌린지 목록</a>
+		<a href="list">참가 가능한 챌린지 목록</a>
+		<a href="pastList">지난 챌린지 목록</a>
 	</div>
 	<div class="align-center">
 		<a href="#" class="category-link" data-category="">전체</a>
