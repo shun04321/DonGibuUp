@@ -39,6 +39,23 @@ public class FileUtil {
 		}		
 		return filename;
 	}
+	//기부박스 폴더로 파일 저장
+	public static String createFileDbox(
+            HttpServletRequest request,
+            MultipartFile file)
+          throws IllegalStateException,
+                 IOException{
+		//컨텍스트 루트상의 절대 경로 구하기
+		String path = 
+			request.getServletContext().getRealPath(UPLOAD_PATH+"/dbox");
+		String filename = null;
+		if(file!=null && !file.isEmpty()) {
+			//파일명이 중복되지 않도록 파일명 변경
+			filename = UUID.randomUUID()+"_"+file.getOriginalFilename();
+			file.transferTo(new File(path+"/"+filename));
+		}
+		return filename;
+	}
 	//파일 삭제
 	public static void removeFile(HttpServletRequest request,
 			                            String filename) {
@@ -46,6 +63,17 @@ public class FileUtil {
 			//컨텍스트 루트상의 절대 경로 구하기
 			String path = request.getServletContext()
 					             .getRealPath(UPLOAD_PATH);
+			File file = new File(path+"/"+filename);
+			if(file.exists()) file.delete();
+		}
+	}
+	//기부박스 폴더에 있는 파일 삭제
+	public static void removeFileDbox(HttpServletRequest request,
+			String filename) {
+		if(filename!=null) {
+			//컨텍스트 루트상의 절대 경로 구하기
+			String path = request.getServletContext()
+					.getRealPath(UPLOAD_PATH+"/dbox");
 			File file = new File(path+"/"+filename);
 			if(file.exists()) file.delete();
 		}
