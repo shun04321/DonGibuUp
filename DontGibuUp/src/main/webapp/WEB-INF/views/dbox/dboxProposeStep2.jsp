@@ -11,7 +11,7 @@
 		<ul>
 			<%-- 팀 유형 --%>
 			<li>
-				 <form:label path="dbox_team_name"><h3>팀 유형<span class="validation-check">*필수</span></h3></form:label>
+				 <form:label path="dbox_team_type"><h3>팀 유형<span class="validation-check">*필수</span></h3></form:label>
    				 <input type="radio" name="dbox_team_type" value="1"/> 기관<br>
    				 <input type="radio" name="dbox_team_type" value="2"/> 개인<br>
    				 <form:errors path="dbox_team_type" cssClass="form-error"></form:errors>
@@ -93,7 +93,7 @@
 			<li>
 				<h3>자료 첨부</h3>
 				<form:label path="dbox_business_plan_file">세부사업계획서<span class="validation-check"><b>*필수</b></span></form:label><br>
-				<input type="file" name="dbox_business_plan_file" id="dbox_business_plan"><br>
+				<input type="file" name="dbox_business_plan_file" id="dbox_business_plan_file"><br>
 				<form:errors path="dbox_business_plan_file" cssClass="form-error"></form:errors><br>
 				<form:label path="dbox_budget_data_file">금액 책정 근거자료</form:label><br>
 				<input type="file" name="dbox_budget_data_file" id="dbox_budget_data">

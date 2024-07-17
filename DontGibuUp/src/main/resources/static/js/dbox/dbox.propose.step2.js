@@ -105,6 +105,15 @@ $(function(){
 		$('#budget_sum').text(total.toLocaleString());
 		$('#dbox_goal').val(total);
 	}
+	//세부사업계획서 유효성검사
+	$('#dbox_business_plan_file').change(function(){	
+		plan_file = this.files[0]; //선택한 파일	
+		if (plan_file.size > 1024 * 1024) {
+			alert(Math.round(plan_file.size / 1024) + 'kbytes(1024kbytes까지만 업로드 가능)');
+			$('#dbox_business_plan_file').val('');
+			return;
+		}
+	});
 	//심사위원에게 남길 말
 	$(document).on('keyup','#dbox_comment',function(){
 		//입력한 글자수 세팅
@@ -122,11 +131,57 @@ $(function(){
 	//submit 이벤트 발생시
 	$('#step2').submit(function(){
 
-		
+		//팀 유형 유효성체크
+		if(!$('input[name="dbox_team_type"]:checked').val()){
+			alert('팀 유형 선택 필수');
+			$('input[name="dbox_team_type"]').first().focus();
+			return false;
+		}
+		//팀명 유효성체크
+		if($('#dbox_team_name').val().trim()=='' || !(/^.{0,20}$/).test($('#dbox_team_name').val())){
+			alert('팀명 입력 필수(최대20자)');
+			$('#dbox_team_name').val('').focus();
+			return false;
+		}
 		//사업자번호 유효성체크
 		if($('input[name="dbox_team_type"]:checked').val()=='1' && !(/^[0-9]{10}$/).test($('#dbox_business_rnum').val())){
-			alert('사업자번호는 숫자 10자리만 입력 가능합니다.');
+			alert('사업자번호 입력 필수(10자리만 입력가능)');
 			$('#dbox_business_rnum').val('').focus();
+			return false;
+		}
+		//팀 소개 유효성체크
+		if($('#dbox_team_detail').val().trim()==''){
+			alert('팀 소개 입력 필수(최대500자)');
+			$('#dbox_team_detail').val('').focus();
+			return false;
+		}
+		//은행선택 유효성체크
+		if(!$('#dbox_bank').val()){
+			alert('은행 선택 필수');
+			$('#dbox_bank').focus();
+			return false;
+		}
+		//예금주명 유효성체크
+		if($('#dbox_account_name').val().trim()=='' || !(/^.{0,7}$/).test($('#dbox_account_name').val())){
+			alert('예금주명 입력 필수(최대7자)');
+			$('#dbox_account_name').val('').focus();
+			return false;
+		}
+		//계좌번호 유효성체크
+		if($('#dbox_account').val().trim()=='' || !(/^[0-9]{6,20}$/).test($('#dbox_account').val())){
+			alert('계좌번호 입력 필수(숫자6~20자)');
+			$('#dbox_account').val('').focus();
+			return false;
+		}
+		//희망기간 유효성 체크
+		if($('#dbox_sdate').val().trim()==''){
+			alert('기부박스 시작일 입력 필수');
+			$('#dbox_sdate').val('').focus();
+			return false;
+		}
+		if($('#dbox_edate').val().trim()==''){
+			alert('기부박스 종료일 입력 필수');
+			$('#dbox_edate').val('').focus();
 			return false;
 		}
 		//모금액 사용계획 유효성 체크
@@ -157,5 +212,13 @@ $(function(){
 		
 		if(!valid) return false;
 		
+		//세부사업계획서 유효성검사
+		if($('#dbox_business_plan_file').val().trim()==''){
+			alert('세부사업계획서 업로드 필수');
+			$('#dbox_business_plan_file').val('').focus();
+			return false;
+		}
+		
+
 	});//end of submit
 });

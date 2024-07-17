@@ -150,9 +150,9 @@ public class DboxController {
 		log.debug("<<기부박스 제안 Step2 - 세션에서 불러온 정보>> : " + s_dbox);
 		
 		//파일처리
-		dboxVO.setDbox_team_photo(FileUtil.createFile(request, dboxVO.getDbox_team_photo_file()));
-		dboxVO.setDbox_business_plan(FileUtil.createFile(request, dboxVO.getDbox_business_plan_file()));
-		dboxVO.setDbox_budget_data(FileUtil.createFile(request, dboxVO.getDbox_budget_data_file()));
+		dboxVO.setDbox_team_photo(FileUtil.createFileDbox(request, dboxVO.getDbox_team_photo_file()));
+		dboxVO.setDbox_business_plan(FileUtil.createFileDbox(request, dboxVO.getDbox_business_plan_file()));
+		dboxVO.setDbox_budget_data(FileUtil.createFileDbox(request, dboxVO.getDbox_budget_data_file()));
 		
 		//dboxVO에 세션정보 넣기
 		dboxVO.setDcate_num(s_dbox.getDcate_num());
@@ -212,7 +212,7 @@ public class DboxController {
 		s_dbox.setDbox_content(dboxVO.getDbox_content());
 		
 		//파일처리
-		s_dbox.setDbox_photo(FileUtil.createFile(request, dboxVO.getDbox_photo_file()));
+		s_dbox.setDbox_photo(FileUtil.createFileDbox(request, dboxVO.getDbox_photo_file()));
 		
 		//제출되는 dboxVO 확인
 		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + s_dbox);
