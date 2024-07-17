@@ -6,7 +6,7 @@
 <div class="page-main">
 	<h2>1:1문의</h2>
 	<c:if test="${empty list}">
-	<div class="result-display">표시할 게시물이 없습니다.</div>
+	<div class="result-display">문의 내역이 없습니다.</div>
 	</c:if>
 	<c:if test="${!empty list}">
 	<table>
@@ -39,7 +39,7 @@
                기타
                </c:if></td>
 					<td>${inquiry.inquiry_date}</td>
-					<td>${inquiry.inquiry_title}</td>
+					<td class="clickable" onclick="location.href='inquiry/detail?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
 					<td><c:if test="${!empty inquiry.inquiry_reply}">
 					답변확인
 					</c:if></td>

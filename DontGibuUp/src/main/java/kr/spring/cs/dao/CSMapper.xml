@@ -20,4 +20,13 @@
 			#{inquiry_filename, jdbcType=VARCHAR},
 			#{inquiry_content})
 	</insert>
+	<update id="updateInquiry" parameterType="inquiryVO">
+		UPDATE
+		inquiry
+		SET  inquiry_category=#{inquiry_category},
+			 inquiry_title=#{inquiry_title},
+			 inquiry_filename=#{inquiry_filename, jdbcType=VARCHAR},
+			 inquiry_content=#{inquiry_content}
+		WHERE inquiry_num=#{inquiry_num}
+	</update>
 </mapper>

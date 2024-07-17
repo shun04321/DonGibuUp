@@ -4,6 +4,18 @@
 	color: red;
 }
 
-.clickable-image {
+.clickable-image, .clickable {
 	cursor: pointer;
+}
+
+
+/*1:1문의*/
+#inquiryContent {
+	border: 1px solid #000000;
+	margin: 5px 0;
+}
+
+#inquiryResponse {
+	border: 1px solid #000000;
+	margin: 5px 0;
 }

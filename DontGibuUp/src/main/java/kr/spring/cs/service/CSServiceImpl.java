@@ -23,8 +23,7 @@ public class CSServiceImpl implements CSService {
 
 	@Override
 	public InquiryVO selectInquiryDetail(long inquiry_num) {
-		// TODO Auto-generated method stub
-		return null;
+		return csMapper.selectInquiryDetail(inquiry_num);
 	}
 
 	@Override
@@ -46,14 +45,12 @@ public class CSServiceImpl implements CSService {
 
 	@Override
 	public void updateInquiry(InquiryVO inquiryVO) {
-		// TODO Auto-generated method stub
-		
+		csMapper.updateInquiry(inquiryVO);
 	}
 
 	@Override
 	public void deleteInquiry(long inquiry_num) {
-		// TODO Auto-generated method stub
-		
+		csMapper.deleteInquiry(inquiry_num);
 	}
 
 }

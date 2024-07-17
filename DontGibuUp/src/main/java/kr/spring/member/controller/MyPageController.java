@@ -1,5 +1,6 @@
 package kr.spring.member.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -30,6 +31,7 @@ import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
+import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,8 +49,14 @@ public class MyPageController {
 
 	//자바빈 초기화
 	@ModelAttribute
-	public MemberVO initCommand() {
+	public MemberVO initCommandMember() {
 		return new MemberVO();
+	}
+	
+	//자바빈(VO) 초기화
+	@ModelAttribute
+	public InquiryVO initCommandInquiry() {
+		return new InquiryVO();
 	}
 
 	@GetMapping("/member/myPage")
@@ -224,7 +232,7 @@ public class MyPageController {
 		return "memberPoint";
 	}
 	
-	//문의/신고 페이지
+	//문의 페이지
 	@GetMapping("/member/myPage/inquiry")
 	public String memberInquiry(Model model, HttpSession session) {
 		MemberVO user = (MemberVO)session.getAttribute("user");
@@ -233,5 +241,110 @@ public class MyPageController {
 		model.addAttribute("list", list);
 		
 		return "memberInquiry";
+	}
+	
+	//문의 상세
+	//TODO 같은 글쓴이의 글인지 체크하기
+	@GetMapping("/member/myPage/inquiry/detail")
+	public String memberInquiryDetail(@RequestParam long inquiry_num, Model model) {
+		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
+		
+		log.debug("<<문의 상세 - inquiry_num>> : " +inquiry_num);
+		log.debug("<<문의 상세>> : " +inquiry);
+		
+		model.addAttribute("inquiry", inquiry);
+		
+		return "memberInquiryDetail";
+	}
+	
+	
+	//파일 다운로드
+	@GetMapping("/member/myPage/inquiry/file")
+	public String download(@RequestParam long inquiry_num, HttpServletRequest request, Model model) {
+		
+		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
+		byte[] downloadFile = FileUtil.getBytes(request.getServletContext().getRealPath("/upload") + "/" + inquiry.getInquiry_filename());
+		
+		model.addAttribute("downloadFile", downloadFile);
+		model.addAttribute("filename", inquiry.getInquiry_filename());
+		
+		return "downloadView";
+	}
+	
+	//문의 수정폼
+	@GetMapping("/member/myPage/inquiry/modify")
+	public String modifyForm(@RequestParam long inquiry_num, Model model) {
+		InquiryVO inquiryVO = csService.selectInquiryDetail(inquiry_num);
+		
+		Map<String, String> inquiry_category = new HashMap<String, String>();
+		inquiry_category.put("", "카테고리 선택");
+		inquiry_category.put("0", "정기기부");
+		inquiry_category.put("1", "기부박스");
+		inquiry_category.put("2", "챌린지");
+		inquiry_category.put("3", "굿즈샵");
+		inquiry_category.put("4", "기타");
+
+		model.addAttribute("inquiry_category", inquiry_category);
+		
+		log.debug("<<문의 상세 - inquiry_num>> : " +inquiry_num);
+		log.debug("<<문의 상세>> : " +inquiryVO);
+		
+		model.addAttribute("inquiryVO", inquiryVO);
+		
+		return "memberInquiryModify";
+	}
+
+	//문의 수정
+	@PostMapping("/member/myPage/inquiry/modify")
+	public String modify(@Valid InquiryVO inquiryVO, BindingResult result, HttpServletRequest request,
+			HttpSession session, Model model) throws IllegalStateException, IOException {
+		if (result.hasErrors()) {
+			Map<String, String> inquiry_category = new HashMap<String, String>();
+			inquiry_category.put("", "카테고리 선택");
+			inquiry_category.put("0", "정기기부");
+			inquiry_category.put("1", "기부박스");
+			inquiry_category.put("2", "챌린지");
+			inquiry_category.put("3", "굿즈샵");
+			inquiry_category.put("4", "기타");
+
+			model.addAttribute("inquiry_category", inquiry_category);
+			return "memberInquiryModify";
+		}
+		
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		
+		//db에서 문의 가져오기
+		InquiryVO inquiry = csService.selectInquiryDetail(inquiryVO.getInquiry_num());
+		
+		
+		//파일 새로 업로드 됐을 때
+		if (inquiryVO.getUpload() != null) {
+			inquiryVO.setInquiry_filename(FileUtil.createFile(request, inquiryVO.getUpload()));			
+		}
+		
+		//파일 삭제 됐을 때
+		if (inquiryVO.getFile_deleted() == "1") {
+			inquiryVO.setInquiry_filename("");			
+			FileUtil.removeFile(request, inquiry.getInquiry_filename());
+		}
+
+		inquiryVO.setMem_num(user.getMem_num());
+
+		log.debug("<<1:1문의 수정>> : " + inquiryVO);
+
+		//문의수정
+		csService.updateInquiry(inquiryVO);
+
+		return "redirect:/member/myPage/inquiry/detail?inquiry_num=" + inquiryVO.getInquiry_num();
+
+	}
+	
+	//문의 삭제
+	@GetMapping("/member/myPage/inquiry/delete")
+	public String deleteInquiry(@RequestParam long inquiry_num) {
+		
+		csService.deleteInquiry(inquiry_num);
+		
+		return "redirect:/member/myPage/inquiry";
 	}
 }

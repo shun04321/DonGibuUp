@@ -29,4 +29,5 @@ public class InquiryVO {
 	private Date inquiry_rdate;			//답변날짜
 	
 	private MultipartFile upload;	//파일
+	private String file_deleted;
 }
