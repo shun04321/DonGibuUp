@@ -30,9 +30,20 @@ import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.payuid.service.PayuidService;
 import kr.spring.payuid.vo.PayuidVO;
+import kr.spring.subscription.service.Sub_paymentService;
 import kr.spring.subscription.service.SubscriptionService;
 import kr.spring.subscription.vo.SubscriptionVO;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.google.gson.Gson;
+import kr.spring.subscription.vo.GetTokenVO;
+import kr.spring.subscription.vo.Sub_paymentVO;
+import lombok.Setter;
 
 @Slf4j
 @Controller
@@ -45,10 +56,15 @@ public class SubscriptionController {
 	private CategoryService categoryService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private Sub_paymentService sub_paymentService;
 	
 	
 	@GetMapping("/subscription/subscriptionMain")
 	public String subScriptionMain() {
+		
+		System.out.println(subscriptionService.getToken());
+		
 		return "subscriptionMain";
 	}
 	
@@ -84,7 +100,7 @@ public class SubscriptionController {
 	    }
 	    log.debug("결제수단에 따른 payuidVO 셋팅 : " + payuid);
 	    
-	    if (payuidService.getCountPayuidByMethod(payuid) == 0) { //선택한 결제수단의 payuid가 없는 경우, payuid 생성 후 빌링키 발급 페이지로 이동
+	    if (payuidService.getPayuidByMethod(payuid) == null) { //선택한 결제수단의 payuid가 없는 경우, payuid 생성 후 빌링키 발급 페이지로 이동
 	        PayuidVO reg_payuid = new PayuidVO();
 	        String newpayuid = generateUUIDFromMem_num(user.getMem_num());
 	        reg_payuid.setPay_uid(newpayuid);
@@ -105,17 +121,14 @@ public class SubscriptionController {
 
 	        return "redirect:/subscription/getpayuid"; 
 	    }
-	    
+	    payuid = payuidService.getPayuidByMethod(payuid);
+	    log.debug("등록된 결제수단 payuid = " + payuid);
 	    redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
         redirectAttributes.addFlashAttribute("user", member_db);
         redirectAttributes.addFlashAttribute("payuidVO", payuid); // 이미 존재하는 payuid로 결제 예약 페이지 이동 
-        
        
-        
 	    return "redirect:/subscription/paymentReservation";
 	}
-	
-		
 		//결제수단 등록 페이지로 이동
 		@GetMapping("/subscription/getpayuid")
 		public String getpayuid(@ModelAttribute("user") MemberVO user,
@@ -138,43 +151,106 @@ public class SubscriptionController {
 		                      @ModelAttribute("payuidVO") PayuidVO payuidVO,
 		                      @ModelAttribute("subscriptionVO") SubscriptionVO subscriptionVO,
 		                      Model model) {
-			log.debug("결제 예약 페이지로 이동되는 유저정보 : " + user);
-			log.debug("결제예약 페이지로 이동되는 정기기부 정보 : " + subscriptionVO);
-			log.debug("결제예약 페이지로 이동되는 payuid 정보 : " + payuidVO);
-		    // user와 payuidVO 데이터를 사용하여 로직을 처리합니다.
-		    model.addAttribute("user", user);
-		    model.addAttribute("subscriptionVO",subscriptionVO);
-		    model.addAttribute("payuidVO", payuidVO);
-		    return "/subscription/payment_reservation";
+			
+			log.debug("등록된 결제수단 payuid2 = " + payuidVO);
+			DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
+			Sub_paymentVO sub_paymentVO = new Sub_paymentVO();
+			sub_paymentVO.setSub_pay_num(sub_paymentService.getSub_payment_num());
+			sub_paymentVO.setMem_num(user.getMem_num());
+			sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
+			sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
+			sub_paymentVO.setSub_pay_date("2024-07-15");
+			
+			String token = subscriptionService.getToken();
+			Gson str = new Gson();
+			token = token.substring(token.indexOf("response") + 10);
+			token = token.substring(0, token.length() - 1);
+
+			GetTokenVO vo = str.fromJson(token, GetTokenVO.class);
+
+			String access_token = vo.getAccess_token();
+			System.out.println(access_token);
+
+			RestTemplate restTemplate = new RestTemplate();
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setBearerAuth(access_token);
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("customer_uid", payuidVO.getPay_uid());
+			map.put("merchant_uid", sub_paymentVO.getSub_pay_num());
+			map.put("amount", sub_paymentVO.getSub_price());
+			map.put("name", categoryVO.getDcate_name());
+			
+			Gson var = new Gson();
+			String json = var.toJson(map);
+			System.out.println("json : " + json);
+			HttpEntity<String> entity = new HttpEntity<>(json, headers);
+			 String apiResponse = restTemplate.postForObject("https://api.iamport.kr/subscribe/payments/again", entity, String.class);
+			    
+			    // API 응답을 모델에 추가
+			    model.addAttribute("apiResponse", apiResponse);
+			    
+			    // JSP 페이지로 이동
+			    return "결제결과페이지"; // 결제 결과를 보여줄 JSP 페이지의 이름
 		}
 		
+		//
 		@PostMapping("/subscription/paymentReservation")
 		@ResponseBody
-		public Map<String, Object> sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {
+		public String sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {
 		    log.debug("결제수단 성공후 전달받은 pay_uid : " + pay_uid);
 		    log.debug("결제수단 성공후 전달받은 sub_num : " + sub_num);
 		    
 		    SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
 		    MemberVO user = (MemberVO) session.getAttribute("user");
-		    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
 		    PayuidVO payuidVO = payuidService.getPayuidVOByPayuid(pay_uid);
+		    DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
 		    
-		    session.setAttribute("user", member_db);
-		    session.setAttribute("subscriptionVO", subscriptionVO);
-		    session.setAttribute("payuidVO", payuidVO);
-		    
-		    Map<String, Object> mapJson = new HashMap<>();
-		    mapJson.put("result", "success");
-		    mapJson.put("redirectUrl", "/subscription/payReservation"); // 이동할 URL
-		    
-		    return mapJson;
+		    Sub_paymentVO sub_paymentVO = new Sub_paymentVO();
+			sub_paymentVO.setSub_pay_num(sub_paymentService.getSub_payment_num());
+			sub_paymentVO.setMem_num(user.getMem_num());
+			sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
+			sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
+			sub_paymentVO.setSub_pay_date("2024-07-15");
+			
+			String token = subscriptionService.getToken();
+			Gson str = new Gson();
+			token = token.substring(token.indexOf("response") + 10);
+			token = token.substring(0, token.length() - 1);
+
+			GetTokenVO vo = str.fromJson(token, GetTokenVO.class);
+
+			String access_token = vo.getAccess_token();
+			System.out.println(access_token);
+
+			RestTemplate restTemplate = new RestTemplate();
+
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			headers.setBearerAuth(access_token);
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("customer_uid", payuidVO.getPay_uid());
+			map.put("merchant_uid", sub_paymentVO.getSub_pay_num());
+			map.put("amount", sub_paymentVO.getSub_price());
+			map.put("name", categoryVO.getDcate_name());
+
+			Gson var = new Gson();
+			String json = var.toJson(map);
+			System.out.println(json);
+			HttpEntity<String> entity = new HttpEntity<>(json, headers);
+			
+			return restTemplate.postForObject("https://api.iamport.kr/subscribe/payments/again", entity, String.class);
 		}
+		
 		@GetMapping("/subscription/payReservation")
 		public String paymentReservationPage(HttpSession session, Model model) {
 		    MemberVO user = (MemberVO) session.getAttribute("user");
 		    SubscriptionVO subscriptionVO = (SubscriptionVO) session.getAttribute("subscriptionVO");
 		    PayuidVO payuidVO = (PayuidVO) session.getAttribute("payuidVO");
-		    
+		    DonationCategoryVO categoryVO = (DonationCategoryVO) session.getAttribute("categoryVO");
 		    if (user == null || subscriptionVO == null || payuidVO == null) {
 		        return "redirect:/category/detail?dcate_num="+subscriptionVO.getDcate_num(); // 필요한 데이터가 없으면 에러 페이지로 리다이렉트
 		    }
@@ -182,22 +258,37 @@ public class SubscriptionController {
 		    model.addAttribute("user", user);
 		    model.addAttribute("subscriptionVO", subscriptionVO);
 		    model.addAttribute("payuidVO", payuidVO);
+		    model.addAttribute("categoryVO",categoryVO);
 		    
 		    return "subscription/payment_reservation";
 		}
 
 		
 		
-	
+		//빌링키 발급 성공(중단)시 구독정보 저장.
+		@PostMapping("/subscription/successGetpayuid")
+		@ResponseBody
+		public Map<String,String> insertSubscription(String pay_uid, long sub_num, HttpSession session) throws Exception {
+			Map<String,String> mapJson = new HashMap<String,String>();
+			log.debug("빌링키 발급 성공 : " + pay_uid);
+			try {
+				//빌링키 발급 실패한 payuid 삭제
+				payuidService.deletePayuid(pay_uid);
+				mapJson.put("result", "success");
+			}catch(Exception e) {
+				mapJson.put("result", "fail");
+				throw new Exception(e);
+			}	
+			return mapJson;
+		}
+		
 		//빌링키 발급 실패(중단)시 생성한 payuid 삭제
-		@PostMapping("/subscription/failGetpayId")
+		@PostMapping("/subscription/failGetpayuid")
 		@ResponseBody
 		public Map<String,String> deletePayuid(String pay_uid, long sub_num, HttpSession session) throws Exception {
 			Map<String,String> mapJson = new HashMap<String,String>();
 			log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
 			try {
-				//신청하려던 subscription 삭제
-				subscriptionService.deleteSubscription(sub_num);
 				//빌링키 발급 실패한 payuid 삭제
 				payuidService.deletePayuid(pay_uid);
 				mapJson.put("result", "success");
@@ -215,6 +306,7 @@ public class SubscriptionController {
 	        String uuid = source + UUID.randomUUID();
 	        return uuid.toString();
 	 }
+	 
 	 // 오늘 날짜를 구해서 저장하기 메소드
 	 public static String getTodayDateString() {
 	        // 현재 날짜 가져오기
@@ -226,5 +318,7 @@ public class SubscriptionController {
 	        // 포맷에 맞게 날짜를 문자열로 변환하여 반환
 	        return today.format(formatter);
 	    }
-}
+
+	}
+
 

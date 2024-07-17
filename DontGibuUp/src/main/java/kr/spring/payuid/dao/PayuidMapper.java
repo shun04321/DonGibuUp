@@ -25,10 +25,11 @@ public interface PayuidMapper {
 	public List<PayuidVO> getPayUId(long mem_num);
 	
 	//선택한 결제수단과 mem_num으로 payuid 유무 확인
-	public int getCountPayuidByMethod(PayuidVO payuidVO);
+	public PayuidVO getPayuidByMethod(PayuidVO payuidVO);
 	
 	//payuid로 payuidVO 불러오기
 	@Select("SELECT * FROM pay_uid WHERE pay_uid=#{pay_uid}")
 	public PayuidVO getPayuidVOByPayuid(String pay_uid);
+	
 	
 }

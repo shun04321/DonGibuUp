@@ -40,9 +40,9 @@
                     alert('결제 수단을 등록했습니다.');         
                     // Ajax로 데이터 서버로 전송
                     $.ajax({
-                        url: '/subscription/paymentReservation', // 서버 요청을 처리할 URL
+                        url: 'successGetpayuid', // 서버 요청을 처리할 URL
                         type: 'POST',
-                        dataType: 'json',
+                        dataType:'json',
                         data: {
                             sub_num: ${subscriptionVO.sub_num},
                             pay_uid: "${payuidVO.pay_uid}"
@@ -61,7 +61,7 @@
                     });
                 } else {
                     $.ajax({
-                        url: 'failGetpayId',
+                        url: 'failGetpayuId',
                         dataType: 'json',
                         type: 'POST',
                         data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},

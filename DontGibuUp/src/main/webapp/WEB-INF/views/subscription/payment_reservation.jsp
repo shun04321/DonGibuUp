@@ -30,16 +30,13 @@
                 pay_method: pay_method,
                 customer_uid: "${payuidVO.pay_uid}", // 필수 입력
                 amount: ${subscriptionVO.sub_price},
-                name: "정기기부 결제 예약",           
+                name: "${categoryVO.dcate_charity}"+ " 정기 기부",           
                 customer_id: "${user.mem_num}", // 고객사가 회원에게 부여한 고유 ID
-                schedules: 
-                	[{ merchant_uid: "${subscriptionVO.sub_num}",
-                      schedule_at: 1821106274,
-                      currency: "KRW",
-                      buyer_name: "${user.mem_name}",
-                      buyer_email: "${user.mem_email}",
-                      buyer_tel: "${user.mem_phone}",                      
-                    }]
+                merchant_uid: "${subscriptionVO.sub_num}" + new Date().getTime(),                
+                currency: "KRW",
+                buyer_name: "${user.mem_name}",
+                buyer_email: "${user.mem_email}",
+                buyer_tel: "${user.mem_phone}"                      
             }, function (rsp) {
                 if (rsp.success) {
                     alert('정기결제 등록에 성공했습니다.');
@@ -52,7 +49,7 @@
                            data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},
                            success: function (param) {
                            	if(param.result=='success'){
-                           		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
+                           		alert('정기결제 등록에 실패했습니다. 에러내용: ' + rsp.error_msg);
                            		location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num}; // 리다이렉트할 페이지 URL로 수정
                            	}else if(param.result =='fail'){
                            		alert('관리자에게 문의해주세요. 에러내용 : ' + rsp.error_msg);

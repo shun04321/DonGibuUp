@@ -32,8 +32,8 @@ public class PayuidServiceImpl implements PayuidService{
 	}
 
 	@Override
-	public int getCountPayuidByMethod(PayuidVO payuidVO) {
-		return payuidMapper.getCountPayuidByMethod(payuidVO);
+	public PayuidVO getPayuidByMethod(PayuidVO payuidVO) {
+		return payuidMapper.getPayuidByMethod(payuidVO);
 	}
 
 	@Override

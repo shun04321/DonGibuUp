@@ -3,10 +3,19 @@ package kr.spring.subscription.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import kr.spring.subscription.dao.SubscriptionMapper;
 import kr.spring.subscription.vo.SubscriptionVO;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+import com.google.gson.Gson;
 @Service
 @Transactional
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -39,5 +48,26 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return SubscriptionMapper.getSub_num();
 	}
 
+	public String getToken() {
+		
+		RestTemplate restTemplate = new RestTemplate();
 	
+		//서버로 요청할 Header
+		 HttpHeaders headers = new HttpHeaders();
+	    headers.setContentType(MediaType.APPLICATION_JSON);
+		
+	    
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("imp_key", "1607808574122853");
+	    map.put("imp_secret", "pRNB4gue3y2Y7MvkiLRCrqECvVseUrmFKo1XtMokvRAj5LCOZ9zFLFIOAcYTZQbApYFMPRMoNfo8R5NE");
+	    
+	   
+	    Gson var = new Gson();
+	    String json=var.toJson(map);
+		//서버로 요청할 Body
+	   
+	    HttpEntity<String> entity = new HttpEntity<>(json,headers);
+		return restTemplate.postForObject("https://api.iamport.kr/users/getToken", entity, String.class);
+	}
 }
+

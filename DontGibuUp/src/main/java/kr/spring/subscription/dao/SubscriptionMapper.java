@@ -29,4 +29,7 @@ public interface SubscriptionMapper {
 	//정기기부 삭제 (결제수단 등록 실패시)
 	@Delete("DELETE FROM subscription WHERE sub_num=#{sub_num}")
 	public void deleteSubscription(long sub_num);
+	
+	//정기결제를 위한 getToken 메소드
+	public String getToken();
 }
