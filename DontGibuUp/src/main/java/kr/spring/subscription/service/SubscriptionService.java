@@ -16,4 +16,6 @@ public interface SubscriptionService {
 	
 	//정기결제를 위한 getToken 메소드
 	public String getToken();
+	//오늘 날짜 구하기
+	public String getTodayDateString();
 }

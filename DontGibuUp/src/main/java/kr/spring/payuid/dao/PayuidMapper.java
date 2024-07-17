@@ -31,5 +31,7 @@ public interface PayuidMapper {
 	@Select("SELECT * FROM pay_uid WHERE pay_uid=#{pay_uid}")
 	public PayuidVO getPayuidVOByPayuid(String pay_uid);
 	
+	//payuid 생성 메소드
+	public String generateUUIDFromMem_num(long mem_num);
 	
 }

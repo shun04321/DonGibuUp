@@ -1,6 +1,5 @@
 package kr.spring.subscription.controller;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -9,17 +8,14 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,13 +34,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.google.gson.Gson;
 import kr.spring.subscription.vo.GetTokenVO;
 import kr.spring.subscription.vo.Sub_paymentVO;
-import lombok.Setter;
-
 @Slf4j
 @Controller
 public class SubscriptionController {
@@ -59,7 +52,9 @@ public class SubscriptionController {
 	@Autowired
 	private Sub_paymentService sub_paymentService;
 	
-	
+	/*--------------------
+	 * 정기 기부 메인창 이동
+	 *-------------------*/
 	@GetMapping("/subscription/subscriptionMain")
 	public String subScriptionMain() {
 		
@@ -67,7 +62,9 @@ public class SubscriptionController {
 		
 		return "subscriptionMain";
 	}
-	
+	/*--------------------
+	 * 정기기부 신청폼
+	 *-------------------*/
 	@PostMapping("/category/registerSubscription")
 	public String signup(@Validated(ValidationSequence.class) SubscriptionVO subscriptionVO,
 	                     Model model,
@@ -81,7 +78,7 @@ public class SubscriptionController {
 	    	return "redirect:/member/login";
 	    }
 	    //sub_ndate생성
-	    subscriptionVO.setSub_ndate(getTodayDateString());
+	    subscriptionVO.setSub_ndate(subscriptionService.getTodayDateString());
         //sub_num 생성
         subscriptionVO.setSub_num(subscriptionService.getSub_num());
         //subscription 등록
@@ -102,7 +99,7 @@ public class SubscriptionController {
 	    
 	    if (payuidService.getPayuidByMethod(payuid) == null) { //선택한 결제수단의 payuid가 없는 경우, payuid 생성 후 빌링키 발급 페이지로 이동
 	        PayuidVO reg_payuid = new PayuidVO();
-	        String newpayuid = generateUUIDFromMem_num(user.getMem_num());
+	        String newpayuid = payuidService.generateUUIDFromMem_num(user.getMem_num());
 	        reg_payuid.setPay_uid(newpayuid);
 	        reg_payuid.setMem_num(user.getMem_num());
 	        
@@ -129,7 +126,9 @@ public class SubscriptionController {
        
 	    return "redirect:/subscription/paymentReservation";
 	}
-		//결제수단 등록 페이지로 이동
+		/*--------------------
+		 * 결제수단 등록페이지로 이동
+		 *-------------------*/
 		@GetMapping("/subscription/getpayuid")
 		public String getpayuid(@ModelAttribute("user") MemberVO user,
 		                        @ModelAttribute("payuidVO") PayuidVO payuidVO,
@@ -197,7 +196,9 @@ public class SubscriptionController {
 			    return "/mypage/memberInfo"; // 결제 결과를 보여줄 JSP 페이지의 이름
 		}
 		
-		//
+		/*--------------------
+		 * 결제 수단 등록후 첫결제
+		 *-------------------*/
 		@PostMapping("/subscription/paymentReservation")
 		@ResponseBody
 		public String sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {
@@ -245,7 +246,9 @@ public class SubscriptionController {
 			
 			return restTemplate.postForObject("https://api.iamport.kr/subscribe/payments/again", entity, String.class);
 		}
-		
+		/*--------------------
+		 * 기존의 결제수단으로 결제시도
+		 *-------------------*/
 		@GetMapping("/subscription/payReservation")
 		public String paymentReservationPage(HttpSession session, Model model) {
 		    MemberVO user = (MemberVO) session.getAttribute("user");
@@ -283,42 +286,25 @@ public class SubscriptionController {
 			return mapJson;
 		}
 		
-		//빌링키 발급 실패(중단)시 생성한 payuid 삭제
-		@PostMapping("/subscription/failGetpayuid")
-		@ResponseBody
-		public Map<String,String> deletePayuid(String pay_uid, long sub_num, HttpSession session) throws Exception {
-			Map<String,String> mapJson = new HashMap<String,String>();
-			log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
-			try {
-				//빌링키 발급 실패한 payuid 삭제
-				payuidService.deletePayuid(pay_uid);
-				mapJson.put("result", "success");
-			}catch(Exception e) {
-				mapJson.put("result", "fail");
-				throw new Exception(e);
-			}	
-			return mapJson;
-		}
+	/*--------------------
+	 * 결제수단 등록 실패시 payuid 삭제
+	 *-------------------*/
+	@PostMapping("/subscription/failGetpayuid")
+	@ResponseBody
+	public Map<String,String> deletePayuid(String pay_uid, long sub_num, HttpSession session) throws Exception {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
+		try {
+			//빌링키 발급 실패한 payuid 삭제
+			payuidService.deletePayuid(pay_uid);
+			mapJson.put("result", "success");
+		}catch(Exception e) {
+			mapJson.put("result", "fail");
+			throw new Exception(e);
+		}	
+		return mapJson;
+	}
 	
-	
-     //payuid 생성 메소드
-	 private String generateUUIDFromMem_num(long mem_num) {
-	        String source = String.valueOf(mem_num);
-	        String uuid = source + UUID.randomUUID();
-	        return uuid.toString();
-	 }
-	 
-	 // 오늘 날짜를 구해서 저장하기 메소드
-	 public static String getTodayDateString() {
-	        // 현재 날짜 가져오기
-	        LocalDate today = LocalDate.now();
-	        
-	        // 날짜 포맷 지정 (예: "yyyy-MM-dd")
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        
-	        // 포맷에 맞게 날짜를 문자열로 변환하여 반환
-	        return today.format(formatter);
-	    }
 
 	}
 

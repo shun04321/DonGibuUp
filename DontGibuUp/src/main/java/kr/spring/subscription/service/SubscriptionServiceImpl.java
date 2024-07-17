@@ -8,6 +8,8 @@ import org.springframework.web.client.RestTemplate;
 import kr.spring.subscription.dao.SubscriptionMapper;
 import kr.spring.subscription.vo.SubscriptionVO;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,5 +71,17 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	    HttpEntity<String> entity = new HttpEntity<>(json,headers);
 		return restTemplate.postForObject("https://api.iamport.kr/users/getToken", entity, String.class);
 	}
+
+	@Override
+	public String getTodayDateString() {
+		  // 현재 날짜 가져오기
+        LocalDate today = LocalDate.now();
+        
+        // 날짜 포맷 지정 (예: "yyyy-MM-dd")
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        
+        // 포맷에 맞게 날짜를 문자열로 변환하여 반환
+        return today.format(formatter);
+    }
 }
 

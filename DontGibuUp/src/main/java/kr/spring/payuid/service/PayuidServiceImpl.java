@@ -1,6 +1,7 @@
 package kr.spring.payuid.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,13 @@ public class PayuidServiceImpl implements PayuidService{
 	@Override
 	public PayuidVO getPayuidVOByPayuid(String pay_uid) {
 		return payuidMapper.getPayuidVOByPayuid(pay_uid);
+	}
+
+	@Override
+	public String generateUUIDFromMem_num(long mem_num) {
+		String source = String.valueOf(mem_num);
+        String uuid = source + UUID.randomUUID();
+        return uuid.toString();
 	}
 
 
