@@ -54,7 +54,8 @@ public class ChallengeAjaxController {
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
 			@RequestParam(defaultValue="1") int rowCount,@RequestParam(defaultValue="0") int order,
-			  String chal_type,@RequestParam(defaultValue="") String freqOrder,@RequestParam(defaultValue="") String keyword){
+			  String chal_type,@RequestParam(defaultValue="") String freqOrder,
+			  @RequestParam(defaultValue="") String keyword,@RequestParam(defaultValue="") String chal_sdate){
 		log.debug("chal_type : "+chal_type);
 		Map<String,Object> map = new HashMap<>();
 		//map에 검색할 자기계발 카테고리 넣기
@@ -65,6 +66,7 @@ public class ChallengeAjaxController {
 		map.put("freqOrder", freqOrder);
 		map.put("keyword", keyword);
 		map.put("order", order);
+		map.put("chal_sdate", chal_sdate);
 				
 		//총 챌린지 개수
 		int count = challengeService.selectRowCount(map);
@@ -260,9 +262,6 @@ public class ChallengeAjaxController {
 		if(member == null) {
 			mapJson.put("result", "logout");
 		}else {
-			//챌린지 개설정보 저장
-			//대표 사진 업로드 및 파일 저장
-			challenge.setChal_photo(FileUtil.createFile(request, challenge.getUpload()));
 			
 			//챌린지 참가 정보 저장
 			ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
