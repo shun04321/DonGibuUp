@@ -22,7 +22,7 @@ public interface ChallengeService {
 	public void deleteChalPhoto(Long chal_num);
 	
 	//챌린지 참가
-	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
+	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO);
 	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
 	public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
 	public void deleteChallengeJoin(Long chal_joi_num);

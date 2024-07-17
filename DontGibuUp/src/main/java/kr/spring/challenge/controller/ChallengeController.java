@@ -154,7 +154,7 @@ public class ChallengeController {
      *==========================*/
     //챌린지 참가 폼
     @GetMapping("/challenge/join/write")
-    public String joinForm(@RequestParam("chal_num") long chal_num, Model model) {
+    public String joinForm(@RequestParam("chal_num") long chal_num, HttpSession session, Model model) {
         ChallengeVO challengeVO = challengeService.selectChallenge(chal_num);
         List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
 
@@ -162,8 +162,10 @@ public class ChallengeController {
         model.addAttribute("challengeVO", challengeVO);
 
         ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
-        challengeJoinVO.setChal_num(chal_num);//챌린지 번호 설정
+        challengeJoinVO.setChal_num(chal_num);
         model.addAttribute("challengeJoinVO", challengeJoinVO);
+
+        session.setAttribute("chal_num", chal_num); // 챌린지 번호를 세션에 저장
 
         return "challengeJoinWrite";
     }
@@ -204,9 +206,6 @@ public class ChallengeController {
         
         log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
         
-        //챌린지 신청
-        challengeService.insertChallengeJoin(challengeJoinVO);
-
         //챌린지 결제 정보 저장
         ChallengePaymentVO challengePaymentVO = new ChallengePaymentVO();
         challengePaymentVO.setChal_joi_num(challengeJoinVO.getChal_joi_num());
@@ -217,6 +216,9 @@ public class ChallengeController {
         challengePaymentVO.setChal_pay_status(0);//결제 상태 (0: 결제 완료)
         challengeService.insertChallengePayment(challengePaymentVO);
         
+        //챌린지 신청
+        challengeService.insertChallengeJoin(challengeJoinVO, challengePaymentVO);
+       
         //view에 메시지 추가
         model.addAttribute("message", "챌린지 신청이 완료되었습니다!");
         model.addAttribute("url", request.getContextPath() + "/challenge/list");

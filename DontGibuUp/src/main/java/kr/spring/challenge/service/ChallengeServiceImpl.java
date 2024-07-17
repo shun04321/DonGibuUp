@@ -69,8 +69,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	//챌린지 참가//
     @Override
-    public void insertChallengeJoin(ChallengeJoinVO chalJoinVO) {
+    public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO) {
+    	chalJoinVO.setChal_joi_num(challengeMapper.selectChal_joi_num());
         challengeMapper.insertChallengeJoin(chalJoinVO);
+        chalPayVO.setChal_joi_num(chalJoinVO.getChal_joi_num());
+        challengeMapper.insertChallengePayment(chalPayVO);
     }
 
     @Override
