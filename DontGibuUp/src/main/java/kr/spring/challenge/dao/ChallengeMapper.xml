@@ -118,13 +118,11 @@
 	<!-- 챌린지 참가 목록 -->
 	<select id="selectChallengeJoinList" parameterType="map"
 		resultType="challengeJoinVO">
-	    <![CDATA[
 	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_freq, c.chal_fee, dc.dcate_charity
 	    FROM chal_join cj
 	    JOIN challenge c ON cj.chal_num = c.chal_num
 	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
 	    WHERE cj.mem_num = #{mem_num}
-	    ]]>
 		<if test="status == 'pre'">
 	        <![CDATA[
 	        AND c.chal_sdate > TO_CHAR(SYSDATE, 'YYYY-MM-DD')
@@ -141,9 +139,7 @@
 	        AND c.chal_edate < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	        ]]>
 		</if>
-	    <![CDATA[
 	    ORDER BY cj.chal_joi_date DESC
-	    ]]>
 	</select>
 
 	<!-- 챌린지 참가 상세 -->
@@ -155,7 +151,29 @@
 	    WHERE cj.chal_joi_num = #{chal_joi_num}
 	</select>
 
-	<!-- 챌린지 참가 삭제 -->
+	<!-- 챌린지 참가 회원 목록 -->
+	<select id="selectJoinMemberList" parameterType="long" resultType="challengeJoinVO">
+		SELECT 
+			cj.*,m.mem_nick,md.mem_photo
+		FROM chal_join cj
+		JOIN member m ON cj.mem_num = m.mem_num
+		LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num 
+		<!-- 제보(신고) 조인 -->
+		WHERE chal_num=#{chal_num}
+		ORDER BY cj.chal_joi_num DESC
+	</select>
+	
+	<!-- 챌린지 결제 -->
+	<insert id="insertChallengePayment" parameterType="challengePaymentVO">
+		INSERT INTO chal_payment
+		(chal_pay_num, chal_joi_num, mem_num, od_imp_uid, chal_pay_price, chal_point,
+		chal_pay_date, chal_pay_status)
+		VALUES
+		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, 0,
+		SYSDATE, #{chal_pay_status})
+	</insert>
+	
+		<!-- 챌린지 참가 삭제 -->
 	<delete id="deleteChallengeJoin" parameterType="long">
 		DELETE FROM
 		chal_join WHERE chal_joi_num = #{chal_joi_num}
@@ -166,18 +184,7 @@
 		parameterType="long">
 		DELETE FROM chal_join WHERE chal_num = #{chal_num}
 	</delete>
-
-	<!-- 챌린지 결제 -->
-	<insert id="insertChallengePayment"
-		parameterType="challengePaymentVO">
-		INSERT INTO chal_payment
-		(chal_pay_num, chal_joi_num, mem_num, od_imp_uid, chal_pay_price, chal_point,
-		chal_pay_date, chal_pay_status)
-		VALUES
-		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, 0,
-		SYSDATE, #{chal_pay_status})
-	</insert>
-
+	
 	<!-- 챌린지 인증 -->
 	<insert id="insertChallengeVerify"
 		parameterType="challengeVerifyVO">

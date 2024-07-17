@@ -81,19 +81,13 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeMapper.selectChallengeJoinList(map);
     }
 
-	@Override public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
-		return challengeMapper.selectChallengeJoin(chal_joi_num); 
+	@Override public ChallengeJoinVO selectChallengeJoin(Long chal_num) {
+		return challengeMapper.selectChallengeJoin(chal_num); 
 	}
     
 	@Override public void deleteChallengeJoin(Long chal_joi_num) {
 		challengeMapper.deleteChallengeJoin(chal_joi_num); 
 	}
-	
-    //기부 카테고리 목록 가져오기
-    @Override
-    public List<DonationCategoryVO> selectDonaCategories() {
-        return challengeMapper.selectDonaCategories();
-    }
     
     //챌린지 ID로 챌린지 참가 데이터 삭제
     @Override
@@ -149,4 +143,9 @@ public class ChallengeServiceImpl implements ChallengeService{
         params.put("weekNumber", weekNumber);
         return challengeMapper.countWeeklyVerify(params);
     }
+
+	@Override
+	public List<ChallengeJoinVO> selectJoinMemberList(Long chal_num) {
+		return challengeMapper.selectJoinMemberList(chal_num);
+	}
 }

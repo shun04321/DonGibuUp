@@ -156,7 +156,7 @@ public class ChallengeController {
     @GetMapping("/challenge/join/write")
     public String joinForm(@RequestParam("chal_num") long chal_num, HttpSession session, Model model) {
         ChallengeVO challengeVO = challengeService.selectChallenge(chal_num);
-        List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
+        List<DonationCategoryVO> categories = categoryService.selectListNoPage();
 
         model.addAttribute("categories", categories);
         model.addAttribute("challengeVO", challengeVO);
@@ -172,7 +172,7 @@ public class ChallengeController {
     //챌린지 참가 폼 (리더)
     @GetMapping("/challenge/leaderJoin")
     public String joinForm(Model model,HttpSession session) {
-        List<DonationCategoryVO> categories = challengeService.selectDonaCategories();
+        List<DonationCategoryVO> categories = categoryService.selectListNoPage();
         model.addAttribute("categories", categories);
         
         ChallengeVO vo = (ChallengeVO) session.getAttribute("challengeVO");
@@ -225,7 +225,6 @@ public class ChallengeController {
 
         return "common/resultAlert";
     }
-    //챌린지 참가 및 결제 (리더)
     
     
     //챌린지 참가 목록
@@ -254,6 +253,7 @@ public class ChallengeController {
 
         //각 챌린지에 대한 달성률과 참여금 계산
         List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
+        	log.debug("<<challengeJoin>> : "+challengeJoin);
             Map<String, Object> challengeData = new HashMap<>();
             long chal_joi_num = challengeJoin.getChal_joi_num();
             Map<String, Object> verifyMap = new HashMap<>();
@@ -394,17 +394,21 @@ public class ChallengeController {
 
         //챌린지 인증 등록
         challengeService.insertChallengeVerify(challengeVerifyVO);
-
+        
+        //챌린지 번호 가져오기
+        //ChallengeJoinVO challengeJoinVO = challengeService.selectChallengeJoin(null);
+        
         //view에 메시지 추가
         model.addAttribute("message", "챌린지 인증이 완료되었습니다!");
-        model.addAttribute("url", request.getContextPath() + "/challenge/verify/list?chal_joi_num=" + challengeVerifyVO.getChal_joi_num());
+        model.addAttribute("url", request.getContextPath() + "/challenge/verify/list?chal_joi_num="+ challengeVerifyVO.getChal_joi_num()); 
+        // + challengeJoinVO.getChal_num());
 
         return "common/resultAlert";
     }
     
     //챌린지 인증 목록
     @GetMapping("/challenge/verify/list")
-    public ModelAndView verifyList(@RequestParam("chal_joi_num") long chal_joi_num,
+    public ModelAndView verifyList( long chal_joi_num,
                                    @RequestParam(value = "status", defaultValue = "pre") String status,
                                    HttpSession session) {
         Map<String, Object> map = new HashMap<>();

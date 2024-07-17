@@ -39,8 +39,8 @@
                             <div class="view-detail">
                                 <c:choose>
                                     <c:when test="${status == 'pre'}"><a href="#" onclick="deleteChallenge(${challengeJoin.chal_joi_num})">챌린지취소</a></c:when>
-                                    <c:when test="${status == 'on'}"><a href="${pageContext.request.contextPath}/challenge/verify/list?chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a> <a href="#">단체톡방</a></c:when>
-                                    <c:when test="${status == 'post'}"><a href="${pageContext.request.contextPath}/challenge/verify/list?chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a> <a href="#">후기작성</a></c:when>
+                                    <c:when test="${status == 'on'}"><a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&status=${status}">인증내역</a> <a href="#">단체톡방</a></c:when>
+                                    <c:when test="${status == 'post'}"><a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&status=${status}">인증내역</a> <a href="#">후기작성</a></c:when>
                                 </c:choose>
                             </div>
                         </div>

@@ -301,4 +301,23 @@ public class ChallengeAjaxController {
             FileUtil.removeFile(request, challenge.getChal_photo());
         }
 	}
+	
+	/*==========================
+	 *  챌린지 인증 상세 (비동기 통신)
+	 *==========================*/
+	//챌린지 참가 회원 목록 불러오기
+	@GetMapping("/challege/verify/joinMemberList")
+	@ResponseBody
+	public Map<String,Object> joinMemberList(long chal_num){
+		
+		Map<String,Object> mapJson = new HashMap<>();
+		
+		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(chal_num);
+		
+		mapJson.put("list", joinList);
+		
+		return mapJson;
+	}
+	
+	//본인 챌린지 인증 내역 불러오기 
 }

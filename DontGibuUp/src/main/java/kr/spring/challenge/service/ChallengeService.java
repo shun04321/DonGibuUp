@@ -25,9 +25,8 @@ public interface ChallengeService {
 	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO);
 	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
 	public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
+	public List<ChallengeJoinVO> selectJoinMemberList(Long chal_num);
 	public void deleteChallengeJoin(Long chal_joi_num);
-	//기부 카테고리 목록 가져오기
-	List<DonationCategoryVO> selectDonaCategories();
     //챌린지 ID로 챌린지 참가 데이터 삭제
 	public void deleteChallengeJoinsByChallengeId(Long chal_num);
     //리더 여부 확인
