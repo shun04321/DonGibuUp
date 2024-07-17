@@ -30,7 +30,7 @@
 		WHERE inquiry_num=#{inquiry_num}
 	</update>
 	<!-- 관리자 문의목록 -->
-	<select id="getMemberPointList" parameterType="map" resultType="pointVO">
+	<select id="selectInquiryList" parameterType="map" resultType="inquiryVO">
 		SELECT *
 		FROM (
 		    SELECT c.*, rownum rnum FROM (

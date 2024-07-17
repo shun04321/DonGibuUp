@@ -28,14 +28,12 @@ public class CSServiceImpl implements CSService {
 
 	@Override
 	public List<InquiryVO> selectInquiryList(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		return csMapper.selectInquiryList(map);
 	}
 	
 	@Override
 	public int selectInquiryListCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		return csMapper.selectInquiryListCount();
 	}
 
 	@Override

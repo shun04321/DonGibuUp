@@ -2,6 +2,7 @@ package kr.spring.cs.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +17,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.vo.PointVO;
 import kr.spring.util.FileUtil;
+import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -96,9 +103,29 @@ public class CSController {
 	
 	
 	
-	//관리자
+	//관리자 1:1문의 목록
 	@GetMapping("admin/cs/inquiry")
-	public String adminInquiry() {
+	public String memberPoint(@RequestParam(defaultValue="1") int pageNum, HttpSession session, Model model) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		int count = csService.selectInquiryListCount();
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "adminInquiry");
+		
+		List<InquiryVO> list = null;
+		
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = csService.selectInquiryList(map);
+		}
+		
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+		
 		return "adminInquiry";
 	}
 }
