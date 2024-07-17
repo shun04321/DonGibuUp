@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+.payment-methods, .easypay_methods {
+	display: flex;
+	gap: 10px;
+}
+
+.payment-method, .easypay_method {
+	padding: 10px 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	background-color: white;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	display: flex;
+	align-items: center;
+}
+
+.payment-method.selected, .easypay_method.selected {
+	background-color: #007bff;
+	color: white;
+	border-color: #007bff;
+}
+
+.payment-method input[type="radio"], .easypay_method input[type="radio"] {
+	display: none;
+}
+
+button[type="submit"] {
+	margin-left: 150px;
+	padding: 0px 10px;
+}
+
+div {
+	margin-bottom: 10px;
+}
