@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -33,11 +34,9 @@ public class DboxVO {
 	private String dbox_business_rnum;		//STEP2 - 사업자번호(10자)
 	@NotBlank(groups=DboxValidationGroup_3.class)
 	private String dbox_title;					//STEP3 - 기부박스 제목(150byte)
-	@NotEmpty(groups=DboxValidationGroup_3.class)
 	private String dbox_photo;					//STEP3 - 기부박스 대표이미지
 	@NotBlank(groups=DboxValidationGroup_3.class)
 	private String dbox_content;				//STEP3 - 기부박스 내용
-	@NotEmpty(groups=DboxValidationGroup_2.class)
 	private String dbox_business_plan;		//STEP2 - 사업계획서
 	private String dbox_budget_data;		//STEP2 - 금액책정 근거자료
 	@NotEmpty(groups=DboxValidationGroup_2.class)
@@ -57,8 +56,10 @@ public class DboxVO {
 	
 	//파일처리
 	private MultipartFile dbox_team_photo_file;
-	private MultipartFile dbox_business_plan_file;
+	@NotNull(groups=DboxValidationGroup_2.class)
+	private MultipartFile dbox_business_plan_file;	
 	private MultipartFile dbox_budget_data_file;
+	@NotNull(groups=DboxValidationGroup_3.class)
 	private MultipartFile dbox_photo_file;
 	
 	//기부액 사용계획

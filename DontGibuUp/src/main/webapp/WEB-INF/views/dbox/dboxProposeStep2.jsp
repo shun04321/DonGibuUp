@@ -6,7 +6,7 @@
 <script src="${pageContext.request.contextPath}/js/dbox/dbox.propose.step2.js"></script>
 <!-- Step2 시작 -->
 <div class="page-main">
-	<form:form action="step2" id="step2" modelAttribute="dboxVO">	
+	<form:form action="step2" id="step2" modelAttribute="dboxVO" enctype="multipart/form-data">	
 		<form:errors element="div" cssClass="error-color"/><%-- 필드가 없는 에러메세지 --%>
 		<ul>
 			<%-- 팀 유형 --%>
@@ -26,17 +26,18 @@
 			<li id="dbox_business"></li>
 			<%-- 팀 대표이미지 등록 --%>
 			<li>
-				<form:label path="dbox_team_photo"><h3>팀 대표이미지 등록</h3></form:label>
+				<form:label path="dbox_team_photo_file"><h3>팀 대표이미지 등록</h3></form:label>
 				<p>
 				팀의 로고나 대표할 수 있는 이미지로 등록해주세요.<br>
 				*미등록시 기본 이미지가 노출됩니다.
 				</p>
-				<input type="file" name="dbox_team_photo" id="dbox_team_photo">
+				<img id="preview" src="${pageContext.request.contextPath}/images/teamProfile.png" width="100" height="100" class="my-photo">
+				<input type="file" name="dbox_team_photo_file" id="dbox_team_photo_file" accept="image/gif,image/png,image/jpeg" >
 			</li>
 			<%-- 프로젝트 팀 소개 --%>
 			<li>
 				<form:label path="dbox_team_detail"><h3>프로젝트 팀 소개<span class="validation-check">*필수</span></h3></form:label>
-				<span>0/500</span><br>
+				<p class="align-right" style="padding-right:50px;"><span id="team_detail_letter">500/500</span></p>
 				<form:textarea path="dbox_team_detail"  placeholder="프로젝트 팀 소개 문구 1~3줄 적어주세요" cssStyle="width:90%;height:50px;"/>
 				<form:errors path="dbox_team_detail" cssClass="form-error"></form:errors>				
 			</li>
@@ -78,23 +79,24 @@
 				 · 모금액을 입금 받기 전 과거 지출한 내용을 포함한 경우
 				</p>
 				<span id="dbox_budget"></span>
-				<input type="button" id="dbox_budget_add" name="dbox_budget_add" value="지출항목 추가">
+				<input type="button" id="dbox_budget_add" name="dbox_budget_add" value="지출항목 추가"><p class="align-right" style="padding-right:50px;">총합 : <span id="budget_sum">0</span>원</p>
+				<input type="hidden" id="dbox_goal" name="dbox_goal" value="">
 			</li>
 			<%-- 심사위원에게 남길 말 --%>
 			<li>
 				<form:label path="dbox_comment"><h3>심사위원에게 남길 말</h3></form:label>
-				<span>0/1000</span><br>
+				<p class="align-right" style="padding-right:50px;"><span id="comment_letter">1000/1000</span></p>
 				<form:textarea path="dbox_comment" placeholder="심사위원에게 남길 말을 적어주세요" cssStyle="width:90%;height:50px;"/>
 				<form:errors path="dbox_comment" cssClass="form-error"></form:errors>				
 			</li>
 			<%-- 자료 첨부 --%>
 			<li>
 				<h3>자료 첨부</h3>
-				<form:label path="dbox_business_plan">세부사업계획서<span class="validation-check"><b>*필수</b></span></form:label><br>
-				<input type="file" name="dbox_business_plan" id="dbox_business_plan"><br>
-				<form:errors path="dbox_business_plan" cssClass="form-error"></form:errors><br>
-				<form:label path="dbox_budget_data">금액 책정 근거자료</form:label><br>
-				<input type="file" name="dbox_budget_data" id="dbox_budget_data">
+				<form:label path="dbox_business_plan_file">세부사업계획서<span class="validation-check"><b>*필수</b></span></form:label><br>
+				<input type="file" name="dbox_business_plan_file" id="dbox_business_plan"><br>
+				<form:errors path="dbox_business_plan_file" cssClass="form-error"></form:errors><br>
+				<form:label path="dbox_budget_data_file">금액 책정 근거자료</form:label><br>
+				<input type="file" name="dbox_budget_data_file" id="dbox_budget_data">
 			</li>
 		</ul>	
 		<div class="align-center">

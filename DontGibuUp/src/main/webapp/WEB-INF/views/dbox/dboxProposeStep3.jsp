@@ -7,9 +7,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/ckeditor.js"></script>
 <script src="${pageContext.request.contextPath}/js/uploadAdapter.js"></script>
+<script src="${pageContext.request.contextPath}/js/dbox/dbox.propose.step3.js"></script>
 <!-- Step3 시작 -->
 <div class="page-main">
-	<form:form action="step3" id="step3" modelAttribute="dboxVO">	
+	<form:form action="step3" id="step3" modelAttribute="dboxVO" enctype="multipart/form-data">	
 		<form:errors element="div" cssClass="error-color"/><%-- 필드가 없는 에러메세지 --%>
 		<ul>
 			<%-- 기부박스 제목 --%>
@@ -20,9 +21,10 @@
 			</li>
 			<%-- 기부박스 대표이미지 --%>
 			<li>
-				<form:label path="dbox_photo"><h3>기부박스 대표이미지</h3></form:label>
-				<input type="file" name="dbox_photo" id="dbox_photo">
-				<form:errors path="dbox_photo" cssClass="error-color"/>
+				<form:label path="dbox_photo_file"><h3>기부박스 대표이미지</h3></form:label>
+				<img id="preview" src="${pageContext.request.contextPath}/images/dboxProfile.png" width="420" height="288"><br>
+				<input type="file" name="dbox_photo_file" id="dbox_photo_file" accept="image/gif,image/png,image/jpeg" >
+				<form:errors path="dbox_photo_file" cssClass="error-color"/>
 			</li>
 			<%-- 기부박스 내용 작성 --%>
 			<li>

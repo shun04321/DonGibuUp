@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -138,6 +139,10 @@ public class DboxController {
 		}
 		//유효성 체크 결과 오류가 있으면 폼 호출
 		if(result.hasErrors()) {
+	        for (FieldError error : result.getFieldErrors()) {
+	            System.out.println("Field: " + error.getField());
+	            System.out.println("Error: " + error.getDefaultMessage());
+	        }
 			return "dboxProposeStep2";
 		}
 		//세션에 저장된 dbox 불러오기

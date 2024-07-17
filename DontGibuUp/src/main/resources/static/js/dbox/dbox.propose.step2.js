@@ -15,8 +15,49 @@ $(function(){
 		}
 	});
 	
-	//기부박스 사용계획
+	//팀 대표이미지
+	let photo_path = $('#preview').attr('src');
+	$('#dbox_team_photo_file').change(function(){
+		
+		my_photo = this.files[0]; //선택한 이미지 저장
+		if (!my_photo) { //선택하려다 취소한 경우
+			$('#preview').attr('src', photo_path);
+			return;
+		}
+
+		if (my_photo.size > 1024 * 1024) {
+			alert(Math.round(my_photo.size / 1024) + 'kbytes(1024kbytes까지만 업로드 가능)');
+			$('#preview').attr('src', photo_path);
+			$('#dbox_team_photo_file').val('');
+			return;
+		}
+
+		//이미지 미리보기 처리
+		const reader = new FileReader();
+		reader.readAsDataURL(my_photo);
+
+		reader.onload = function() {
+			$('#preview').attr('src', reader.result);
+		};
+	});
 	
+	//팀 소개
+	$(document).on('keyup','#dbox_team_detail',function(){
+		//입력한 글자수 세팅
+		let inputLength = $(this).val().length;
+		let remain = 500 - inputLength;
+		remain +='/500';
+		
+		if(inputLength > 500){
+			$(this).val($(this).val().substring(0,500));
+		}
+		
+		//문서 객체에 반영
+		$('#team_detail_letter').text(remain);		
+	});
+	
+	
+	//기부박스 사용계획
 	//사용계획 입력 한줄 생성 함수
 	function dboxBudgetAdd(bud_num){
 		let output = '';
@@ -43,6 +84,41 @@ $(function(){
 		$('#bud_num'+bud_num).remove();
 	});
 	
+	//사용계획 총합
+	$(document).on('keyup','.bud_price',function(){
+		budgetTotal();
+	});
+	function budgetTotal(){
+		let total = 0;
+		$('.bud_price').each(function(){
+			if($(this).val().trim()=='' || $(this).val()==null){
+				total += 0;
+			}else{
+				add = parseInt($(this).val());
+				if(isNaN(add)){
+					total += 0;
+				}else{
+					total += add;
+				}
+			}
+		});
+		$('#budget_sum').text(total.toLocaleString());
+		$('#dbox_goal').val(total);
+	}
+	//심사위원에게 남길 말
+	$(document).on('keyup','#dbox_comment',function(){
+		//입력한 글자수 세팅
+		let inputLength = $(this).val().length;
+		let remain = 1000 - inputLength;
+		remain +='/1000';
+		
+		if(inputLength > 1000){
+			$(this).val($(this).val().substring(0,1000));
+		}
+		
+		//문서 객체에 반영
+		$('#comment_letter').text(remain);		
+	});
 	//submit 이벤트 발생시
 	$('#step2').submit(function(){
 
