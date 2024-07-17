@@ -180,7 +180,7 @@ public class SubscriptionController {
 			map.put("customer_uid", payuidVO.getPay_uid());
 			map.put("merchant_uid", sub_paymentVO.getSub_pay_num());
 			map.put("amount", sub_paymentVO.getSub_price());
-			map.put("name", categoryVO.getDcate_name());
+			map.put("name", categoryVO.getDcate_charity()+ "정기기부");
 			
 			Gson var = new Gson();
 			String json = var.toJson(map);
