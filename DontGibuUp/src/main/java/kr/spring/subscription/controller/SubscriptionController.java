@@ -64,7 +64,12 @@ public class SubscriptionController {
 	    if(user==null) {
 	    	return "redirect:/member/login";
 	    }
-	   
+	    //sub_ndate생성
+	    subscriptionVO.setSub_ndate(getTodayDateString());
+        //sub_num 생성
+        subscriptionVO.setSub_num(subscriptionService.getSub_num());
+        //subscription 등록
+        subscriptionService.insertSubscription(subscriptionVO);
         
 	    //로그인한 회원 정보 저장
 	    MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
@@ -100,16 +105,12 @@ public class SubscriptionController {
 
 	        return "redirect:/subscription/getpayuid"; 
 	    }
+	    
 	    redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
         redirectAttributes.addFlashAttribute("user", member_db);
         redirectAttributes.addFlashAttribute("payuidVO", payuid); // 이미 존재하는 payuid로 결제 예약 페이지 이동 
         
-        //sub_ndate생성
-	    subscriptionVO.setSub_ndate(getTodayDateString());
-        //sub_num 생성
-        subscriptionVO.setSub_num(subscriptionService.getSub_num());
-        //subscription 등록
-        subscriptionService.insertSubscription(subscriptionVO);
+       
         
 	    return "redirect:/subscription/paymentReservation";
 	}
