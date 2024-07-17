@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -54,7 +55,7 @@ public class CSController {
 
 		return "inquiryForm";
 	}
-	
+
 	//1:1문의 작성
 	@PostMapping("/cs/inquiry")
 	public String inquiry(@Valid InquiryVO inquiryVO, BindingResult result, HttpServletRequest request,
@@ -74,16 +75,17 @@ public class CSController {
 
 		//회원번호 세팅
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		
+
 		inquiryVO.setMem_num(user.getMem_num());
+		
 		//파일 업로드
-		inquiryVO.setInquiry_filename(FileUtil.createFileInquiry(request, inquiryVO.getUpload()));
-		
+		inquiryVO.setInquiry_filename(FileUtil.createFile(request, inquiryVO.getUpload()));
+
 		log.debug("<<1:1문의 작성>> : " + inquiryVO);
-		
+
 		//문의작성
 		csService.insertInquiry(inquiryVO);
-		
+
 		model.addAttribute("accessTitle", "문의 전송 완료");
 		model.addAttribute("accessMsg", "1:1문의가 전송되었습니다");
 		model.addAttribute("accessBtn", "마이페이지에서 확인하기");
