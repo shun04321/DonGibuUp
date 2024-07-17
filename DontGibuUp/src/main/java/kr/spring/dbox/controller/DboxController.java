@@ -216,17 +216,25 @@ public class DboxController {
 		
 		//제출되는 dboxVO 확인
 		log.debug("<<기부박스 제안 Step3 - 제안 폼 제출>> : " + s_dbox);
-		dboxService.insertDbox(s_dbox);
+		//Dbox 등록및 현재 등록번호 반환
+		long current_dbox_num = dboxService.insertDbox(s_dbox);
+		log.debug("<<기부박스 제안 Step3 - dbox번호>> : " + current_dbox_num);
+		//제안완료 페이지로 dbox_num 전달
+		request.setAttribute("dbox_num",current_dbox_num);
+		//세션만료
+		session.invalidate();
 		
 		//다음페이지로 이동
-		return "dboxProposeEnd";
+		return "redirect:/dbox/propose/end";
 	}
 	/*===================================
 	 * 		기부박스 제안하기 : 제안 완료
 	 *==================================*/
 	@GetMapping("/dbox/propose/end")
 	public String proposeEnd() {
-		log.debug("<<기부박스 제안하기 - end : >>");
+		
+		log.debug("<<기부박스 제안하기 - end>>");
+		
 		return "dboxProposeEnd";
 	}
 	

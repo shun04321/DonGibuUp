@@ -5,5 +5,5 @@ import kr.spring.dbox.vo.DboxVO;
 
 public interface DboxService {
 	//Dbox 입력
-	public void insertDbox(DboxVO dbox);
+	public Long insertDbox(DboxVO dbox);
 }

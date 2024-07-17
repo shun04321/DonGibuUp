@@ -15,7 +15,7 @@ public class DboxServiceImpl implements DboxService {
 	DboxMapper dboxMapper;
 
 	@Override
-	public void insertDbox(DboxVO dbox) {
+	public Long insertDbox(DboxVO dbox) {
 		dbox.setDbox_num(dboxMapper.selectDboxNum());
 		//Dbox 입력
 		dboxMapper.insertDbox(dbox);
@@ -23,5 +23,7 @@ public class DboxServiceImpl implements DboxService {
 		for(DboxBudgetVO dboxBudget : dbox.getDboxBudgets()) {
 			dboxMapper.insertDboxBudget(dboxBudget);
 		}
+		return dboxMapper.curDboxNum();
 	}
+
 }
