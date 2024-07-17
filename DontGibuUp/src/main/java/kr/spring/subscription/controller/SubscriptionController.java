@@ -191,9 +191,10 @@ public class SubscriptionController {
 			    
 			    // API 응답을 모델에 추가
 			    model.addAttribute("apiResponse", apiResponse);
+			    model.addAttribute("memberVO",user);
 			    
 			    // JSP 페이지로 이동
-			    return "결제결과페이지"; // 결제 결과를 보여줄 JSP 페이지의 이름
+			    return "/mypage/memberInfo"; // 결제 결과를 보여줄 JSP 페이지의 이름
 		}
 		
 		//
