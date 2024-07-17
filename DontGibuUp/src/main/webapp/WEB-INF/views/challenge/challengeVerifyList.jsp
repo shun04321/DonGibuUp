@@ -28,7 +28,12 @@
     	<div class="challenge-stats">
             <div class="challenge-stat-item">
                 <span>인증 빈도</span>
-                <span>${chalFreq}회</span>
+                <c:if test="${chalFreq == 0}">
+	        		<span>매일</span>
+	        	</c:if>        
+	        	<c:if test="${chalFreq != 0}">
+	        		<span>주 ${chalFreq}일</span>
+	        	</c:if>
             </div>
             <div class="challenge-stat-item">
                 <span>기간</span>
