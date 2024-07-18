@@ -48,9 +48,22 @@
                             alert('정기결제 등록 ' + result);
                         }
                     });
-
-                    alert($('#customer_id').val());
-
+                    if (rsp.success) {
+                        alert('정기결제 등록에 성공했습니다.');
+                        $.ajax({
+                            url: '/payment1',
+                            type: 'POST',
+                            contentType: 'application/json', // 데이터 타입을 JSON으로 설정
+                            data: JSON.stringify({ // 데이터를 JSON 문자열로 변환
+                                customer_uid: payuidVO.pay_uid,
+                                price: subscriptionVO.sub_price,
+                                merchant_uid: new Date().getTime()
+                            }),
+                            success: function(result) {
+                                alert('다음 결제 예약');
+                            }
+                        });
+                    }
                 }  else {
                     $.ajax({
                         url: 'failGetpayuid',

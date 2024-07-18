@@ -1,53 +1,48 @@
 package kr.spring.goods.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
+
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.servlet.ModelAndView;
-import com.siot.IamportRestClient.IamportClient;
-import com.siot.IamportRestClient.exception.IamportResponseException;
-import com.siot.IamportRestClient.request.CancelData;
-import com.siot.IamportRestClient.response.IamportResponse;
-import com.siot.IamportRestClient.response.Payment;
+
+
+
 import kr.spring.goods.service.GoodsService;
 import kr.spring.goods.util.fileUtil;
 import kr.spring.goods.vo.GoodsVO;
-import kr.spring.goods.vo.PaymentVO;
+
 import kr.spring.member.vo.MemberVO;
-import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+
+
 @Slf4j
 @Controller
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
-    private IamportClient iamportClient;
-    private String apiKey = "2501776226527075";
-    private String apiSecret = "ICUCy6Nusg8jMZ2sAdnXqpTvBPr2Xecu6mal4nbWzegwMDwaPJ46SKznij8oOCjovXNXeG0xOBKQ7Jfs";
-
     
-
+    
     // 자바빈 초기화
     @ModelAttribute
     public GoodsVO initCommand() {
@@ -70,7 +65,7 @@ public class GoodsController {
         log.debug("<<상품 목록 - category>> : " + dcate_num);
         log.debug("<<상품 목록 - order>> : " + order);
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("dcate_num", dcate_num);
         map.put("keyfield", keyfield);
         map.put("keyword", keyword);
@@ -95,7 +90,7 @@ public class GoodsController {
 
         return "goodsList";
     }
-    
+
     /*===================================
      * 상품 상세
      *==================================*/
@@ -108,229 +103,168 @@ public class GoodsController {
 
         return new ModelAndView("goodsView", "goods", goods);
     }
-    /*==================================
-     * 				상품 구매
-     *=================================*/
- 
 
-
-	/*===================================
-	 * 				상품 등록(관리자)
-	 *==================================*/
-	//등록 폼 호출
-	@GetMapping("/goods/write")
-	public String form() {
-		return "goodsWrite";
-	}
-	//등록 폼에서 전송된 데이터 처리
-	
-	@PostMapping("/goods/write")
-	public String submit(@Valid GoodsVO goodsVO,
-						BindingResult result,
-						HttpServletRequest request,
-						HttpSession session,
-						Model model)throws IllegalStateException, IOException{
-		
-		//세션에서 Member_status 가져오기
-		MemberVO user = (MemberVO) session.getAttribute("user");
-	    Integer member_status = user != null ? user.getMem_status() : null;
-		
-		//Member_status가 9가 아닌경우 접근을 거부
-		if(member_status == null || member_status !=9) {
-			model.addAttribute("message","관리자만 접근 가능합니다.");
-			model.addAttribute("uri","/goods/list");
-			return "common/resultAlert";
-		}
-		
-		log.debug("<<상품 등록>> : " + goodsVO);
-		
-		if(goodsVO.getUpload()==null || goodsVO.getUpload().isEmpty()) {
-			result.rejectValue("upload", "fileNotFound");
-		}
-		
-		//유효성 체크 결과가 오류가 있으면 폼 호출
-		if(result.hasErrors()) {
-			for(FieldError f : result.getFieldErrors()) {
-				log.debug("에러 필드 : " + f.getField());
-			}
-			
-			return form();
-		}
-		 // 상품 사진 업로드 처리
-	    String uploadedFileName = fileUtil.createFile(request, goodsVO.getUpload());
-	    goodsVO.setItem_photo(uploadedFileName);
-
-	    goodsService.insertGoods(goodsVO);
-
-	    model.addAttribute("message", "성공적으로 상품이 등록되었습니다.");
-	    model.addAttribute("uri", request.getContextPath() + "/goods/list");
-
-	    return "common/resultAlert";
-	}
-	/*===================================
-	 * 			상품 수정하기
-	 *==================================*/
-	@GetMapping("/goods/update")
-	public String updateForm(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
-	    MemberVO user = (MemberVO) session.getAttribute("user");
-	    
-	    if (user == null || user.getMem_status() != 9) {
-	        model.addAttribute("message", "관리자만 접근 가능.");
-	        model.addAttribute("uri", "/goods/list");
-	        return "common/resultAlert";
-	    }
-	    
-	    // 정상적으로 접근 가능한 경우 처리 로직
-	    // 예: 상품 정보 가져오기, 모델에 추가 등
-	    // model.addAttribute("goods", goodsService.detailGoods(item_num));
-	    GoodsVO goods = goodsService.detailGoods(item_num);
-		model.addAttribute("goodsVO", goods);
-		
-	    return "goods/goodsUpdate"; // 수정 페이지로 이동
-	}
-		
-		
-	
-	@PostMapping("/goods/update")
-	public String updateSubmit(@Valid @ModelAttribute("goodsVO") GoodsVO goodsVO, BindingResult result, HttpSession session, Model model) {
-	    // 세션에서 member_status 확인
-	    MemberVO user = (MemberVO) session.getAttribute("user");
-	    Integer member_status = user != null ? user.getMem_status() : null;
-
-	    if (member_status == null || member_status != 9) {
-	        model.addAttribute("message", "관리자만 접근 가능합니다.");
-	        model.addAttribute("uri", "/goods/list");
-	        return "common/resultAlert";
-	    }
-
-	    // 유효성 검사 실패 시
-	    if (result.hasErrors()) {
-	        return "goods/goodsUpdate";
-	    }
-
-	    // 기존 데이터를 가져와서 null 체크 후 값 유지
-	    GoodsVO existingGoods = goodsService.detailGoods(goodsVO.getItem_num());
-
-	    if (goodsVO.getItem_photo() == null || goodsVO.getItem_photo().isEmpty()) {
-	        goodsVO.setItem_photo(existingGoods.getItem_photo());
-	    }
-	    if (goodsVO.getItem_name() == null || goodsVO.getItem_name().isEmpty()) {
-	        goodsVO.setItem_name(existingGoods.getItem_name());
-	    }
-	    if (goodsVO.getItem_price() == null) {
-	        goodsVO.setItem_price(existingGoods.getItem_price());
-	    }
-	    if (goodsVO.getItem_stock() == null) {
-	        goodsVO.setItem_stock(existingGoods.getItem_stock());
-	    }
-	    if (goodsVO.getItem_detail() == null || goodsVO.getItem_detail().isEmpty()) {
-	        goodsVO.setItem_detail(existingGoods.getItem_detail());
-	    }
-	    if (goodsVO.getDcate_num() == null) {
-	        goodsVO.setDcate_num(existingGoods.getDcate_num());
-	    }
-	    if (goodsVO.getItem_status() == null) {
-	        goodsVO.setItem_status(existingGoods.getItem_status());
-	    }
-
-	    goodsService.updateGoods(goodsVO);
-
-	    // 수정 완료 후 메시지를 띄운 뒤 상품 목록 페이지로 리디렉션
-	    model.addAttribute("message", "상품 정보가 수정되었습니다.");
-	    model.addAttribute("uri", "/goods/list");
-	    return "redirect:/goods/list";
-	}
-	/***********************
-	 * 	 	 상품 삭제
-	 */
-
-	 @GetMapping("/goods/delete")
-	    public String deleteSubmit1(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
-	        // 세션에서 member_status 확인
-	        MemberVO user = (MemberVO) session.getAttribute("user");
-	        Integer member_status = user != null ? user.getMem_status() : null;
-
-	        if (member_status == null || member_status != 9) {
-	            model.addAttribute("message", "관리자만 접근 가능합니다.");
-	            model.addAttribute("uri", "/goods/list");
-	            return "common/resultAlert";
-	        }
-
-	        goodsService.deleteGoods(item_num);
-
-	        return "redirect:/goods/list";
-	    }
-	
-	@PostMapping("/goods/delete")
-	public String deleteSubmit(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
-	    // 세션에서 member_status 확인
-	    MemberVO user = (MemberVO) session.getAttribute("user");
-	    Integer member_status = user != null ? user.getMem_status() : null;
-
-	    if (member_status == null || member_status != 9) {
-	        model.addAttribute("message", "관리자만 접근 가능합니다.");
-	        model.addAttribute("uri", "/goods/list");
-	        return "common/resultAlert";
-	    }
-
-	    goodsService.deleteGoods(item_num);
-
-	    model.addAttribute("message", "상품이 삭제되었습니다.");
-	    model.addAttribute("uri", "/goods/list");
-	    return "common/resultAlert";
-	}
-	/*===================================
-     * 상품 구매 및 환불
+    /*===================================
+     * 상품 등록(관리자)
      *==================================*/
-    // 결제 페이지 제공
-    @GetMapping("/purchase")
-    public String purchasePage() {
-        return "purchase";
+    @GetMapping("/goods/write")
+    public String form() {
+        return "goodsWrite";
     }
 
-    // 환불 페이지 제공
-    @GetMapping("/refund")
-    public String refundPage() {
-        return "refund";
-    }
+    @PostMapping("/goods/write")
+    public String submit(@Valid GoodsVO goodsVO,
+                         BindingResult result,
+                         HttpServletRequest request,
+                         HttpSession session,
+                         Model model) throws IllegalStateException, IOException {
 
-    // 상품 결제 처리
-    @PostMapping("/goods/purchase")
-    @ResponseBody
-    public ResponseEntity<String> purchase(
-            @RequestParam("impUid") String impUid,
-            @RequestParam("amount") int amount,
-            HttpSession session) {
-        try {
-            // 사용자 정보 확인
-            MemberVO user = (MemberVO) session.getAttribute("user");
-            if (user == null) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        // 세션에서 Member_status 가져오기
+        MemberVO user = (MemberVO) session.getAttribute("user");
+        Integer member_status = user != null ? user.getMem_status() : null;
+
+        // Member_status가 9가 아닌 경우 접근을 거부
+        if (member_status == null || member_status != 9) {
+            model.addAttribute("message", "관리자만 접근 가능합니다.");
+            model.addAttribute("uri", "/goods/list");
+            return "common/resultAlert";
+        }
+
+        log.debug("<<상품 등록>> : " + goodsVO);
+
+        if (goodsVO.getUpload() == null || goodsVO.getUpload().isEmpty()) {
+            result.rejectValue("upload", "fileNotFound");
+        }
+
+        // 유효성 체크 결과가 오류가 있으면 폼 호출
+        if (result.hasErrors()) {
+            for (FieldError f : result.getFieldErrors()) {
+                log.debug("에러 필드 : " + f.getField());
             }
-
-            PaymentVO paymentVO = new PaymentVO();
-            paymentVO.setImpUid(impUid);
-            paymentVO.setAmount(amount);
-            paymentVO.setMemNum(user.getMem_num());
-
-            // 결제 처리
-            goodsService.processPayment(paymentVO);
-            return ResponseEntity.ok("결제가 성공적으로 완료되었습니다.");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("결제 중 오류가 발생했습니다.");
+            return form();
         }
+
+        // 상품 사진 업로드 처리
+        String uploadedFileName = fileUtil.createFile(request, goodsVO.getUpload());
+        goodsVO.setItem_photo(uploadedFileName);
+
+        goodsService.insertGoods(goodsVO);
+
+        model.addAttribute("message", "성공적으로 상품이 등록되었습니다.");
+        model.addAttribute("uri", request.getContextPath() + "/goods/list");
+
+        return "common/resultAlert";
     }
 
-    // 결제 취소 처리
-    @PostMapping("/goods/refund")
-    @ResponseBody
-    public ResponseEntity<String> processRefund(@RequestParam("impUid") String impUid, @RequestParam("amount") int amount, @RequestParam("reason") String reason) {
-        try {
-            goodsService.processRefund(impUid, amount, reason);
-            return ResponseEntity.ok("환불 성공");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("환불 실패: " + e.getMessage());
+    /*===================================
+     * 상품 수정하기
+     *==================================*/
+    @GetMapping("/goods/update")
+    public String updateForm(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
+        MemberVO user = (MemberVO) session.getAttribute("user");
+
+        if (user == null || user.getMem_status() != 9) {
+            model.addAttribute("message", "관리자만 접근 가능.");
+            model.addAttribute("uri", "/goods/list");
+            return "common/resultAlert";
         }
+
+        // 정상적으로 접근 가능한 경우 처리 로직
+        GoodsVO goods = goodsService.detailGoods(item_num);
+        model.addAttribute("goodsVO", goods);
+
+        return "goods/goodsUpdate"; // 수정 페이지로 이동
     }
+
+    @PostMapping("/goods/update")
+    public String updateSubmit(@Valid @ModelAttribute("goodsVO") GoodsVO goodsVO, BindingResult result, HttpSession session, Model model) {
+        // 세션에서 member_status 확인
+        MemberVO user = (MemberVO) session.getAttribute("user");
+        Integer member_status = user != null ? user.getMem_status() : null;
+
+        if (member_status == null || member_status != 9) {
+            model.addAttribute("message", "관리자만 접근 가능합니다.");
+            model.addAttribute("uri", "/goods/list");
+            return "common/resultAlert";
+        }
+
+        // 유효성 검사 실패 시
+        if (result.hasErrors()) {
+            return "goods/goodsUpdate";
+        }
+
+        // 기존 데이터를 가져와서 null 체크 후 값 유지
+        GoodsVO existingGoods = goodsService.detailGoods(goodsVO.getItem_num());
+
+        if (goodsVO.getItem_photo() == null || goodsVO.getItem_photo().isEmpty()) {
+            goodsVO.setItem_photo(existingGoods.getItem_photo());
+        }
+        if (goodsVO.getItem_name() == null || goodsVO.getItem_name().isEmpty()) {
+            goodsVO.setItem_name(existingGoods.getItem_name());
+        }
+        if (goodsVO.getItem_price() == null) {
+            goodsVO.setItem_price(existingGoods.getItem_price());
+        }
+        if (goodsVO.getItem_stock() == null) {
+            goodsVO.setItem_stock(existingGoods.getItem_stock());
+        }
+        if (goodsVO.getItem_detail() == null || goodsVO.getItem_detail().isEmpty()) {
+            goodsVO.setItem_detail(existingGoods.getItem_detail());
+        }
+        if (goodsVO.getDcate_num() == null) {
+            goodsVO.setDcate_num(existingGoods.getDcate_num());
+        }
+        if (goodsVO.getItem_status() == null) {
+            goodsVO.setItem_status(existingGoods.getItem_status());
+        }
+
+        goodsService.updateGoods(goodsVO);
+
+        // 수정 완료 후 메시지를 띄운 뒤 상품 목록 페이지로 리디렉션
+        model.addAttribute("message", "상품 정보가 수정되었습니다.");
+        model.addAttribute("uri", "/goods/list");
+        return "redirect:/goods/list";
+    }
+
+    /*===================================
+     * 상품 삭제
+     *==================================*/
+    @GetMapping("/goods/delete")
+    public String deleteSubmit1(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
+        // 세션에서 member_status 확인
+        MemberVO user = (MemberVO) session.getAttribute("user");
+        Integer member_status = user != null ? user.getMem_status() : null;
+
+        if (member_status == null || member_status != 9) {
+            model.addAttribute("message", "관리자만 접근 가능합니다.");
+            model.addAttribute("uri", "/goods/list");
+            return "common/resultAlert";
+        }
+
+        goodsService.deleteGoods(item_num);
+
+        return "redirect:/goods/list";
+    }
+
+    @PostMapping("/goods/delete")
+    public String deleteSubmit(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
+        // 세션에서 member_status 확인
+        MemberVO user = (MemberVO) session.getAttribute("user");
+        Integer member_status = user != null ? user.getMem_status() : null;
+
+        if (member_status == null || member_status != 9) {
+            model.addAttribute("message", "관리자만 접근 가능합니다.");
+            model.addAttribute("uri", "/goods/list");
+            return "common/resultAlert";
+        }
+
+        goodsService.deleteGoods(item_num);
+
+        model.addAttribute("message", "상품이 삭제되었습니다.");
+        model.addAttribute("uri", "/goods/list");
+        return "common/resultAlert";
+    }
+
+
     
 }

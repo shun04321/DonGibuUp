@@ -40,13 +40,30 @@
             }, function (rsp) {
                 if (rsp.success) {
                     alert('정기결제 등록에 성공했습니다.');
-                    location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num};
+    				$.ajax({
+    					url:'/payment1', //결제 상태를 확인하고 스케줄러를 호출하는 부분
+    					type : 'POST',
+    					data:{
+    						"customer_uid" : ${payuidVO.pay_uid},
+    						"price" :${subscriptionVO.sub_price}, 
+    						"merchant_uid" : new Date().getTime()
+    					},
+    					success:function(result) {
+    						alert('다음 결제 예약');
+    					},
+    					error:function(result){
+    						alert(result);
+    					}
+    				});
+    			} else {
+    				alert('빌링키 발급 실패');
+    				}
                 } else {
                 	   $.ajax({
-                           url: 'failGetpayId',
+                           url: 'failRegSubscription',
                            dataType: 'json',
                            type: 'POST',
-                           data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},
+                           data: {sub_num:${subscriptionVO.sub_num}},
                            success: function (param) {
                            	if(param.result=='success'){
                            		alert('정기결제 등록에 실패했습니다. 에러내용: ' + rsp.error_msg);

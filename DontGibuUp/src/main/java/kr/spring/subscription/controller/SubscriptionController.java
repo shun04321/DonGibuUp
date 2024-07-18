@@ -38,6 +38,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.gson.Gson;
 import kr.spring.subscription.vo.GetTokenVO;
 import kr.spring.subscription.vo.Sub_paymentVO;
@@ -222,7 +225,23 @@ public class SubscriptionController {
 		}	
 		return mapJson;
 	}
-	
+	/*--------------------
+	 * 등록되었던 결제수단으로 정기기부 실패
+	 *-------------------*/
+	@PostMapping("/subscription/failRegSubscription")
+	@ResponseBody
+	public Map<String,String> deleteSubscription(long sub_num, HttpSession session) throws Exception {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		try {
+			//정기기부도 삭제
+			subscriptionService.deleteSubscription(sub_num);
+			mapJson.put("result", "success");
+		}catch(Exception e) {
+			mapJson.put("result", "fail");
+			throw new Exception(e);
+		}	
+		return mapJson;
+	}
 	
 	
 		/*-----------------------
@@ -292,5 +311,20 @@ public class SubscriptionController {
 	            return "api fail";
 	        }
 	    }
-}
+	    
+		@PostMapping("/payment1")
+		@ResponseBody
+		public void getImportToken(@RequestParam Map<String, Object> map)
+				throws JsonMappingException, JsonProcessingException {
+			log.debug("/payment1 실행됨");
+			String customer_uid = (String) map.get("customer_uid");
+			int price = Integer.parseInt((String) map.get("price"));
+			String merchant_uid =  (String) map.get("merchant_uid");
+			ReqPaymentScheduler scheduler = new ReqPaymentScheduler();
+		
+			scheduler.startScheduler(customer_uid,price,merchant_uid);
+		}
+}  
+	    
+
 

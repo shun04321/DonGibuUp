@@ -70,19 +70,7 @@
 		]]>
 	</select>
 	 <!-- 새로운 결제 삽입 SQL 매핑 -->
-   <insert id="insertPayment" parameterType="kr.spring.goods.vo.PaymentVO">
-    INSERT INTO payment (imp_uid, mem_num, amount, pay_status, pay_date)
-    VALUES (#{impUid}, #{memNum}, #{amount}, #{pay_status}, #{pay_date})
-    
-	</insert>
-
-	<update id="updatePaymentStatus" parameterType="map">
-    UPDATE payment
-    SET pay_status = #{status}
-    WHERE imp_uid = #{impUid}
-	</update>
-
-
+   
 	   <!-- 상품 수정 -->
     <update id="updateGoods" parameterType="goodsVO">
      UPDATE item 
@@ -95,5 +83,6 @@
         item_status = #{item_status,jdbcType=INTEGER} 
     WHERE item_num = #{item_num}
 </update>
+
 	
 </mapper>
