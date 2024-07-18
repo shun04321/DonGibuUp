@@ -112,6 +112,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminInquiryReply.jsp"/>
 	</definition>
+	<definition name="adminFAQ" extends="adminInquiry">
+		<put-attribute name="title" value="자주 하는 질문 (FAQ)" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminFAQ.jsp"/>
+	</definition>
 </tiles-definitions>
 
 
