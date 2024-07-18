@@ -5,13 +5,15 @@
        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-	<definition name="dboxList" extends="main">
+	<!-- 기부박스 목록 -->
+	<definition name="dboxList" template="/WEB-INF/views/template/layout_bootstrap.jsp">
 		<put-attribute name="title" value="기부박스"/>
-		<put-attribute name="css" value="/WEB-INF/views/dbox/dboxCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxList.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
 	</definition>
-	
-		<!-- 기부박스 제안하기 -->
+
+	<!-- 기부박스 제안하기 -->
 	<definition name="dboxPropose" template="/WEB-INF/views/template/layout_dbox.jsp">
 		<put-attribute name="title" value="기부박스 제안하기"/>
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>

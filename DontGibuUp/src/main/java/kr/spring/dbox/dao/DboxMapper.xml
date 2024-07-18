@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.dbox.dao.DboxMapper">
+	<insert id="insertDbox" parameterType="dboxVO">
+		INSERT INTO dbox(
+		 	dbox_num,
+			mem_num,
+			dcate_num,
+			dbox_team_type,
+			dbox_team_name,
+			dbox_team_detail,
+			dbox_team_photo,
+			dbox_business_rnum,
+			dbox_title,
+			dbox_photo,
+			dbox_content,
+			dbox_business_plan,
+			dbox_budget_data,
+			dbox_bank,
+			dbox_account,
+			dbox_account_name,
+			dbox_comment,
+			dbox_goal,
+			dbox_sdate,
+			dbox_edate)
+		VALUES (
+		 	dbox_seq.nextval,
+			#{mem_num},
+			#{dcate_num},
+			#{dbox_team_type},
+			#{dbox_team_name},
+			#{dbox_team_detail},
+			#{dbox_team_photo, jdbcType=VARCHAR},
+			#{dbox_business_rnum, jdbcType=VARCHAR},
+			#{dbox_title},
+			#{dbox_photo, jdbcType=VARCHAR},
+			#{dbox_content},
+			#{dbox_business_plan, jdbcType=VARCHAR},
+			#{dbox_budget_data, jdbcType=VARCHAR},
+			#{dbox_bank},
+			#{dbox_account},
+			#{dbox_account_name},
+			#{dbox_comment},
+			#{dbox_goal},
+			#{dbox_sdate},
+			#{dbox_edate})
+	</insert>
+		<!-- sql 태그와 include 태그를 이용해서 SQL문을 재사용 -->
+	<sql id="dboxSearch">
+		<where>
+			<if test="category != null and category != ''">
+				category = #{category}
+			</if>
+			<if test="keyword !=null and keyword != ''">
+				<if test="category !=null and category != ''">
+					AND
+				</if>
+				<if test="keyfield == 1">
+					dbox_title LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 2">
+					(id LIKE '%' || #{keyword} || '%' OR
+					dbox_team_name LIKE '%' || #{keyword} || '%')
+				</if>
+				<if test="keyfield == 3">
+					dbox_content LIKE '%' || #{keyword} || '%'
+				</if>	
+				<if test="keyfield == 4">
+					(dbox_title LIKE '%' || #{keyword} || '%' OR
+					dbox_content LIKE '%' || #{keyword} || '%')
+				</if>
+			</if>
+		</where>
+	</sql>
+		<sql id="dboxStatus">
+		<if test="dbox_status == 0">
+			WHERE dbox_status=0
+		</if>
+		<if test="dbox_status == 1">
+			WHERE dbox_status=1
+		</if>
+		<if test="dbox_status == 2">
+			WHERE dbox_status=2
+		</if>
+		<if test="dbox_status == 3">
+			WHERE dbox_status=3
+		</if>
+		<if test="dbox_status == 4">
+			WHERE dbox_status=5
+		</if>
+		<if test="dbox_status == 5">
+			WHERE dbox_status=5
+		</if>
+	</sql>
+	<!-- 기부박스 총레코드수/검색 레코드 수 -->
+	<select id="selectListCount" parameterType="map" resultType="integer">
+		SELECT
+		  COUNT(*)
+		FROM dbox 
+		<include refid="dboxSearch"></include>
+		<include refid="dboxStatus"></include>
+	</select>
+	<!-- 기부박스 전체 목록/검색 목록 -->
+	<select id="selectList" parameterType="map" resultType="dboxVO">
+		SELECT
+		  *
+		FROM (SELECT 
+				a.*,
+				rownum rnum
+			  FROM (SELECT
+			  		  dbox_num,
+			  		  dbox_photo,
+			  		  <![CDATA[
+			  		  REPLACE(REPLACE(dbox_title,'<','&lt;'),'>','&gt;') dbox_title,
+			  		  REPLACE(REPLACE(dbox_team_name,'<','&lt;'),'>','&gt;') dbox_team_name,
+			  		  ]]>
+			  		  dcate_name,
+			  		  dbox_sdate,
+			  		  dbox_edate,
+			  		  dbox_rdate,
+			  		  dbox_goal
+			  		FROM dbox 
+                    JOIN dona_category USING(dcate_num)
+			  		<include refid="dboxSearch"></include>
+			  		<include refid="dboxStatus"></include>
+			  		)a)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
+</mapper>

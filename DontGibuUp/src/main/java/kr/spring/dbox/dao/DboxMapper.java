@@ -1,5 +1,8 @@
 package kr.spring.dbox.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -21,4 +24,10 @@ public interface DboxMapper {
 	//Dbox 현재 번호 선택
 	@Select("SELECT dbox_seq.currval FROM dual")
 	public Long curDboxNum();
+	
+	//Dbox 목록
+	public List<DboxVO> selectList(Map<String, Object> map);
+	
+	//Dbox 개수
+	public Integer selectListCount();
 }

@@ -1,5 +1,8 @@
 package kr.spring.dbox.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,16 @@ public class DboxServiceImpl implements DboxService {
 			dboxMapper.insertDboxBudget(dboxBudget);
 		}
 		return dboxMapper.curDboxNum();
+	}
+
+	@Override
+	public List<DboxVO> selectList(Map<String, Object> map) {
+		return dboxMapper.selectList(map);
+	}
+
+	@Override
+	public Integer selectListCount() {
+		return dboxMapper.selectListCount();
 	}
 
 }

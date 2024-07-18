@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.spring.category.service.CategoryService;
+import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxBudgetVO;
@@ -41,16 +42,14 @@ public class DboxController {
 	public DboxVO initCommand() {
 		return new DboxVO();
 	}
-
 	/*===================================
-	 * 		기본 출력
+	 * 		기부박스 목록
 	 *==================================*/
-	//요청
-	@GetMapping("/dbox/list")
-	public String listForm() {
-		log.debug("<<목록 : >>");
-		return "dboxList";
-	}
+    @GetMapping("/dbox/list")
+    public String list() {
+    	log.debug("<<목록접속>> : ");
+        return "dboxList";
+    }
 	
 	
 	/*===================================
@@ -250,6 +249,6 @@ public class DboxController {
 		
 		return "dboxExample";
 	}
-	
+
 	
 }
