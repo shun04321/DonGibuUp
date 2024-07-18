@@ -105,17 +105,24 @@ public class CSController {
 	
 	//관리자 1:1문의 목록
 	@GetMapping("admin/cs/inquiry")
-	public String memberPoint(@RequestParam(defaultValue="1") int pageNum, HttpSession session, Model model) {
+	public String memberPoint(@RequestParam(defaultValue="1") int pageNum,
+							  @RequestParam(defaultValue="1") int status,
+							  HttpSession session,
+							  Model model) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", status);
 		
-		int count = csService.selectInquiryListCount();
+		log.debug("<<관리자 문의 목록 - status>> : " + status);
+		
+		
+		//레코드 수
+		int count = csService.selectInquiryListCount(map);
 		
 		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "adminInquiry");
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "adminInquiry", "&status=" + status);
 		
 		List<InquiryVO> list = null;
-		
 		if (count > 0) {
 			map.put("start", page.getStartRow());
 			map.put("end", page.getEndRow());

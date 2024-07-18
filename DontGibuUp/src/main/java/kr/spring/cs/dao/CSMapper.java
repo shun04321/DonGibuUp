@@ -19,8 +19,7 @@ public interface CSMapper {
 	//문의 목록(관리자)
 	public List<InquiryVO> selectInquiryList(Map<String, Object> map);
 	//문의 개수(관리자)
-	@Select("SELECT COUNT(*) FROM inquiry")
-	public int selectInquiryListCount();
+	public int selectInquiryListCount(Map<String, Object> map);
 	//회원별 문의 목록
 	@Select("SELECT * FROM inquiry WHERE mem_num=#{mem_num}")
 	public List<InquiryVO> selectInquiryListByMemNum(long mem_num);
