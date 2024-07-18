@@ -552,7 +552,6 @@ public class ChallengeController {
     }
     
     // 챌린지 후기 목록
-    // 챌린지 후기 목록
     @GetMapping("/challenge/review/list")
     public String reviewList(@RequestParam("chal_num") long chal_num, Model model) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);

@@ -7,6 +7,41 @@
     <meta charset="UTF-8">
     <title>챌린지 후기 목록</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function loadReviews(sortType) {
+            const chalNum = ${challenge.chal_num};
+            $.ajax({
+                url: `${pageContext.request.contextPath}/challenge/review/sorted`,
+                type: 'GET',
+                data: { chal_num: chalNum, sortType: sortType },
+                success: function (reviews) {
+                    let reviewHtml = '';
+                    reviews.forEach(review => {
+                        reviewHtml += `
+                            <div class="review-item">
+                                <img src="${pageContext.request.contextPath}/upload/${review.mem_photo || 'basicProfile.png'}" alt="프로필 사진" class="profile-img">
+                                <div class="review-content">
+                                    <div class="review-header">
+                                        <span class="nickname">${review.mem_nick}</span>
+                                        <span class="date">${review.chal_rev_date}</span>
+                                        <span class="rating">${'★'.repeat(review.chal_rev_grade)}${'☆'.repeat(5 - review.chal_rev_grade)}</span>
+                                    </div>
+                                    <div class="review-text">${review.chal_rev_content}</div>
+                                </div>
+                            </div>`;
+                    });
+                    $('.review-list').html(reviewHtml);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $('#sort-select').change(function () {
+                loadReviews($(this).val());
+            });
+        });
+    </script>
 </head>
 <body>
 <div class="review-list-container">
@@ -30,6 +65,12 @@
         </div>
         <div class="review-count">
             후기 ${reviewCount}개
+        </div>
+        <div class="sort-select-container">
+            <select id="sort-select">
+                <option value="latest">최신순</option>
+                <option value="rating">별점순</option>
+            </select>
         </div>
     </div>
     <hr>

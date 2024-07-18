@@ -800,6 +800,15 @@ textarea:focus {
     margin-top: 8px;
 }
 
+.sort-select-container {
+    margin-top: 10px;
+}
+
+#sort-select {
+    padding: 5px;
+    font-size: 14px;
+}
+
 .review-list {
     display: flex;
     flex-direction: column;
