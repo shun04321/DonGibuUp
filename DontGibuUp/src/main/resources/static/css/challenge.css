@@ -51,7 +51,12 @@
     margin-left: auto;
     margin-right: 0; /* Reset right margin for the arrow */
 }
-
+.paging-btn{
+	text-align:center;
+}
+.pageBtn{
+	margin:0 5px;
+}
 /* SY */
 /* 챌린지 상세 */
 .challenge-detail {

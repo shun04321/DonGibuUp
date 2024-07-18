@@ -168,8 +168,7 @@
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
-	</select>
-	
+	</select>	
 	<!-- 챌린지 결제 -->
 	<insert id="insertChallengePayment" parameterType="challengePaymentVO">
 		INSERT INTO chal_payment

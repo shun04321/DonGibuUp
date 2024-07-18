@@ -7,7 +7,10 @@
 <script>
 	let contextPath = '${pageContext.request.contextPath}';
 	let chal_num = ${challenge.chal_num};
-	var pageNum = 1;
+	let chal_joi_num = ${chal_joi_num};
+	let rowCount = 6;
+	let pageSize = 10;
+	var currentPage;
 </script>
 <h2>챌린지 인증내역</h2>
 <div class="challenge-summary">
@@ -74,15 +77,17 @@
 				<a href="#" id="join_member_list">참가자 인증 현황</a>
 			</div>
 			<div id="verify_content"></div>
+			<div class="paging-btn"></div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
  	$('#verify_my_states').on('click',function(e){
+ 		console.log('chal_joi_num : '+chal_joi_num);
 		e.preventDefault();
 		
 		$.ajax({
-			url:contextPath + '',
+			url:contextPath + '/challenge/verify/myList',
 			type:'get',
 			data:{},
 			dataType:'json',
@@ -98,14 +103,25 @@
 	$('#join_member_list').on('click',function(e){
 		e.preventDefault();
 		$('#verify_content').empty();
+		getItems(1);
+	});
+
+	$(document).on('click','.pageBtn',function(){
+		$('#verify_content').empty();
+		//페이지 번호를 읽어들임
+		currentPage = $(this).attr('data-page');
+		//목록 호출
+		getItems(currentPage);
+	});
+	
+	function getItems(currentPage){
 		$.ajax({
 			url:contextPath + '/challenge/verify/joinMemberList',
 			type:'get',
-			data:{chal_num:chal_num,pageNum:pageNum},
+			data:{chal_num:chal_num,pageNum:currentPage,rowCount:rowCount},
 			dataType:'json',
 			success:function(param){
 				let output = '';
-				
 				$(param.list).each(function(index,item){
 					output += '<div class="joinMem_container">';
 					if (item.mem_photo) {
@@ -120,15 +136,62 @@
 					output += '<a href="각 멤버 인증현황 url"> > </a>';
 					output += '</span>';
 					output += '</div>';
-				});
-				output += '<div style="text-align:center">'+param.page+'</div>';
+				});					
 				$('#verify_content').append(output);
+				
+				setPage(param.count);
 			},
 			error:function(){
 				alert('네트워크 오류');
 			}
-		});
-	});
+		});	
+	}
+	
+	function setPage(totalItem){
+		$('.paging-btn').empty();
+		
+		if(totalItem == 0){
+			return;
+		}
+		
+		let totalPage = Math.ceil(totalItem/rowCount);
+		
+		if(currentPage == undefined || currentPage == ''){
+			currentPage = 1;
+		}
+		
+		//현재 페이지가 전체 페이지 수보다 크면 전체 페이지로 설정
+		if(currentPage > totalPage){
+			currentPage = totalPage;
+		}
+		
+		//시작 페이지와 마지막 페이지 값 구하기
+		var startPage = Math.floor((currentPage-1)/pageSize)*pageSize + 1;
+		var endPage = startPage + pageSize - 1;
+		
+		console.log('endPage : '+endPage);
+		
+		//마지막 페이지가 전체 페이지 수보다 크면 전체 페이지 수로 설정
+		if(endPage > totalPage){
+			endPage = totalPage;
+		}
+		
+		let pageInfo = '';
+		
+		if(startPage>pageSize){
+			pageInfo += '<span class="pageBtn" data-page='+(startPage-1)+'>[이전]</span>';
+		}
+
+		for(var i=startPage;i<=endPage;i++){
+			pageInfo += '<span class="pageBtn" data-page='+i+'>'+i+'</span>';
+		}
+
+		if(endPage < totalPage){
+			pageInfo += '<span class="pageBtn" data-page='+(startPage+pageSize)+'>[다음]</span>';;
+		}
+
+		$('.paging-btn').append(pageInfo);
+	}
 </script>
 <div class="challenge-verify-list">
 	<c:forEach var="verify" items="${verifyList}">
