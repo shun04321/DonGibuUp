@@ -168,6 +168,16 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
     
     @Override
+    public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num) {
+        return challengeMapper.selectChallengeReviewList(chal_num);
+    }   
+    
+    @Override
+    public ChallengeReviewVO selectChallengeReview(Long chal_rev_num) {
+        return challengeMapper.selectChallengeReview(chal_rev_num);
+    }   
+    
+    @Override
     public void updateChallengeReview(ChallengeReviewVO chalReviewVO) {
         challengeMapper.updateChallengeReview(chalReviewVO);
     }
@@ -176,14 +186,5 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void deleteChallengeReview(Long chal_rev_num) {
         challengeMapper.deleteChallengeReview(chal_rev_num);
     }
-    
-    @Override
-    public ChallengeReviewVO selectChallengeReview(Long chal_rev_num) {
-        return challengeMapper.selectChallengeReview(chal_rev_num);
-    }
-    
-    @Override
-    public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num) {
-        return challengeMapper.selectChallengeReviewList(chal_num);
-    }
+
 }

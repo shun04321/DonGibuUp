@@ -56,11 +56,11 @@ public interface ChallengeMapper {
     int countWeeklyVerify(Map<String, Object> params);
     
     //챌린지 후기
-    @Select("SELECT chal_rev_seq.nextval FROM dual")
+    @Select("SELECT chal_review_seq.nextval FROM dual")
     public Long selectChal_rev_num();
     public void insertChallengeReview(ChallengeReviewVO chalReviewVO);
-    public ChallengeReviewVO selectChallengeReview(Long chal_rev_num);
     public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num);       
+    public ChallengeReviewVO selectChallengeReview(Long chal_rev_num);   
     public void updateChallengeReview(ChallengeReviewVO chalReviewVO);
     public void deleteChallengeReview(Long chal_rev_num);
 

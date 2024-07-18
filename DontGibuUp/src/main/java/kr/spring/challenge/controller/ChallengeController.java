@@ -525,27 +525,29 @@ public class ChallengeController {
     // 챌린지 후기 작성 폼
     @GetMapping("/challenge/review/write")
     public String reviewForm(@RequestParam("chal_num") long chal_num, Model model) {
+        ChallengeVO challenge = challengeService.selectChallenge(chal_num);
         model.addAttribute("chal_num", chal_num);
+        model.addAttribute("challenge", challenge);
         return "challengeReviewWrite";
     }
-    
+
     // 챌린지 후기 작성
     @PostMapping("/challenge/review/write")
-    public String writeReview(@Valid ChallengeReviewVO challengeReviewVO, BindingResult result,
-                              HttpServletRequest request, HttpSession session, Model model) {
+    public String writeReview(@Valid @ModelAttribute("challengeReviewVO") ChallengeReviewVO challengeReviewVO, 
+                              BindingResult result, HttpServletRequest request, HttpSession session, Model model) {
         if (result.hasErrors()) {
             return "challengeReviewWrite";
         }
-        
+
         MemberVO member = (MemberVO) session.getAttribute("user");
         challengeReviewVO.setMem_num(member.getMem_num());
         challengeReviewVO.setChal_rev_ip(request.getRemoteAddr());
-        
+
         challengeService.insertChallengeReview(challengeReviewVO);
-        
+
         model.addAttribute("message", "후기가 등록되었습니다!");
         model.addAttribute("url", request.getContextPath() + "/challenge/detail?chal_num=" + challengeReviewVO.getChal_num());
-        
+
         return "common/resultAlert";
     }
     
