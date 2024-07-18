@@ -33,4 +33,10 @@ public interface CSMapper {
 	@Update("UPDATE inquiry SET inquiry_reply='${inquiry_reply}', inquiry_rdate=SYSDATE WHERE inquiry_num=${inquiry_num}")
 	public void replyInquiry(InquiryVO inquiryVO);
 	
+	//faq 목록
+	//faq 개수
+	//faq 등록
+	//faq 수정
+	//faq 삭제
+	
 }

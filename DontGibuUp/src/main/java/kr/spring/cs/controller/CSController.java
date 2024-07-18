@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.apache.commons.fileupload.FileUploadBase.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.member.vo.MemberVO;
-import kr.spring.point.vo.PointVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -42,9 +37,16 @@ public class CSController {
 		return new InquiryVO();
 	}
 
+	//자주하는 질문(사용자)
 	@GetMapping("/cs/faqlist")
 	public String faqlist() {
 		return "faqlist";
+	}
+	
+	//자주하는 질문(관리자)
+	@GetMapping("/admin/cs/faq")
+	public String adminFAQ(@RequestParam(name = "status", required = false) String status) {
+		return "adminFAQ";
 	}
 
 	//1:1문의 폼

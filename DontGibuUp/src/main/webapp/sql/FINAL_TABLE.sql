@@ -750,6 +750,19 @@ COMMENT ON COLUMN SUB_PAYMENT.sub_pay_date IS '결제가 완료된 날짜';
 
 COMMENT ON COLUMN SUB_PAYMENT.sub_pay_status IS '결제상태(0:결제완료, 1:결제취소, 2:결제실패)';
 
+CREATE TABLE FAQ (
+    faq_num NUMBER(10) NOT NULL,
+    faq_category NUMBER(1) NOT NULL,
+    faq_question VARCHAR2(100) NOT NULL,
+    faq_answer VARCHAR2(4000) NOT NULL,
+    CONSTRAINT PK_FAQ PRIMARY KEY (faq_num)
+);
+
+COMMENT ON COLUMN FAQ.faq_num IS 'faq 번호';
+COMMENT ON COLUMN FAQ.faq_category IS 'faq 카테고리 번호(0: 정기기부, 1: 기부박스, 2: 챌린지, 3: 굿즈샵, 4: 기타)';
+COMMENT ON COLUMN FAQ.faq_question IS 'faq 질문';
+COMMENT ON COLUMN FAQ.faq_answer IS 'faq 답변';
+
 --------------------------------------------------------------------------------------------------------------------------PRIMARY KEY
 ALTER TABLE MEMBER ADD CONSTRAINT PK_MEMBER PRIMARY KEY (
 	mem_num
