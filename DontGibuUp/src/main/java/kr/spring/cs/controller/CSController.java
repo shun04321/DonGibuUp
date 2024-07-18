@@ -135,4 +135,40 @@ public class CSController {
 		
 		return "adminInquiry";
 	}
+	
+	//관리자 1:1 문의 답변 폼 (문의 상세보기)
+	@GetMapping("/admin/cs/inquiry/reply")
+	public String replyInquiryForm(@RequestParam long inquiry_num, Model model) {
+		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
+		
+		log.debug("<<문의 상세 - inquiry_num>> : " +inquiry_num);
+		log.debug("<<문의 상세>> : " +inquiry);
+		
+		model.addAttribute("inquiry", inquiry);
+		
+		return "adminInquiryReply";
+	}
+	
+	@PostMapping("/admin/cs/inquiry/reply")
+	public String replyInquiry(@Valid InquiryVO inquiryVO, BindingResult result, Model model) {
+		if (inquiryVO.getInquiry_reply() == null || inquiryVO.getInquiry_reply().equals("")) {
+			result.rejectValue("inquiry_reply", "notBlank.inquiry_reply");
+			return "adminInquiryReply";
+		}
+		
+		//답변 수정
+		csService.replyInquiry(inquiryVO);
+		
+		model.addAttribute("inquiry", inquiryVO);
+		return "redirect:/admin/cs/inquiry/reply?inquiry_num=" + inquiryVO.getInquiry_num();
+	}
+	
+	@GetMapping("/admin/cs/inquiry/modifyForm")
+	public String modifyFormAjax(@RequestParam long inquiry_num, Model model) {
+		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
+
+		model.addAttribute("inquiry", inquiry);
+		
+		return "admin/cs/inquiryModifyForm";
+	}
 }

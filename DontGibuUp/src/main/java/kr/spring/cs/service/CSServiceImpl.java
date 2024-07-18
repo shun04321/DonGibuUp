@@ -51,4 +51,9 @@ public class CSServiceImpl implements CSService {
 		csMapper.deleteInquiry(inquiry_num);
 	}
 
+	@Override
+	public void replyInquiry(InquiryVO inquiryVO) {
+		csMapper.replyInquiry(inquiryVO);
+	}
+
 }

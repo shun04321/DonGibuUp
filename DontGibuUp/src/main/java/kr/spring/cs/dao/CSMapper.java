@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import kr.spring.cs.vo.InquiryVO;
 
@@ -28,6 +29,8 @@ public interface CSMapper {
 	//문의 삭제
 	@Delete("DELETE FROM inquiry WHERE inquiry_num=#{inquiry_num}")
 	public void deleteInquiry(long inquiry_num);
-	
+	//문의 답변/답변 수정(관리자)
+	@Update("UPDATE inquiry SET inquiry_reply='${inquiry_reply}', inquiry_rdate=SYSDATE WHERE inquiry_num=${inquiry_num}")
+	public void replyInquiry(InquiryVO inquiryVO);
 	
 }

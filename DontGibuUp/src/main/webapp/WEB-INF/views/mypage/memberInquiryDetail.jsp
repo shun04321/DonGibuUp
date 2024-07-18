@@ -48,6 +48,7 @@
 			<button id="editButton" onclick="location.href='modify?inquiry_num=${inquiry.inquiry_num}'">수정</button>
 			</c:if>
 			<button id="deleteButton">삭제</button>
+			<button onclick="location.href='../inquiry'">목록</button>
 			<script>
 				$('#deleteButton').click(function() {
 					if (confirm("삭제 하시겠습니까?")) {

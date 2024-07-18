@@ -32,7 +32,7 @@
 			<input type="file" name="upload" id="upload">
 		</li>
 		<li>
-			<form:textarea path="inquiry_content" placeholder="문의 내용" maxlength="1333"/>
+			<form:textarea path="inquiry_content" placeholder="문의 내용" maxlength="1333" cols="60" rows="5"/>
 			<form:errors path="inquiry_content" cssClass="form-error"></form:errors>
 		</li>
 	</ul>

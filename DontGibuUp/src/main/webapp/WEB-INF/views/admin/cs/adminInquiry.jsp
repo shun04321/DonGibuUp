@@ -17,9 +17,10 @@
 	<table>
 		<thead>
 			<tr>
-				<th>분류</th>
+				<th width="60px">분류</th>
+				<th width="300px">제목</th>
+				<th>회원</th>
 				<th>일자</th>
-				<th>제목</th>
 				<th>답변</th>
 			</tr>
 		</thead>
@@ -43,14 +44,15 @@
 							test="${inquiry.inquiry_category == 4}">
                기타
                </c:if></td>
+					<td class="clickable align-center" onclick="location.href='inquiry/reply?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
+					<td>${inquiry.mem_nick}(${inquiry.mem_email})</td>					
 					<td>${inquiry.inquiry_date}</td>
-					<td class="clickable" onclick="location.href='inquiry/detail?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
 					<td>
 					<c:if test="${!empty inquiry.inquiry_reply}">
 					처리됨
 					</c:if>
 					<c:if test="${empty inquiry.inquiry_reply}">
-					<button onclick='location.href="inquiry/detail?inquiry_num=${inquiry.inquiry_num}"'>
+					<button onclick='location.href="inquiry/reply?inquiry_num=${inquiry.inquiry_num}"'>
 					답변 하기
 					</button>
 					</c:if>

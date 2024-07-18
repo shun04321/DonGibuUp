@@ -13,9 +13,10 @@
 #inquiryContent {
 	border: 1px solid #000000;
 	margin: 5px 0;
+	white-space: pre-line;
 }
 
 #inquiryResponse {
-	border: 1px solid #000000;
 	margin: 5px 0;
+	white-space: pre-line;
 }

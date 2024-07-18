@@ -30,4 +30,7 @@ public class InquiryVO {
 	
 	private MultipartFile upload;	//파일
 	private String file_deleted;
+	
+	private String mem_nick;
+	private String mem_email;
 }

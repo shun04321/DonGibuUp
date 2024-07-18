@@ -20,4 +20,6 @@ public interface CSService {
 	public void updateInquiry(InquiryVO inquiryVO);
 	//문의 삭제
 	public void deleteInquiry(long inquiry_num);
+	//문의 답변/답변 수정(관리자)
+	public void replyInquiry(InquiryVO inquiryVO);
 }
