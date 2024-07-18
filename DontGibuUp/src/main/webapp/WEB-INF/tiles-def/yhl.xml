@@ -40,4 +40,8 @@
 		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeEnd.jsp"/>
 	</definition>
+	<definition name="dboxExample" extends="dboxPropose">
+		<put-attribute name="title" value="기부박스 제안하기 : 예시 보기"/>
+		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxExample.jsp"/>
+	</definition>
 </tiles-definitions>

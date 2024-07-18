@@ -187,7 +187,7 @@ public class DboxController {
 	public String Step3Submit(@Validated(DboxValidationGroup_3.class) DboxVO dboxVO,
 							  BindingResult result,
 							  HttpSession session,
-							  HttpServletRequest request) throws IllegalStateException, IOException {
+							  HttpServletRequest request ) throws IllegalStateException, IOException {
 		//기부박스 제목, 대표이미지, 내용작성 체크
 		log.debug("<<기부박스 제안 Step3>> : " + dboxVO);
 		
@@ -220,9 +220,9 @@ public class DboxController {
 		long current_dbox_num = dboxService.insertDbox(s_dbox);
 		log.debug("<<기부박스 제안 Step3 - dbox번호>> : " + current_dbox_num);
 		//제안완료 페이지로 dbox_num 전달
-		request.setAttribute("dbox_num",current_dbox_num);
-		//세션만료
-		session.invalidate();
+		session.setAttribute("dbox_num",current_dbox_num);
+		//세션에서 제거
+		session.removeAttribute("dbox");
 		
 		//다음페이지로 이동
 		return "redirect:/dbox/propose/end";
@@ -231,11 +231,24 @@ public class DboxController {
 	 * 		기부박스 제안하기 : 제안 완료
 	 *==================================*/
 	@GetMapping("/dbox/propose/end")
-	public String proposeEnd() {
+	public String proposeEnd(HttpSession session ,Model model) {
+		long dbox_num = (long)session.getAttribute("dbox_num");
 		
-		log.debug("<<기부박스 제안하기 - end>>");
+		log.debug("<<기부박스 제안하기 - end>> : " + dbox_num);
+		//뷰에 dbox_num 전달
+		model.addAttribute("dbox_num");
 		
 		return "dboxProposeEnd";
+	}
+	
+	/*===================================
+	 * 		기부박스 제안하기 : 예시
+	 *==================================*/
+	@GetMapping("/dbox/example")
+	public String proposeExample() {
+		log.debug("<<기부박스 제안하기 - example>> : ");
+		
+		return "dboxExample";
 	}
 	
 	
