@@ -553,11 +553,12 @@ public class ChallengeController {
     
     // 챌린지 후기 목록
     @GetMapping("/challenge/review/list")
-    public ModelAndView reviewList(@RequestParam("chal_num") long chal_num) {
+    public String reviewList(@RequestParam("chal_num") long chal_num, Model model) {
+        ChallengeVO challenge = challengeService.selectChallenge(chal_num);
         List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
-        ModelAndView mav = new ModelAndView("challengeReviewList");
-        mav.addObject("reviewList", reviewList);
-        return mav;
+        model.addAttribute("challenge", challenge);
+        model.addAttribute("reviewList", reviewList);
+        return "challengeReviewList";
     }
     
 }

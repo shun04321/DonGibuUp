@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>챌린지 후기 작성</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/WEB-INF/views/challenge/challengeReview.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
 </head>
 <body>
 <div class="review-container">
