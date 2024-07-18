@@ -66,6 +66,10 @@ public class ChallengeController {
     public ChallengeJoinVO initChallengeJoinVO() {
         return new ChallengeJoinVO();
     }
+    @ModelAttribute("challengeReviewVO")
+    public ChallengeReviewVO initChallengeReviewVO() {
+        return new ChallengeReviewVO();
+    }
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
