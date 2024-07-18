@@ -204,8 +204,7 @@
 	</insert>
 
 	<!-- 챌린지 인증 목록 -->
-	<select id="selectChallengeVerifyList" parameterType="map"
-		resultType="challengeVerifyVO">
+	<select id="selectChallengeVerifyList" parameterType="long" resultType="challengeVerifyVO">
 		SELECT * FROM CHAL_VERIFY
 		WHERE chal_joi_num = #{chal_joi_num}
 		ORDER BY chal_reg_date DESC

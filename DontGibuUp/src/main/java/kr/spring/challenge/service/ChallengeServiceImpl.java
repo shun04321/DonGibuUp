@@ -113,7 +113,12 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO) {
         challengeMapper.insertChallengeVerify(chalVerifyVO);
     }
-
+    
+	@Override
+	public Integer selectChallengeVerifyListRowCount(Map<String, Object> map) {
+		return challengeMapper.selectChallengeVerifyListRowCount(map);
+	}
+	
     @Override
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map) {
         return challengeMapper.selectChallengeVerifyList(map);
@@ -153,4 +158,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public Integer selectJoinMemberRowCount(Map<String, Object> map) {
 		return challengeMapper.selectJoinMemberRowCount(map);
 	}
+
+
 }

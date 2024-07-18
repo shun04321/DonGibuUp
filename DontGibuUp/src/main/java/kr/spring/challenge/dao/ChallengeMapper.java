@@ -45,6 +45,8 @@ public interface ChallengeMapper {
 	
 	//챌린지 인증
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
+    @Select("SELECT COUNT(*) FROM chal_verify WHERE chal_joi_num=#{chal_joi_num}")
+    public Integer selectChallengeVerifyListRowCount(Map<String,Object> map);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
     public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);

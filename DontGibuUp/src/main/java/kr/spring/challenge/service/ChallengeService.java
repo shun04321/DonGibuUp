@@ -38,11 +38,12 @@ public interface ChallengeService {
 	
 	//챌린지 인증
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
+    public Integer selectChallengeVerifyListRowCount(Map<String,Object> map);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
     public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
     public void deleteChallengeVerify(Long chal_ver_num);
-    int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);
+    int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
     
 	//챌린지 후기	
     

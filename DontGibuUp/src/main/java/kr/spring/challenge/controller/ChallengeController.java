@@ -415,7 +415,7 @@ public class ChallengeController {
 
         List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
         ModelAndView mav = new ModelAndView("challengeVerifyList");
-        //mav.addObject("verifyList", verifyList);
+        mav.addObject("verifyList", verifyList);
         mav.addObject("chal_joi_num", chal_joi_num);
         mav.addObject("status", status);//추가
         
@@ -429,7 +429,7 @@ public class ChallengeController {
                 LocalDate regDate = verify.getChal_reg_date().toLocalDate();
                 return regDate.equals(LocalDate.now());
             });
-       // mav.addObject("hasTodayVerify", hasTodayVerify);
+        mav.addObject("hasTodayVerify", hasTodayVerify);
 
         //챌린지 정보 가져오기
         ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);

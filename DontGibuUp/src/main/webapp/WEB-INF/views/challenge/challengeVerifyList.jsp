@@ -89,10 +89,12 @@
 		$.ajax({
 			url:contextPath + '/challenge/verify/myList',
 			type:'get',
-			data:{},
+			data:{chal_joi_num:chal_joi_num,pageNum:currentPage,rowCount:rowCount},
 			dataType:'json',
 			success:function(param){
-				
+				alert('a!');
+				console.log("list : "+param.list);
+				console.log("page : "+param.page);				
 			},
 			error:function(){
 				alert('네트워크 오류');

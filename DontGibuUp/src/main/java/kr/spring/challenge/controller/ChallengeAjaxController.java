@@ -33,6 +33,7 @@ import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
@@ -308,25 +309,25 @@ public class ChallengeAjaxController {
 	//본인 챌린지 인증 내역 불러오기 
 	@GetMapping("/challenge/verify/myList")
 	@ResponseBody
-	public Map<String,Object> verifyList(@RequestParam(defaultValue="1") int pageNum,long chal_joi_num){
+	public Map<String,Object> verifyList(@RequestParam(defaultValue="1") int pageNum,Long chal_joi_num,int rowCount){
 		Map<String,Object> map = new HashMap<>();
-		//map.put("chal_num", chal_num);
+		map.put("chal_joi_num", chal_joi_num);
 		
 		//총 챌린지 참가 멤버수 불러오기
-		int count = challengeService.selectJoinMemberRowCount(map);
+		int count = challengeService.selectChallengeVerifyListRowCount(map);
 		
 		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum,count,7,4,null);
+		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
 		
 		int start = page.getStartRow();
 		int end = page.getEndRow();
 		map.put("start", start);
 		map.put("end", end);
 		
-		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(map);
+		List<ChallengeVerifyVO> myList = challengeService.selectChallengeVerifyList(map);
 		
 		Map<String,Object> mapJson = new HashMap<>();
-		mapJson.put("list", joinList);
+		mapJson.put("list", myList);
 		mapJson.put("page", page.getPage());
 		
 		return mapJson;
