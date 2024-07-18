@@ -29,6 +29,26 @@
 			 inquiry_content=#{inquiry_content}
 		WHERE inquiry_num=#{inquiry_num}
 	</update>
+	
+	<!-- status 조건절 -->
+	<sql id="inquirySearch">
+		<where>
+			<if test="status != null and status == 2">
+				inquiry_reply IS NOT NULL
+			</if>
+			<if test="status != null and status == 3">
+				inquiry_reply IS NULL
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 관리자 문의 카운트 -->
+	<!--@Select("SELECT COUNT(*) FROM inquiry")-->
+	<select id="selectInquiryListCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*) FROM inquiry
+		<include refid="inquirySearch"></include>
+	</select>
+	
 	<!-- 관리자 문의목록 -->
 	<select id="selectInquiryList" parameterType="map" resultType="inquiryVO">
 		SELECT *
@@ -37,6 +57,7 @@
 		        SELECT a.*,  b.mem_nick, b.mem_email
 		        FROM inquiry a
 		        JOIN member b ON a.mem_num = b.mem_num
+		        <include refid="inquirySearch"></include>
 		        ORDER BY a.inquiry_date DESC)c)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}	

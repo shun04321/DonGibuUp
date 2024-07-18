@@ -6,9 +6,9 @@
 <div class="page-main">
 	<h2>1:1문의</h2>
 	<div>
-		<a href="list">전체</a> |
-		<a href="list?status=1">처리됨</a> |
-		<a href="list?status=2">답변 필요</a>
+		<a href="inquiry?status=1">전체</a> |
+		<a href="inquiry?status=2">처리됨</a> |
+		<a href="inquiry?status=3">답변 필요</a>
 	</div>
 	<c:if test="${empty list}">
 	<div class="result-display">문의 내역이 없습니다.</div>
@@ -45,9 +45,16 @@
                </c:if></td>
 					<td>${inquiry.inquiry_date}</td>
 					<td class="clickable" onclick="location.href='inquiry/detail?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
-					<td><c:if test="${!empty inquiry.inquiry_reply}">
-					답변확인
-					</c:if></td>
+					<td>
+					<c:if test="${!empty inquiry.inquiry_reply}">
+					처리됨
+					</c:if>
+					<c:if test="${empty inquiry.inquiry_reply}">
+					<button onclick='location.href="inquiry/detail?inquiry_num=${inquiry.inquiry_num}"'>
+					답변 하기
+					</button>
+					</c:if>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>

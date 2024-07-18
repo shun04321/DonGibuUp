@@ -32,8 +32,8 @@ public class CSServiceImpl implements CSService {
 	}
 	
 	@Override
-	public int selectInquiryListCount() {
-		return csMapper.selectInquiryListCount();
+	public int selectInquiryListCount(Map<String, Object> map) {
+		return csMapper.selectInquiryListCount(map);
 	}
 
 	@Override
