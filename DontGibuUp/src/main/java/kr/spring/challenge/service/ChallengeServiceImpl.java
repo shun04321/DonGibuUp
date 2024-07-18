@@ -13,6 +13,7 @@ import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
+import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 
@@ -159,5 +160,30 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return challengeMapper.selectJoinMemberRowCount(map);
 	}
 
-
+	//챌린지 후기//
+    @Override
+    public void insertChallengeReview(ChallengeReviewVO chalReviewVO) {
+        chalReviewVO.setChal_rev_num(challengeMapper.selectChal_rev_num());
+        challengeMapper.insertChallengeReview(chalReviewVO);
+    }
+    
+    @Override
+    public void updateChallengeReview(ChallengeReviewVO chalReviewVO) {
+        challengeMapper.updateChallengeReview(chalReviewVO);
+    }
+    
+    @Override
+    public void deleteChallengeReview(Long chal_rev_num) {
+        challengeMapper.deleteChallengeReview(chal_rev_num);
+    }
+    
+    @Override
+    public ChallengeReviewVO selectChallengeReview(Long chal_rev_num) {
+        return challengeMapper.selectChallengeReview(chal_rev_num);
+    }
+    
+    @Override
+    public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num) {
+        return challengeMapper.selectChallengeReviewList(chal_num);
+    }
 }

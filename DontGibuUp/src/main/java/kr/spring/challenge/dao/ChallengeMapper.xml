@@ -235,6 +235,37 @@
 	    AND chal_reg_date BETWEEN TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD')) + (#{weekNumber} * 7)
 	    AND TRUNC(TO_DATE(#{startDate}, 'YYYY-MM-DD')) + ((#{weekNumber} + 1) * 7) - 1
 	</select>
+	
+	<!-- 후기 등록 -->
+    <insert id="insertChallengeReview" parameterType="challengeReviewVO">
+        INSERT INTO CHAL_REVIEW
+        (chal_rev_num, chal_num, mem_num, chal_rev_ip, chal_rev_date, chal_rev_grade, chal_rev_content)
+        VALUES
+        (#{chal_rev_num}, #{chal_num}, #{mem_num}, #{chal_rev_ip}, SYSDATE, #{chal_rev_grade}, #{chal_rev_content})
+    </insert>
+    
+    <!-- 후기 조회 -->
+    <select id="selectChallengeReview" parameterType="long" resultType="challengeReviewVO">
+        SELECT * FROM CHAL_REVIEW WHERE chal_rev_num = #{chal_rev_num}
+    </select>
+    
+    <!-- 챌린지별 후기 목록 조회 -->
+    <select id="selectChallengeReviewList" parameterType="long" resultType="challengeReviewVO">
+        SELECT * FROM CHAL_REVIEW WHERE chal_num = #{chal_num} ORDER BY chal_rev_date DESC
+    </select>
+    
+    <!-- 후기 수정 -->
+    <update id="updateChallengeReview" parameterType="challengeReviewVO">
+        UPDATE CHAL_REVIEW
+        SET chal_rev_content = #{chal_rev_content}, chal_rev_grade = #{chal_rev_grade}, chal_rev_mdate = SYSDATE
+        WHERE chal_rev_num = #{chal_rev_num}
+    </update>
+    
+    <!-- 후기 삭제 -->
+    <delete id="deleteChallengeReview" parameterType="long">
+        DELETE FROM CHAL_REVIEW WHERE chal_rev_num = #{chal_rev_num}
+    </delete>
+    
 </mapper>
 
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
+import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 
@@ -46,7 +47,12 @@ public interface ChallengeService {
     int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
     
 	//챌린지 후기	
-    
+    public void insertChallengeReview(ChallengeReviewVO chalReviewVO);
+    public ChallengeReviewVO selectChallengeReview(Long chal_rev_num);
+    public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num);    
+    public void updateChallengeReview(ChallengeReviewVO chalReviewVO);
+    public void deleteChallengeReview(Long chal_rev_num);
+
 	//챌린지 채팅
 	
 	//챌린지...

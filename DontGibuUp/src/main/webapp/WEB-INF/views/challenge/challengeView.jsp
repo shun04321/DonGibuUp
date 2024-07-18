@@ -65,6 +65,8 @@
             <p><span style="color: red;">( )명</span> / ${challenge.chal_max}명</p>
         </div>
     </div>
+    <!-- 챌린지 상세 내용 -->
+	<a href="${pageContext.request.contextPath}/challenge/review/list?chal_num=${challenge.chal_num}">후기 보기</a>
     <div class="challenge-content">
         <h3>이런 분들께 추천합니다</h3>
         <p class="align-center">${challenge.chal_content}</p>

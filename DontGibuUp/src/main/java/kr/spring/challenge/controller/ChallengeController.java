@@ -41,6 +41,7 @@ import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
+import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 import kr.spring.member.vo.MemberVO;
@@ -512,6 +513,45 @@ public class ChallengeController {
         } catch (Exception e) {
             return new ResponseEntity<>("인증 삭제 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    
+    /*==========================
+     *  챌린지 후기
+     *==========================*/
+    // 챌린지 후기 작성 폼
+    @GetMapping("/challenge/review/write")
+    public String reviewForm(@RequestParam("chal_num") long chal_num, Model model) {
+        model.addAttribute("chal_num", chal_num);
+        return "challengeReviewWrite";
+    }
+    
+    // 챌린지 후기 작성
+    @PostMapping("/challenge/review/write")
+    public String writeReview(@Valid ChallengeReviewVO challengeReviewVO, BindingResult result,
+                              HttpServletRequest request, HttpSession session, Model model) {
+        if (result.hasErrors()) {
+            return "challengeReviewWrite";
+        }
+        
+        MemberVO member = (MemberVO) session.getAttribute("user");
+        challengeReviewVO.setMem_num(member.getMem_num());
+        challengeReviewVO.setChal_rev_ip(request.getRemoteAddr());
+        
+        challengeService.insertChallengeReview(challengeReviewVO);
+        
+        model.addAttribute("message", "후기가 등록되었습니다!");
+        model.addAttribute("url", request.getContextPath() + "/challenge/detail?chal_num=" + challengeReviewVO.getChal_num());
+        
+        return "common/resultAlert";
+    }
+    
+    // 챌린지 후기 목록
+    @GetMapping("/challenge/review/list")
+    public ModelAndView reviewList(@RequestParam("chal_num") long chal_num) {
+        List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
+        ModelAndView mav = new ModelAndView("challengeReviewList");
+        mav.addObject("reviewList", reviewList);
+        return mav;
     }
     
 }

@@ -58,6 +58,8 @@ public class AppConfig implements WebMvcConfigurer{
 		        .addPathPatterns("/challenge/verify/detail")
 		        .addPathPatterns("/challenge/verify/update")
 		        .addPathPatterns("/challenge/verify/delete")
+		        .addPathPatterns("/challenge/review/write")
+		        .addPathPatterns("/challenge/review/list")
 		        .addPathPatterns("/cs/inquiry")
 				.addPathPatterns("/admin/**");
 		registry.addInterceptor(memStatusCheck)
