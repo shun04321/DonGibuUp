@@ -29,8 +29,9 @@ public class MemStatusCheckInterceptor implements HandlerInterceptor {
 		} else { //일반회원
 			String requestURI = request.getRequestURI();
 			if (requestURI.contains("/admin/")) {
+				session.removeAttribute("user");
 				session.setAttribute("error", "접근 권한이 없습니다.");
-				response.sendRedirect(request.getContextPath() + "/");
+				response.sendRedirect(request.getContextPath() + "/member/login");
 				return false;
 			} else {
 				return true;

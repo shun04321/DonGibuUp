@@ -10,6 +10,7 @@ import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
 import kr.spring.interceptor.LoginCheckInterceptor;
+import kr.spring.interceptor.MemStatusCheckInterceptor;
 import kr.spring.interceptor.WriterCheckInterceptor;
 
 //자바코드 기반 설정 클래스
@@ -17,6 +18,7 @@ import kr.spring.interceptor.WriterCheckInterceptor;
 public class AppConfig implements WebMvcConfigurer{
 	private LoginCheckInterceptor loginCheck;
 	private WriterCheckInterceptor writerCheck;
+	private MemStatusCheckInterceptor memStatusCheck;
 	
 	@Bean
 	public LoginCheckInterceptor interceptor2() {
@@ -24,7 +26,12 @@ public class AppConfig implements WebMvcConfigurer{
 		return loginCheck;
 	}
 	@Bean
-	public WriterCheckInterceptor interceptor3() {
+	public MemStatusCheckInterceptor interceptor3() {
+		memStatusCheck = new MemStatusCheckInterceptor();
+		return memStatusCheck;
+	}
+	@Bean
+	public WriterCheckInterceptor interceptor4() {
 		writerCheck = new WriterCheckInterceptor();
 		return writerCheck;
 	}
@@ -51,7 +58,11 @@ public class AppConfig implements WebMvcConfigurer{
 		        .addPathPatterns("/challenge/verify/detail")
 		        .addPathPatterns("/challenge/verify/update")
 		        .addPathPatterns("/challenge/verify/delete")
-		        .addPathPatterns("/cs/inquiry");
+		        .addPathPatterns("/cs/inquiry")
+				.addPathPatterns("/admin/**");
+		registry.addInterceptor(memStatusCheck)
+				.addPathPatterns("/member/myPage/**")  
+				.addPathPatterns("/admin/**");
 		registry.addInterceptor(writerCheck)
 				.addPathPatterns("/member/myPage/inquiry/**");
 	}  

@@ -362,7 +362,14 @@ public class MemberController {
 	 *==================================*/
 	//로그인폼
 	@GetMapping("/member/login")
-	public String loginForm() {
+	public String loginForm(HttpSession session, Model model) {
+		
+		String error = (String) session.getAttribute("error");
+	    if (error != null) {
+	        model.addAttribute("error", error);
+	        session.removeAttribute("error");
+	    }
+		
 		return "memberLogin";
 	}
 
@@ -373,7 +380,7 @@ public class MemberController {
 
 		// 유효성 체크 결과 오류가 있으면 폼 호출
 		if (result.hasFieldErrors("mem_email") || result.hasFieldErrors("mem_pw")) {
-			return loginForm();
+			return "memberLogin";
 		}
 
 		try {
@@ -384,7 +391,7 @@ public class MemberController {
 				// 멤버 email이 존재할 시 status가 정지회원, 탈퇴회원인지 체크
 				if (member.getMem_status() == 1) { // 정지회원
 					result.reject("suspendedMember");
-					return loginForm();
+					return "memberLogin";
 				}
 
 				// 비밀번호 일치여부 체크
@@ -414,7 +421,7 @@ public class MemberController {
 		} catch (AuthCheckException e) {
 			result.reject("invalidEmailOrPassword");
 			log.debug("<<인증 실패>>");
-			return loginForm();
+			return "memberLogin";
 		}
 	}
 
