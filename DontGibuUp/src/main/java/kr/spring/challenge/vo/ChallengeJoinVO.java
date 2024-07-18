@@ -18,6 +18,7 @@ public class ChallengeJoinVO {
     private long chal_num; 				//챌린지 번호
     @NotNull
     private long mem_num; 				//회원 번호
+    
     @NotNull
     private Integer dcate_num; 			//기부 카테고리
     
@@ -37,4 +38,6 @@ public class ChallengeJoinVO {
     private Long chal_fee;
     private String dcate_charity;
     private int chal_freq;
+    private String mem_nick;			//회원 닉네임
+    private String mem_photo;           //회원 프로필
 }

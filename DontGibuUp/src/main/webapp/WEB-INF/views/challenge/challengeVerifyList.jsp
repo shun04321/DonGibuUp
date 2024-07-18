@@ -7,6 +7,7 @@
 <script>
 	let contextPath = '${pageContext.request.contextPath}';
 	let chal_num = ${challenge.chal_num};
+	var pageNum = 1;
 </script>
 <h2>챌린지 인증내역</h2>
 <div class="challenge-summary">
@@ -67,8 +68,8 @@
 				</c:choose>
 			</div>
 		</div>
-		<div>
-			<div>
+		<div class="challenge-verify-stats">
+			<div class="verify-stats-nav">
 				<a href="#" id="verify_my_states">나의 인증 현황</a> 
 				<a href="#" id="join_member_list">참가자 인증 현황</a>
 			</div>
@@ -77,49 +78,54 @@
 	</div>
 </div>
 <script type="text/javascript">
-/* 	$('#verify_my_states').on('click',function(e){
+ 	$('#verify_my_states').on('click',function(e){
 		e.preventDefault();
 		
 		$.ajax({
-			url:''
-			
+			url:contextPath + '',
+			type:'get',
+			data:{},
+			dataType:'json',
+			success:function(param){
+				
+			},
+			error:function(){
+				alert('네트워크 오류');
+			}
 		});
-	}); */
+	}); 
 	
 	$('#join_member_list').on('click',function(e){
-		console.log("chal_num : "+chal_num);
 		e.preventDefault();
+		$('#verify_content').empty();
 		$.ajax({
 			url:contextPath + '/challenge/verify/joinMemberList',
 			type:'get',
-			data:{chal_num:chal_num},
+			data:{chal_num:chal_num,pageNum:pageNum},
 			dataType:'json',
 			success:function(param){
 				let output = '';
 				
 				$(param.list).each(function(index,item){
-					output += '<div>';
-					output += '<ul>';
-					output += '<li>';
+					output += '<div class="joinMem_container">';
 					if (item.mem_photo) {
-						output += '<img src="' + pageContext + '/upload/' + item.mem_photo + '" width="40" height="40">'; //챌린지 썸네일
+						output += '<img class="joinMem" src="' + contextPath + '/upload/' + item.mem_photo + '" width="40" height="40">'; //챌린지 썸네일
 					} else {
-						output += '<img src="' + pageContext + '/images/basicProfile.png" width="40" height="40">'; //챌린지 썸네일 - 기본 이미지
+						output += '<img class="joinMem" src="' + contextPath + '/images/basicProfile.png" width="40" height="40">'; //챌린지 썸네일 - 기본 이미지
 					}
-					output += '</li>';
-					output += '<li>';
+					output += '<span class="joinMem">';
 					output += item.mem_nick;
-					output += '</li>';
-					output += '<li>';
+					output += '</span>';
+					output += '<span class="joinMem arrow">';
 					output += '<a href="각 멤버 인증현황 url"> > </a>';
-					output += '</li>';
-					output += '</ul>';
+					output += '</span>';
 					output += '</div>';
 				});
+				output += '<div style="text-align:center">'+param.page+'</div>';
 				$('#verify_content').append(output);
 			},
 			error:function(){
-				alert('챌린지 참가 회원 목록 불러오기 오류');
+				alert('네트워크 오류');
 			}
 		});
 	});

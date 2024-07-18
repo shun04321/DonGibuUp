@@ -33,7 +33,9 @@ public interface ChallengeMapper {
     public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
     public ChallengeJoinVO selectChallengeJoin(Long chal_num);
     //챌린지 참가 회원 목록
-    public List<ChallengeJoinVO> selectJoinMemberList(Long chal_num);
+    @Select("SELECT COUNT(*) FROM chal_join WHERE chal_num=#{chal_num}")
+    public Integer selectJoinMemberRowCount(Map<String,Object> map);
+    public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);    
     public void deleteChallengeJoin(Long chal_joi_num);
     //챌린지 ID로 챌린지 참가 데이터 삭제
     public void deleteChallengeJoinsByChallengeId(Long chal_num);

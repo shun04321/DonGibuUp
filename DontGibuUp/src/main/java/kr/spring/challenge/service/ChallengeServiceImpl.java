@@ -145,7 +145,12 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
 	@Override
-	public List<ChallengeJoinVO> selectJoinMemberList(Long chal_num) {
-		return challengeMapper.selectJoinMemberList(chal_num);
+	public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map) {
+		return challengeMapper.selectJoinMemberList(map);
+	}
+
+	@Override
+	public Integer selectJoinMemberRowCount(Map<String, Object> map) {
+		return challengeMapper.selectJoinMemberRowCount(map);
 	}
 }

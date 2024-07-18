@@ -150,17 +150,24 @@
 	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
 	    WHERE cj.chal_joi_num = #{chal_joi_num}
 	</select>
-
+	
 	<!-- 챌린지 참가 회원 목록 -->
-	<select id="selectJoinMemberList" parameterType="long" resultType="challengeJoinVO">
-		SELECT 
-			cj.*,m.mem_nick,md.mem_photo
-		FROM chal_join cj
-		JOIN member m ON cj.mem_num = m.mem_num
-		LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num 
-		<!-- 제보(신고) 조인 -->
-		WHERE chal_num=#{chal_num}
-		ORDER BY cj.chal_joi_num DESC
+	<select id="selectJoinMemberList" parameterType="map" resultType="challengeJoinVO">
+		SELECT * FROM(
+			SELECT a.*,rownum rnum FROM(
+				SELECT 
+					cj.*,m.mem_nick,md.mem_photo
+				FROM chal_join cj
+				JOIN member m ON cj.mem_num = m.mem_num
+				LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num 
+				<!-- 제보(신고) 조인 -->
+				WHERE chal_num=#{chal_num}
+				ORDER BY cj.chal_joi_num DESC
+			)a
+		)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
 	</select>
 	
 	<!-- 챌린지 결제 -->
@@ -173,7 +180,7 @@
 		SYSDATE, #{chal_pay_status})
 	</insert>
 	
-		<!-- 챌린지 참가 삭제 -->
+	<!-- 챌린지 참가 삭제 -->
 	<delete id="deleteChallengeJoin" parameterType="long">
 		DELETE FROM
 		chal_join WHERE chal_joi_num = #{chal_joi_num}

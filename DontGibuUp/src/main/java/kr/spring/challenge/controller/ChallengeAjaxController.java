@@ -306,16 +306,29 @@ public class ChallengeAjaxController {
 	 *  챌린지 인증 상세 (비동기 통신)
 	 *==========================*/
 	//챌린지 참가 회원 목록 불러오기
-	@GetMapping("/challege/verify/joinMemberList")
+	@GetMapping("/challenge/verify/joinMemberList")
 	@ResponseBody
-	public Map<String,Object> joinMemberList(long chal_num){
-		log.debug("/challege/verify/joinMemberList 실행");
-		log.debug("chal_num"+chal_num);
+	public Map<String,Object> joinMemberList(@RequestParam(defaultValue="1") int pageNum,long chal_num){
+		
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_num", chal_num);
+		
+		//총 챌린지 참가 멤버수 불러오기
+		int memberCount = challengeService.selectJoinMemberRowCount(map);
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum,memberCount,6,10,null);
+		
+		int start = page.getStartRow();
+		int end = page.getEndRow();
+		map.put("start", start);
+		map.put("end", end);
+		
+		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(map);
+		
 		Map<String,Object> mapJson = new HashMap<>();
-		
-		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(chal_num);
-		
 		mapJson.put("list", joinList);
+		mapJson.put("page", page.getPage());
 		
 		return mapJson;
 	}

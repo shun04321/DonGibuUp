@@ -22,6 +22,36 @@
 	padding:10px 10px;
 }
 
+/*챌린지 참가 회원 목록*/
+.verify-stats-nav {
+	margin-top: 20px;
+	padding: 20px 0;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	text-align:center;
+	font-size: 14px;
+}
+.challenge-verify-stats{
+	width:60%;
+	margin-top: 20px;
+	padding: 10px 0;
+	font-size: 14px;
+}
+.joinMem_container {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.joinMem {
+    margin-right: 10px; /* Add some spacing between image and nickname */
+}
+
+.joinMem.arrow {
+    margin-left: auto;
+    margin-right: 0; /* Reset right margin for the arrow */
+}
+
 /* SY */
 /* 챌린지 상세 */
 .challenge-detail {
@@ -53,7 +83,10 @@
 	justify-content: space-between;
 	margin-top: 20px;
 }
-
+#verify_content{
+	width:100%;
+	
+}
 .challenge-info .author-info {
 	display: flex;
 	align-items: center;
