@@ -3,801 +3,798 @@
 /* YJ */
 /* 챌린지 목록 */
 .challenge-container {
-    display: flex;
-    flex-wrap: wrap;
-    max-width: 600px; /* 컨테이너 너비를 600px로 지정 */
-    margin: 0 auto; /* 중앙에 정렬 */
-    justify-content:space-around;
+display: flex;
+flex-wrap: wrap;
+max-width: 600px; /* 컨테이너 너비를 600px로 지정 */
+margin: 0 auto; /* 중앙에 정렬 */
+justify-content:space-around;
 }
 
 .chal_listElement {
-    flex: 0 1 150px;
-    margin: 10px 10px; /* 아래쪽에 간격을 둠 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-    padding: 10px; /* 요소 내부 패딩 */
-    border-radius: 5px; /* 둥근 모서리 */
-    background-color: white; /* 배경색 */
+flex: 0 1 150px;
+margin: 10px 10px; /* 아래쪽에 간격을 둠 */
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+padding: 10px; /* 요소 내부 패딩 */
+border-radius: 5px; /* 둥근 모서리 */
+background-color: white; /* 배경색 */
 }
 .listElement_content{
-	padding:10px 10px;
+padding:10px 10px;
 }
 
 /*챌린지 참가 회원 목록*/
 .verify-stats-nav {
-	margin-top: 20px;
-	padding: 20px 0;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	text-align:center;
-	font-size: 14px;
+margin-top: 20px;
+padding: 20px 0;
+border-top: 1px solid #ddd;
+border-bottom: 1px solid #ddd;
+text-align:center;
+font-size: 14px;
 }
 .challenge-verify-stats{
-	width:60%;
-	margin-top: 20px;
-	padding: 10px 0;
-	font-size: 14px;
+width:80%;
+margin-top: 20px;
+padding: 10px 0;
+font-size: 14px;
 }
 .joinMem_container {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
+display: flex;
+align-items: center;
+border-bottom: 1px solid #ddd;
 }
 
 .joinMem {
-    margin-right: 10px; /* Add some spacing between image and nickname */
+margin-right: 10px; /* Add some spacing between image and nickname */
 }
 
 .joinMem.arrow {
-    margin-left: auto;
-    margin-right: 0; /* Reset right margin for the arrow */
+margin-left: auto;
+margin-right: 0; /* Reset right margin for the arrow */
 }
 .paging-btn{
-	text-align:center;
+text-align:center;
 }
 .pageBtn{
-	margin:0 5px;
+margin:0 5px;
 }
 /* SY */
 /* 챌린지 상세 */
 .challenge-detail {
-	width: 60%;
-	margin: auto;
-	padding: 20px;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	font-family: Arial, sans-serif;
+width: 60%;
+margin: auto;
+padding: 20px;
+border: 1px solid #ddd;
+border-radius: 10px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+font-family: Arial, sans-serif;
 }
 
 .challenge-header {
-	text-align: center;
-	margin-bottom: 20px;
+text-align: center;
+margin-bottom: 20px;
 }
 
 .challenge-header img {
-	width: 100%;
-	height: auto;
-	max-height: 200px;
-	border-radius: 10px;
-	object-fit: cover;
+width: 100%;
+height: auto;
+max-height: 200px;
+border-radius: 10px;
+object-fit: cover;
 }
 
 .challenge-info {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-top: 20px;
 }
 #verify_content{
-	width:100%;
-	
+width:100%;
 }
 .challenge-info .author-info {
-	display: flex;
-	align-items: center;
+display: flex;
+align-items: center;
 }
 
 .challenge-info img {
-	width: 50px;
-	height: 50px;
-	border-radius: 50%;
-	margin-right: 10px;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+margin-right: 10px;
 }
 
 .challenge-info .details {
-	flex-grow: 1;
+flex-grow: 1;
 }
 
 .challenge-stats {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 20px;
-	padding: 10px 0;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	font-size: 14px;
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+padding: 10px 0;
+border-top: 1px solid #ddd;
+border-bottom: 1px solid #ddd;
+font-size: 14px;
 }
 
 .challenge-stats div {
-	text-align: center;
-	flex-grow: 1;
+text-align: center;
+flex-grow: 1;
 }
 
 .challenge-stats div:not(:last-child) {
-	border-right: 1px solid #ddd;
+border-right: 1px solid #ddd;
 }
 
 .challenge-content {
-	margin-top: 20px;
+margin-top: 20px;
 }
 
 .challenge-content h3 {
-	margin-bottom: 10px;
-	font-size: 18px;
+margin-bottom: 10px;
+font-size: 18px;
 }
 
 .challenge-content p {
-	margin-bottom: 20px;
-	line-height: 1.6;
-	font-size: 14px;
+margin-bottom: 20px;
+line-height: 1.6;
+font-size: 14px;
 }
 
 /* 챌린지 참가 */
 .container {
-	max-width: 600px;
-	margin: 50px auto;
-	padding: 20px;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	background-color: white;
+max-width: 600px;
+margin: 50px auto;
+padding: 20px;
+border: 1px solid #ccc;
+border-radius: 8px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+background-color: white;
 }
 
 h2 {
-	text-align: center;
+text-align: center;
 }
 
 .line {
-	border-bottom: 1px solid #eee;
-	padding: 10px 0;
-	margin: 10px 0;
-	display: flex; /* 플렉스 박스 레이아웃 적용 */
-	align-items: center; /* 이미지와 텍스트를 수직 중앙 정렬 */
+border-bottom: 1px solid #eee;
+padding: 10px 0;
+margin: 10px 0;
+display: flex; /* 플렉스 박스 레이아웃 적용 */
+align-items: center; /* 이미지와 텍스트를 수직 중앙 정렬 */
 }
 
 .line img {
-	width: 100px; /* 이미지 크기 조정 */
-	height: 100px; /* 이미지 크기 조정 */
-	border-radius: 8px;
-	margin-right: 10px;
+width: 100px; /* 이미지 크기 조정 */
+height: 100px; /* 이미지 크기 조정 */
+border-radius: 8px;
+margin-right: 10px;
 }
 
 .line .text-content {
-	flex-grow: 1;
+flex-grow: 1;
 }
 
 .line h3 {
-	font-size: 24px;
-	margin: 10px 0;
+font-size: 24px;
+margin: 10px 0;
 }
 
 .line p {
-	font-size: 16px;
-	margin: 5px 0;
+font-size: 16px;
+margin: 5px 0;
 }
 
 .line .chal_fee {
-	font-size: 20px;
-	font-weight: bold;
-	color: #007BFF;
+font-size: 20px;
+font-weight: bold;
+color: #007BFF;
 }
 
 .align-center {
-	text-align: center;
+text-align: center;
 }
 
 .align-center button {
-	background-color: #007BFF;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+background-color: #007BFF;
+color: white;
+padding: 10px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
 }
 
 .align-center button:hover {
-	background-color: #0056b3;
+background-color: #0056b3;
 }
 
 .error-color {
-	color: red;
-	font-size: 14px;
+color: red;
+font-size: 14px;
 }
 
 .form-section {
-	border: 1px solid #ddd;
-	padding: 15px;
-	border-radius: 8px;
-	margin-top: 20px;
-	background-color: #f9f9f9;
+border: 1px solid #ddd;
+padding: 15px;
+border-radius: 8px;
+margin-top: 20px;
+background-color: #f9f9f9;
 }
 
 .form-section label {
-	display: block;
-	font-weight: bold;
-	margin-bottom: 5px;
+display: block;
+font-weight: bold;
+margin-bottom: 5px;
 }
 
 .form-section input[type="radio"] {
-	margin-right: 5px;
+margin-right: 5px;
 }
 
 .form-section .error-color {
-	display: block;
-	margin-top: 5px;
+display: block;
+margin-top: 5px;
 }
 
 .form-section .align-center {
-	margin-top: 20px;
+margin-top: 20px;
 }
 
 .result-details {
-	display: flex;
-	flex-direction: column;
-	margin-top: 10px;
-	border: 1px solid #ddd;
-	padding: 10px;
-	border-radius: 8px;
-	background-color: #f9f9f9;
+display: flex;
+flex-direction: column;
+margin-top: 10px;
+border: 1px solid #ddd;
+padding: 10px;
+border-radius: 8px;
+background-color: #f9f9f9;
 }
 
 .result-details p {
-	display: flex;
-	justify-content: space-between;
+display: flex;
+justify-content: space-between;
 }
 
 .left {
-	text-align: left;
+text-align: left;
 }
 
 .right {
-	text-align: right;
+text-align: right;
 }
 
 /* 챌린지 참가 목록 */
 .challenge-list {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-left: 100px;
-	margin-right: 100px;
+display: flex;
+flex-direction: column;
+align-items: center;
+margin-left: 100px;
+margin-right: 100px;
 }
 
 .month-section {
-	width: 100%;
-	max-width: 600px;
-	margin-bottom: 40px;
+width: 100%;
+max-width: 600px;
+margin-bottom: 40px;
 }
 
 .month-section h2 {
-	text-align: center;
-	font-size: 1.5em;
-	margin-bottom: 20px;
+text-align: center;
+font-size: 1.5em;
+margin-bottom: 20px;
 }
 
 .challenge-card {
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	padding: 20px;
-	margin-bottom: 20px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 100%;
-	background-color: #fff;
-	position: relative;
+border: 1px solid #ddd;
+border-radius: 10px;
+padding: 20px;
+margin-bottom: 20px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+width: 100%;
+background-color: #fff;
+position: relative;
 }
 
 .challenge-card .card-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
 
 .challenge-card h3 {
-	margin: 0;
+margin: 0;
 }
 
 .challenge-card .details {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 10px;
+display: flex;
+justify-content: space-between;
+margin-top: 10px;
 }
 
 .challenge-card .details div {
-	margin-right: 20px;
-	text-align: center;
+margin-right: 20px;
+text-align: center;
 }
 
 .challenge-card .details div:last-child {
-	margin-right: 0;
+margin-right: 0;
 }
 
 .challenge-card .details span {
-	display: block;
-	text-align: center;
+display: block;
+text-align: center;
 }
 
 .challenge-card .view-detail a {
-	text-decoration: none;
-	color: #17a2b8;
-	font-weight: bold;
+text-decoration: none;
+color: #17a2b8;
+font-weight: bold;
 }
 
 /* 챌린지 인증 */
 .container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+max-width: 600px;
+margin: 20px auto;
+padding: 20px;
+border: 1px solid #ddd;
+border-radius: 10px;
+background-color: #fff;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 .header {
-    text-align: center;
-    margin-bottom: 20px;
+text-align: center;
+margin-bottom: 20px;
 }
 .form-section {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+display: flex;
+align-items: center;
+margin-bottom: 20px;
 }
 .form-section label {
-    width: 120px;
-    font-weight: bold;
+width: 120px;
+font-weight: bold;
 }
 .form-section p {
-    flex: 1;
-    margin: 0;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    white-space: pre-line; /* preserves line breaks */
+flex: 1;
+margin: 0;
+padding: 10px;
+background-color: #f5f5f5;
+border: 1px solid #ddd;
+border-radius: 5px;
+white-space: pre-line; /* preserves line breaks */
 }
 .form-section input[type="file"],
 .form-section textarea {
-    flex: 1;
-    padding: 10px;
-    margin-left: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+flex: 1;
+padding: 10px;
+margin-left: 10px;
+border: 1px solid #ddd;
+border-radius: 5px;
 }
 .form-section .error {
-    color: red;
-    margin-left: 10px;
+color: red;
+margin-left: 10px;
 }
 .align-center {
-    text-align: center;
-    margin-top: 20px;
+text-align: center;
+margin-top: 20px;
 }
 .align-center button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+padding: 10px 20px;
+background-color: #007bff;
+border: none;
+border-radius: 5px;
+color: white;
+font-size: 16px;
+cursor: pointer;
 }
 .align-center button:hover {
-    background-color: #0056b3;
+background-color: #0056b3;
 }
 .mandatory {
-    color: red;
+color: red;
 }
 
 /* 챌린지 인증 목록 */
 .challenge-summary {
-	width:80%;
-    display: flex;
-    align-items: center;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-bottom: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+width:80%;
+display: flex;
+align-items: center;
+margin-left: 50px;
+margin-right: 50px;
+margin-bottom: 20px;
+padding: 20px;
+border: 1px solid #ddd;
+border-radius: 10px;
+background-color: #ffffff;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .challenge-thumbnail {
-	width: 100%;
-	height: auto;
-	max-height: 200px;
-	border-radius: 10px;
-	object-fit: cover;
+width: 100%;
+height: auto;
+max-height: 200px;
+border-radius: 10px;
+object-fit: cover;
 }
 
 .challenge-info {
-    display: flex;
-    flex-direction: column;
+display: flex;
+flex-direction: column;
 }
 
 .challenge-info h3 {
-    margin: 0 0 10px 0;
+margin: 0 0 10px 0;
 }
 
 .challenge-info .detail-button {
-    align-self: flex-start;
-    padding: 5px 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
+align-self: flex-start;
+padding: 5px 10px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin-bottom: 10px;
 }
 
 .challenge-info .detail-button:hover {
-    background-color: #0056b3;
+background-color: #0056b3;
 }
 
 .challenge-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
 }
 
 .challenge-stat-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-    padding: 10px;
-    width: 250px;
-    text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: #f5f5f5;
+border-radius: 5px;
+padding: 10px;
+width: 250px;
+text-align: center;
 }
 
 .challenge-stat-item1 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-    padding: 10px;
-    width: 500px;
-    text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: #f5f5f5;
+border-radius: 5px;
+padding: 10px;
+width: 500px;
+text-align: center;
 }
 
 .challenge-stat-item2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f5f5f5;
-    border-radius: 5px;
-    padding: 10px;
-    width: 100px;
-    text-align: center;
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: #f5f5f5;
+border-radius: 5px;
+padding: 10px;
+width: 100px;
+text-align: center;
 }
 
 .challenge-stat-item span:first-child {
-    font-size: 12px;
-    color: #888;
+font-size: 12px;
+color: #888;
 }
 
 .challenge-stat-item1 span:first-child {
-    font-size: 12px;
-    color: #888;
+font-size: 12px;
+color: #888;
 }
 
 .challenge-stat-item2 span:first-child {
-    font-size: 12px;
-    color: #888;
+font-size: 12px;
+color: #888;
 }
 
 .challenge-stat-item span:last-child {
-    font-size: 14px;
-    font-weight: bold;
+font-size: 14px;
+font-weight: bold;
 }
 
 .challenge-stat-item1 span:last-child {
-    font-size: 14px;
-    font-weight: bold;
+font-size: 14px;
+font-weight: bold;
 }
 
 .challenge-stat-item2 span:last-child {
-    font-size: 14px;
-    font-weight: bold;
+font-size: 14px;
+font-weight: bold;
 }
 
 .challenge-verify-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+display: flex;
+flex-direction: column;
+gap: 10px;
 }
 
 .challenge-verify-card {
-    margin-left: 100px;
-    margin-right: 100px;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-    position: relative;
+display: flex;
+align-items: center;
+padding: 10px;
+border: 1px solid #ddd;
+border-radius: 5px;
+background-color: #f5f5f5;
+position: relative;
 }
 
 .challenge-verify-card img {
-    width: 50px;
-    height: 50px;
-    border-radius: 5px;
-    margin-right: 10px;
+width: 50px;
+height: 50px;
+border-radius: 5px;
+margin-right: 10px;
 }
 
 .challenge-verify-card .content {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+display: flex;
+flex-direction: column;
+flex-grow: 1;
 }
 
 .challenge-verify-card .content .date-status {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+display: flex;
+align-items: center;
+gap: 5px;
 }
 
 .challenge-verify-card .content .date-status .date {
-    font-weight: bold;
+font-weight: bold;
 }
 
 .challenge-verify-card .content .date-status .status {
-    padding: 2px 5px;
-    border-radius: 3px;
-    color: white;
-    font-size: 12px;
+padding: 2px 5px;
+border-radius: 3px;
+color: white;
+font-size: 12px;
 }
 
 .challenge-verify-card .content .date-status .status.success {
-    background-color: #28a745;
+background-color: #28a745;
 }
 
 .challenge-verify-card .content .date-status .status.failure {
-    background-color: #dc3545;
+background-color: #dc3545;
 }
 
 .challenge-verify-card .content .comment {
-    margin-top: 5px;
+margin-top: 5px;
 }
 
 .challenge-verify-card .buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
+display: flex;
+flex-direction: column;
+gap: 5px;
+position: absolute;
+right: 10px;
+top: 10px;
 }
 
 .challenge-verify-card .buttons button {
-    padding: 3px 8px;
-    border: none;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
+padding: 3px 8px;
+border: none;
+border-radius: 5px;
+font-size: 12px;
+cursor: pointer;
 }
 
 .challenge-verify-card .buttons button:hover {
-    background-color: #ddd;
+background-color: #ddd;
 }
 
 .align-center {
-    text-align: center;
-    margin-top: 20px;
+text-align: center;
+margin-top: 20px;
 }
 
 .align-center .disabled-button {
-    padding: 10px 20px;
-    background-color: #ddd;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 10px;
-    cursor: not-allowed;
+padding: 10px 20px;
+background-color: #ddd;
+border: none;
+border-radius: 5px;
+color: white;
+font-size: 10px;
+cursor: not-allowed;
 }
 
 .align-center .active-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    font-size: 10px;
-    cursor: pointer;
+padding: 10px 20px;
+background-color: #007bff;
+border: none;
+border-radius: 5px;
+color: white;
+font-size: 10px;
+cursor: pointer;
 }
 
 .align-center .active-button:hover {
-    background-color: #0056b3;
+background-color: #0056b3;
 }
 
 textarea {
-    width: 70%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
+width: 70%;
+padding: 10px;
+border: 1px solid #ddd;
+border-radius: 5px;
+font-size: 14px;
 }
 
 textarea:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+outline: none;
+border-color: #007bff;
+box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .edit-form button {
-    padding: 3px 8px; 
-    border: none;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
+padding: 3px 8px;
+border: none;
+border-radius: 5px;
+font-size: 12px;
+cursor: pointer;
 }
 
 .edit-form button.save-button {
-    background-color: #28a745;
-    color: white;
+background-color: #28a745;
+color: white;
 }
 
 .edit-form button.save-button:hover {
-    background-color: #218838;
+background-color: #218838;
 }
 
 /* 챌린지 후기 작성 */
 .review-container {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    max-width: 600px;
-    margin: 20px auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 16px;
+max-width: 600px;
+margin: 20px auto;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .challenge-info {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px;
+display: flex;
+align-items: center;
+margin-bottom: 16px;
 }
 
 .challenge-thumbnail {
-    width: 100px;
-    height: 100px;
-    border-radius: 8px;
-    margin-right: 16px;
-    object-fit: cover;
+width: 100px;
+height: 100px;
+border-radius: 8px;
+margin-right: 16px;
+object-fit: cover;
 }
 
 .challenge-details {
-    flex-grow: 1;
+flex-grow: 1;
 }
 
 .challenge-details h2 {
-    margin: 0 0 8px;
-    font-size: 24px;
+margin: 0 0 8px;
+font-size: 24px;
 }
 
 .challenge-details p {
-    margin: 4px 0;
-    color: #666;
+margin: 4px 0;
+color: #666;
 }
 
 .review-rating {
-    margin-bottom: 16px;
+margin-bottom: 16px;
 }
 
 .review-rating label {
-    font-size: 16px;
-    display: block;
-    margin-bottom: 8px;
+font-size: 16px;
+display: block;
+margin-bottom: 8px;
 }
 
 .stars {
-    display: flex;
-    gap: 4px;
+display: flex;
+gap: 4px;
 }
 
 .star {
-    font-size: 24px;
-    color: #ffcc00;
+font-size: 24px;
+color: #ffcc00;
 }
 
 .review-content {
-    margin-bottom: 16px;
+margin-bottom: 16px;
 }
 
 .review-content label {
-    font-size: 16px;
-    display: block;
-    margin-bottom: 8px;
+font-size: 16px;
+display: block;
+margin-bottom: 8px;
 }
 
 .review-content textarea {
-    width: 100%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 8px;
-    font-size: 14px;
-    resize: none;
+width: 100%;
+border: 1px solid #ddd;
+border-radius: 4px;
+padding: 8px;
+font-size: 14px;
+resize: none;
 }
 
 .char-count {
-    text-align: right;
-    font-size: 12px;
-    color: #999;
-    margin-top: 4px;
+text-align: right;
+font-size: 12px;
+color: #999;
+margin-top: 4px;
 }
 
 .submit-button {
-    text-align: center;
+text-align: center;
 }
 
 .submit-button input[type="submit"] {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 4px;
+padding: 10px 20px;
+font-size: 16px;
+cursor: pointer;
 }
 
 .submit-button input[type="submit"]:hover {
-    background-color: #0056b3;
+background-color: #0056b3;
 }
 
 /* 챌린지 후기 목록 */
 .review-list-container {
-	width:60%;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px;
-    max-width: 800px;
-    margin: 20px auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+width:60%;
+border: 1px solid #ddd;
+border-radius: 8px;
+padding: 16px;
+max-width: 800px;
+margin: 20px auto;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .review-list-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 20px;
+text-align: center;
+margin-bottom: 20px;
+font-size: 20px;
 }
 
 .review-summary {
-    text-align: left;
-    margin-bottom: 20px;
+text-align: left;
+margin-bottom: 20px;
 }
 
 .average-rating {
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    font-size: 32px;
+display: flex;
+align-items: center;
+justify-content: left;
+font-size: 32px;
 }
 
 .rating-value {
-    font-weight: bold;
-    margin-right: 8px;
+font-weight: bold;
+margin-right: 8px;
 }
 
 .rating-stars {
-    color: #ffcc00;
-    font-size: 32px;
+color: #ffcc00;
+font-size: 32px;
 }
 
 .review-count {
-    font-size: 16px;
-    color: #666;
-    margin-top: 8px;
+font-size: 16px;
+color: #666;
+margin-top: 8px;
 }
 
 .sort-select-container {
@@ -810,53 +807,53 @@ textarea:focus {
 }
 
 .review-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+display: flex;
+flex-direction: column;
+gap: 20px;
 }
 
 .review-item {
-    display: flex;
-    align-items: flex-start;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 16px;
+display: flex;
+align-items: flex-start;
+border-bottom: 1px solid #eee;
+padding-bottom: 16px;
 }
 
 .profile-img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 16px;
-    object-fit: cover;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+margin-right: 16px;
+object-fit: cover;
 }
 
 .review-content {
-    flex-grow: 1;
+flex-grow: 1;
 }
 
 .review-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 8px;
+display: flex;
+align-items: center;
+margin-bottom: 8px;
 }
 
 .nickname {
-    font-weight: bold;
-    margin-right: 10px;
+font-weight: bold;
+margin-right: 10px;
 }
 
 .date {
-    font-size: 12px;
-    color: #999;
-    margin-right: 10px;
+font-size: 12px;
+color: #999;
+margin-right: 10px;
 }
 
 .rating {
-    color: #ffcc00;
-    font-size: 16px;
+color: #ffcc00;
+font-size: 16px;
 }
 
 .review-text {
-    font-size: 14px;
-    line-height: 1.5;
+font-size: 14px;
+line-height: 1.5;
 }

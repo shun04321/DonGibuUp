@@ -1,21 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>챌린지 인증</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
-</head>
-<body>
 <div class="container">
     <div class="header">
         <h2>[	${chal_title}	]</h2>
     </div>
     <form:form id="challenge_verify" enctype="multipart/form-data" modelAttribute="challengeVerifyVO">
         <form:hidden path="chal_joi_num"/>
+        <form:hidden path="chal_num" value="${chal_num}"/>
         
         <div class="form-section">
             <label>인증 방법</label>
@@ -38,5 +30,3 @@
         </div>
     </form:form>
 </div>
-</body>
-</html>

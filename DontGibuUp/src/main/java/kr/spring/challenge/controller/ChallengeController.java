@@ -355,6 +355,7 @@ public class ChallengeController {
             if (challenge != null) {
                 model.addAttribute("chal_title", challenge.getChal_title());
                 model.addAttribute("chal_verify", challenge.getChal_verify());
+                model.addAttribute("chal_num", challenge.getChal_num());
             }
         }
 
@@ -362,7 +363,7 @@ public class ChallengeController {
     }
     //챌린지 인증
     @PostMapping("/challenge/verify/write")
-    public String submitVerify(@Valid @ModelAttribute("challengeVerifyVO") ChallengeVerifyVO challengeVerifyVO, BindingResult result,
+    public String submitVerify(@Valid @ModelAttribute("challengeVerifyVO") ChallengeVerifyVO challengeVerifyVO,long chal_num, BindingResult result,
                                HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
         log.debug("<<챌린지 인증 등록>> : " + challengeVerifyVO);
 
@@ -399,13 +400,10 @@ public class ChallengeController {
         //챌린지 인증 등록
         challengeService.insertChallengeVerify(challengeVerifyVO);
         
-        //챌린지 번호 가져오기
-        //ChallengeJoinVO challengeJoinVO = challengeService.selectChallengeJoin(null);
-        
         //view에 메시지 추가
         model.addAttribute("message", "챌린지 인증이 완료되었습니다!");
-        model.addAttribute("url", request.getContextPath() + "/challenge/verify/list?chal_joi_num="+ challengeVerifyVO.getChal_joi_num()); 
-        // + challengeJoinVO.getChal_num());
+        model.addAttribute("url", request.getContextPath() + "/challenge/verify/list?chal_joi_num="+ 
+        			challengeVerifyVO.getChal_joi_num()+"&chal_num="+chal_num+"&status=on");
 
         return "common/resultAlert";
     }

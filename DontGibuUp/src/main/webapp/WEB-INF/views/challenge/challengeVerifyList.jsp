@@ -8,7 +8,7 @@
 	let contextPath = '${pageContext.request.contextPath}';
 	let chal_num = ${challenge.chal_num};
 	let chal_joi_num = ${chal_joi_num};
-	let rowCount = 6;
+	let rowCount = 1;
 	let pageSize = 10;
 	var currentPage;
 </script>
@@ -20,7 +20,8 @@
 		<div class="challenge-info">
 			<div class="details">
 				<h3>${challenge.chal_title}</h3>
-				<button class="detail-button" onclick="location.href='${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}'">상세보기</button>
+				<button class="detail-button"
+					onclick="location.href='${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}'">상세보기</button>
 			</div>
 		</div>
 		<div class="challenge-stats">
@@ -34,24 +35,19 @@
 				</c:if>
 			</div>
 			<div class="challenge-stat-item">
-				<span>기간</span> 
-				<span>${chal_sdate} ~ ${chal_edate}</span>
+				<span>기간</span> <span>${chal_sdate} ~ ${chal_edate}</span>
 			</div>
 			<div class="challenge-stat-item1">
-				<span>달성률</span> 
-				<span>${achievementRate}%</span>
+				<span>달성률</span> <span>${achievementRate}%</span>
 			</div>
 			<div class="challenge-stat-item2">
-				<span>인증 성공</span> 
-				<span>${successCount}회</span>
+				<span>인증 성공</span> <span>${successCount}회</span>
 			</div>
 			<div class="challenge-stat-item2">
-				<span>인증 실패</span> 
-				<span>${failureCount}회</span>
+				<span>인증 실패</span> <span>${failureCount}회</span>
 			</div>
 			<div class="challenge-stat-item2">
-				<span>남은 인증</span> 
-				<span>${remainingCount}회</span>
+				<span>남은 인증</span> <span>${remainingCount}회</span>
 			</div>
 			<div class="challenge-stat-item2">
 				<c:choose>
@@ -76,8 +72,45 @@
 				<a href="#" id="verify_my_states">나의 인증 현황</a> 
 				<a href="#" id="join_member_list">참가자 인증 현황</a>
 			</div>
+			<div class="challenge-verify-list">
+				<c:forEach var="verify" items="${verifyList}">
+					<div class="challenge-verify-card">
+						<img src="<c:url value='/images/${verify.chal_ver_photo}'/>"
+							alt="인증 사진">
+						<div class="content">
+							<div class="date-status">
+								<span class="date">${verify.chal_reg_date}</span>
+								<c:choose>
+									<c:when test="${verify.chal_ver_status == 0}">
+										<span class="status success">성공</span>
+									</c:when>
+									<c:when test="${verify.chal_ver_status == 1}">
+										<span class="status failure">실패</span>
+									</c:when>
+								</c:choose>
+							</div>
+							<div id="content-${verify.chal_ver_num}" class="comment">${verify.chal_content}</div>
+							<div id="edit-form-${verify.chal_ver_num}" class="edit-form" style="display: none;">
+								<textarea id="textarea-${verify.chal_ver_num}">${verify.chal_content}</textarea>
+							</div>
+						</div>
+						<c:if test="${status != 'post'}">
+							<div class="buttons">
+								<button id="edit-button-${verify.chal_ver_num}"
+									onclick="toggleEditSave(${verify.chal_ver_num})">수정</button>
+								<c:if test="${verify.chal_reg_date == today}">
+									<button onclick="deleteVerify(${verify.chal_ver_num})">삭제</button>
+								</c:if>
+							</div>
+						</c:if>
+					</div>
+				</c:forEach>
+			</div>
 			<div id="verify_content"></div>
 			<div class="paging-btn"></div>
+			<div id="loading" style="display:none;">
+				<img src="${pageContext.request.contextPath}/images/loading.gif">
+			</div>			
 		</div>
 	</div>
 </div>
@@ -85,28 +118,20 @@
  	$('#verify_my_states').on('click',function(e){
  		//console.log('chal_joi_num : '+chal_joi_num);
 		e.preventDefault();
-		
-		$.ajax({
-			url:contextPath + '/challenge/verify/myList',
-			type:'get',
-			data:{chal_joi_num:chal_joi_num,pageNum:currentPage,rowCount:rowCount},
-			dataType:'json',
-			success:function(param){
-				alert('a!');
-				console.log("list : "+param.list);
-				console.log("page : "+param.page);				
-			},
-			error:function(){
-				alert('네트워크 오류');
-			}
-		});
+		$('#verify_content').empty();
+		$('.paging-btn').empty();
+		$('.challenge-verify-list').show();
 	}); 
-	
+
  	//참가자 인증 현황 클릭 이벤트
 	$('#join_member_list').on('click',function(e){
 		e.preventDefault();
+		$('.challenge-verify-list').hide();
 		$('#verify_content').empty();
 		getItems(1);
+		/* $('#verify_content').fadeOut(100, function(){
+			getItems(1);
+		}); */
 	});
 	
  	//페이지 버튼 클릭 이벤트
@@ -198,38 +223,5 @@
 
 		$('.paging-btn').append(pageInfo);
 	}
+
 </script>
-<div class="challenge-verify-list">
-	<c:forEach var="verify" items="${verifyList}">
-		<div class="challenge-verify-card">
-			<img src="<c:url value='/images/${verify.chal_ver_photo}'/>"
-				alt="인증 사진">
-			<div class="content">
-				<div class="date-status">
-					<span class="date">${verify.chal_reg_date}</span>
-					<c:choose>
-						<c:when test="${verify.chal_ver_status == 0}">
-							<span class="status success">성공</span>
-						</c:when>
-						<c:when test="${verify.chal_ver_status == 1}">
-							<span class="status failure">실패</span>
-						</c:when>
-					</c:choose>
-				</div>
-				<div id="content-${verify.chal_ver_num}" class="comment">${verify.chal_content}</div>
-				<div id="edit-form-${verify.chal_ver_num}" class="edit-form" style="display: none;">
-					<textarea id="textarea-${verify.chal_ver_num}">${verify.chal_content}</textarea>
-				</div>
-			</div>
-			<c:if test="${status != 'post'}">
-				<div class="buttons">
-					<button id="edit-button-${verify.chal_ver_num}"
-						onclick="toggleEditSave(${verify.chal_ver_num})">수정</button>
-					<c:if test="${verify.chal_reg_date == today}">
-						<button onclick="deleteVerify(${verify.chal_ver_num})">삭제</button>
-					</c:if>
-				</div>
-			</c:if>
-		</div>
-	</c:forEach>
-</div>

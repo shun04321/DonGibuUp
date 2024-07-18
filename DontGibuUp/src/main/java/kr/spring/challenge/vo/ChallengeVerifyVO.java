@@ -28,5 +28,8 @@ public class ChallengeVerifyVO {
     @NotNull
     private int chal_ver_report = 0;	//기본값:0 (신고안됨)
     private Date chal_reg_date;
+    
+    //추가 멤버 필드
+    private long chal_num;
 
 }
