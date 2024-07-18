@@ -9,7 +9,6 @@
         // 초기화된 변수
         let pg = "";
         let pay_method = "";
-	
         let cardNickname = "${payuidVO.card_nickname}"; // JSP 변수 사용
         let easypay_method = "${payuidVO.easypay_method}"; // JSP 변수 사용
 
@@ -35,53 +34,28 @@
                 buyer_name: "${user.mem_name}",
                 buyer_tel: "${user.mem_phone}",
                 customer_id: "${user.mem_num}" // 고객사가 회원에게 부여한 고유 ID
-            }, function (rsp) {
+            }, function(rsp) {
                 if (rsp.success) {
-                    alert('결제 수단을 등록했습니다.');         
-                    // Ajax로 데이터 서버로 전송
                     $.ajax({
-                        url: 'successGetpayuid', // 서버 요청을 처리할 URL
-                        type: 'POST',
+                        url:'paymentReservation', //DB에 구독정보 등록하는 부분..
+                        type:'post',
                         dataType:'json',
                         data: {
-                            sub_num: ${subscriptionVO.sub_num},
-                            pay_uid: "${payuidVO.pay_uid}"
-                        },
-                        success: function (param) {
-                            if (param.result=='success') {
-                                location.href = param.redirectUrl;
-                            } else {
-                                // 기본적으로 처리할 로직
-                                alert('오류 발생 관리자에게 문의하세요.');
-                            }
-                        },
-                        error: function () {
-                            alert('서버 요청 중 오류가 발생했습니다.');
+                        	pay_uid:"${payuidVO.pay_uid}",
+                        	sub_num:${subscriptionVO.sub_num}
+                        },                                   
+                        success: function(result) {
+                            alert('정기결제 등록 ' + result);
                         }
                     });
+
+                    alert($('#customer_id').val());
+
                 } else {
-                    $.ajax({
-                        url: 'failGetpayuId',
-                        dataType: 'json',
-                        type: 'POST',
-                        data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},
-                        success: function (param) {
-                        	if(param.result=='success'){
-                        		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
-                        		location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num}; // 리다이렉트할 페이지 URL로 수정
-                        	}else if(param.result =='fail'){
-                        		alert('관리자에게 문의해주세요. 에러내용 : ' + rsp.error_msg);
-                        	}
-                        },
-                        error: function () {
-                            alert('네트워크 오류 발생');
-                        }
-                    });
-                    // 실패 시 로직
+                    alert('빌링키 발급 실패');
                 }
             });
-        };
-
+        }
         // 페이지 로드 시 자동 실행
         onClickPay();
     });

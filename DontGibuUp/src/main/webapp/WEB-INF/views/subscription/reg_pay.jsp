@@ -44,7 +44,8 @@
 								value="${category.dcate_num}">
 							<input type="hidden" name="mem_num"
 								value="${user.mem_num}" id="mem_num">
-							<input type="hidden" name="card_nickname" id="card_nickname">	
+							<input type="hidden" name="card_nickname" id="card_nickname">
+							<input type="hidden" name="sub_date" id="sub_date"/>	
 							<!-- 익명 여부 체크박스 -->
 							<div class="form-group">
 								<label>익명 여부</label>
@@ -150,6 +151,10 @@
 									</label>
 								</div>
 							</div>
+							 <!-- 오늘 날짜와 결제 일자 안내 -->
+                            <div style="margin-top: 10px;">
+                            	매월 <span id="paymentDateInfo" style="color:red; font-size:15 px;"></span>일에 정기 결제가 이루어집니다.
+                            </div>							
 							<!-- 기부 시작하기 버튼 -->
 							<button type="submit" class="btn btn-primary"
 								style="margin-top: 10px;">기부 시작하기</button>

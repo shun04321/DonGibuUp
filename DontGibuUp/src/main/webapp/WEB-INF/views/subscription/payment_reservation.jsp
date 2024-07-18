@@ -31,7 +31,7 @@
                 customer_uid: "${payuidVO.pay_uid}", // 필수 입력
                 amount: ${subscriptionVO.sub_price},
                 name: "${categoryVO.dcate_charity}"+ " 정기 기부",           
-                customer_id: "${user.mem_num}", // 고객사가 회원에게 부여한 고유 ID
+                customer_id: "${user.mem_num}", // 
                 merchant_uid: "${subscriptionVO.sub_num}" + new Date().getTime(),                
                 currency: "KRW",
                 buyer_name: "${user.mem_name}",

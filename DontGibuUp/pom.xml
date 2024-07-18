@@ -147,7 +147,12 @@
 		    <artifactId>iamport-rest-client-java</artifactId>
 		    <version>0.2.23</version>
 			</dependency>
-		</dependencies>
+		<dependency>
+			<groupId>org.sendbird</groupId>
+			<artifactId>sendbird-platform-sdk</artifactId>
+			<version>1.0.23</version>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>

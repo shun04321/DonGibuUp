@@ -110,4 +110,14 @@ $(document).ready(function () {
 					$('#staticBackdrop').modal('show'); // 모달 창 열기 등
 				}
 			});
+		 	let today = new Date();
+       		// 다음 달의 오늘 날짜 계산
+        	let nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
+        	//만약 오늘 날짜가 28일 이후라면 마지막 날짜가 됨.
+        	if (today.getDate() > 28) {
+            nextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0); // 다음 달의 마지막 날짜 계산
+      		  }
+        	let formattedDate = nextMonth.getDate(); // 날짜만 추출
+            $("#paymentDateInfo").text(formattedDate);
+            $("#sub_date").val(formattedDate.toString());
 		});

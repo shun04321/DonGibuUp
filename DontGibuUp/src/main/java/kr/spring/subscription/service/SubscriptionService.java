@@ -1,5 +1,7 @@
 package kr.spring.subscription.service;
 
+import org.apache.ibatis.annotations.Delete;
+
 import kr.spring.subscription.vo.SubscriptionVO;
 
 public interface SubscriptionService {
@@ -12,6 +14,7 @@ public interface SubscriptionService {
 	
 	public SubscriptionVO getSubscription(long sub_num);
 	//정기기부 삭제
+	@Delete("DELETE FROM subscription WHERE sub_num=#{sub_num}")
 	public void deleteSubscription(long sub_num);
 	
 	//정기결제를 위한 getToken 메소드

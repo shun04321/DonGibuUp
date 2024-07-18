@@ -16,12 +16,11 @@ public class SubscriptionVO {
 	private long dcate_num;
 	private String sub_name;
 	private boolean sub_annoy;
-	@NotNull
 	private int sub_price;
-	@Pattern(regexp = "^([A-Za-z])$")
-	private String sub_ndate;
+	private int sub_ndate;
 	private int sub_status;
 	private String sub_method;
 	private String easypay_method;
 	private String card_nickname;
+
 }
