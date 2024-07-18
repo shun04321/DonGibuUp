@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.goods.vo.GoodsVO;
-import kr.spring.goods.vo.PaymentVO;
+
 @Mapper
 public interface GoodsMapper {
 	public List<GoodsVO> selectList(Map<String,Object> map);
@@ -27,10 +27,6 @@ public interface GoodsMapper {
 	// 자식 레코드 삭제 메서드 추가
 	@Delete("DELETE FROM cart WHERE item_num = #{item_num}")
 	public void deleteCartItems(long item_num);
-	// 결제 정보 저장 메서드 추가
-	void insertPayment(PaymentVO paymentVO);
-	void insertRefund(Map<String, Object> refundData);
-	// 결제 상태 업데이트 메서드
-    void updatePaymentStatus(Map<String, Object> params);
+	
 
 }

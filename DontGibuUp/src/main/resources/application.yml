@@ -76,5 +76,8 @@ naver:
   redirect_uri: http://localhost:8000/member/callback/naver
   client_secret: zIDSLvMlCb
   
+iamport:
+  apiKey: 2501776226527075
+  secretKey: ICUcY6Nusg8jMZ2sAdnXqpTvBPr2Xecu6mal4nbWzegwMDwaPJ46SKznjj8oOCojvXNXeG0xOBKQ7Jfs
 
 
