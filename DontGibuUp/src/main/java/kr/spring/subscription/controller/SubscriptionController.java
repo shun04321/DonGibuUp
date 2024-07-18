@@ -211,6 +211,8 @@ public class SubscriptionController {
 		Map<String,String> mapJson = new HashMap<String,String>();
 		log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
 		try {
+			//정기기부도 삭제
+			subscriptionService.deleteSubscription(sub_num);
 			//빌링키 발급 실패한 payuid 삭제
 			payuidService.deletePayuid(pay_uid);
 			mapJson.put("result", "success");
