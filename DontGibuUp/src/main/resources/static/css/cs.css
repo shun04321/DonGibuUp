@@ -1,5 +1,43 @@
 @charset "UTF-8";
 
+ul {
+	padding: 0;
+}
+
 .form-error {
 	color: red;
+}
+
+.clickable-image, .clickable {
+	cursor: pointer;
+}
+
+/*1:1문의*/
+#inquiryContent {
+	border: 1px solid #000000;
+	border-radius: 6px;
+	margin: 5px 0;
+	white-space: pre-line;
+	margin: 5px 0;
+}
+
+#inquiryResponse {
+	margin: 5px 0;
+	white-space: pre-line;
+}
+
+/*faq*/
+.faq-item {
+	border: 1px solid #000000;
+	border-radius: 6px;
+	padding: 5px 10px;
+	margin: 10px 0;
+}
+
+#insert_faq {
+	width: 97%;
+	border: 1px solid #000000;
+	border-radius: 6px;
+	padding: 5px 10px;
+	margin: 10px 0;
 }

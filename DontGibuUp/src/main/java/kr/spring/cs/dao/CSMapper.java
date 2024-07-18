@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 
 @Mapper
@@ -34,9 +35,14 @@ public interface CSMapper {
 	public void replyInquiry(InquiryVO inquiryVO);
 	
 	//faq 목록
+	public List<FaqVO> selectFaqList(Map<String, Object> map);
 	//faq 개수
+	public int selectFaqCount(Map<String, Object> map);
 	//faq 등록
+	public void insertFaq(FaqVO faqVO);
 	//faq 수정
+	public void updateFaq(FaqVO faqVO);
 	//faq 삭제
+	public void deleteFaq(long faq_num);
 	
 }

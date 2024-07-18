@@ -17,6 +17,7 @@
 	<table>
 		<thead>
 			<tr>
+				<th>문의번호</th>
 				<th width="60px">분류</th>
 				<th width="300px">제목</th>
 				<th>회원</th>
@@ -27,7 +28,8 @@
 		<tbody>
 			<!-- 데이터 행 추가 -->
 			<c:forEach var="inquiry" items="${list}">
-				<tr>
+				<tr class="align-center">
+					<td>${inquiry.inquiry_num}</td>
 					<td><c:if
 							test="${inquiry.inquiry_category == 0}">
                정기기부
@@ -44,7 +46,7 @@
 							test="${inquiry.inquiry_category == 4}">
                기타
                </c:if></td>
-					<td class="clickable align-center" onclick="location.href='inquiry/reply?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
+					<td class="clickable" onclick="location.href='inquiry/reply?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
 					<td>${inquiry.mem_nick}(${inquiry.mem_email})</td>					
 					<td>${inquiry.inquiry_date}</td>
 					<td>

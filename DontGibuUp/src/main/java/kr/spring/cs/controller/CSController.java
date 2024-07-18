@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.spring.cs.service.CSService;
+import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
@@ -45,7 +46,38 @@ public class CSController {
 	
 	//자주하는 질문(관리자)
 	@GetMapping("/admin/cs/faq")
-	public String adminFAQ(@RequestParam(name = "status", required = false) String status) {
+	public String adminFAQ(@RequestParam(name = "category", required = false) String category,
+						   @RequestParam(defaultValue = "1") int pageNum,
+						   Model model) {
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+		
+		log.debug("<<관리자 faq 목록 - category>> : " + category);
+		
+		
+		//레코드 수
+		int count = csService.selectFaqCount(map);
+		
+		//페이지 처리
+		PagingUtil page;
+		if (category==null) {
+			page = new PagingUtil(pageNum, count, 10, 10, "faq");
+		} else {			
+			page = new PagingUtil(pageNum, count, 10, 10, "faq", "&category=" + category);
+		}
+		
+		List<FaqVO> list = null;
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = csService.selectFaqList(map);
+		}
+		
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+		
 		return "adminFAQ";
 	}
 
@@ -122,7 +154,7 @@ public class CSController {
 		int count = csService.selectInquiryListCount(map);
 		
 		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "adminInquiry", "&status=" + status);
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "inquiry", "&status=" + status);
 		
 		List<InquiryVO> list = null;
 		if (count > 0) {

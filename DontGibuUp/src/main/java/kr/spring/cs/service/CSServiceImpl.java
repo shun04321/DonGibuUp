@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.cs.dao.CSMapper;
+import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 
 @Service
@@ -54,6 +55,33 @@ public class CSServiceImpl implements CSService {
 	@Override
 	public void replyInquiry(InquiryVO inquiryVO) {
 		csMapper.replyInquiry(inquiryVO);
+	}
+
+	@Override
+	public List<FaqVO> selectFaqList(Map<String, Object> map) {
+		return csMapper.selectFaqList(map);
+	}
+
+	@Override
+	public int selectFaqCount(Map<String, Object> map) {
+		return csMapper.selectFaqCount(map);
+	}
+
+	@Override
+	public void insertFaq(FaqVO faqVO) {
+		csMapper.insertFaq(faqVO);
+	}
+
+	@Override
+	public void updateFaq(FaqVO faqVO) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteFaq(long faq_num) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

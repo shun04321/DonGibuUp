@@ -3,6 +3,7 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.spring.cs.dao.CSMapper">
+	<!-- 문의 등록 -->
 	<insert id="insertInquiry" parameterType="inquiryVO">
 		INSERT
 		INTO inquiry
@@ -20,6 +21,7 @@
 			#{inquiry_filename, jdbcType=VARCHAR},
 			#{inquiry_content})
 	</insert>
+	<!-- 문의 수정 -->
 	<update id="updateInquiry" parameterType="inquiryVO">
 		UPDATE
 		inquiry
@@ -30,7 +32,7 @@
 		WHERE inquiry_num=#{inquiry_num}
 	</update>
 	
-	<!-- status 조건절 -->
+	<!-- 관리자 문의 조건절 -->
 	<sql id="inquirySearch">
 		<where>
 			<if test="status != null and status == 2">
@@ -43,7 +45,6 @@
 	</sql>
 	
 	<!-- 관리자 문의 카운트 -->
-	<!--@Select("SELECT COUNT(*) FROM inquiry")-->
 	<select id="selectInquiryListCount" parameterType="map" resultType="integer">
 		SELECT COUNT(*) FROM inquiry
 		<include refid="inquirySearch"></include>
@@ -59,6 +60,50 @@
 		        JOIN member b ON a.mem_num = b.mem_num
 		        <include refid="inquirySearch"></include>
 		        ORDER BY a.inquiry_date DESC)c)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}	
+		]]>
+	</select>
+	
+	<!-- 관리자 faq 등록 -->
+	<insert id="insertFaq" parameterType="faqVO">
+		INSERT
+		INTO faq(
+			faq_num,
+			faq_category,
+			faq_question,
+			faq_answer)
+		VALUES(
+			faq_seq.nextval,
+			#{faq_category},
+			#{faq_question},
+			#{faq_answer})
+	</insert>
+	
+	<!-- 관리자 faq 조건절 -->
+	<sql id="faqSearch">
+		<where>
+			<if test="category != null">
+				faq_category=#{category}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 관리자 faq 카운트 -->
+	<select id="selectFaqCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*) FROM faq
+		<include refid="faqSearch"></include>
+	</select>
+	
+	<!-- 관리자 faq 목록 -->
+	<select id="selectFaqList" parameterType="map" resultType="faqVO">
+		SELECT *
+		FROM (
+		    SELECT b.*, rownum rnum FROM (
+		        SELECT *
+		        FROM faq a
+		        <include refid="faqSearch"></include>
+		        ORDER BY a.faq_num ASC)b)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}	
 		]]>
