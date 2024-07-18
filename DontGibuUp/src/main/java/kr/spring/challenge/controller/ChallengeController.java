@@ -552,12 +552,25 @@ public class ChallengeController {
     }
     
     // 챌린지 후기 목록
+    // 챌린지 후기 목록
     @GetMapping("/challenge/review/list")
     public String reviewList(@RequestParam("chal_num") long chal_num, Model model) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);
         List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
+
+        double averageRating = reviewList.stream()
+                                         .mapToInt(ChallengeReviewVO::getChal_rev_grade)
+                                         .average()
+                                         .orElse(0.0);
+        // 소수점 첫째 자리까지만 표시
+        averageRating = Math.round(averageRating * 10) / 10.0;
+        int reviewCount = reviewList.size();
+
         model.addAttribute("challenge", challenge);
         model.addAttribute("reviewList", reviewList);
+        model.addAttribute("averageRating", averageRating);
+        model.addAttribute("reviewCount", reviewCount);
+        
         return "challengeReviewList";
     }
     
