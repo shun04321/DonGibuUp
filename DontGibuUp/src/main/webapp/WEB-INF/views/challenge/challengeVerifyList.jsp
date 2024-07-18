@@ -83,7 +83,7 @@
 </div>
 <script type="text/javascript">
  	$('#verify_my_states').on('click',function(e){
- 		console.log('chal_joi_num : '+chal_joi_num);
+ 		//console.log('chal_joi_num : '+chal_joi_num);
 		e.preventDefault();
 		
 		$.ajax({
@@ -100,12 +100,14 @@
 		});
 	}); 
 	
+ 	//참가자 인증 현황 클릭 이벤트
 	$('#join_member_list').on('click',function(e){
 		e.preventDefault();
 		$('#verify_content').empty();
 		getItems(1);
 	});
-
+	
+ 	//페이지 버튼 클릭 이벤트
 	$(document).on('click','.pageBtn',function(){
 		$('#verify_content').empty();
 		//페이지 번호를 읽어들임
@@ -114,6 +116,7 @@
 		getItems(currentPage);
 	});
 	
+ 	//참가자 인증 현황 목록을 불러오는 메서드
 	function getItems(currentPage){
 		$.ajax({
 			url:contextPath + '/challenge/verify/joinMemberList',
@@ -147,6 +150,7 @@
 		});	
 	}
 	
+ 	//페이징 처리를 하는 메서드
 	function setPage(totalItem){
 		$('.paging-btn').empty();
 		
