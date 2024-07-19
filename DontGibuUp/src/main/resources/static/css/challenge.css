@@ -792,14 +792,9 @@ textarea:focus {
 	color: #666;
 }
 
-.review-rating {
-	margin-bottom: 16px;
-}
-
 .review-rating label {
 	font-size: 16px;
 	display: block;
-	margin-bottom: 8px;
 }
 
 .stars {
@@ -812,14 +807,9 @@ textarea:focus {
 	color: #ffcc00;
 }
 
-.review-content {
-	margin-bottom: 16px;
-}
-
 .review-content label {
 	font-size: 16px;
 	display: block;
-	margin-bottom: 8px;
 }
 
 .review-content textarea {
