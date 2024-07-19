@@ -140,19 +140,31 @@ public class ChallengeController {
             List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(map);
             isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == chal_num);
         }
-        
-        //현재 참가 중인 인원 수 조회
+
+        // 현재 참가 중인 인원 수 조회
         int currentParticipants = challengeService.countCurrentParticipants(chal_num);
 
-        //참여금을 포맷팅
+        // 참여금을 포맷팅
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
         String formattedFee = numberFormat.format(challenge.getChal_fee());
+
+        // 챌린지 리뷰 가져오기
+        List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
+        double averageRating = reviewList.stream()
+                                         .mapToInt(ChallengeReviewVO::getChal_rev_grade)
+                                         .average()
+                                         .orElse(0.0);
+        averageRating = Math.round(averageRating * 10) / 10.0; // 소수점 첫째 자리까지만 표시
+        int reviewCount = reviewList.size();
 
         ModelAndView mav = new ModelAndView("challengeView");
         mav.addObject("challenge", challenge);
         mav.addObject("isJoined", isJoined);
-        mav.addObject("formattedFee", formattedFee); //포맷팅된 참여금 추가
-        mav.addObject("currentParticipants", currentParticipants); //현재 참가 중인 인원 추가
+        mav.addObject("formattedFee", formattedFee);
+        mav.addObject("currentParticipants", currentParticipants);
+        mav.addObject("reviewList", reviewList);
+        mav.addObject("averageRating", averageRating);
+        mav.addObject("reviewCount", reviewCount);
 
         return mav;
     }
@@ -553,7 +565,9 @@ public class ChallengeController {
     
     //챌린지 후기 목록
     @GetMapping("/challenge/review/list")
-    public String reviewList(@RequestParam("chal_num") long chal_num, Model model) {
+    public String reviewList(@RequestParam("chal_num") long chal_num, 
+                             @RequestParam(value = "sortType", defaultValue = "latest") String sortType, 
+                             Model model) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);
         List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
 
@@ -561,7 +575,7 @@ public class ChallengeController {
                                          .mapToInt(ChallengeReviewVO::getChal_rev_grade)
                                          .average()
                                          .orElse(0.0);
-        //소수점 첫째 자리까지만 표시
+        // 소수점 첫째 자리까지만 표시
         averageRating = Math.round(averageRating * 10) / 10.0;
         int reviewCount = reviewList.size();
 

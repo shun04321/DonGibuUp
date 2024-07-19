@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -7,6 +8,75 @@
     <meta charset="UTF-8">
     <title>챌린지 상세</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
+    <style>
+         .review-summary {
+            display: flex;
+            align-items: center;
+        }
+        .review-summary .rating-value {
+            font-size: 1.5em;
+            margin: 0 0.5em;
+        }
+        .review-summary .rating-stars {
+            color: #FFD700; /* Gold color for stars */
+        }
+        .review-summary .review-count {
+            margin-left: 0.5em;
+        }
+        .review-summary .btn-all-reviews {
+            margin-left: auto; /* Push the button to the far right */
+        }
+        .review-summary .btn-all-reviews button {
+            padding: 0.3em 0.7em;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .review-summary .btn-all-reviews button:hover {
+            background-color: #f0f0f0;
+        }
+        .review-container {
+            display: flex;
+            overflow-x: auto;
+        }
+        .review-item {
+            flex: 0 0 auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .review-header .nickname {
+            font-weight: bold;
+        }
+        .review-header .rating {
+            color: #FFD700; /* Gold color for stars */
+        }
+        .review-text {
+            margin-top: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
 <h2>챌린지 상세</h2>
@@ -65,9 +135,58 @@
             <p><span style="color: red;">${currentParticipants}명</span> / ${challenge.chal_max}명</p>
         </div>
     </div>
+    <c:if test="${reviewCount > 0}">
+    <hr>
+    <!-- 챌린지 후기 -->
+    <div class="review-summary">
+        <h3>참가자 후기</h3>
+        <span class="rating-stars">★</span>
+        <span class="rating-value">${averageRating}</span>
+        <span class="review-count">(${reviewCount}개)</span>
+        <div class="btn-all-reviews">
+            <button onclick="location.href='${pageContext.request.contextPath}/challenge/review/list?chal_num=${challenge.chal_num}'">모두보기</button>
+        </div>
+    </div>
+    <div class="review-container">
+        <c:forEach var="review" items="${reviewList}" begin="0" end="2">
+            <div class="review-item">
+                <div class="review-content">
+                    <div class="review-header">
+                    <span class="rating">
+                            <c:forEach begin="1" end="5" varStatus="status">
+                                <c:choose>
+                                    <c:when test="${status.index <= review.chal_rev_grade}">
+                                        ★
+                                    </c:when>
+                                    <c:otherwise>
+                                        ☆
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+                        </span>
+                    </div>
+                    <div>
+                    	<span class="nickname">${review.mem_nick}</span>
+                    	<span class="date">${review.chal_rev_date}</span>      
+                    </div>           
+                     <div class="review-text">
+                        <c:choose>
+                            <c:when test="${fn:length(review.chal_rev_content) > 12}">
+                                ${fn:substring(review.chal_rev_content, 0, 13)}..
+                            </c:when>
+                            <c:otherwise>
+                                ${review.chal_rev_content}
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+    <hr>
+    </c:if>
     <!-- 챌린지 상세 내용 -->
-	<a href="${pageContext.request.contextPath}/challenge/review/list?chal_num=${challenge.chal_num}">후기 보기</a>
-     <c:if test="${not empty challenge.chal_content}">
+    <c:if test="${not empty challenge.chal_content}">
         <div class="challenge-content">
             <h3>이런 분들께 추천합니다</h3>
             <p class="align-center">${challenge.chal_content}</p>
