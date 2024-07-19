@@ -28,7 +28,7 @@
                 pg: pg,
                 pay_method: pay_method,
                 name: "최초인증결제",
-                amount: "0", // 실제 승인은 발생되지 않고 오직 빌링키만 발급됩니다.
+                amount: "0", // 실제 결제는 발생하지 않고, 빌링키만 발급됩니다.
                 customer_uid: "${payuidVO.pay_uid}", // 필수 입력
                 buyer_email: "${user.mem_email}",
                 buyer_name: "${user.mem_name}",
@@ -37,35 +37,33 @@
             }, function(rsp) {
                 if (rsp.success) {
                     $.ajax({
-                        url: '/paymentReservation', // DB에 구독정보 등록하는 부분..
+                        url:'paymentReservation', 
                         type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
+                        dataType: 'json',
+                        data: {
                             pay_uid: "${payuidVO.pay_uid}",
                             sub_num: ${subscriptionVO.sub_num}
-                        }),
-                        dataType: 'json',
+                        },                  
                         success: function(param) {
                             if (param.result === "success") {
                                 alert('결제수단 등록에 성공했습니다.');
                                 $.ajax({
-                                    type: 'POST',
-                                    url: '/payment1',
-                                    contentType: 'application/json',
-                                    data: JSON.stringify({
+                                	url: '/payment1',
+                                    type: 'POST',                                   
+                                    dataType: 'json',
+                                    data: {
                                         customer_uid: "${payuidVO.pay_uid}",
                                         price: ${subscriptionVO.sub_price},
                                         merchant_uid: "${subscriptionVO.sub_num}" + new Date().getTime() // String으로 전달
-                                    }),
-                                    dataType: 'json',
-                                    success: function(result) {
+                                    },
+                                    success: function(param) {
+                                    	if(param.result=='success'){
                                         alert('다음 결제 예약 성공');
                                         location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
+                                    	}
                                     },
-                                    error: function(xhr, status, error) {
-                                        alert('다음 결제 예약에 실패했습니다. 관리자에게 문의하세요.');
-                                        console.error('Error:', error);
-                                        location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
+                                    error: function() {                                                         
+                                        console.error('Error:', 'fd');
                                     }
                                 });
                             } else {
@@ -81,8 +79,8 @@
                 } else {
                     $.ajax({
                         url: 'failGetpayuid',
-                        dataType: 'json',
                         type: 'POST',
+                        dataType: 'json',                        
                         data: {
                             pay_uid: "${payuidVO.pay_uid}",
                             sub_num: ${subscriptionVO.sub_num}
@@ -101,7 +99,9 @@
                     });
                 }
             });
-        }
+        };
+
+        // 페이지 로드 시 자동 실행
+        onClickPay();
     });
 </script>
-

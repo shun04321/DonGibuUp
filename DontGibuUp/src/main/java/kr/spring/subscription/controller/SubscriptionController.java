@@ -148,23 +148,23 @@ public class SubscriptionController {
 	 *-------------------*/
 	@PostMapping("/subscription/paymentReservation")
 	@ResponseBody
-	public Map<String,String> sign_up(@ModelAttribute("user") MemberVO user,
-			@ModelAttribute("payuidVO") PayuidVO payuidVO,
-			@ModelAttribute("sub_num") long sub_num,
-			HttpSession session,
-			Model model) {				
-		Map<String,String> mapJson = new HashMap<String,String>();
-		//결제
-		String payment_result = insertSub_Payment(payuidVO.getPay_uid(), sub_num, session);
-		if(payment_result.equals("payment success")) {
-			mapJson.put("result", "success");			
-		}else {
-			mapJson.put("result", "fail");
-		}
+	public Map<String, String> signUp(	      
+	        String pay_uid, long sub_num,
+	        HttpSession session,
+	        Model model) {
+	    Map<String, String> mapJson = new HashMap<>();
+	    
+	    // 결제
+	    String paymentResult = insertSub_Payment(pay_uid, sub_num, session);
+	    if (paymentResult.equals("payment success")) {
+	        mapJson.put("result", "success");
+	    } else {
+	        mapJson.put("result", "fail");
+	    }
 
-		// JSP 페이지로 이동
-		return mapJson; // 결제 결과를 보여줄 JSP 페이지의 이름
+	    return mapJson; // JSON 형식의 결제 결과 반환
 	}
+
 
 	/*--------------------
 	 * 결제수단 발급 성공 -> payuid 저장 이후 첫 결제 성공하면 정기기부 등록, 결제내역 등록
@@ -298,29 +298,30 @@ public class SubscriptionController {
 	    }	       
 
 	        @PostMapping("/payment1")
-	        public ResponseEntity<String> startPaymentScheduler(
-	                @RequestParam("customer_uid") String customerUid,
-	                @RequestParam("price") int price,
-	                @RequestParam("merchant_uid") String merchantUid) {
-
+	        @ResponseBody
+	        public Map<String,String> customer_uid(
+	               String customer_uid, int price, String merchant_uid) {
+	        	Map<String,String> mapJson = new HashMap<String,String>();
 	            // 파라미터 검증
 	            if (price <= 0) {
 	                log.debug("price : " + price);
 	            }
-	            if (customerUid == null || customerUid.trim().isEmpty()) {
-	            	log.debug("customerUid : " + customerUid);
+	            if (customer_uid == null || customer_uid.trim().isEmpty()) {
+	            	log.debug("customerUid : " + customer_uid);
 	            }
-	            if (merchantUid == null || merchantUid.trim().isEmpty()) {
-	                log.debug("merchantUid"+merchantUid);
+	            if (merchant_uid == null || merchant_uid.trim().isEmpty()) {
+	                log.debug("merchantUid"+merchant_uid);
 	            }
-
+	            
 	            try {
 	                // 예약 결제 스케줄 시작
-	                subscriptionService.startScheduler(customerUid, price, merchantUid);
-	                return new ResponseEntity<>("Scheduler started successfully.", HttpStatus.OK);
+	                subscriptionService.startScheduler(customer_uid, price, merchant_uid);
+	                mapJson.put("result", "success");
+	                return mapJson;
 	            } catch (Exception e) {
 	                e.printStackTrace();
-	                return new ResponseEntity<>("Failed to start scheduler.", HttpStatus.INTERNAL_SERVER_ERROR);
+	                mapJson.put("result", "fail");
+	                return mapJson;
 	            }
 	        }
 	    }

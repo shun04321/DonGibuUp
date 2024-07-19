@@ -38,6 +38,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public String schedulePay(String customerUid, int price, String merchant_uid) {
+    	System.out.println("schedulePay 정상 작동 data :" +customerUid+","+price+","+merchant_uid);
         String token = getToken();
         long timestamp = generateTimestamp();
         String accessToken = extractAccessToken(token);
@@ -77,15 +78,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     private long generateTimestamp() {
+    	
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.KOREA);
-        cal.add(Calendar.MINUTE, 1);  // 1분 후로 설정
+        cal.add(Calendar.SECOND, 20);  // 20초 후로 설정
         String date = sdf.format(cal.getTime());
         try {
             Date stp = sdf.parse(date);
+            System.out.println("timeStamp 생성기 정상 작동 " + date+ stp);
             return stp.getTime() / 1000;  // 밀리초를 초로 변환
         } catch (ParseException e) {
             e.printStackTrace();
+            System.out.println("timeStamp 생성기 정상 작동 x " + date);
             return 0;
         }
     }
@@ -140,6 +144,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     public void startScheduler(String customerUid, int price, String merchant_uid) {
+    	System.out.println("스케줄러 스타터 정상 작동, 데이터" + customerUid + price + merchant_uid);
         if (scheduler == null) {
             scheduler = new ThreadPoolTaskScheduler();
             scheduler.initialize();
@@ -150,6 +155,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private Runnable getRunnable(String customerUid, int price, String merchant_uid) {
         return () -> {
             try {
+            	System.out.println("getRunnable 정상 작동, 데이터" +","+customerUid +","+ price +","+ merchant_uid);
                 schedulePay(customerUid, price, merchant_uid);
             } catch (Exception e) {
                 e.printStackTrace(); // 로그 기록
