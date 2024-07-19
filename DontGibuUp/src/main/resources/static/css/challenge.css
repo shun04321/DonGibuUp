@@ -520,7 +520,8 @@ h2 {
 
 .challenge-info {
 	display: flex;
-	flex-direction: column;
+    flex-direction: column;
+    align-items: center;
 }
 
 .challenge-info h3 {
@@ -871,7 +872,7 @@ textarea:focus {
 	font-size: 20px;
 }
 
-.review-summary {
+.review-summary2 {
 	text-align: left;
 	margin-bottom: 20px;
 }
@@ -914,7 +915,7 @@ textarea:focus {
 	gap: 20px;
 }
 
-.review-item {
+.review-item2 {
 	display: flex;
 	align-items: flex-start;
 	border-bottom: 1px solid #eee;
@@ -929,11 +930,11 @@ textarea:focus {
 	object-fit: cover;
 }
 
-.review-content {
+.review-content2 {
 	flex-grow: 1;
 }
 
-.review-header {
+.review-header2 {
 	display: flex;
 	align-items: center;
 	margin-bottom: 8px;

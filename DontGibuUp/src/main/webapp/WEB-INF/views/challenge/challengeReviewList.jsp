@@ -15,7 +15,7 @@
     <input type="hidden" id="chal_num" value="${challenge.chal_num}">
     <input type="hidden" id="contextPath" value="${pageContext.request.contextPath}">
     <hr>
-    <div class="review-summary">
+    <div class="review-summary2">
         <div class="average-rating">
             <span class="rating-value">${averageRating}</span>
             <span class="rating-stars">
@@ -38,7 +38,7 @@
     <hr>
     <div class="review-list">
         <c:forEach var="review" items="${reviewList}">
-            <div class="review-item">
+            <div class="review-item2">
                 <c:choose>
                     <c:when test="${empty review.mem_photo}">
                         <img src="${pageContext.request.contextPath}/images/basicProfile.png" alt="프로필 사진" class="profile-img">
@@ -47,11 +47,12 @@
                         <img src="${pageContext.request.contextPath}/upload/${review.mem_photo}" alt="프로필 사진" class="profile-img">
                     </c:otherwise>
                 </c:choose>
-                <div class="review-content">
-                    <div class="review-header">
+                <div class="review-content2">
+                    <div class="review-header2">
                         <span class="nickname">${review.mem_nick}</span>
                         <span class="date">${review.chal_rev_date}</span>
-                        <span class="rating">
+                    </div>
+                    	<span class="rating">
                             <c:forEach begin="1" end="5" varStatus="status">
                                 <c:choose>
                                     <c:when test="${status.index <= review.chal_rev_grade}">
@@ -63,7 +64,6 @@
                                 </c:choose>
                             </c:forEach>
                         </span>
-                    </div>
                     <div class="review-text">${review.chal_rev_content}</div>
                 </div>
             </div>
