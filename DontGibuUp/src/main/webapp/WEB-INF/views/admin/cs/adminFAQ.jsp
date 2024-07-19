@@ -18,11 +18,11 @@
 		<a href="faq?category=3">굿즈샵</a> |
 		<a href="faq?category=4">기타</a>
 	</div>
-	<c:if test="${empty list}">
-	<div class="result-display">등록된 질문이 없습니다.</div>
-	</c:if>
-	<c:if test="${!empty list}">
 		<ul id="faq_list">
+		<c:if test="${!empty list}">
+			<c:if test="${empty list}">
+			<li>등록된 질문이 없습니다.</li>
+		</c:if>
 		<c:forEach var="faq" items="${list}">
 			<li class="faq-item">
 				<div class="faq-category-text">
@@ -50,8 +50,8 @@
 				</div>
 			</li>
 		</c:forEach>
+		</c:if>
 		</ul>
-	</c:if>
 	<form id="insert_faq" method="post">
 	<ul>
 	    <li class="radio-option">

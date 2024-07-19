@@ -1,56 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper   
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.spring.member.dao.MemberMapper">
 	<!-- 회원가입 - member -->
 	<insert id="insertMember" parameterType="memberVO">
 		INSERT INTO member(
-			mem_num,
-			mem_email,
-			mem_nick,
-			mem_social_id,
-			mem_reg_type,
-			mem_pw
+		mem_num,
+		mem_email,
+		mem_nick,
+		mem_social_id,
+		mem_reg_type,
+		mem_pw
 		) VALUES(
-			#{mem_num},
-			#{mem_email},
-			#{mem_nick},
-			#{mem_social_id, jdbcType=BIGINT},
-			#{mem_reg_type},
-			#{mem_pw}
+		#{mem_num},
+		#{mem_email},
+		#{mem_nick},
+		#{mem_social_id, jdbcType=BIGINT},
+		#{mem_reg_type},
+		#{mem_pw}
 		)
 	</insert>
 	<!-- 회원가입 - member_detail -->
 	<insert id="insertMemberDetail" parameterType="memberVO">
-		INSERT INTO member_detail(
-			mem_num,
-			mem_rcode,
-			recommend_status
+		INSERT INTO
+		member_detail(
+		mem_num,
+		mem_rcode,
+		recommend_status
 		) VALUES(
-			#{mem_num},
-			#{mem_rcode},
-			#{recommend_status}
+		#{mem_num},
+		#{mem_rcode},
+		#{recommend_status}
 		)
 	</insert>
 	<!-- 회원정보 수정 - member -->
 	<update id="updateMember">
 		UPDATE member
 		SET
-			mem_nick=#{mem_nick}
+		mem_nick=#{mem_nick}
 		WHERE mem_num=#{mem_num}
 	</update>
 	<!-- 회원정보 수정 - member_detail -->
 	<update id="updateMemberDetail">
 		UPDATE member_detail
 		SET
-			mem_name=#{mem_name, jdbcType=VARCHAR},
-			mem_phone=#{mem_phone, jdbcType=VARCHAR},
-			mem_birth=#{mem_birth, jdbcType=DECIMAL},
-			mem_mdate=SYSDATE
+		mem_name=#{mem_name, jdbcType=VARCHAR},
+		mem_phone=#{mem_phone, jdbcType=VARCHAR},
+		mem_birth=#{mem_birth, jdbcType=DECIMAL},
+		mem_mdate=SYSDATE
 		WHERE mem_num=#{mem_num}
 	</update>
- </mapper>
+
+	<!-- 관리자 -->
+	<!-- sql 태그와 include 태그를 이용해서 sql문을 재사용 -->
+	<sql id="memberSearch">
+		<where>
+			<if test="keyword != null and keyword != ''">
+				<if test="keyfield == 1">
+					b.mem_num=#{keyword}
+				</if>
+				<if test="keyfield == 2">
+					b.mem_email LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 3">
+					b.mem_nick LIKE '%' || #{keyword} || '%'
+				</if>
+			</if>
+		</where>
+	</sql>
+
+	<sql id="memberOrder">
+		<if test="order == 1">
+			ORDER BY b.mem_num DESC
+		</if>
+		<if test="order == 2">
+			ORDER BY b.mem_email ASC
+		</if>
+		<if test="order == 3">
+			ORDER BY b.mem_nick ASC
+		</if>
+	</sql>
+
+	<!-- 게시판 글 총 레코드수/검색 레코드수 -->
+	<select id="selectMemberCount" parameterType="map"
+		resultType="integer">
+		SELECT
+		COUNT(*)
+		FROM member b
+		<include refid="memberSearch"></include>
+	</select>
+
+	<!-- 게시판 전체 목록/검색 목록 -->
+	<select id="selectMemberList" parameterType="map" resultType="memberVO">
+		SELECT *
+		FROM (SELECT
+		        a.*, rownum rnum FROM (SELECT
+		                                b.*,
+		                                c.mem_date
+		                               FROM member b
+		                               LEFT OUTER JOIN member_detail c
+		                               ON b.mem_num=c.mem_num
+			  <include refid="memberSearch"></include>
+			  <include refid="memberOrder"></include>
+		)a)
+	<![CDATA[
+	WHERE rnum >= ${start} AND rnum <= #{end}
+	]]>
+	</select>
+</mapper>
 
 
 

@@ -1,7 +1,9 @@
 package kr.spring.member.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -69,5 +71,15 @@ public interface MemberMapper {
 				관리자 회원관리
 	---------------------------------------*/
 	//회원 리스트 선택
-	public List<MemberVO> selectMemberList();
+	public List<MemberVO> selectMemberList(Map<String, Object> map);
+	//회원 레코드 수 선택
+	public int selectMemberCount(Map<String, Object> map);
+	//회원 status 수정(정지, 사용)
+	@Update("UPDATE member SET mem_status=#{mem_status} WHERE mem_num=#{mem_num}")
+	public void updateMemStatus(MemberVO memberVO);
+	//회원 detail 삭제
+	@Delete("DELETE FROM member_detail WHERE mem_num=#{mem_num}")
+	public void deleteMemberDetail(long mem_num);
+	
+	
 }

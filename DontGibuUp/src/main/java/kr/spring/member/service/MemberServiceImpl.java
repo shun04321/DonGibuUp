@@ -1,6 +1,8 @@
 package kr.spring.member.service;
 
 
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -189,6 +191,23 @@ public class MemberServiceImpl implements MemberService {
         }
         return key.toString();
     }
+
+    
+    //관리자
+	@Override
+	public List<MemberVO> selectMemberList(Map<String, Object> map) {
+		return memberMapper.selectMemberList(map);
+	}
+
+	@Override
+	public int selectMemberCount(Map<String, Object> map) {
+		return memberMapper.selectMemberCount(map);
+	}
+
+	@Override
+	public void updateMemStatus(MemberVO memberVO) {
+		memberMapper.updateMemStatus(memberVO);
+	}
 
 	
 }

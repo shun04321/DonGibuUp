@@ -1,5 +1,8 @@
 package kr.spring.member.service;
 
+import java.util.List;
+import java.util.Map;
+
 import kr.spring.member.vo.MemberVO;
 
 public interface MemberService {
@@ -38,4 +41,13 @@ public interface MemberService {
 	
 	//임시 비밀번호 설정
 	public String SetTempPassword(MemberVO memberVO);
+	
+	//관리자
+	//회원 리스트 선택
+	public List<MemberVO> selectMemberList(Map<String, Object> map);
+	//회원 레코드 수 선택
+	public int selectMemberCount(Map<String, Object> map);
+	//회원 status 변경
+	public void updateMemStatus(MemberVO memberVO);
+	//회원 탈퇴
 }
