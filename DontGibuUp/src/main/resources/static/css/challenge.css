@@ -90,10 +90,10 @@
 
 .challenge-info2 {
 	display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-    flex-direction: row;
-    justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 #verify_content {
@@ -521,8 +521,8 @@ h2 {
 
 .challenge-info {
 	display: flex;
-    flex-direction: column;
-    align-items: center;
+	flex-direction: column;
+	align-items: center;
 }
 
 .challenge-info h3 {
@@ -764,9 +764,9 @@ textarea:focus {
 
 .challenge-info3 {
 	display: flex;
-    align-items: center;
-    margin-bottom: 16px;
-    flex-direction: row;
+	align-items: center;
+	margin-bottom: 16px;
+	flex-direction: row;
 }
 
 .challenge-thumbnail {
@@ -844,6 +844,20 @@ textarea:focus {
 
 .submit-button input[type="submit"]:hover {
 	background-color: #0056b3;
+}
+
+.rating-error, .content-error {
+	color: red;
+	margin-left: 10px;
+}
+
+.review-rating, .review-content {
+	display: flex;
+	align-items: center;
+}
+
+.review-rating .stars {
+	margin-left: 10px;
 }
 
 /* 챌린지 후기 목록 */
