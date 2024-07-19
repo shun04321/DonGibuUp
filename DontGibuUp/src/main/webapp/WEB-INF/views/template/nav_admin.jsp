@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- Admin 메뉴 시작 -->
 <ul class="side-bar">
-	<li class="side-menu">회원 관리</li>
+	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/manageMember">회원 관리</a></li>
 	<li class="side-menu">챌린지 관리</li>
 	<li class="side-menu">기부박스 관리</li>
 	<li class="side-menu">굿즈 관리</li>

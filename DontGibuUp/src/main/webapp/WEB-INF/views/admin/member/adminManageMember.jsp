@@ -5,7 +5,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <div class="page-main">
 	<h2>회원 관리</h2>
-	<form action="list" id="search_form" method="get">
+<%-- 	<form action="manageMember" id="search_form" method="get">
 		<ul class="search">
 			<li>
 				<select name="keyfield" id="keyfield">
@@ -62,6 +62,6 @@
 		</c:forEach>
 	</table>
 	<div class="align-center">${page}</div>
-	</c:if>
+	</c:if> --%>
 </div>
 <!-- 회원 목록 끝 -->
