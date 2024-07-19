@@ -2,6 +2,10 @@ $(function() {
 	let originalContent;
 	let currentItem;
 	let modifyingFaqNum;
+	const urlParams = new URLSearchParams(window.location.search);
+	const category = urlParams.get('category');
+	console.log(category);
+    updateRadioButtons(category);
 
 	//faq 등록
 	$('#insert_faq').submit(function(event) {
@@ -243,9 +247,31 @@ $(function() {
 			}
 		});
 	});
+	
+	
 });
 
 function initModifyForm(modifyingFaqNum) {
 	$(`#cancel_${modifyingFaqNum}`).trigger('click');
 	modifyingFaqNum = '';
+}
+
+function updateRadioButtons(category) {
+    // 모든 radio-option 요소를 가져와서 초기화
+    $('.radio-option').each(function() {
+        var input = $(this).find('input[type="radio"]');
+        
+        if (category === null || category === undefined) {
+            // 카테고리 값이 null 또는 undefined일 때 아무 것도 선택되지 않도록 설정
+            input.prop('checked', false);
+            $(this).show(); // 기본적으로 모든 라디오 버튼을 표시
+        } else if (input.val() == category) {
+            // 카테고리 값이 특정 값일 때 해당 라디오 버튼을 선택
+            input.prop('checked', true);
+            $(this).show(); // 선택된 버튼은 표시
+        } else {
+            // 카테고리 값이 다른 값일 때 해당 라디오 버튼을 숨김
+            $(this).hide(); 
+        }
+    });
 }

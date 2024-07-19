@@ -3,6 +3,9 @@ package kr.spring.member.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +38,7 @@ import kr.spring.member.vo.EmailMessageVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.member.vo.UserInfo;
 import kr.spring.util.AuthCheckException;
+import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -363,13 +367,13 @@ public class MemberController {
 	//로그인폼
 	@GetMapping("/member/login")
 	public String loginForm(HttpSession session, Model model) {
-		
+
 		String error = (String) session.getAttribute("error");
-	    if (error != null) {
-	        model.addAttribute("error", error);
-	        session.removeAttribute("error");
-	    }
-		
+		if (error != null) {
+			model.addAttribute("error", error);
+			session.removeAttribute("error");
+		}
+
 		return "memberLogin";
 	}
 
@@ -500,14 +504,14 @@ public class MemberController {
 		if (memberVO != null) {
 			if (memberVO.getMem_reg_type() == 2) {
 				//네이버 로그인
-				model.addAttribute("email_msg","네이버로 소셜로그인된 계정입니다");
+				model.addAttribute("email_msg", "네이버로 소셜로그인된 계정입니다");
 				return "memberFindPassword";
 			} else if (memberVO.getMem_reg_type() == 3) {
 				//카카오 로그인
-				model.addAttribute("email_msg","카카오로 소셜로그인된 계정입니다");
+				model.addAttribute("email_msg", "카카오로 소셜로그인된 계정입니다");
 				return "memberFindPassword";
 			}
-			
+
 			//임시 비밀번호 설정
 			String tempPassword = memberService.SetTempPassword(memberVO);
 
@@ -547,12 +551,43 @@ public class MemberController {
 		String htmlTemplate = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 		return htmlTemplate.replace("${tempPassword}", tempPassword);
 	}
-	
+
 	/*===================================
 	 * 			관리자 회원관리
 	 *==================================*/
 	@GetMapping("/admin/manageMember")
-	private String adminMemberList() {
+	private String adminMemberList(@RequestParam(defaultValue = "1") int pageNum,
+								   @RequestParam(defaultValue = "1") int order,
+								   String keyfield, String keyword, Model model) {
+
+		log.debug("<<회원 목록 - order>> : " + order);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (keyword != null && keyword.equals("")) {
+			keyword = null;
+		}
+		
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+
+		//전체, 검색 레코드수
+		int count = memberService.selectMemberCount(map);
+
+		//페이지 처리
+		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 10, 10, "manageMember", "&order=" + order);
+
+		List<MemberVO> list = null;
+		if (count > 0) {
+			map.put("order", order);
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+
+			list = memberService.selectMemberList(map);
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
 		
 		return "adminManageMember";
 	}

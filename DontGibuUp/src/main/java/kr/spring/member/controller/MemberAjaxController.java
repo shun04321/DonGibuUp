@@ -8,8 +8,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.spring.cs.vo.FaqVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -70,4 +73,54 @@ public class MemberAjaxController {
 		return mapAjax;
 	}
 
+	/*===================================
+	 * 			관리자 회원관리
+	 *==================================*/
+	//회원 정지
+	@ResponseBody
+	@PostMapping("/admin/suspendMember")
+	public Map<String, Object> suspendMemberAjax(long mem_num, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else if (user.getMem_status() != 9) {
+			mapAjax.put("result", "noAuthority");
+		} else {
+			MemberVO memberVO = new MemberVO();
+			memberVO.setMem_num(mem_num);
+			memberVO.setMem_status(1);
+			memberService.updateMemStatus(memberVO);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
+	}
+	
+	//회원 사용
+	@ResponseBody
+	@PostMapping("/admin/activateMember")
+	public Map<String, Object> activateMemberAjax(long mem_num, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else if (user.getMem_status() != 9) {
+			mapAjax.put("result", "noAuthority");
+		} else {
+			MemberVO memberVO = new MemberVO();
+			memberVO.setMem_num(mem_num);
+			memberVO.setMem_status(2);
+			memberService.updateMemStatus(memberVO);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
+	}
 }
