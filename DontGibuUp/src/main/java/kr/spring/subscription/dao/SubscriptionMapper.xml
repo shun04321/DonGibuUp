@@ -25,12 +25,12 @@
  		#{sub_num},
  		#{mem_num},
  		#{dcate_num},
- 		#{sub_name},
+ 		#{sub_name, jdbcType=VARCHAR},
  		#{sub_annoy},
  		#{sub_price},
  		#{sub_ndate},
  		#{sub_status},
- 		#{sub_method}
+ 		#{sub_method, jdbcType=VARCHAR}
  		<if test="easypay_method != null">
  		,#{easypay_method} 	  
  		</if>
