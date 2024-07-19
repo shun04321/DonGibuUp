@@ -1,7 +1,20 @@
 $(function(){
-	let rowCount=10;
+	let rowCount=8;
 	let currentPage;
 	let count;
+	let category;
+	
+	/* ===========================
+	 * 		카테고리 검색
+	 * =========================== */
+	// 현재 페이지의 URL 가져오기
+	var url = window.location.search;
+
+	// 파라미터를 '&'로 분리하여 배열로 만들기
+	var params = url.split('=');
+	
+	category = params[1];
+
 	/* ===========================
 	 * 		기부박스 목록
 	 * =========================== */	
@@ -12,7 +25,7 @@ $(function(){
 		$.ajax({
 			url:'dboxList',
 			type:'get',
-			data:{pageNum:pageNum,rowCount:rowCount},
+			data:{category:category,pageNum:pageNum,rowCount:rowCount},//왼쪽은 AjaxController의 @RequestParam으로 받음 
 			dataType:'json',
 			beforeSend:function(){
 				$('#loading').show();//로딩 이미지 표시
@@ -23,6 +36,16 @@ $(function(){
 			},
 			success:function(param){
 				count = param.count;
+				
+				$('#category_output').empty();
+				$('#category_output').append('<button type="button" class="btn btn-outline-dark" onclick="location.href=\'list\'">전체</button>');
+				let category_output = '';
+				$(param.category_list).each(function(index,item){
+					category_output += ' <button type="button" class="btn btn-outline-dark" onclick="location.href=\'list?category='+item.dcate_num+'\'">'+item.dcate_name+'</button>'
+				});
+				$('#category_output').append(category_output);
+				
+				
 				
 				if(pageNum == 1){
 					//처음 호출시는 해당 ID의 div의 내부 내용물을 제거
@@ -66,7 +89,13 @@ $(function(){
 			}
 		});
 	}
+	//다음 댓글 보기 버튼 클릭시 데이터 추가
+	$('.paging-button input').click(function(){
+		selectList(currentPage + 1);
+	});
+
 	
+		
 	/* ===========================
 	 * 초기 데이터(목록) 호출
 	 * =========================== */		

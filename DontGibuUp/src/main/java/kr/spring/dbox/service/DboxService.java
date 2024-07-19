@@ -12,5 +12,5 @@ public interface DboxService {
 	//Dbox 목록
 	public List<DboxVO> selectList(Map<String, Object> map);
 	//Dbox 개수
-	public Integer selectListCount();
+	public Integer selectListCount(Map<String, Object> map);
 }

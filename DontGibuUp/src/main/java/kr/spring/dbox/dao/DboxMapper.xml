@@ -51,7 +51,7 @@
 	<sql id="dboxSearch">
 		<where>
 			<if test="category != null and category != ''">
-				category = #{category}
+				dcate_num = #{category}
 			</if>
 			<if test="keyword !=null and keyword != ''">
 				<if test="category !=null and category != ''">
@@ -74,7 +74,7 @@
 			</if>
 		</where>
 	</sql>
-		<sql id="dboxStatus">
+	<sql id="dboxStatus">
 		<if test="dbox_status == 0">
 			WHERE dbox_status=0
 		</if>

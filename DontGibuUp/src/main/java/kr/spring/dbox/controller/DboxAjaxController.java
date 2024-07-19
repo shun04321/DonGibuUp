@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import kr.spring.category.service.CategoryService;
+import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
@@ -33,27 +35,35 @@ import lombok.extern.slf4j.Slf4j;
 public class DboxAjaxController {
 	@Autowired
 	private DboxService dboxService;
-
+	@Autowired
+	private CategoryService categoryService;
 
 	/*========================================
 	 * 	목록
 	 *========================================*/
 	@GetMapping("/dbox/dboxList")
 	@ResponseBody
-	public Map<String, Object> getList(@RequestParam(defaultValue="1" )int pageNum,
-									   @RequestParam(defaultValue="1") int rowCount,
+	public Map<String, Object> getList(@RequestParam(defaultValue = "1" )int pageNum,
+									   @RequestParam(defaultValue = "1") int rowCount,
+									   @RequestParam(defaultValue = "") String category,
+									   String keyfield,String keyword,Model model,
 									   HttpSession session){
 		log.debug("<<목록 - pageNum : >>" + pageNum);
 		log.debug("<<목록 - rowCount : >>" + rowCount);
+		log.debug("<<목록 - category : >>" + category);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+
 		//총 글의 개수
-		int count = dboxService.selectListCount();
+		int count = dboxService.selectListCount(map);//category만 DboxMapper.xml에 전달
+		log.debug("<<목록 - count : >>" + count);
 		
 		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum, count, rowCount);//페이지 표시는 하지 않고 start 번호 end 번호를 연산해줌
+		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, rowCount,10,"list","&category="+category);//페이지 표시는 하지 않고 start 번호 end 번호를 연산해줌
 		map.put("start", page.getStartRow());//DboxMapper.xml의 selectListReply의 rnum #{start}로 전달
 		map.put("end", page.getEndRow());//DboxMapper.xml의 selectListReply의 rnum #{end}로 전달
+		
 		
 		List<DboxVO> list = null;
 		if(count > 0) {
@@ -62,9 +72,13 @@ public class DboxAjaxController {
 			list = Collections.emptyList();//null일 경우 빈 배열로 인식되게 세팅
 		}
 		
+		List<DonationCategoryVO> category_list = categoryService.selectListNoPage();
+		
 		Map<String, Object> mapJson = new HashMap<String, Object>();
 		mapJson.put("count",count);
 		mapJson.put("list", list);
+		mapJson.put("category_list", category_list);
+		mapJson.put("page", page.getPage());
 		
 		return mapJson;
 	}

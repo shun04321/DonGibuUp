@@ -35,8 +35,8 @@ public class DboxServiceImpl implements DboxService {
 	}
 
 	@Override
-	public Integer selectListCount() {
-		return dboxMapper.selectListCount();
+	public Integer selectListCount(Map<String, Object> map) {
+		return dboxMapper.selectListCount(map);
 	}
 
 }
