@@ -1,4 +1,4 @@
-$(function() {
+
 /*	function showMyStates(){
 		console.log('a');
 		alert('a');
@@ -10,7 +10,6 @@ $(function() {
 	}*/
 	
 	function toggleEditSave(chal_ver_num) {
-		alert('a');
 		const editButton = $('#edit-button-' + chal_ver_num);
 		const isEditing = editButton.text() === '저장';
 
@@ -62,5 +61,3 @@ $(function() {
 			});
 		}
 	}
-
-});

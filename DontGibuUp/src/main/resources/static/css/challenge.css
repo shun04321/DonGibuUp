@@ -44,6 +44,7 @@
 	display: flex;
 	align-items: center;
 	border-bottom: 1px solid #ddd;
+	overflow-y: auto;
 }
 
 .joinMem {

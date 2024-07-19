@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -26,6 +25,7 @@ public interface ChallengeService {
 	
 	//챌린지 참가
 	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO);
+	public Integer selectChallengeJoinListRowCount(Map<String,Object> map);
 	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
 	public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
 	public Integer selectJoinMemberRowCount(Map<String,Object> map);
@@ -42,7 +42,7 @@ public interface ChallengeService {
 	//챌린지 인증
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public Integer selectChallengeVerifyListRowCount(Map<String,Object> map);
-    public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
+    public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);    
     public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
     public void deleteChallengeVerify(Long chal_ver_num);

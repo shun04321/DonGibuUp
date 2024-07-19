@@ -114,15 +114,9 @@
 		VALUES
 		(#{chal_joi_num}, #{chal_num}, #{mem_num}, #{dcate_num}, 0, SYSDATE, #{chal_joi_ip})
 	</insert>
-
-	<!-- 챌린지 참가 목록 -->
-	<select id="selectChallengeJoinList" parameterType="map"
-		resultType="challengeJoinVO">
-	    SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_freq, c.chal_fee, dc.dcate_charity
-	    FROM chal_join cj
-	    JOIN challenge c ON cj.chal_num = c.chal_num
-	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
-	    WHERE cj.mem_num = #{mem_num}
+	
+	<!-- 챌린지 참가 목록 분류 -->
+	<sql id="sortEnrolledChallenge">
 		<if test="status == 'pre'">
 	        <![CDATA[
 	        AND c.chal_sdate > TO_CHAR(SYSDATE, 'YYYY-MM-DD')
@@ -138,8 +132,39 @@
 	        <![CDATA[
 	        AND c.chal_edate < TO_CHAR(SYSDATE, 'YYYY-MM-DD')
 	        ]]>
-		</if>
-	    ORDER BY cj.chal_joi_date DESC
+		</if>	
+	</sql>
+	
+	<!-- 챌린지 참가 목록 수(페이징 처리 목적) -->
+	<select id="selectChallengeJoinListRowCount" parameterType="map" resultType="Integer">
+		SELECT 
+			COUNT(*) 
+		FROM chal_join cj
+	    JOIN challenge c ON cj.chal_num = c.chal_num
+	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
+		WHERE cj.mem_num=#{mem_num}
+		<include refid="sortEnrolledChallenge"></include>
+	</select>
+	
+	<!-- 챌린지 참가 목록 -->
+	<select id="selectChallengeJoinList" parameterType="map" resultType="challengeJoinVO">
+	    SELECT * FROM(
+			SELECT a.*,rownum rnum FROM(
+				SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_freq, c.chal_fee, dc.dcate_charity
+	    		FROM chal_join cj
+	    		JOIN challenge c ON cj.chal_num = c.chal_num
+	    		JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
+	    		WHERE cj.mem_num = #{mem_num}
+				<include refid="sortEnrolledChallenge"></include>
+	    		ORDER BY cj.chal_joi_date DESC
+			)a
+		)
+		<if test="start != null and end != null">
+			<![CDATA[
+			WHERE rnum >= #{start} AND rnum <= #{end}
+			]]>
+		</if>		
+	    
 	</select>
 
 	<!-- 챌린지 참가 상세 -->
@@ -162,7 +187,7 @@
 				LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num 
 				<!-- 제보(신고) 조인 -->
 				WHERE chal_num=#{chal_num}
-				ORDER BY cj.chal_joi_num DESC
+				ORDER BY cj.chal_joi_num ASC
 			)a
 		)
 		<![CDATA[
@@ -202,12 +227,35 @@
 		#{chal_ver_photo,jdbcType=VARCHAR}, #{chal_ver_status},
 		#{chal_ver_report}, SYSDATE)
 	</insert>
-
+	
 	<!-- 챌린지 인증 목록 -->
-	<select id="selectChallengeVerifyList" parameterType="long" resultType="challengeVerifyVO">
-		SELECT * FROM CHAL_VERIFY
-		WHERE chal_joi_num = #{chal_joi_num}
-		ORDER BY chal_reg_date DESC
+	<select id="selectChallengeVerifyList" parameterType="map" resultType="challengeVerifyVO">
+		SELECT * FROM(
+			SELECT a.*,rownum rnum FROM(
+				SELECT * FROM CHAL_VERIFY
+				WHERE chal_joi_num = #{chal_joi_num}
+				ORDER BY chal_reg_date DESC
+			)a
+		)
+		<if test="start != null and end != null">
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>	
+		</if>			
+	</select>
+	
+	<!-- 챌린지 인증 목록 페이지 처리 목적 -->
+	<select id="selectChallengeVerifyListPage" parameterType="map" resultType="challengeVerifyVO">
+		SELECT * FROM(
+			SELECT a.*,rownum rnum FROM(
+				SELECT * FROM CHAL_VERIFY
+				WHERE chal_joi_num = #{chal_joi_num}
+				ORDER BY chal_reg_date DESC
+			)a
+		)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>		
 	</select>
 
 	<!-- 챌린지 인증 상세 -->

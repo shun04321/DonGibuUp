@@ -114,17 +114,17 @@ public class ChallengeAjaxController {
 		this.impClient = new IamportClient(apiKey,secretKey);
 	}
 	
-    //결제 정보 검증
+    // 결제 정보 검증하기
     @PostMapping("/challenge/paymentVerifyWrite/{imp_uid}")
     @ResponseBody
     public IamportResponse<Payment> validateIamportWrite(@PathVariable String imp_uid, HttpSession session, HttpServletRequest request)
             throws IamportResponseException, IOException {
         IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
 
-        //로그인 여부 확인하기
+        // 로그인 여부 확인하기
         MemberVO member = (MemberVO) session.getAttribute("user");
 
-        //실 결제 금액 가져오기
+        // 실 결제 금액 가져오기
         long paidAmount = payment.getResponse().getAmount().longValue();
 
         log.debug("payment: " + payment);
@@ -132,7 +132,7 @@ public class ChallengeAjaxController {
         return payment;
     }
 
-    //챌린지 참가, 결제 정보 저장
+    //챌린지 참가 및 결제 정보 저장
     @PostMapping("/challenge/payAndEnrollWrite")
     @ResponseBody
     public Map<String, String> saveChallengeInfoWrite(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
@@ -143,7 +143,7 @@ public class ChallengeAjaxController {
         int chalPayStatus = (Integer) data.get("chal_pay_status");
         int dcateNum = Integer.parseInt((String) data.get("dcate_num"));
         Long chalNum = Long.parseLong((String) data.get("chal_num"));
-        String sdate = (String) data.get("sdate");//클라이언트에서 전달된 sdate
+        String sdate = (String) data.get("sdate"); //클라이언트에서 전달된 sdate
 
         log.debug("odImpUid : " + odImpUid);
         log.debug("chalPayPrice : " + chalPayPrice);
@@ -243,7 +243,7 @@ public class ChallengeAjaxController {
 		
 		if(member == null) {
 			mapJson.put("result", "logout");
-		}else {
+		}else {			
 			//챌린지 참가 정보 저장
 			ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
 			challengeJoinVO.setMem_num(member.getMem_num());
@@ -293,7 +293,7 @@ public class ChallengeAjaxController {
 		Map<String,Object> map = new HashMap<>();
 		map.put("chal_joi_num", chal_joi_num);
 		
-		//총 챌린지 참가 멤버수 불러오기
+		//총 챌린지 참가 멤버수
 		int count = challengeService.selectChallengeVerifyListRowCount(map);
 		
 		//페이지 처리
@@ -344,4 +344,35 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 	
+	//챌린지 인증 현황 불러오기
+	@GetMapping("/challenge/verify/verifyMemberList")
+	@ResponseBody
+	public Map<String,Object> verifyMemberList(@RequestParam(defaultValue="1") int pageNum,long chal_joi_num,int rowCount,HttpSession session){
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_joi_num", chal_joi_num);
+		
+		//선택한 회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		long mem_num = user.getMem_num();
+		
+		//총 챌린지 인증 개수
+		int count = challengeService.selectChallengeVerifyListRowCount(map);
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
+				
+		int start = page.getStartRow();
+		int end = page.getEndRow();
+		map.put("start", start);
+		map.put("end", end);
+		
+		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
+		
+		Map<String,Object> mapJson = new HashMap<>();
+		mapJson.put("list", verifyList);
+		mapJson.put("count", count);
+		mapJson.put("mem_num", mem_num);
+		
+		return mapJson;
+	}
 }

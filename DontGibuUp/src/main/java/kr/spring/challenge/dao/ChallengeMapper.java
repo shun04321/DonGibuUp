@@ -34,6 +34,7 @@ public interface ChallengeMapper {
 	@Select("SELECT chal_join_seq.nextval FROM dual")
 	public Long selectChal_joi_num();
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
+    public Integer selectChallengeJoinListRowCount(Map<String,Object> map);
     public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
     public ChallengeJoinVO selectChallengeJoin(Long chal_num);
     //챌린지 참가 회원 목록
@@ -52,6 +53,7 @@ public interface ChallengeMapper {
     @Select("SELECT COUNT(*) FROM chal_verify WHERE chal_joi_num=#{chal_joi_num}")
     public Integer selectChallengeVerifyListRowCount(Map<String,Object> map);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);
+    public List<ChallengeVerifyVO> selectChallengeVerifyListPage(Map<String, Object> map);
     public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
     public void deleteChallengeVerify(Long chal_ver_num);    

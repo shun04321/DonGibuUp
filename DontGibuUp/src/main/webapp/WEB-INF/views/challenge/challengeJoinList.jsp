@@ -71,6 +71,7 @@
                 </c:forEach>
             </c:forEach>
         </div>
+        <div class="align-center">${page}</div>
     </div>
 </div>
 </body>

@@ -73,7 +73,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public int countCurrentParticipants(long chal_num) {
 	    return challengeMapper.countCurrentParticipants(chal_num);
 	}
-
+	
 	//챌린지 참가//
     @Override
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO) {
@@ -192,5 +192,10 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void deleteChallengeReview(Long chal_rev_num) {
         challengeMapper.deleteChallengeReview(chal_rev_num);
     }
+
+	@Override
+	public Integer selectChallengeJoinListRowCount(Map<String, Object> map) {
+		return challengeMapper.selectChallengeJoinListRowCount(map);
+	}
 
 }
