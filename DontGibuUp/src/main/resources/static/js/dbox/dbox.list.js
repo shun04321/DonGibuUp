@@ -3,18 +3,35 @@ $(function(){
 	let currentPage;
 	let count;
 	let category;
+	let order;
 	
 	/* ===========================
 	 * 		카테고리 검색
 	 * =========================== */
-	// 현재 페이지의 URL 가져오기
-	var url = window.location.search;
-
-	// 파라미터를 '&'로 분리하여 배열로 만들기
-	var params = url.split('=');
+	if(window.location.search != ''){
+		// 현재 페이지의 URL 가져오기
+	    let searchUrl = window.location.href;
 	
-	category = params[1];
+	    // URL에서 파라미터 부분 추출하기
+	    let query = searchUrl.split('?')[1];
+	
+	    // 파라미터를 '&'로 분리하여 배열로 만들기
+	    let params = query.split('&');
+		
+		// 파라미터 배열에서 찾기
+		$.each(params,function(index, param) {
+		    let keyValue = param.split('=');
+		    console.log("keyValue" , keyValue)
+		    if (keyValue[0] == 'category') {
+		        category = keyValue[1]; // category 파라미터의 값
+		    }
+		    if (keyValue[0] == 'order') {
+		        order = keyValue[1]; // order 파라미터의 값
+		    }
+		});
+	}
 
+	
 	/* ===========================
 	 * 		기부박스 목록
 	 * =========================== */	
@@ -25,7 +42,7 @@ $(function(){
 		$.ajax({
 			url:'dboxList',
 			type:'get',
-			data:{category:category,pageNum:pageNum,rowCount:rowCount},//왼쪽은 AjaxController의 @RequestParam으로 받음 
+			data:{order:order,category:category,pageNum:pageNum,rowCount:rowCount},//왼쪽은 AjaxController의 @RequestParam으로 받음 
 			dataType:'json',
 			beforeSend:function(){
 				$('#loading').show();//로딩 이미지 표시

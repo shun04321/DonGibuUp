@@ -45,22 +45,27 @@ public class DboxAjaxController {
 	@ResponseBody
 	public Map<String, Object> getList(@RequestParam(defaultValue = "1" )int pageNum,
 									   @RequestParam(defaultValue = "1") int rowCount,
+									   @RequestParam(defaultValue = "1") int order,
 									   @RequestParam(defaultValue = "") String category,
-									   String keyfield,String keyword,Model model,
+									   String keyfield,String keyword,
 									   HttpSession session){
 		log.debug("<<목록 - pageNum : >>" + pageNum);
 		log.debug("<<목록 - rowCount : >>" + rowCount);
 		log.debug("<<목록 - category : >>" + category);
+		log.debug("<<목록 - keyfield : >>" + keyfield);
+		log.debug("<<목록 - keyword : >>" + keyword);
+		log.debug("<<목록 - order : >>" + order);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
+		map.put("order", order);
 
 		//총 글의 개수
-		int count = dboxService.selectListCount(map);//category만 DboxMapper.xml에 전달
+		int count = dboxService.selectListCount(map);//category,order DboxMapper.xml에 우선 전달
 		log.debug("<<목록 - count : >>" + count);
 		
 		//페이지 처리
-		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, rowCount,10,"list","&category="+category);//페이지 표시는 하지 않고 start 번호 end 번호를 연산해줌
+		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, rowCount,10,"list","&category="+category+"&order="+order);//페이지 표시는 하지 않고 start 번호 end 번호를 연산해줌
 		map.put("start", page.getStartRow());//DboxMapper.xml의 selectListReply의 rnum #{start}로 전달
 		map.put("end", page.getEndRow());//DboxMapper.xml의 selectListReply의 rnum #{end}로 전달
 		
