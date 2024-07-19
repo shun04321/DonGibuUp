@@ -196,7 +196,7 @@
 	border-radius: 5px;
 	padding: 10px;
 	margin: 10px;
-	width: 145px;
+	width: 160px;
 	height: 80px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
@@ -754,110 +754,139 @@ textarea:focus {
 
 /* 챌린지 후기 작성 */
 .review-container2 {
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	padding: 16px;
-	max-width: 600px;
-	margin: 20px auto;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    max-width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .challenge-info3 {
-	display: flex;
-	align-items: center;
-	margin-bottom: 16px;
-	flex-direction: row;
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-direction: row;
 }
 
 .challenge-thumbnail {
-	width: 100px;
-	height: 100px;
-	border-radius: 8px;
-	margin-right: 16px;
-	object-fit: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    margin-right: 16px;
+    object-fit: cover;
 }
 
 .challenge-details {
-	flex-grow: 1;
+    flex-grow: 1;
 }
 
 .challenge-details h2 {
-	margin: 0 0 8px;
-	font-size: 24px;
-	text-align: left;
+    margin: 0 0 8px;
+    font-size: 24px;
+    text-align: left;
 }
 
 .challenge-details p {
-	margin: 4px 0;
-	color: #666;
+    margin: 4px 0;
+    color: #666;
+}
+
+.review-rating {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    margin-bottom: 10px;
 }
 
 .review-rating label {
-	font-size: 16px;
-	display: block;
+    font-size: 16px;
+    display: block;
 }
 
 .stars {
-	display: flex;
-	gap: 4px;
+    display: flex;
+    gap: 4px;
+    margin-top: 10px;
 }
 
 .star {
-	font-size: 24px;
-	color: #ffcc00;
+    font-size: 24px;
+    color: #ffcc00;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.star:hover,
+.star:hover ~ .star {
+    color: #ffcc00;
+    transform: scale(1.2);
+}
+
+.star.selected,
+.star.selected ~ .star {
+    color: #ffcc00;
+}
+
+.star:not(.selected) {
+    color: #ddd;
 }
 
 .review-content label {
-	font-size: 16px;
-	display: block;
+    font-size: 16px;
+    display: block;
 }
 
 .review-content textarea {
-	width: 100%;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	padding: 8px;
-	font-size: 14px;
-	resize: none;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    resize: none;
 }
 
 .char-count {
-	text-align: right;
-	font-size: 12px;
-	color: #999;
-	margin-top: 4px;
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
 }
 
 .submit-button {
-	text-align: center;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .submit-button input[type="submit"] {
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	padding: 10px 20px;
-	font-size: 16px;
-	cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .submit-button input[type="submit"]:hover {
-	background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .rating-error, .content-error {
-	color: red;
-	margin-left: 10px;
+    color: red;
+    margin-left: 10px;
+    position: absolute;
+    right: 0;
 }
 
-.review-rating, .review-content {
-	display: flex;
-	align-items: center;
+.review-rating, .review-content2 {
+    display: flex;
+    align-items: center;
 }
 
 .review-rating .stars {
-	margin-left: 10px;
+    margin-left: 10px;
 }
 
 /* 챌린지 후기 목록 */

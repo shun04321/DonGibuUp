@@ -15,10 +15,10 @@
 <div class="review-container2">
     <div class="challenge-info3">
         <c:if test="${empty challenge.chal_photo}">
-        		<img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진" class="challenge-thumbnail">
+            <img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진" class="challenge-thumbnail">
         </c:if>
         <c:if test="${!empty challenge.chal_photo}">
-        	<img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진" class="challenge-thumbnail">
+            <img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진" class="challenge-thumbnail">
         </c:if>
         <div class="challenge-details">
             <h2>${challenge.chal_title}</h2>
@@ -29,28 +29,28 @@
     <form:form action="${pageContext.request.contextPath}/challenge/review/write" method="post" modelAttribute="challengeReviewVO">
         <form:hidden path="chal_num" value="${chal_num}"/>
         <div class="review-rating">
-	        <label for="chal_rev_grade">챌린지에 만족하셨나요?</label>
-			<span class="rating-error"></span>
-		</div>
-		<br>
-        <div class="stars">
-            <form:radiobutton path="chal_rev_grade" value="1" class="star" />★
-            <form:radiobutton path="chal_rev_grade" value="2" class="star" />★
-            <form:radiobutton path="chal_rev_grade" value="3" class="star" />★
-            <form:radiobutton path="chal_rev_grade" value="4" class="star" />★
-            <form:radiobutton path="chal_rev_grade" value="5" class="star" />★
+            <label for="chal_rev_grade">챌린지에 만족하셨나요?</label>
+            <span class="rating-error"></span>
         </div>
+        <div class="stars">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+        </div>
+        <form:hidden path="chal_rev_grade" id="chal_rev_grade" value=""/>
         <br><br>
-        <div class="review-content">
+        <div class="review-content2">
             <label for="chal_rev_content">내용을 입력해 주세요</label>
             <span class="content-error"></span>
         </div>
         <br>
-        <div class="review-content2">
-	        <form:textarea path="chal_rev_content" rows="5" cols="50" placeholder="후기 작성시 ( )p가 지급됩니다."></form:textarea>
-	        <div class="char-count">
-	            0 / 최소 20자
-	        </div>
+        <div class="review-content3">
+            <form:textarea path="chal_rev_content" rows="5" cols="50" placeholder="후기 작성시 ( )p가 지급됩니다." id="chal_rev_content"></form:textarea>
+            <div class="char-count">
+                0 / 최소 20자
+            </div>
         </div>
         <div class="submit-button">
             <input type="submit" value="등록"/>
