@@ -12,6 +12,15 @@
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
 	</definition>
+	
+	<!-- 기부박스 상세페이지 -->
+	<definition name="dboxDetail" template="/WEB-INF/views/template/layout_dboxDetail.jsp">
+		<put-attribute name="title" value="기부박스"/>
+		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxDetail.jsp"/>
+		<put-attribute name="nav" value="/WEB-INF/views/dbox/dboxDetailNav.jsp"/>
+		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+	</definition>
 
 	<!-- 기부박스 제안하기 -->
 	<definition name="dboxPropose" template="/WEB-INF/views/template/layout_dbox.jsp">

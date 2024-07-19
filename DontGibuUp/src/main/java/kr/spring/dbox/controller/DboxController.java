@@ -15,6 +15,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.spring.category.service.CategoryService;
@@ -49,6 +50,18 @@ public class DboxController {
     public String list() {
     	log.debug("<<목록접속>> : ");
         return "dboxList";
+    }
+    /*===================================
+     * 		기부박스 상세페이지
+     *==================================*/
+    @GetMapping("/dbox/{dboxNum}/content")
+    public String detail(@PathVariable long dboxNum,Model model) {
+    	log.debug("<<상세 페이지 접속>> : " + dboxNum);
+    	
+    	//DboxVO dbox = dboxService.selectDbox;
+    	
+    	return "dboxDetail";
+    	//return "redirect:/dbox/"+dboxNum+"/content";
     }
 	
 	
