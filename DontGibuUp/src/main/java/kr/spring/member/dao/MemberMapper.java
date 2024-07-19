@@ -1,5 +1,7 @@
 package kr.spring.member.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -62,4 +64,10 @@ public interface MemberMapper {
 	//비밀번호 수정
 	@Update("UPDATE member SET mem_pw=#{mem_pw} WHERE mem_num=#{mem_num}")
 	public void updatePassword(MemberVO memberVO);
+	
+	/*---------------------------------------
+				관리자 회원관리
+	---------------------------------------*/
+	//회원 리스트 선택
+	public List<MemberVO> selectMemberList();
 }

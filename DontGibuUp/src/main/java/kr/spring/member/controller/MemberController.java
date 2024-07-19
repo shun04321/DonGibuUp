@@ -547,4 +547,13 @@ public class MemberController {
 		String htmlTemplate = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
 		return htmlTemplate.replace("${tempPassword}", tempPassword);
 	}
+	
+	/*===================================
+	 * 			관리자 회원관리
+	 *==================================*/
+	@GetMapping("/admin/manageMember")
+	private String adminMemberList() {
+		
+		return "adminManageMember";
+	}
 }

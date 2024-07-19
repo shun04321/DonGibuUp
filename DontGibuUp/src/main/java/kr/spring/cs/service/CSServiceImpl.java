@@ -63,25 +63,23 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Override
-	public int selectFaqCount(Map<String, Object> map) {
-		return csMapper.selectFaqCount(map);
-	}
-
-	@Override
-	public void insertFaq(FaqVO faqVO) {
+	public long insertFaq(FaqVO faqVO) {
+		long faq_num = csMapper.selectFaqNum();
+		
+		faqVO.setFaq_num(faq_num);
 		csMapper.insertFaq(faqVO);
+		
+		return faq_num;
 	}
 
 	@Override
 	public void updateFaq(FaqVO faqVO) {
-		// TODO Auto-generated method stub
-		
+		csMapper.updateFaq(faqVO);
 	}
 
 	@Override
 	public void deleteFaq(long faq_num) {
-		// TODO Auto-generated method stub
-		
+		csMapper.deleteFaq(faq_num);
 	}
 
 }

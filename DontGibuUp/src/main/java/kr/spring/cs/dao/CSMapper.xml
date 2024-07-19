@@ -65,21 +65,6 @@
 		]]>
 	</select>
 	
-	<!-- 관리자 faq 등록 -->
-	<insert id="insertFaq" parameterType="faqVO">
-		INSERT
-		INTO faq(
-			faq_num,
-			faq_category,
-			faq_question,
-			faq_answer)
-		VALUES(
-			faq_seq.nextval,
-			#{faq_category},
-			#{faq_question},
-			#{faq_answer})
-	</insert>
-	
 	<!-- 관리자 faq 조건절 -->
 	<sql id="faqSearch">
 		<where>
@@ -89,23 +74,11 @@
 		</where>
 	</sql>
 	
-	<!-- 관리자 faq 카운트 -->
-	<select id="selectFaqCount" parameterType="map" resultType="integer">
-		SELECT COUNT(*) FROM faq
-		<include refid="faqSearch"></include>
-	</select>
-	
 	<!-- 관리자 faq 목록 -->
 	<select id="selectFaqList" parameterType="map" resultType="faqVO">
-		SELECT *
-		FROM (
-		    SELECT b.*, rownum rnum FROM (
-		        SELECT *
-		        FROM faq a
-		        <include refid="faqSearch"></include>
-		        ORDER BY a.faq_num ASC)b)
-		<![CDATA[
-		WHERE rnum >= #{start} AND rnum <= #{end}	
-		]]>
+        SELECT *
+        FROM faq a
+        <include refid="faqSearch"></include>
+        ORDER BY a.faq_num ASC
 	</select>
 </mapper>

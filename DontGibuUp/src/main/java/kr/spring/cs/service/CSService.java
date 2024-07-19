@@ -3,6 +3,8 @@ package kr.spring.cs.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
+
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 
@@ -32,10 +34,8 @@ public interface CSService {
 	 ******************/
 	//faq 목록
 	public List<FaqVO> selectFaqList(Map<String, Object> map);
-	//faq 개수
-	public int selectFaqCount(Map<String, Object> map);
 	//faq 등록
-	public void insertFaq(FaqVO faqVO);
+	public long insertFaq(FaqVO faqVO);
 	//faq 수정
 	public void updateFaq(FaqVO faqVO);
 	//faq 삭제

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.FaqVO;
@@ -40,45 +41,102 @@ public class CSController {
 
 	//자주하는 질문(사용자)
 	@GetMapping("/cs/faqlist")
-	public String faqlist() {
-		return "faqlist";
-	}
-	
-	//자주하는 질문(관리자)
-	@GetMapping("/admin/cs/faq")
-	public String adminFAQ(@RequestParam(name = "category", required = false) String category,
-						   @RequestParam(defaultValue = "1") int pageNum,
-						   Model model) {
-		
+	public String faqlist(@RequestParam(name = "category", required = false) String category, Model model) {
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
-		
-		log.debug("<<관리자 faq 목록 - category>> : " + category);
-		
-		
-		//레코드 수
-		int count = csService.selectFaqCount(map);
-		
-		//페이지 처리
-		PagingUtil page;
-		if (category==null) {
-			page = new PagingUtil(pageNum, count, 10, 10, "faq");
-		} else {			
-			page = new PagingUtil(pageNum, count, 10, 10, "faq", "&category=" + category);
-		}
-		
-		List<FaqVO> list = null;
-		if (count > 0) {
-			map.put("start", page.getStartRow());
-			map.put("end", page.getEndRow());
-			list = csService.selectFaqList(map);
-		}
-		
-		model.addAttribute("count", count);
+
+		log.debug("<<사용자 faq 목록 - category>> : " + category);
+
+		List<FaqVO> list = csService.selectFaqList(map);
+
 		model.addAttribute("list", list);
-		model.addAttribute("page", page.getPage());
-		
+
+		return "faqlist";
+	}
+
+	//자주하는 질문(관리자)
+	@GetMapping("/admin/cs/faq")
+	public String adminFAQ(@RequestParam(name = "category", required = false) String category, Model model) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("category", category);
+
+		log.debug("<<관리자 faq 목록 - category>> : " + category);
+
+		List<FaqVO> list = csService.selectFaqList(map);
+
+		model.addAttribute("list", list);
+
 		return "adminFAQ";
+	}
+
+	//faq 등록
+	@ResponseBody
+	@PostMapping("/admin/cs/insertFaq")
+	public Map<String, Object> insertFaqAjax(@RequestParam String faq_question, @RequestParam String faq_answer,
+			@RequestParam int faq_category, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else if (user.getMem_status() != 9) {
+			mapAjax.put("result", "noAuthority");
+		} else {
+			FaqVO faqVO = new FaqVO(faq_category, faq_question, faq_answer);
+			long faq_num = csService.insertFaq(faqVO);
+			mapAjax.put("faq_num", faq_num);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
+	}
+
+	//faq 수정
+	@ResponseBody
+	@PostMapping("/admin/cs/modifyFaq")
+	public Map<String, Object> modifyFaqAjax(@RequestParam String faq_question, @RequestParam String faq_answer,
+			@RequestParam long faq_num, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else if (user.getMem_status() != 9) {
+			mapAjax.put("result", "noAuthority");
+		} else {
+			FaqVO faqVO = new FaqVO(faq_num, faq_question, faq_answer);
+			csService.updateFaq(faqVO);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
+	}
+
+	//faq 삭제
+	@ResponseBody
+	@PostMapping("/admin/cs/deleteFaq")
+	public Map<String, Object> deleteFaqAjax(@RequestParam long faq_num, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else if (user.getMem_status() != 9) {
+			mapAjax.put("result", "noAuthority");
+		} else {
+			csService.deleteFaq(faq_num);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
 	}
 
 	//1:1문의 폼
@@ -118,7 +176,7 @@ public class CSController {
 		MemberVO user = (MemberVO) session.getAttribute("user");
 
 		inquiryVO.setMem_num(user.getMem_num());
-		
+
 		//파일 업로드
 		inquiryVO.setInquiry_filename(FileUtil.createFile(request, inquiryVO.getUpload()));
 
@@ -134,75 +192,70 @@ public class CSController {
 
 		return "inquiryResultPage";
 	}
-	
-	
-	
+
 	//관리자 1:1문의 목록
 	@GetMapping("admin/cs/inquiry")
-	public String memberPoint(@RequestParam(defaultValue="1") int pageNum,
-							  @RequestParam(defaultValue="1") int status,
-							  HttpSession session,
-							  Model model) {
+	public String memberPoint(@RequestParam(defaultValue = "1") int pageNum,
+			@RequestParam(defaultValue = "1") int status, HttpSession session, Model model) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", status);
-		
+
 		log.debug("<<관리자 문의 목록 - status>> : " + status);
-		
-		
+
 		//레코드 수
 		int count = csService.selectInquiryListCount(map);
-		
+
 		//페이지 처리
 		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "inquiry", "&status=" + status);
-		
+
 		List<InquiryVO> list = null;
 		if (count > 0) {
 			map.put("start", page.getStartRow());
 			map.put("end", page.getEndRow());
 			list = csService.selectInquiryList(map);
 		}
-		
+
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
 		model.addAttribute("page", page.getPage());
-		
+
 		return "adminInquiry";
 	}
-	
+
 	//관리자 1:1 문의 답변 폼 (문의 상세보기)
 	@GetMapping("/admin/cs/inquiry/reply")
 	public String replyInquiryForm(@RequestParam long inquiry_num, Model model) {
 		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
-		
-		log.debug("<<문의 상세 - inquiry_num>> : " +inquiry_num);
-		log.debug("<<문의 상세>> : " +inquiry);
-		
+
+		log.debug("<<문의 상세 - inquiry_num>> : " + inquiry_num);
+		log.debug("<<문의 상세>> : " + inquiry);
+
 		model.addAttribute("inquiry", inquiry);
-		
+
 		return "adminInquiryReply";
 	}
-	
+
 	@PostMapping("/admin/cs/inquiry/reply")
 	public String replyInquiry(@Valid InquiryVO inquiryVO, BindingResult result, Model model) {
 		if (inquiryVO.getInquiry_reply() == null || inquiryVO.getInquiry_reply().equals("")) {
 			result.rejectValue("inquiry_reply", "notBlank.inquiry_reply");
 			return "adminInquiryReply";
 		}
-		
+
 		//답변 수정
 		csService.replyInquiry(inquiryVO);
-		
+
 		model.addAttribute("inquiry", inquiryVO);
 		return "redirect:/admin/cs/inquiry/reply?inquiry_num=" + inquiryVO.getInquiry_num();
 	}
-	
+
 	@GetMapping("/admin/cs/inquiry/modifyForm")
 	public String modifyFormAjax(@RequestParam long inquiry_num, Model model) {
 		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
 
 		model.addAttribute("inquiry", inquiry);
-		
+
 		return "admin/cs/inquiryModifyForm";
 	}
 }

@@ -22,29 +22,74 @@
 	<div class="result-display">등록된 질문이 없습니다.</div>
 	</c:if>
 	<c:if test="${!empty list}">
-		<ul>
+		<ul id="faq_list">
 		<c:forEach var="faq" items="${list}">
 			<li class="faq-item">
-				<h4>Q.${faq.faq_question}</h4>
-				<div>A.${faq.faq_answer}</div>
+				<div class="faq-category-text">
+				<c:if test="${faq.faq_category == 0}">
+				정기기부
+				</c:if>
+				<c:if test="${faq.faq_category == 1}">
+				기부박스
+				</c:if>
+				<c:if test="${faq.faq_category == 2}">
+				챌린지
+				</c:if>
+				<c:if test="${faq.faq_category == 3}">
+				굿즈샵
+				</c:if>
+				<c:if test="${faq.faq_category == 4}">
+				기타
+				</c:if>
+				</div>
+				<h4 class="faq-question-text">Q. ${faq.faq_question}</h4>
+				<div class="faq-answer-text">A. ${faq.faq_answer}</div>
 				<div class="align-right">
-					<button>수정</button>
-					<button onclick="delete?faq_num=${faq.faq_num}">삭제</button>				
+					<button class="modifyBtn" data-num="${faq.faq_num}">수정</button>
+					<button class="deleteBtn" data-num="${faq.faq_num}">삭제</button>				
 				</div>
 			</li>
 		</c:forEach>
 		</ul>
 	</c:if>
-	<form id="insert_faq">
-		<input id="faq_question" name="faq_question" type="text" placeholder="질문">
-		<span id="question_check_msg"></span>
-		<textarea id="faq_answer" name="faq_answer" rows="5" cols="60" placeholder="내용"></textarea>
-		<span id="answer_check_msg"></span>
-		<div class="align-right">
+	<form id="insert_faq" method="post">
+	<ul>
+	    <li class="radio-option">
+	        <input type="radio" id="regularDonation" name="faq_category" value="0">
+	        <label for="regularDonation">정기기부</label>
+	    </li>
+	    <li class="radio-option">
+	        <input type="radio" id="donationBox" name="faq_category" value="1">
+	        <label for="donationBox">기부박스</label>
+	    </li>
+	    <li class="radio-option">
+	        <input type="radio" id="challenge" name="faq_category" value="2">
+	        <label for="challenge">챌린지</label>
+	    </li>
+	    <li class="radio-option">
+	        <input type="radio" id="goodsShop" name="faq_category" value="3">
+	        <label for="goodsShop">굿즈샵</label>
+	    </li>
+	    <li class="radio-option">
+	        <input type="radio" id="other" name="faq_category" value="4">
+	        <label for="other">기타</label>
+	    </li>
+	    <li>
+	    	<span id="category_check_msg"></span>
+	    </li>
+		<li>
+			<input id="faq_question" name="faq_question" type="text" placeholder="질문">
+			<span id="question_check_msg"></span>	
+		</li>
+		<li>
+			<textarea id="faq_answer" name="faq_answer" rows="5" cols="60" placeholder="내용"></textarea>
+			<span id="answer_check_msg"></span>
+		</li>
+		<li class="align-right">
 			<input type="submit" value="등록">	
-		</div>
+		</li>
+	
+	
+	</ul>
 	</form>
-	<c:if test="${!empty list}">
-	<div class="align-center">${page}</div>
-	</c:if>
 </div>

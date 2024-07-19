@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -36,13 +37,17 @@ public interface CSMapper {
 	
 	//faq 목록
 	public List<FaqVO> selectFaqList(Map<String, Object> map);
-	//faq 개수
-	public int selectFaqCount(Map<String, Object> map);
 	//faq 등록
+	@Insert("INSERT INTO faq(faq_num,faq_category,faq_question,faq_answer) VALUES(#{faq_num}, #{faq_category}, #{faq_question}, #{faq_answer})")
 	public void insertFaq(FaqVO faqVO);
 	//faq 수정
+	@Update("UPDATE faq SET faq_question=#{faq_question}, faq_answer=#{faq_answer} WHERE faq_num=#{faq_num}")
 	public void updateFaq(FaqVO faqVO);
 	//faq 삭제
+	@Delete("DELETE FROM faq WHERE faq_num=#{faq_num}")
 	public void deleteFaq(long faq_num);
+	//faq seq 선택
+	@Select("SELECT faq_seq.nextval FROM dual")
+	public long selectFaqNum();
 	
 }

@@ -41,3 +41,23 @@ ul {
 	padding: 5px 10px;
 	margin: 10px 0;
 }
+
+.radio-option {
+	display: flex;
+	width: 120px;
+}
+
+.faq-category-text {
+	color: blue;
+}
+
+.user-faq-item {
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #000000;
+	margin: 0;
+	padding: 8px 0;
+}
+
+.user-faq-item .faq-question-text {
+	cursor: pointer;
+}
