@@ -38,9 +38,20 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public String schedulePay(String customerUid, int price, String merchant_uid) {
-    	System.out.println("schedulePay 정상 작동 data :" +customerUid+","+price+","+merchant_uid);
         String token = getToken();
-        long timestamp = generateTimestamp();
+        Integer timestamp = 0;
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.KOREA);
+		cal.add(Calendar.DATE, +5);
+		String date = sdf.format(cal.getTime());
+		try {
+			Date stp = sdf.parse(date);
+			timestamp = (int) (stp.getTime()/1000);
+			System.out.println(timestamp);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // 현재 Unix Timestamp를 초 단위로 생성
         String accessToken = extractAccessToken(token);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -50,7 +61,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("merchant_uid", merchant_uid);
-        jsonObject.addProperty("schedule_at", timestamp);
+        jsonObject.addProperty("schedule_at", timestamp); // 현재 Unix Timestamp 사용
         jsonObject.addProperty("amount", price);
 
         JsonObject reqJson = new JsonObject();
@@ -60,8 +71,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         String json = new Gson().toJson(reqJson);
 
         HttpEntity<String> entity = new HttpEntity<>(json, headers);
-        return restTemplate.postForObject("https://api.iamport.kr/subscribe/payments/schedule", entity, String.class);
+        String response =  restTemplate.postForObject("https://api.iamport.kr/subscribe/payments/schedule", entity, String.class);
+
+        // 응답 결과를 콘솔에 출력
+        System.out.println("스케줄페이 응답: " + response);
+
+        return response;
+
     }
+
 
     public String getToken() {
         RestTemplate restTemplate = new RestTemplate();
@@ -77,22 +95,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return restTemplate.postForObject("https://api.iamport.kr/users/getToken", entity, String.class);
     }
 
-    private long generateTimestamp() {
-    	
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.KOREA);
-        cal.add(Calendar.SECOND, 20);  // 20초 후로 설정
-        String date = sdf.format(cal.getTime());
-        try {
-            Date stp = sdf.parse(date);
-            System.out.println("timeStamp 생성기 정상 작동 " + date+ stp);
-            return stp.getTime() / 1000;  // 밀리초를 초로 변환
-        } catch (ParseException e) {
-            e.printStackTrace();
-            System.out.println("timeStamp 생성기 정상 작동 x " + date);
-            return 0;
-        }
-    }
+
 
     private String extractAccessToken(String token) {
         try {
