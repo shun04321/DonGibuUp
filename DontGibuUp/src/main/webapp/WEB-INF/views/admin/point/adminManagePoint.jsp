@@ -5,8 +5,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/admin.point.js"></script>
 <div class="page-main">
-	<h2>회원 관리</h2>
-	<form action="manageMember" id="search_form" method="get">
+	<h2>포인트 관리</h2>
+	<form action="managePoint" id="search_form" method="get">
 		<ul class="search">
 			<li>
 				<select name="keyfield" id="keyfield">
@@ -31,7 +31,7 @@
 			</select>
 			<script type="text/javascript">
 				$('#order').change(function() {
-							location.href = 'manageMember?&keyfield='
+							location.href = 'managePoint?&keyfield='
 											+ $('#keyfield').val()
 											+ '&keyword='
 											+ $('#keyword').val()
@@ -56,7 +56,7 @@
 		<c:forEach var="member" items="${list}">
 		<tr class="mem-item">
 			<td class="align-center">${member.mem_num}</td>
-			<td class="align-left"><a href="detail?mem_num=$member.mem_num}">${member.mem_email}</a></td>
+			<td class="align-left">${member.mem_email}</td>
 			<td class="align-center">${member.mem_nick}</td>
 			<td class="align-center">${member.mem_date}</td>
 			<td class="align-center">

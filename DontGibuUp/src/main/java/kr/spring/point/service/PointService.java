@@ -14,5 +14,5 @@ public interface PointService {
 	//마이페이지 포인트 개수
 	public Integer getMPointRowCount(Map<String, Object> map);
 	//멤버 포인트 수정(관리자)
-	public void updateMemPoint(PointVO pointVO);
+	public void updateMemPointByAdmin(PointVO pointVO);
 }

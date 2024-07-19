@@ -38,9 +38,13 @@ public class PointServiceImpl implements PointService {
 
 	//관리자
 	@Override
-	public void updateMemPoint(PointVO pointVO) {
-		pointMapper.insertPointLog(pointVO);
-		memberMapper.updateMemPoint(pointVO);
+	public void updateMemPointByAdmin(PointVO pointVO) {
+		PointVO pointVO2 = new PointVO();
+		pointVO2.setPoint_amount(pointVO.getPoint_amount() - memberMapper.selectMemberDetail(pointVO.getMem_num()).getMem_point());
+		pointVO2.setPevent_type(pointVO.getPevent_type());
+		pointVO2.setMem_num(pointVO.getMem_num());
+		memberMapper.updateMemPointByAdmin(pointVO);
+		pointMapper.insertPointLog(pointVO2);
 	}
 	
 }

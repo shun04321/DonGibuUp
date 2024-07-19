@@ -61,6 +61,9 @@
                </c:if> <c:if
 							test="${point.pevent_type >= 40 && point.pevent_type < 50}">
                회수
+               </c:if> <c:if
+							test="${point.pevent_type >= 50}">
+               기타
                </c:if></td>
 					<td>${point.point_date}</td>
 					<td>${point.pevent_detail}</td>
