@@ -87,30 +87,31 @@
 	object-fit: cover;
 }
 
-.challenge-info {
+.challenge-info2 {
 	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-top: 20px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #verify_content {
 	width: 100%;
 }
 
-.challenge-info .author-info {
+.challenge-info2 .author-info {
 	display: flex;
 	align-items: center;
 }
 
-.challenge-info img {
+.challenge-info2 img {
 	width: 50px;
 	height: 50px;
 	border-radius: 50%;
 	margin-right: 10px;
 }
 
-.challenge-info .details {
+.challenge-info2 .details {
 	flex-grow: 1;
 }
 
@@ -185,7 +186,7 @@
 .review-container {
 	display: flex;
 	overflow-x: auto;
-	flex-direction: column;
+	flex-direction: row;
 }
 
 .review-item {
@@ -750,7 +751,7 @@ textarea:focus {
 }
 
 /* 챌린지 후기 작성 */
-.review-container {
+.review-container2 {
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	padding: 16px;
@@ -759,10 +760,11 @@ textarea:focus {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.challenge-info {
+.challenge-info3 {
 	display: flex;
-	align-items: center;
-	margin-bottom: 16px;
+    align-items: center;
+    margin-bottom: 16px;
+    flex-direction: row;
 }
 
 .challenge-thumbnail {
@@ -780,6 +782,7 @@ textarea:focus {
 .challenge-details h2 {
 	margin: 0 0 8px;
 	font-size: 24px;
+	text-align: left;
 }
 
 .challenge-details p {

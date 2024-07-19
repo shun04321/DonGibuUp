@@ -22,7 +22,7 @@
         </c:if>
         <h2 class="align-left">${challenge.chal_title}</h2>
     </div>
-    <div class="challenge-info">
+    <div class="challenge-info2">
         <div class="author-info">
         	<c:if test="${empty challenge.mem_photo}">
         		<img src="${pageContext.request.contextPath}/images/basicProfile.png" alt="작성자 프사">

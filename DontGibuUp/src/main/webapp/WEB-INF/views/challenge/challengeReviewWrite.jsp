@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
 </head>
 <body>
-<div class="review-container">
-    <div class="challenge-info">
+<div class="review-container2">
+    <div class="challenge-info3">
         <img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 썸네일" class="challenge-thumbnail">
         <div class="challenge-details">
             <h2>${challenge.chal_title}</h2>
