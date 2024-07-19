@@ -97,7 +97,7 @@
 		FROM (SELECT
 		        a.*, rownum rnum FROM (SELECT
 		                                b.*,
-		                                c.mem_date
+		                                c.mem_date, c.mem_point
 		                               FROM member b
 		                               LEFT OUTER JOIN member_detail c
 		                               ON b.mem_num=c.mem_num

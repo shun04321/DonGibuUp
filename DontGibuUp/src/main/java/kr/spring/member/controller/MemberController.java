@@ -555,6 +555,7 @@ public class MemberController {
 	/*===================================
 	 * 			관리자 회원관리
 	 *==================================*/
+	//회원 목록
 	@GetMapping("/admin/manageMember")
 	private String adminMemberList(@RequestParam(defaultValue = "1") int pageNum,
 								   @RequestParam(defaultValue = "1") int order,
@@ -590,5 +591,43 @@ public class MemberController {
 		model.addAttribute("page", page.getPage());
 		
 		return "adminManageMember";
+	}
+	
+	//회원 포인트
+	@GetMapping("/admin/managePoint")
+	private String adminMemberPoint(@RequestParam(defaultValue = "1") int pageNum,
+								   @RequestParam(defaultValue = "1") int order,
+								   String keyfield, String keyword, Model model) {
+
+		log.debug("<<회원 포인트 - order>> : " + order);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		if (keyword != null && keyword.equals("")) {
+			keyword = null;
+		}
+		
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+
+		//전체, 검색 레코드수
+		int count = memberService.selectMemberCount(map);
+
+		//페이지 처리
+		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 10, 10, "managePoint", "&order=" + order);
+
+		List<MemberVO> list = null;
+		if (count > 0) {
+			map.put("order", order);
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+
+			list = memberService.selectMemberList(map);
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+		
+		return "adminManagePoint";
 	}
 }
