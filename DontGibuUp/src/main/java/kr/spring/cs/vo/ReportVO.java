@@ -17,6 +17,7 @@ public class ReportVO {
 	private String report_content;
 	private String report_filename;
 	private String report_reply;
+	private Date report_rdate;
 	private Integer report_status;
 	private Date report_date;
 	

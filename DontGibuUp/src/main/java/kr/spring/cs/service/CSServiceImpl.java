@@ -99,8 +99,8 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Override
-	public void updateReport(ReportVO reportVO) {
-		csMapper.updateReport(reportVO);
+	public void replyReport(ReportVO reportVO) {
+		csMapper.replyReport(reportVO);
 	}
 
 	@Override

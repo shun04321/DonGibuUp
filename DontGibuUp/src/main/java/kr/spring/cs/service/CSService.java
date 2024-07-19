@@ -52,7 +52,7 @@ public interface CSService {
 	//신고 상세
 	public ReportVO selectReport(long report_num);
 	//신고 답변/답변 수정
-	public void updateReport(ReportVO reportVO);
+	public void replyReport(ReportVO reportVO);
 	//신고 삭제(처리중일 때만 가능)
 	public void deleteReport(long report_num);
 	//신고 목록(사용자)

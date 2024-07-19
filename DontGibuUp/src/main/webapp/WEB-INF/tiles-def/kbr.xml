@@ -130,6 +130,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminReport.jsp"/>
 	</definition>
+	<definition name="adminReportReply" extends="adminInquiry">
+		<put-attribute name="title" value="신고 답변" />
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminReportReply.jsp"/>
+	</definition>
 </tiles-definitions>
 
 

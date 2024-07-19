@@ -33,7 +33,7 @@ public interface CSMapper {
 	@Delete("DELETE FROM inquiry WHERE inquiry_num=#{inquiry_num}")
 	public void deleteInquiry(long inquiry_num);
 	//문의 답변/답변 수정(관리자)
-	@Update("UPDATE inquiry SET inquiry_reply='${inquiry_reply}', inquiry_rdate=SYSDATE WHERE inquiry_num=${inquiry_num}")
+	@Update("UPDATE inquiry SET inquiry_reply='#{inquiry_reply}', inquiry_rdate=SYSDATE WHERE inquiry_num=#{inquiry_num, jdbcType=BIGINT}")
 	public void replyInquiry(InquiryVO inquiryVO);
 	
 	//faq 목록
@@ -58,7 +58,8 @@ public interface CSMapper {
 	//신고 상세
 	public ReportVO selectReport(long report_num);
 	//신고 답변/답변 수정
-	public void updateReport(ReportVO reportVO);
+	@Update("UPDATE report SET report_reply='#{report_reply}',report_status=#{report_status},report_rdate=SYSDATE WHERE report_num=#{report_num, jdbcType=BIGINT}")
+	public void replyReport(ReportVO reportVO);
 	//신고 삭제(처리중일 때만 가능)
 	public void deleteReport(long report_num);
 	//신고 목록(사용자)

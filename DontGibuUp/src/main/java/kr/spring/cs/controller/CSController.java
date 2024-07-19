@@ -36,8 +36,12 @@ public class CSController {
 
 	//자바빈(VO) 초기화
 	@ModelAttribute
-	public InquiryVO initCommand() {
+	public InquiryVO initInquiryCommand() {
 		return new InquiryVO();
+	}
+	@ModelAttribute
+	public ReportVO initReportCommand() {
+		return new ReportVO();
 	}
 
 	//자주하는 질문(사용자)
@@ -243,7 +247,7 @@ public class CSController {
 			result.rejectValue("inquiry_reply", "notBlank.inquiry_reply");
 			return "adminInquiryReply";
 		}
-
+		
 		//답변 수정
 		csService.replyInquiry(inquiryVO);
 
@@ -292,5 +296,42 @@ public class CSController {
 		model.addAttribute("page", page.getPage());
 
 		return "adminReport";
+	}
+	
+	//관리자 신고 답변 (신고 상세보기)
+	@GetMapping("admin/cs/report/reply")
+	public String replyReportForm(@RequestParam long report_num, Model model) {
+		ReportVO report = csService.selectReport(report_num);
+
+		log.debug("<<문의 상세 - report_num>> : " + report_num);
+		log.debug("<<문의 상세>> : " + report);
+
+		model.addAttribute("report", report);
+		return "adminReportReply";
+	}
+	
+	@PostMapping("/admin/cs/report/reply")
+	public String replyReport(@Valid ReportVO reportVO, BindingResult result, Model model) {
+		if (reportVO.getReport_reply() == null || reportVO.getReport_reply().equals("")) {
+			result.rejectValue("report_reply", "notBlank.report_reply");
+			return "adminReportReply";
+		}
+		
+		log.debug("<<신고 답변>> : " +reportVO);
+
+		//답변 수정
+		csService.replyReport(reportVO);
+
+		model.addAttribute("report", reportVO);
+		return "redirect:/admin/cs/report/reply?report_num=" + reportVO.getReport_num();
+	}
+
+	@GetMapping("/admin/cs/report/modifyForm")
+	public String modifyReportFormAjax(@RequestParam long report_num, Model model) {
+		ReportVO report = csService.selectReport(report_num);
+
+		model.addAttribute("report", report);
+
+		return "admin/cs/reportModifyForm";
 	}
 }

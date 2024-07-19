@@ -58,7 +58,6 @@
 			<span>답변일</span> <span id="inquiryRDateText">${inquiry.inquiry_rdate}</span>
 			<button id="modifyBtn">수정하기</button>
 		</div>
-			<button onclick="location.href='../inquiry'">목록</button>
 			<div id="formContainer"></div>
 			    <script>
 			    $(function() {
@@ -74,5 +73,6 @@
 			    });
 			    </script>
 		</c:if>
+		<button onclick="location.href='../inquiry'">목록</button>
 	</div>
 </div>
