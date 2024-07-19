@@ -1,88 +1,76 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // 결제 버튼 클릭 시 결제 처리
-    $('#payButton').click(function () {
-        if ($('input[name="dcate_num"]:checked').length < 1) {
-            $('.error-color').show();
-            return;
-        }
-        initiatePayment();
-    });
+document.addEventListener("DOMContentLoaded", function() {
+    // 페이지 로드 시 필요한 초기 작업들
+    let itemName = "${goods.item_name}";
+    let itemPrice = "${goods.item_price}";
+    let buyerName = "${sessionScope.user.mem_nick}";
+    let itemNum = "${goods.item_num}";
+    let pageContextPath = "${pageContext.request.contextPath}";  
 });
 
 function formatNumber(num) {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-function initiatePayment() {
-    IMP.init("imp71075330"); // 가맹점 식별코드
-
-    IMP.request_pay({
-        pg: "tosspayments",
-        merchant_uid: "merchant_" + new Date().getTime(),
-        name: itemName,
-        pay_method: "card",
-        escrow: false,
-        amount: itemPrice,
-        buyer_name: buyerName,
-        buyer_email: buyerEmail,
-        currency: "KRW",
-        locale: "ko",
-        custom_data: { usedPoints: 500 },
-        appCard: false,
-        useCardPoint: false,
-        bypass: {
-            tosspayments: {
-                useInternationalCardOnly: false,
-            },
+function buyNow() {
+    IMP.init("imp71075330"); // 여기에 실제 IMP 코드 입력
+    IMP.request_pay(
+        {
+            pg: "tosspayments", // 결제 대행사
+            merchant_uid: "merchant_" + new Date().getTime(),
+            name: itemName,
+            pay_method: "card",
+            amount: itemPrice,
+            buyer_name: buyerName,
+            currency: "KRW",
         },
-    }, function (rsp) {
-        if (!rsp.error_code) {
-            verifyPayment(rsp.imp_uid);
-        } else {
-            alert('결제를 취소하셨습니다.');
-        }
-    });
-}
+        (rsp) => {
+            if (!rsp.error_code) {
+                // 결제 검증하기
+                $.ajax({
+                    url: pageContextPath + '/goods/paymentVerify/' + rsp.imp_uid,
+                    method: 'POST',
+                }).done(function(data) {
+                    if (data.response.status == 'paid') {
+                        // 결제 정보에 넣을 데이터 가공하기
+                        let customData = JSON.parse(data.response.customData);
 
-function verifyPayment(imp_uid) {
-    $.ajax({
-        url: '/goods/paymentVerify/' + imp_uid,
-        method: 'POST',
-    }).done(function (data) {
-        if (data.response.status === 'paid') {
-            processPayment(data);
-        } else {
-            alert('결제 위조 오류 발생!');
-        }
-    });
-}
-
-function processPayment(data) {
-    let customData = JSON.parse(data.response.customData);
-    let dcate_num = $('input[name="dcate_num"]:checked').val();
-
-    $.ajax({
-        url: '/goods/payAndEnroll',
-        method: 'POST',
-        data: JSON.stringify({
-            od_imp_uid: data.response.imp_uid,
-            pay_amount: data.response.amount,
-            used_points: customData.usedPoints,
-            pay_status: 0,
-            dcate_num: dcate_num
-        }),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function (param) {
-            if (param.result === 'logout') {
-                alert('로그인 후 사용해주세요.');
-            } else if (param.result === 'success') {
-                alert('결제가 성공적으로 완료되었습니다.');
-                window.location.href = '/goods/list';
+                        // 결제 정보 처리 및 완료하기
+                        $.ajax({
+                            url: pageContextPath + '/goods/purchaseComplete',
+                            method: 'POST',
+                            data: JSON.stringify({
+                                imp_uid: rsp.imp_uid,
+                                merchant_uid: rsp.merchant_uid,
+                                amount: data.response.amount,
+                                status: data.response.status,
+                                item_num: itemNum,
+                                item_name: itemName,
+                                buyer_name: buyerName,
+                                buyer_email: buyerEmail
+                            }),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            success: function(param) {
+                                if (param.result == 'success') {
+                                    alert('구매가 완료되었습니다.');
+                                    window.location.href = pageContextPath + '/goods/purchaseSuccess';
+                                } else {
+                                    alert('구매 처리 중 오류가 발생했습니다.');
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                alert('구매 처리 오류 발생: ' + error);
+                            }
+                        });
+                    } else {
+                        alert('결제 검증 중 오류가 발생했습니다.');
+                    }
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    alert('결제 검증 요청 실패: ' + errorThrown);
+                });
+            } else {
+                alert('결제에 실패했습니다: ' + rsp.error_msg);
             }
-        },
-        error: function () {
-            alert('결제 처리 중 오류가 발생했습니다.');
         }
-    });
+    );
 }
