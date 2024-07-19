@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import kr.spring.member.vo.MemberVO;
 import kr.spring.point.vo.PointVO;
 
 @Mapper
@@ -21,5 +22,4 @@ public interface PointMapper {
 	//마이페이지 포인트 개수
 	@Select("SELECT COUNT(*) FROM point_log WHERE mem_num=#{mem_num}")
 	public Integer getMPointRowCount(Map<String, Object> map);
-	
 }

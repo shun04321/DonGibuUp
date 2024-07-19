@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.spring.member.dao.MemberMapper;
 import kr.spring.point.dao.PointMapper;
 import kr.spring.point.vo.PointVO;
 
@@ -16,6 +17,9 @@ public class PointServiceImpl implements PointService {
 	
 	@Autowired
 	PointMapper pointMapper;
+	
+	@Autowired
+	MemberMapper memberMapper;
 	
 	//포인트 로그
 	public void insertPointLog(PointVO pointVO) {
@@ -30,6 +34,13 @@ public class PointServiceImpl implements PointService {
 	@Override
 	public Integer getMPointRowCount(Map<String, Object> map) {
 		return pointMapper.getMPointRowCount(map);
+	}
+
+	//관리자
+	@Override
+	public void updateMemPoint(PointVO pointVO) {
+		pointMapper.insertPointLog(pointVO);
+		memberMapper.updateMemPoint(pointVO);
 	}
 	
 }

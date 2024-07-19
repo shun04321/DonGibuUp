@@ -593,7 +593,7 @@ public class MemberController {
 		return "adminManageMember";
 	}
 	
-	//회원 포인트
+	//회원 포인트 관리 페이지
 	@GetMapping("/admin/managePoint")
 	private String adminMemberPoint(@RequestParam(defaultValue = "1") int pageNum,
 								   @RequestParam(defaultValue = "1") int order,

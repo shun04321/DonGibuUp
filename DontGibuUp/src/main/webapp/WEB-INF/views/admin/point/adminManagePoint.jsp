@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 회원 포인트 관리 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/admin.member.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/admin.point.js"></script>
 <div class="page-main">
 	<h2>회원 관리</h2>
 	<form action="manageMember" id="search_form" method="get">
@@ -59,7 +59,10 @@
 			<td class="align-left"><a href="detail?mem_num=$member.mem_num}">${member.mem_email}</a></td>
 			<td class="align-center">${member.mem_nick}</td>
 			<td class="align-center">${member.mem_date}</td>
-			<td class="align-center">${member.mem_point} P</td>
+			<td class="align-center">
+				<input type="number" class="member-point" value="${member.mem_point}" step="100" min="0" > P
+				<button class="updatePointBtn" data-num="${member.mem_num}">수정</button>
+			</td>
 		</tr>
 		</c:forEach>
 	</table>

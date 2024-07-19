@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.vo.PointVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -123,4 +124,31 @@ public class MemberAjaxController {
 
 		return mapAjax;
 	}
+	
+//	//관리자 포인트 수정
+//	@ResponseBody
+//	@PostMapping("/admin/updatePoint")
+//	public Map<String, Object> updatePointAjax(long mem_num, int mem_point, HttpSession session) {
+//		Map<String, Object> mapAjax = new HashMap<String, Object>();
+//
+//		MemberVO user = (MemberVO) session.getAttribute("user");
+//
+//		if (user == null) {
+//			// 로그인 안 됨
+//			mapAjax.put("result", "logout");
+//		} else if (user.getMem_status() != 9) {
+//			mapAjax.put("result", "noAuthority");
+//		} else {
+//			PointVO pointVO = new PointVO(50, mem_point, mem_num);
+//			
+//			
+//			MemberVO memberVO = new MemberVO();
+//			memberVO.setMem_num(mem_num);
+//			memberVO.setMem_status(2);
+//			memberService.updateMemStatus(memberVO);
+//			mapAjax.put("result", "success");
+//		}
+//
+//		return mapAjax;
+//	}
 }
