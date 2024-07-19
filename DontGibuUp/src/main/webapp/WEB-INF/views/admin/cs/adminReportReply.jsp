@@ -26,6 +26,7 @@
 		</div>
 		<c:if test="${empty report.report_reply}">
 		<form:form action="reply" modelAttribute="reportVO">
+			<form:hidden path="mem_num" value="${report.mem_num}"/>
 			<form:hidden path="report_num" value="${report.report_num}"/>
 			<form:radiobutton path="report_status" value="1" id="report_status_1" />
 	        <label for="report_status_1">승인</label><br>

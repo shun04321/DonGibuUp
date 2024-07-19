@@ -1,22 +1,26 @@
-<!-- inquiryReplyModifyForm -->
+<!-- reportReplyModifyForm -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<form:form action="reply" modelAttribute="inquiryVO">
-	<form:hidden path="mem_num" value="${inquiry.mem_num}"/>
-	<form:hidden path="inquiry_num" value="${inquiry.inquiry_num}"/>
+<form:form action="reply" modelAttribute="reportVO">
+	<form:hidden path="mem_num" value="${report.mem_num}"/>
+	<form:hidden path="report_num" value="${report.report_num}"/>
+	<form:radiobutton path="report_status" value="1" id="report_status_1" />
+       <label for="report_status_1">승인</label><br>
+	<form:radiobutton path="report_status" value="2" id="report_status_2" />
+       <label for="report_status_2">반려</label><br>
 	<div>
-		<form:label path="inquiry_reply">답변</form:label>				
+		<form:label path="report_reply">답변</form:label>				
 	</div>
-	<form:textarea path="inquiry_reply" cols="60" rows="5"/>
-	<form:errors path="inquiry_reply" cssClass="form-error"></form:errors>
+	<form:textarea path="report_reply" cols="60" rows="5"/>
+	<form:errors path="report_reply" cssClass="form-error"></form:errors>
 	<div>
 		<form:button>답변 수정</form:button>
 	</div>
 </form:form>
 <script>
 $(function() {
-	$('#inquiry_reply').val($('#replyContent').text());
+	$('#report_reply').val($('#replyContent').text());
 	$('#replyContent').hide();
 	$('#replyInfo').hide();
 });
