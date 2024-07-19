@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.spring.cs.dao.CSMapper;
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
+import kr.spring.cs.vo.ReportVO;
 
 @Service
 @Transactional
@@ -80,6 +81,36 @@ public class CSServiceImpl implements CSService {
 	@Override
 	public void deleteFaq(long faq_num) {
 		csMapper.deleteFaq(faq_num);
+	}
+
+	@Override
+	public int selectReportListCount(Map<String, Object> map) {
+		return csMapper.selectReportListCount(map);
+	}
+
+	@Override
+	public List<ReportVO> selectReportList(Map<String, Object> map) {
+		return csMapper.selectReportList(map);
+	}
+
+	@Override
+	public ReportVO selectReport(long report_num) {
+		return csMapper.selectReport(report_num);
+	}
+
+	@Override
+	public void updateReport(ReportVO reportVO) {
+		csMapper.updateReport(reportVO);
+	}
+
+	@Override
+	public void deleteReport(long report_num) {
+		csMapper.deleteReport(report_num);
+	}
+
+	@Override
+	public List<ReportVO> selectReportListByMemNum(Map<String, Object> map) {
+		return csMapper.selectReportListByMemNum(map);
 	}
 
 }

@@ -125,6 +125,11 @@
 		<put-attribute name="title" value="포인트 관리" />
 		<put-attribute name="body" value="/WEB-INF/views/admin/point/adminManagePoint.jsp"/>
 	</definition>
+	<definition name="adminReport" extends="adminInquiry">
+		<put-attribute name="title" value="신고 관리" />
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminReport.jsp"/>
+	</definition>
 </tiles-definitions>
 
 

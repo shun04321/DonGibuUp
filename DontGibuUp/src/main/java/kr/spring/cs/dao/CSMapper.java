@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
+import kr.spring.cs.vo.ReportVO;
 
 @Mapper
 public interface CSMapper {
@@ -50,4 +51,16 @@ public interface CSMapper {
 	@Select("SELECT faq_seq.nextval FROM dual")
 	public long selectFaqNum();
 	
+	//신고 개수
+	public int selectReportListCount(Map<String, Object> map);
+	//신고 목록
+	public List<ReportVO> selectReportList(Map<String, Object> map);
+	//신고 상세
+	public ReportVO selectReport(long report_num);
+	//신고 답변/답변 수정
+	public void updateReport(ReportVO reportVO);
+	//신고 삭제(처리중일 때만 가능)
+	public void deleteReport(long report_num);
+	//신고 목록(사용자)
+	public List<ReportVO> selectReportListByMemNum(Map<String, Object> map);
 }

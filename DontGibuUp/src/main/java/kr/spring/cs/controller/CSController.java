@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
+import kr.spring.cs.vo.ReportVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
@@ -195,7 +196,7 @@ public class CSController {
 
 	//관리자 1:1문의 목록
 	@GetMapping("admin/cs/inquiry")
-	public String memberPoint(@RequestParam(defaultValue = "1") int pageNum,
+	public String inquiryList(@RequestParam(defaultValue = "1") int pageNum,
 			@RequestParam(defaultValue = "1") int status, HttpSession session, Model model) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -251,11 +252,45 @@ public class CSController {
 	}
 
 	@GetMapping("/admin/cs/inquiry/modifyForm")
-	public String modifyFormAjax(@RequestParam long inquiry_num, Model model) {
+	public String modifyInquiryFormAjax(@RequestParam long inquiry_num, Model model) {
 		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
 
 		model.addAttribute("inquiry", inquiry);
 
 		return "admin/cs/inquiryModifyForm";
+	}
+	
+	//관리자 신고 목록
+	@GetMapping("admin/cs/report")
+	public String memberReport(@RequestParam(defaultValue = "1") int pageNum,
+			@RequestParam(required = false) String status, HttpSession session, Model model) {
+		
+		if (status != null && status.equals("")) {
+			status = null;
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", status);
+
+		log.debug("<<관리자 신고 목록 - status>> : " + status);
+
+		//레코드 수
+		int count = csService.selectReportListCount(map);
+
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "report", "&status=" + status);
+
+		List<ReportVO> list = null;
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = csService.selectReportList(map);
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+
+		return "adminReport";
 	}
 }

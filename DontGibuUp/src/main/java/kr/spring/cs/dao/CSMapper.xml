@@ -81,4 +81,73 @@
         <include refid="faqSearch"></include>
         ORDER BY a.faq_num ASC
 	</select>
+	
+	<!-- 관리자 신고 조건절 -->
+	<sql id="reportSearch">
+		<where>
+			<if test="status != null">
+				report_status=#{status}
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 관리자 신고 카운트 -->
+	<select id="selectReportListCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*) FROM report
+		<include refid="reportSearch"></include>
+	</select>
+	
+	<!-- 관리자 신고 목록 -->
+	<select id="selectReportList" parameterType="map" resultType="reportVO">
+		SELECT *
+		FROM (
+		    SELECT b.*, rownum rnum 
+		    FROM (SELECT * 
+		    	  FROM report a
+		       	  <include refid="inquirySearch"></include>
+		          ORDER BY a.report_date DESC)b)
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}	
+		]]>
+	</select>
+	
+	<!-- 관리자 신고 상세 -->
+	<select id="selectReport" parameterType="long" resultType="reportVO">
+		SELECT
+			r.*, a.mem_nick mem_nick, b.mem_nick reported_mem_nick 
+		FROM report r
+		JOIN member a
+		ON (r.mem_num=a.mem_num)
+		JOIN member b
+		ON (r.reported_mem_num=b.mem_num)
+		WHERE report_num=#{report_num}
+	</select>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
