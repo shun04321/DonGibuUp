@@ -46,7 +46,6 @@ function buyNow() {
                                 item_num: itemNum,
                                 item_name: itemName,
                                 buyer_name: buyerName,
-                                buyer_email: buyerEmail
                             }),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',
@@ -66,6 +65,9 @@ function buyNow() {
                         alert('결제 검증 중 오류가 발생했습니다.');
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
+					console.log('jqXHR:', jqXHR);
+    				console.log('textStatus:', textStatus);
+    				console.log('errorThrown:', errorThrown);
                     alert('결제 검증 요청 실패: ' + errorThrown);
                 });
             } else {

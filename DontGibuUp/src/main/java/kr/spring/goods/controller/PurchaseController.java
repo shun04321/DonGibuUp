@@ -21,8 +21,8 @@ import kr.spring.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@RequestMapping("/goods")
 @Slf4j
+@RequestMapping("/goods")
 public class PurchaseController {
 
     private IamportClient impClient;
@@ -32,14 +32,17 @@ public class PurchaseController {
 
     @Value("${iamport.secretKey}")
     private String secretKey;
-
+    
     @Autowired
     private PurchaseService purchaseService;
-
+    
     @PostConstruct
     public void initImp() {
+    	log.debug("API Key: " + apiKey);
+        log.debug("Secret Key: " + secretKey);
         this.impClient = new IamportClient(apiKey, secretKey);
     }
+    
 
     @PostMapping("/purchase")
     public String purchasePage(@RequestParam("imp_uid") String impUid, Model model) {
@@ -52,19 +55,22 @@ public class PurchaseController {
         return "goods/purchase";
     }
 
-    // 결제 정보 검증
     @PostMapping("/paymentVerify/{imp_uid}")
     @ResponseBody
-    public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid, HttpSession session, HttpServletRequest request)
-            throws IamportResponseException, IOException {
+    public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid, HttpSession session) throws IamportResponseException, IOException {
+        log.debug("결제 검증 요청: imp_uid = " + imp_uid);
+        
         IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
 
-        // 로그인 여부 확인하기
-        MemberVO member = (MemberVO) session.getAttribute("user");
+        if (payment == null || payment.getResponse() == null) {
+            log.error("결제 정보 조회 실패: imp_uid = " + imp_uid);
+            throw new IamportResponseException("결제 정보 조회 실패", null);
+        }
 
         // 실 결제 금액 가져오기
         long paidAmount = payment.getResponse().getAmount().longValue();
 
+        log.debug("결제 금액: " + paidAmount);
         log.debug("payment: " + payment);
 
         return payment;
@@ -82,7 +88,6 @@ public class PurchaseController {
         int itemNum = (Integer) data.get("item_num");
         String itemName = (String) data.get("item_name");
         String buyerName = (String) data.get("buyer_name");
-        String buyerEmail = (String) data.get("buyer_email");
 
         log.debug("impUid : " + impUid);
         log.debug("merchantUid : " + merchantUid);
@@ -91,8 +96,6 @@ public class PurchaseController {
         log.debug("itemNum : " + itemNum);
         log.debug("itemName : " + itemName);
         log.debug("buyerName : " + buyerName);
-        log.debug("buyerEmail : " + buyerEmail);
-
         Map<String, String> mapJson = new HashMap<>();
 
         // 세션 데이터 가져오기
@@ -110,7 +113,6 @@ public class PurchaseController {
             purchaseVO.setItem_num(itemNum);
             purchaseVO.setItem_name(itemName);
             purchaseVO.setBuyer_name(buyerName);
-            purchaseVO.setBuyer_email(buyerEmail);
 
             try {
                 purchaseService.insertPurchase(purchaseVO);
