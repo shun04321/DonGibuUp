@@ -1,10 +1,7 @@
 package kr.spring.subscription.controller;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -39,8 +37,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.google.gson.Gson;
 import kr.spring.subscription.vo.GetTokenVO;
 import kr.spring.subscription.vo.Sub_paymentVO;
@@ -90,7 +86,7 @@ public class SubscriptionController {
 		subscriptionVO.setSub_num(subscriptionService.getSub_num());
 		//subDate int 형으로 변환
 		subscriptionVO.setSub_ndate(Integer.parseInt(subDate));
-		
+		log.debug("subscriptionVO.card_nickname : " + subscriptionVO.getCard_nickname());
 		//로그인한 회원 정보 저장
 		MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
 		//존재하는 payuid와 대조할 payuidVO 생성후 데이터 셋팅
@@ -148,61 +144,50 @@ public class SubscriptionController {
 		return "/subscription/getpayuid";
 	}
 	/*--------------------
-	 * 기존의 결제수단으로 정기기부 등록 (결제 성공하면 정기기부 등록, 결제내역 등록)
+	 * 결제수단 등록 성공시 결제 메소드 호출, 
 	 *-------------------*/
-	@GetMapping("/subscription/paymentReservation")
-	public String sign_up(@ModelAttribute("user") MemberVO user,
+	@PostMapping("/subscription/paymentReservation")
+	@ResponseBody
+	public Map<String,String> sign_up(@ModelAttribute("user") MemberVO user,
 			@ModelAttribute("payuidVO") PayuidVO payuidVO,
-			@ModelAttribute("subscriptionVO") SubscriptionVO subscriptionVO,
+			@ModelAttribute("sub_num") long sub_num,
 			HttpSession session,
 			Model model) {				
-		subscriptionService.insertSubscription(subscriptionVO);
-		
+		Map<String,String> mapJson = new HashMap<String,String>();
 		//결제
-		String payment_result = insertSub_Payment(payuidVO.getPay_uid(), subscriptionVO.getSub_num(),session );
+		String payment_result = insertSub_Payment(payuidVO.getPay_uid(), sub_num, session);
 		if(payment_result.equals("payment success")) {
-			model.addAttribute("accessTitle", "결제 결과");
-			model.addAttribute("accessMsg", "정기기부 결제 및 등록완료");
-			
+			mapJson.put("result", "success");			
 		}else {
-			model.addAttribute("accessTitle", "결제 결과");
-			model.addAttribute("accessMsg", "정기기부 결제 및 등록실패");
+			mapJson.put("result", "fail");
 		}
-		// API 응답을 모델에 추가
-
-		model.addAttribute("accessBtn", "완료");
-		model.addAttribute("accessUrl", "/main/main");
 
 		// JSP 페이지로 이동
-		return "common/resultView"; // 결제 결과를 보여줄 JSP 페이지의 이름
+		return mapJson; // 결제 결과를 보여줄 JSP 페이지의 이름
 	}
 
 	/*--------------------
 	 * 결제수단 발급 성공 -> payuid 저장 이후 첫 결제 성공하면 정기기부 등록, 결제내역 등록
 	 *-------------------*/
-	@PostMapping("/subscription/paymentReservation")
-	@ResponseBody
-	public String sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {	    
+	@GetMapping("/subscription/paymentReservation")
+	public Map<String,String> sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {	    
 		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
 		log.debug("pay_uid : " + pay_uid );
 		log.debug("sub_num : " + sub_num);
 		PayuidVO payuidVO = payuidService.getPayuidVOByPayuid(pay_uid);
 		
 		//결제
-		String payment_result = insertSub_Payment(payuidVO.getPay_uid(), subscriptionVO.getSub_num(), session);
+		Map<String,String> mapJson = new HashMap<String,String>();
+		//결제
+		String payment_result = insertSub_Payment(payuidVO.getPay_uid(), subscriptionVO.getSub_num(),session);
 		if(payment_result.equals("payment success")) {
-			model.addAttribute("accessTitle", "결제 결과");
-			model.addAttribute("accessMsg", "정기기부 결제 및 등록완료");			
+			mapJson.put("result", "success");			
 		}else {
-			model.addAttribute("accessTitle", "결제 결과");
-			model.addAttribute("accessMsg", "정기기부 결제 및 등록실패");
-			subscriptionService.deleteSubscription(sub_num);
+			mapJson.put("result", "fail");
 		}
-		model.addAttribute("accessBtn", "완료");
-		model.addAttribute("accessUrl", "/main/main");
 
 		// JSP 페이지로 이동
-		return "common/resultView"; // 결제 결과를 보여줄 JSP 페이지의 이름
+		return mapJson; // 결제 결과를 보여줄 JSP 페이지의 이름
 	}
 
 	/*--------------------
@@ -310,21 +295,37 @@ public class SubscriptionController {
 	            // API 호출 실패
 	            return "api fail";
 	        }
+	    }	       
+
+	        @PostMapping("/payment1")
+	        public ResponseEntity<String> startPaymentScheduler(
+	                @RequestParam("customer_uid") String customerUid,
+	                @RequestParam("price") int price,
+	                @RequestParam("merchant_uid") String merchantUid) {
+
+	            // 파라미터 검증
+	            if (price <= 0) {
+	                log.debug("price : " + price);
+	            }
+	            if (customerUid == null || customerUid.trim().isEmpty()) {
+	            	log.debug("customerUid : " + customerUid);
+	            }
+	            if (merchantUid == null || merchantUid.trim().isEmpty()) {
+	                log.debug("merchantUid"+merchantUid);
+	            }
+
+	            try {
+	                // 예약 결제 스케줄 시작
+	                subscriptionService.startScheduler(customerUid, price, merchantUid);
+	                return new ResponseEntity<>("Scheduler started successfully.", HttpStatus.OK);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                return new ResponseEntity<>("Failed to start scheduler.", HttpStatus.INTERNAL_SERVER_ERROR);
+	            }
+	        }
 	    }
-	    
-		@PostMapping("/payment1")
-		@ResponseBody
-		public void getImportToken(@RequestParam Map<String, Object> map)
-				throws JsonMappingException, JsonProcessingException {
-			log.debug("/payment1 실행됨");
-			String customer_uid = (String) map.get("customer_uid");
-			int price = Integer.parseInt((String) map.get("price"));
-			String merchant_uid =  (String) map.get("merchant_uid");
-			ReqPaymentScheduler scheduler = new ReqPaymentScheduler();
-		
-			scheduler.startScheduler(customer_uid,price,merchant_uid);
-		}
-}  
+
+
 	    
 
 

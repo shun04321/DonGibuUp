@@ -2,12 +2,15 @@ package kr.spring.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
+
+import com.google.gson.Gson;
 
 import kr.spring.interceptor.LoginCheckInterceptor;
 import kr.spring.interceptor.MemStatusCheckInterceptor;
@@ -98,6 +101,18 @@ public class AppConfig implements WebMvcConfigurer{
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+    
+    @Bean
+    public ThreadPoolTaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(10); // 예: 풀 사이즈 설정
+        return scheduler;
+    }
+
+    @Bean
+    public Gson gson() {
+        return new Gson();
     }
 }
 

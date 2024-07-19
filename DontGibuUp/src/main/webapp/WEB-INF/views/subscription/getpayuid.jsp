@@ -37,55 +37,71 @@
             }, function(rsp) {
                 if (rsp.success) {
                     $.ajax({
-                        url:'paymentReservation', //DB에 구독정보 등록하는 부분..
-                        type:'post',
-                        dataType:'json',
-                        data: {
-                        	pay_uid:"${payuidVO.pay_uid}",
-                        	sub_num:${subscriptionVO.sub_num}
-                        },                                   
-                        success: function(result) {
-                            alert('정기결제 등록 ' + result);
+                        url: '/paymentReservation', // DB에 구독정보 등록하는 부분..
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            pay_uid: "${payuidVO.pay_uid}",
+                            sub_num: ${subscriptionVO.sub_num}
+                        }),
+                        dataType: 'json',
+                        success: function(param) {
+                            if (param.result === "success") {
+                                alert('결제수단 등록에 성공했습니다.');
+                                $.ajax({
+                                    type: 'POST',
+                                    url: '/payment1',
+                                    contentType: 'application/json',
+                                    data: JSON.stringify({
+                                        customer_uid: "${payuidVO.pay_uid}",
+                                        price: ${subscriptionVO.sub_price},
+                                        merchant_uid: "${subscriptionVO.sub_num}" + new Date().getTime() // String으로 전달
+                                    }),
+                                    dataType: 'json',
+                                    success: function(result) {
+                                        alert('다음 결제 예약 성공');
+                                        location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
+                                    },
+                                    error: function(xhr, status, error) {
+                                        alert('다음 결제 예약에 실패했습니다. 관리자에게 문의하세요.');
+                                        console.error('Error:', error);
+                                        location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
+                                    }
+                                });
+                            } else {
+                                alert('결제수단 등록은 성공했지만 결제에 실패했습니다. 관리자에게 문의하세요.');
+                                location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            alert('네트워크 오류 발생');
+                            location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
                         }
                     });
-                    if (rsp.success) {
-                        alert('정기결제 등록에 성공했습니다.');
-                        $.ajax({
-                            url: '/payment1',
-                            type: 'POST',
-                            contentType: 'application/json', // 데이터 타입을 JSON으로 설정
-                            data: JSON.stringify({ // 데이터를 JSON 문자열로 변환
-                                customer_uid: payuidVO.pay_uid,
-                                price: subscriptionVO.sub_price,
-                                merchant_uid: new Date().getTime()
-                            }),
-                            success: function(result) {
-                                alert('다음 결제 예약');
-                            }
-                        });
-                    }
-                }  else {
+                } else {
                     $.ajax({
                         url: 'failGetpayuid',
-                        dataType:'json',
+                        dataType: 'json',
                         type: 'POST',
-                        data: {pay_uid: "${payuidVO.pay_uid}",sub_num:${subscriptionVO.sub_num}},
-                        success: function (param) {
-                        	if(param.result=='success'){
-                        		alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
-                        		location.href = '/category/detail?dcate_num='+${subscriptionVO.dcate_num}; // 리다이렉트할 페이지 URL로 수정
-                        	}else if(param.result =='fail'){
-                        		alert('관리자에게 문의해주세요. 에러내용 : ' + rsp.error_msg);
-                        	}
+                        data: {
+                            pay_uid: "${payuidVO.pay_uid}",
+                            sub_num: ${subscriptionVO.sub_num}
                         },
-                        error: function () {
+                        success: function(param) {
+                            if (param.result === 'success') {
+                                alert('결제 수단 등록을 실패하였습니다. 에러내용: ' + rsp.error_msg);
+                                location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
+                            } else if (param.result === 'fail') {
+                                alert('관리자에게 문의해주세요. 에러내용: ' + rsp.error_msg);
+                            }
+                        },
+                        error: function() {
                             alert('네트워크 오류 발생');
                         }
-                    });    
+                    });
                 }
             });
         }
-        // 페이지 로드 시 자동 실행
-        onClickPay();
     });
 </script>
+
