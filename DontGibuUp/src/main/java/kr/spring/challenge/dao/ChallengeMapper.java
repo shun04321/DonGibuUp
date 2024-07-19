@@ -26,6 +26,9 @@ public interface ChallengeMapper {
 	public void updateChallenge(Long chal_num);
 	public void deleteChallenge(Long chal_num);
 	public void deleteChalPhoto(Long chal_num);
+	//참가 인원수 조회
+    @Select("SELECT COUNT(*) FROM chal_join WHERE chal_num = #{chal_num}")
+    int countCurrentParticipants(long chal_num);
 	
 	//챌린지 참가
 	@Select("SELECT chal_join_seq.nextval FROM dual")

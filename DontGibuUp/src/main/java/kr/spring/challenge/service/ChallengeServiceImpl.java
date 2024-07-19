@@ -67,6 +67,12 @@ public class ChallengeServiceImpl implements ChallengeService{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//참가 인원수 조회
+	@Override
+	public int countCurrentParticipants(long chal_num) {
+	    return challengeMapper.countCurrentParticipants(chal_num);
+	}
 
 	//챌린지 참가//
     @Override

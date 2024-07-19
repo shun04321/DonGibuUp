@@ -19,8 +19,8 @@
         var memberPhone = "${member.phone}";
         var memberNum = "${member.mem_num}";
         var pageContextPath = "${pageContext.request.contextPath}";
-        var chalNum = ${param.chal_num}; // 챌린지 번호 가져오기
-        var sdate = "${challengeVO.chal_sdate}"; // 챌린지 시작 날짜 가져오기
+        var chalNum = ${param.chal_num}; //챌린지 번호 가져오기
+        var sdate = "${challengeVO.chal_sdate}"; //챌린지 시작 날짜 가져오기
     </script>
 </head>
 <body>
@@ -76,21 +76,10 @@
         <div class="align-center">
             결제 조건 및 서비스 약관에 동의합니다
             <p>
-            <button type="button" id="pay">결제하기</button>
+            <button type="button" id="pay2">결제하기</button>
         </div>
     </form:form>
 </div>
-<script>
-    // 챌린지 번호를 세션에 저장
-    $.ajax({
-        url: '${pageContext.request.contextPath}/challenge/storeChalNum',
-        method: 'POST',
-        data: { chal_num: chalNum },
-        success: function(response) {
-            console.log("챌린지 번호가 세션에 저장되었습니다.");
-        }
-    });
-</script>
-<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay2.js"></script>
+<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
 </body>
 </html>

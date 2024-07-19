@@ -138,9 +138,11 @@ public class ChallengeController {
             map.put("chal_num", chal_num);
             map.put("mem_num", member.getMem_num());
             List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(map);
-            // Check if the user is specifically joined to this challenge
             isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == chal_num);
         }
+        
+        //현재 참가 중인 인원 수 조회
+        int currentParticipants = challengeService.countCurrentParticipants(chal_num);
 
         //참여금을 포맷팅
         NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
@@ -149,7 +151,8 @@ public class ChallengeController {
         ModelAndView mav = new ModelAndView("challengeView");
         mav.addObject("challenge", challenge);
         mav.addObject("isJoined", isJoined);
-        mav.addObject("formattedFee", formattedFee); // 포맷팅된 참여금 추가
+        mav.addObject("formattedFee", formattedFee); //포맷팅된 참여금 추가
+        mav.addObject("currentParticipants", currentParticipants); //현재 참가 중인 인원 추가
 
         return mav;
     }
@@ -304,8 +307,7 @@ public class ChallengeController {
         return mav;
     }
 
-    
-	/*
+	/* //챌린지 참가 상세
 	 * @GetMapping("/challenge/joinDetail") public ModelAndView
 	 * joinDetail(@RequestParam("chal_joi_num") Long chal_joi_num) { ChallengeJoinVO
 	 * challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); return
@@ -329,7 +331,7 @@ public class ChallengeController {
                 challengeService.deleteChallengeJoinsByChallengeId(challengeJoin.getChal_num());
                 challengeService.deleteChallenge(challengeJoin.getChal_num());
             } else {
-                // 리더가 아닌 경우 챌린지 참가 데이터만 삭제
+                //리더가 아닌 경우 챌린지 참가 데이터만 삭제
                 challengeService.deleteChallengeJoin(chal_joi_num);
             }
             return ResponseEntity.ok("챌린지가 취소되었습니다.");
@@ -520,7 +522,7 @@ public class ChallengeController {
     /*==========================
      *  챌린지 후기
      *==========================*/
-    // 챌린지 후기 작성 폼
+    //챌린지 후기 작성 폼
     @GetMapping("/challenge/review/write")
     public String reviewForm(@RequestParam("chal_num") long chal_num, Model model) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);
@@ -529,7 +531,7 @@ public class ChallengeController {
         return "challengeReviewWrite";
     }
 
-    // 챌린지 후기 작성
+    //챌린지 후기 작성
     @PostMapping("/challenge/review/write")
     public String writeReview(@Valid @ModelAttribute("challengeReviewVO") ChallengeReviewVO challengeReviewVO, 
                               BindingResult result, HttpServletRequest request, HttpSession session, Model model) {
@@ -549,7 +551,7 @@ public class ChallengeController {
         return "common/resultAlert";
     }
     
-    // 챌린지 후기 목록
+    //챌린지 후기 목록
     @GetMapping("/challenge/review/list")
     public String reviewList(@RequestParam("chal_num") long chal_num, Model model) {
         ChallengeVO challenge = challengeService.selectChallenge(chal_num);
@@ -559,7 +561,7 @@ public class ChallengeController {
                                          .mapToInt(ChallengeReviewVO::getChal_rev_grade)
                                          .average()
                                          .orElse(0.0);
-        // 소수점 첫째 자리까지만 표시
+        //소수점 첫째 자리까지만 표시
         averageRating = Math.round(averageRating * 10) / 10.0;
         int reviewCount = reviewList.size();
 

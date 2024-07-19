@@ -21,6 +21,8 @@ public interface ChallengeService {
 	public void updateChallenge(Long chal_num);
 	public void deleteChallenge(Long chal_num);
 	public void deleteChalPhoto(Long chal_num);
+	//참가 인원수 조회
+	public int countCurrentParticipants(long chal_num);
 	
 	//챌린지 참가
 	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO);
