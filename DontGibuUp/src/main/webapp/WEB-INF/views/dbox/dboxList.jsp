@@ -4,6 +4,7 @@
 <script src="${pageContext.request.contextPath}/js/dbox/dbox.list.js"></script>
 
 <!-- 목록 시작 -->
+<div id="category"></div>
 <div>
 	<button type="button" class="btn btn-dark" onclick="location.href='${pageContext.request.contextPath}/dbox/propose'">기부박스 제안하기</button>
 </div>

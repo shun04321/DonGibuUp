@@ -2,7 +2,9 @@ $(function(){
 	let rowCount=10;
 	let currentPage;
 	let count;
-	
+	/* ===========================
+	 * 		기부박스 목록
+	 * =========================== */	
 	function selectList(pageNum){
 		currentPage = pageNum;
 		
@@ -29,14 +31,16 @@ $(function(){
 				
 				$(param.list).each(function(index,item){
 					let output = '<div class="col">';
-					output += '   	<div class="card h-100">';
-					output += '     	<img src="../upload/dbox/'+item.dbox_photo+'" class="card-img-top">';
-					output += '         	<div class="card-body h-100">';
+					output += '		<a href="../dbox/'+item.dbox_num+'/content">';
+					output += '   	<div class="card h-100" style="width:15rem">';
+					output += '     	<img src="../upload/dbox/'+item.dbox_photo+'" class="card-img-top" style="height:10.5rem">';
+					output += '         	<div class="card-body">';
 					output += '       			<h5 class="card-title">'+item.dbox_title+'</h5>';
 					output += '       			<h6 class="card-subtitle mb-2 text-body-secondary">'+item.dcate_name+'</h6>';
 					output += '       			<p class="card-text">'+item.dbox_team_name+'</p>';
 					output += '				</div>';
 					output += '		</div>';
+					output += '		</a>';
 					output += '	  </div>';
 					
 					//문서 객체에 추가

@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+#page_nav{
+	float:left;
+	width:25%;
+	min-height:530px;
+}
+#page_body{
+	width:75%;
+	float:left;
+}
