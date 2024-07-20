@@ -35,6 +35,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
@@ -295,7 +296,12 @@ public class SubscriptionController {
 	            // API 호출 실패
 	            return "api fail";
 	        }
-	    }	       
+	    }
+	    @Scheduled(cron = "0 35 18 * * ?")
+	    public void performDailyTask() {
+	        // 여기에 매일 00시에 실행할 작업을 작성합니다.
+	        System.out.println("매일 지정 시각에 작동하는 스케줄러입니다.");
+	    }
 	}
 
 
