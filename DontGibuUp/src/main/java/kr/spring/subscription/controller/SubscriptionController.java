@@ -1,5 +1,7 @@
 package kr.spring.subscription.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -177,7 +179,7 @@ public class SubscriptionController {
 	        response.put("accessTitle", "결제 결과");
 	        response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
 	        response.put("accessBtn", "홈으로 이동");
-	        response.put("accessUrl", "/main/main");
+	        response.put("accessUrl", "/main/main"); 
 	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
 	    } else {
 	        response.put("status", "fail");
@@ -302,6 +304,18 @@ public class SubscriptionController {
 			 * payuidService. insertSub_payment(payuidVO.get);
 			 */
 	        System.out.println("매일 지정 시각에 작동하는 스케줄러입니다.");
+	    }
+	    
+	    public static int getTodayDateAsTwoDigitInt() {
+	        // 현재 날짜를 가져옵니다.
+	        LocalDate today = LocalDate.now();
+	        
+	        // 'dd' 형식으로 날짜를 포맷합니다.
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
+	        String formattedDate = today.format(formatter);
+	        
+	        // 문자열을 두 자리 정수로 변환합니다.
+	        return Integer.parseInt(formattedDate);
 	    }
 	}
 
