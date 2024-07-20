@@ -167,28 +167,41 @@ public class SubscriptionController {
 	 *-------------------*/
 	@PostMapping("/subscription/paymentReservation")
 	@ResponseBody
-	public String signUp(	      
-	        String pay_uid, long sub_num,
-	        HttpSession session,
-	        Model model) {   
-	    // 결제
+	public ResponseEntity<Map<String, String>> signUp(String pay_uid, long sub_num, HttpSession session) {
+	    // 결제 처리 로직
 	    String paymentResult = insertSub_Payment(pay_uid, sub_num, session);
+
+	    Map<String, String> response = new HashMap<>();
 	    if ("payment success".equals(paymentResult)) {
-	        model.addAttribute("accessTitle", "결제 결과");
-	        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-	        model.addAttribute("accessBtn", "홈으로 이동");
-	        model.addAttribute("accessUrl", "/main/main");
+	        response.put("status", "success");
+	        response.put("accessTitle", "결제 결과");
+	        response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
+	        response.put("accessBtn", "홈으로 이동");
+	        response.put("accessUrl", "/main/main");
+	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
 	    } else {
-	        model.addAttribute("accessTitle", "결제 실패");
-	        model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
-	        model.addAttribute("accessBtn", "다시 시도");
-	        SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
-	        model.addAttribute("accessUrl", "/category/detail?decate_num=" + subscriptionVO.getDcate_num());
+	        response.put("status", "fail");
+	        response.put("accessTitle", "결제 실패");
+	        response.put("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
+	        response.put("accessBtn", "다시 시도");
+	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
+	        response.put("accessUrl", "/retryPayment");
 	    }
 
-
-	    return "paymentResultView";
+	    return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+	@GetMapping("/subscription/resultView")
+    public String showResult(Model model) {
+        // Model attributes 설정
+		model.addAttribute("accessTitle", "결제 결과");
+        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
+        model.addAttribute("accessBtn", "홈으로 이동");
+        model.addAttribute("accessUrl", "/main/main");
+
+        // JSP 파일명 반환
+        return "common/resultView"; // 상대경로로 지정
+    }
 
 
 	/*--------------------
@@ -204,23 +217,6 @@ public class SubscriptionController {
 			subscriptionService.deleteSubscription(sub_num);
 			//빌링키 발급 실패한 payuid 삭제
 			payuidService.deletePayuid(pay_uid);
-			mapJson.put("result", "success");
-		}catch(Exception e) {
-			mapJson.put("result", "fail");
-			throw new Exception(e);
-		}	
-		return mapJson;
-	}
-	/*--------------------
-	 * 등록되었던 결제수단으로 정기기부 실패
-	 *-------------------*/
-	@PostMapping("/subscription/failRegSubscription")
-	@ResponseBody
-	public Map<String,String> deleteSubscription(long sub_num, HttpSession session) throws Exception {
-		Map<String,String> mapJson = new HashMap<String,String>();
-		try {
-			//정기기부도 삭제
-			subscriptionService.deleteSubscription(sub_num);
 			mapJson.put("result", "success");
 		}catch(Exception e) {
 			mapJson.put("result", "fail");

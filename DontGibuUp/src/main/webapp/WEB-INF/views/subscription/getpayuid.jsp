@@ -36,15 +36,27 @@
                 customer_id: "${user.mem_num}" // 고객사가 회원에게 부여한 고유 ID
             }, function(rsp) {
                 if (rsp.success) {
-                    $.ajax({
-                        url:'paymentReservation', 
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            pay_uid: "${payuidVO.pay_uid}",
-                            sub_num: ${subscriptionVO.sub_num}
-                        }
-                    });
+                	$.ajax({
+                	    url: '/subscription/paymentReservation',
+                	    type: 'POST',
+                	    dataType: 'json',
+                	    data: {
+                	        pay_uid: "${payuidVO.pay_uid}",
+                	        sub_num: ${subscriptionVO.sub_num}
+                	    },
+                	    success: function(response) {
+                	        if (response.status === 'success' || response.status === 'fail') {               
+
+                	            // 페이지 리디렉션
+                	            location.href = response.url;
+                	        } else {
+                	            alert('Unexpected response status');
+                	        }
+                	    },
+                	    error: function() {
+                	        alert('네트워크 오류 발생');
+                	    }
+                	});
                 } else {
                     $.ajax({
                         url: 'failGetpayuid',
