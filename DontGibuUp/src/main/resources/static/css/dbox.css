@@ -177,17 +177,23 @@ input[type="text"],input[type="password"],
 	overflow:hidden;
 	margin-bottom:10px;
 }
-#page_body{
+#page_body_d{
 	width:70%;
 	float:left;
 	min-height:530px;
 	border:1px solid #e3e3e3;
 }
-#page_nav{
+#page_nav_d{
 	float:left;
 	width:30%;
 	min-height:530px;
 	border:1px solid #e3e3e3;
+}
+#page_body{
+	min-height:530px;
+}
+#page_nav{
+	text-align:center;
 }
 .page-clear{
 	clear:both;

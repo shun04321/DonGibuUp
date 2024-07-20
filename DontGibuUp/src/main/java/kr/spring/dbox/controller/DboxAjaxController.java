@@ -43,11 +43,12 @@ public class DboxAjaxController {
 	 *========================================*/
 	@GetMapping("/dbox/dboxList")
 	@ResponseBody
-	public Map<String, Object> getList(@RequestParam(defaultValue = "1" )int pageNum,
+	public Map<String, Object> getList(@RequestParam(defaultValue = "1" ) int pageNum,
 									   @RequestParam(defaultValue = "1") int rowCount,
 									   @RequestParam(defaultValue = "1") int order,
 									   @RequestParam(defaultValue = "") String category,
-									   String keyfield,String keyword,
+									   @RequestParam(defaultValue = "") String keyfield,
+									   @RequestParam(defaultValue = "") String keyword,
 									   HttpSession session){
 		log.debug("<<목록 - pageNum : >>" + pageNum);
 		log.debug("<<목록 - rowCount : >>" + rowCount);
@@ -59,7 +60,8 @@ public class DboxAjaxController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("category", category);
 		map.put("order", order);
-
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
 		//총 글의 개수
 		int count = dboxService.selectListCount(map);//category,order DboxMapper.xml에 우선 전달
 		log.debug("<<목록 - count : >>" + count);
@@ -76,7 +78,7 @@ public class DboxAjaxController {
 		}else {
 			list = Collections.emptyList();//null일 경우 빈 배열로 인식되게 세팅
 		}
-		
+		log.debug("<<목록 - Dbox list : >> : " + list);
 		List<DonationCategoryVO> category_list = categoryService.selectListNoPage();
 		
 		Map<String, Object> mapJson = new HashMap<String, Object>();
@@ -85,6 +87,7 @@ public class DboxAjaxController {
 		mapJson.put("category_list", category_list);
 		mapJson.put("page", page.getPage());
 		
+		log.debug("<<목록 - JSON : >> : " + mapJson);
 		return mapJson;
 	}
 }

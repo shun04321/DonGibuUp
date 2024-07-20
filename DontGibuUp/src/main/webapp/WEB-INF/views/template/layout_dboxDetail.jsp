@@ -19,10 +19,10 @@
 		<tiles:insertAttribute name="header"/>
 	</div>
 	<div class="side-height">
-		<div id="page_body">
+		<div id="page_body_d">
 			<tiles:insertAttribute name="body"/>
 		</div>
-		<div id="page_nav">
+		<div id="page_nav_d">
 			<tiles:insertAttribute name="nav"/>
 		</div>
 	</div>
