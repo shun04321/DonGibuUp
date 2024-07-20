@@ -34,6 +34,7 @@ import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
+import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
@@ -47,6 +48,9 @@ public class ChallengeAjaxController {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private MemberService memberService;
 
 	/*==========================
 	 *  챌린지 목록
@@ -286,6 +290,7 @@ public class ChallengeAjaxController {
 	/*==========================
 	 *  챌린지 인증 상세 (비동기 통신)
 	 *==========================*/
+	/*
 	//본인 챌린지 인증 내역 
 	@GetMapping("/challenge/verify/myList")
 	@ResponseBody
@@ -311,7 +316,7 @@ public class ChallengeAjaxController {
 		mapJson.put("page", page.getPage());
 
 		return mapJson;
-	}
+	}*/
 
 	//챌린지 참가 회원 목록
 	@GetMapping("/challenge/verify/joinMemberList")
@@ -371,14 +376,16 @@ public class ChallengeAjaxController {
 		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
 		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
 		MemberVO user = (MemberVO) session.getAttribute("user"); 
-		long mem_num = user.getMem_num();
+		long mem_num = user.getMem_num();		
 		if(challengeJoin.getMem_num() == mem_num) { 
 			mapJson.put("isUser", true);
 		}else { 
-			mapJson.put("isUser", false); 
+			mapJson.put("isUser", false);
+			//회원 프로필 사진,닉네임
+			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
+			mapJson.put("member", userInfo);
 		}
-		 
-		
+				
 		mapJson.put("list", verifyList);
 		mapJson.put("count", count);
 

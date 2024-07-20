@@ -8,6 +8,7 @@
 	let contextPath = '${pageContext.request.contextPath}';
 	let chal_num = ${challenge.chal_num};
 	let chal_joi_num = ${chal_joi_num};
+	let user_joi_num = ${chal_joi_num};
 	let rowCount = 1;
 	let pageSize = 10;
 	var currentPage;
@@ -16,7 +17,7 @@
 <div class="challenge-summary">
 	<div class="challenge-info">
 		<img src="<c:url value='/images/${challenge.chal_photo}'/>"
-			class="challenge-thumbnail" alt="챌린지 썸네일">
+			class="challenge-thumbnail responsive-image" alt="챌린지 썸네일">
 		<div class="challenge-info">
 			<div class="details">
 				<h3>${challenge.chal_title}</h3>
@@ -24,6 +25,7 @@
 					onclick="location.href='${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}'">상세보기</button>
 			</div>
 		</div>
+	</div>
 		<div class="challenge-stats">
 			<div class="challenge-stat-item">
 				<span>인증 빈도</span>
@@ -72,103 +74,76 @@
 				<span id="verify_my_states">나의 인증 현황</span> 
 				<span id="join_member_list">참가자 인증 현황</span>
 			</div>
-			<div id="verify_content">
-				<div class="challenge-verify-list">
-				<c:if test="${count == 0}">
-					<div>표시할 정보가 없습니다.</div>
-				</c:if>
-				<c:if test="${count > 0}">
-				<c:forEach var="verify" items="${verifyList}">
-					<div class="challenge-verify-card">
-						<img src="<c:url value='/images/${verify.chal_ver_photo}'/>"
-							alt="인증 사진">
-						<div class="content">
-							<div class="date-status">
-								<span class="date">${verify.chal_reg_date}</span>
-								<c:choose>
-									<c:when test="${verify.chal_ver_status == 0}">
-										<span class="status success">성공</span>
-									</c:when>
-									<c:when test="${verify.chal_ver_status == 1}">
-										<span class="status failure">실패</span>
-									</c:when>
-								</c:choose>
-							</div>
-							<div id="content-${verify.chal_ver_num}" class="comment">${verify.chal_content}</div>
-							<div id="edit-form-${verify.chal_ver_num}" class="edit-form" style="display: none;">
-								<textarea id="textarea-${verify.chal_ver_num}">${verify.chal_content}</textarea>
-							</div>
-						</div>
-						<c:if test="${status != 'post'}">
-							<div class="buttons">
-								<button id="edit-button-${verify.chal_ver_num}"
-									onclick="toggleEditSave(${verify.chal_ver_num})">수정</button>
-								<c:if test="${verify.chal_reg_date == today}">
-									<button onclick="deleteVerify(${verify.chal_ver_num})">삭제</button>
-								</c:if>
-							</div>
-						</c:if>
-					</div>
-				</c:forEach>
-					<div class="align-center">${page}</div>
-				</c:if>				
-				</div>
-				<div class="paging-btn"></div>
-			</div>			
-			<div id="loading" style="display:none;">
-				<img src="${pageContext.request.contextPath}/images/loading.gif">
-			</div>			
+			<div id="verify_content"></div>						
 		</div>
-	</div>
 </div>
 <script type="text/javascript">	
-
+	//초기 데이터(나의 인증 현황) 호출
+	getVerify(1);
+	
 	//나의 인증 현황 클릭 이벤트
- 	$('#verify_my_states').on('click',function(e){
- 		e.preventDefault();
- 		$('.challenge-verify-list').hide();
+ 	$('#verify_my_states').on('click',function(){
  		$('#verify_content').empty();
-		/* $('.memberList').empty();
-		$('.paging-btn').empty();
-		$('.each_verify_list').empty(); */
+ 		chal_joi_num = user_joi_num;
 		getVerify(1);
-	}); 
-
- 	//참가자 인증 현황 클릭 이벤트
-	$('#join_member_list').on('click',function(e){
-		e.preventDefault();
-		$('.challenge-verify-list').hide();
+	});
+	
+ 	//인증 현황 페이지 버튼 클릭 이벤트(본인)
+	$(document).on('click','.pageBtn.verifytrue',function(){
 		$('#verify_content').empty();
-		//$('.memberList').empty();
-		getItems(1);
+		//페이지 번호를 읽어들임
+		currentPage = $(this).attr('data-page');
+		//목록 호출
+		getVerify(currentPage);
+	});
+	
+ 	//인증 현황 페이지 버튼 클릭 이벤트(타인)
+	$(document).on('click','.pageBtn.verifyfalse',function(){
+		$('#verify_content').empty();
+		//페이지 번호를 읽어들임
+		currentPage = $(this).attr('data-page');
+		//목록 호출
+		getVerify(currentPage);
 	});
  	
- 	//타인의 인증 현황 클릭 이벤트
- 	$(document).on('click','.each_verify_list',function(e){
- 		e.preventDefault();
- 		$('#verify_content').empty();
- 		//$('.memberList').empty();
-		//$('.paging-btn').empty();
-		chal_joi_num = $(this).attr('href').split('chal_joi_num=')[1];
- 		getVerify(1);
- 	});
+ 	//참가자 목록 클릭 이벤트
+	$('#join_member_list').on('click',function(){
+		$('#verify_content').empty();
+		chal_joi_num = user_joi_num;
+		getItems(1);
+	});
 	
- 	//참가자 인증 현황 페이지 버튼 클릭 이벤트
-	$(document).on('click','.pageBtn',function(e){
-		e.preventDefault();
-		$('.memberList').empty();
+ 	//참가자 목록 페이지 버튼 클릭 이벤트
+	$(document).on('click','.pageBtn.join',function(){
+		$('#verify_content').empty();
 		//페이지 번호를 읽어들임
 		currentPage = $(this).attr('data-page');
 		//목록 호출
 		getItems(currentPage);
 	});
+ 	
+	//타인의 인증 현황 클릭 이벤트
+ 	$(document).on('click','.each_verify_list',function(e){
+ 		e.preventDefault();
+ 		$('#verify_content').empty();
+		chal_joi_num = $(this).attr('href').split('chal_joi_num=')[1];
+ 		getVerify(1);
+ 	});
 	
- 	//참가자 인증 현황 목록을 불러오는 메서드
+	//타인의 인증 현황 돌아가기 이벤트
+	$(document).on('click','.others_verify_list',function(e){
+		e.preventDefault();
+		$('#verify_content').empty();
+		chal_joi_num = user_joi_num;
+		getItems(1);
+	});
+		
+ 	//참가자 목록을 불러오는 메서드
 	function getItems(currentPage){
 		$.ajax({
 			url:'joinMemberList',
 			type:'get',
-			data:{chal_num:chal_num,pageNum:currentPage,rowCount:rowCount},
+			data:{chal_num:chal_num,chal_joi_num:chal_joi_num,pageNum:currentPage,rowCount:rowCount},
 			dataType:'json',
 			success:function(param){
 				let output = '';
@@ -176,9 +151,9 @@
 				$(param.list).each(function(index,item){
 					output += '<div class="joinMem_container">';
 					if (item.mem_photo) {
-						output += '<img class="joinMem" src="' + contextPath + '/upload/' + item.mem_photo + '" width="40" height="40">'; //챌린지 썸네일
+						output += '<img class="joinMem responsive-image" src="' + contextPath + '/upload/' + item.mem_photo + '" width="40" height="40">'; //회원 프로필
 					} else {
-						output += '<img class="joinMem" src="' + contextPath + '/images/basicProfile.png" width="40" height="40">'; //챌린지 썸네일 - 기본 이미지
+						output += '<img class="joinMem responsive-image" src="' + contextPath + '/images/basicProfile.png" width="40" height="40">'; //회원 프로필 기본 이미지
 					}
 					output += '<span class="joinMem">';
 					output += item.mem_nick;
@@ -189,9 +164,8 @@
 					output += '</div>';
 				});	
 				output += '</div>';
-				$('#verify_content').html(output);
-				
-				setPage(param.count);
+				$('#verify_content').append(output);				
+				$('#verify_content').append(setPage(param.count,'join'));												
 			},
 			error:function(){
 				alert('네트워크 오류');
@@ -199,6 +173,7 @@
 		});	
 	}
 	
+ 	//참가자 인증 현황을 불러오는 메서드
 	function getVerify(currentPage){
 		$.ajax({
 			url:'verifyMemberList',
@@ -209,16 +184,26 @@
 				let output = '';
 				let now = new Date();
 				now.setHours(0, 0, 0, 0);
-				//if(param.mem_num)
+				if(!param.isUser){
+					output += `<div class="memberInfo">`;
+					if (param.member.mem_photo) {
+						output += '<img class="joinMem responsive-image" src="' + contextPath + '/upload/' + param.member.mem_photo + '" width="40" height="40">'; //회원 프로필
+					} else {
+						output += '<img class="joinMem responsive-image" src="' + contextPath + '/images/basicProfile.png" width="40" height="40">'; //회원 프로필 기본 이미지
+					}
+					output += `<span class="joinMem">\${param.member.mem_nick}</span>
+										 <a href="joinMemberList" class="others_verify_list"> > </a>
+										 </div>
+					`;							
+				}
 				if(param.count == 0){
 					output += '<div>표시할 정보가 없습니다.</div>';
-				}else{
+				}else{					
 					$(param.list).each(function(index,item){
-						console.log('param.list >>'+param.count);
 						let reg_date = new Date(item.chal_reg_date);
-						reg_date.setHours(0,0,0,0);
+						reg_date.setHours(0,0,0,0);						
 						output += '<div class="challenge-verify-card">';
-						output += '<img src="'+contextPath+'/upload/'+item.chal_ver_photo+'" width="100" height="50">';	
+						output += '<img src="'+contextPath+'/upload/'+item.chal_ver_photo+'" width="100" height="50" class="responsive-image">';	
 						output += '<div class="content">';
 						output += '<div class="date-status">';
 						output += '<span class="date">'+item.chal_reg_date+'</span>';	
@@ -227,15 +212,32 @@
 						}else if(item.chal_ver_status == 1){
 							output += `<span class="status failure">실패</span>`;
 						}
-						output += '<div id="content-'+item.chal_ver_num+'" class="comment">'+item.chal_content+'</div>'
-						output += '<div id="edit-form-'+item.chal_ver_num+'" class="edit-form" style="display: none;">';
-						output += '<textarea id="textarea-'+item.chal_ver_num+'">'+item.chal_content+'</textarea>';
-						output += '</div>';	
-						output += '<button type="button">제보</button>';
+						if(item.chal_content){
+							output += '<div id="content-'+item.chal_ver_num+'" class="comment">'+item.chal_content+'</div>';
+						}else{
+							output += '<div id="content-'+item.chal_ver_num+'" class="comment"></div>';
+						}	
+						output += '</div>';
+						output += '</div>';
+						if(!param.isUser){
+							output += '<button type="button">제보</button>';
+						}else{
+							//수정 폼
+							output += '<div id="edit-form-'+item.chal_ver_num+'" class="edit-form" style="display: none;">';
+							output += '<textarea id="textarea-'+item.chal_ver_num+'">'+item.chal_content+'</textarea>';
+							output += '</div>';
+							//수정/삭제 버튼 생성							
+							if(reg_date.getTime() == now.getTime()){								
+								output += `<button id="edit-button-\${item.chal_ver_num}"
+									onclick="toggleEditSave(\${item.chal_ver_num})">수정</button>`;	
+								output += `<button onclick="deleteVerify(\${item.chal_ver_num})">삭제</button>`;
+							}														
+						}						
 						output += '</div>';								
 					});					
 				}
 				$('#verify_content').html(output);
+				$('#verify_content').append(setPage(param.count,'verify'+param.isUser));
 			},
 			error:function(){
 				alert('네트워크 오류');
@@ -243,7 +245,7 @@
 		});
 	}
  	//페이징 처리를 하는 메서드
-	function setPage(totalItem){
+	function setPage(totalItem,method){
 		$('.paging-btn').empty();
 		
 		if(totalItem == 0){
@@ -273,18 +275,18 @@
 		let pageInfo = '';
 		
 		if(startPage>pageSize){
-			pageInfo += '<span class="pageBtn" data-page='+(startPage-1)+'>[이전]</span>';
+			pageInfo += '<span class="pageBtn '+method+'" data-page='+(startPage-1)+'>[이전]</span>';
 		}
 
 		for(var i=startPage;i<=endPage;i++){
-			pageInfo += '<span class="pageBtn" data-page='+i+'>'+i+'</span>';
+			pageInfo += '<span class="pageBtn '+method+'" data-page='+i+'>'+i+'</span>';
 		}
 
 		if(endPage < totalPage){
-			pageInfo += '<span class="pageBtn" data-page='+(startPage+pageSize)+'>[다음]</span>';;
+			pageInfo += '<span class="pageBtn '+method+'" data-page='+(startPage+pageSize)+'>[다음]</span>';
 		}
 
-		$('.paging-btn').html(pageInfo);
+		return pageInfo;
 	}
 
 </script>

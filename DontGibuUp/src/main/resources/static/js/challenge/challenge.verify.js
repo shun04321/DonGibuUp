@@ -1,14 +1,3 @@
-
-/*	function showMyStates(){
-		console.log('a');
-		alert('a');
-	}
-	
-	function showMemberList(){
-		console.log('a');
-		alert('a');
-	}*/
-	
 	function toggleEditSave(chal_ver_num) {
 		const editButton = $('#edit-button-' + chal_ver_num);
 		const isEditing = editButton.text() === '저장';
