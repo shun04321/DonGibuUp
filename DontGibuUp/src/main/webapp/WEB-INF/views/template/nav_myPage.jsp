@@ -1,44 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!-- MyPage 메뉴 시작 -->
-<ul class="side-bar">
-	<li class="side-menu">
-		<div>나의 정보</div>
-        <ul class="side-menu-sub">
-            <li><a href="${pageContext.request.contextPath}/member/myPage/memberInfo">회원정보 수정</a></li>
-            <c:if test="${user.mem_reg_type == 1}">
-            <li><a href="${pageContext.request.contextPath}/member/myPage/changePassword">비밀번호 수정</a></li>
-            </c:if>
-            <li><a href="${pageContext.request.contextPath}/member/myPage/inviteFriendEvent">친구초대</a></li>
-            <li><a href="${pageContext.request.contextPath}/member/myPage/point">포인트</a></li>
-        </ul>
-	</li>
-	<li class="side-menu">
-		<div>기부</div>
-		<ul class="side-menu-sub">
-			<li>정기기부</li>
-			<li>기부박스</li>
-		</ul>
-	</li>
-	<li class="side-menu">
-		<div>챌린지</div>
-		<ul class="side-menu-sub">
-	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=pre">시작 전 챌린지</a></li>
-	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=on">참가중인 챌린지</a></li>
-	        <li><a href="${pageContext.request.contextPath}/challenge/join/list?status=post">완료된 챌린지</a></li>
-		</ul>
-	</li>
-	<li class="side-menu">
-		<div>주문</div>
-		<ul class="side-menu-sub">
-			<li>주문/배송조회</li>
-			<li><a href="${pageContext.request.contextPath}/cart/list">장바구니</a></li>
-		</ul>
-	</li>
-	<li class="side-menu">
-		<div><a href="${pageContext.request.contextPath}/member/myPage/inquiry">문의/신고</a></div>
-	</li>
-</ul>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+
+<!-- MyPage 메뉴 시작 -->
+	<div class="category-block d-flex flex-column">
+		<h5 class="mb-3">나의 정보</h5>
+		<a href="${pageContext.request.contextPath}/member/myPage/memberInfo" class="category-block-link"> 회원정보 수정</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/changePassword" class="category-block-link"> 비밀번호 수정</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/inviteFriendEvent" class="category-block-link"> 친구초대</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/point" class="category-block-link"> 포인트</a>
+	</div>
+	<div class="category-block d-flex flex-column">
+		<h5 class="mb-3">기부</h5>
+		<a href="#" class="category-block-link"> 정기기부</a>
+		<a href="#" class="category-block-link"> 기부박스</a>
+	</div>
+	<div class="category-block d-flex flex-column">
+		<h5 class="mb-3">챌린지</h5>
+		<a href="${pageContext.request.contextPath}/challenge/join/list?status=pre" class="category-block-link"> 시작 전 챌린지</a>
+		<a href="${pageContext.request.contextPath}/challenge/join/list?status=on" class="category-block-link"> 참가중인 챌린지</a>
+		<a href="${pageContext.request.contextPath}/challenge/join/list?status=post" class="category-block-link"> 완료된 챌린지</a>
+	</div>
+	<div class="category-block d-flex flex-column">
+		<h5 class="mb-3">주문</h5>
+		<a href="#" class="category-block-link"> 주문/배송조회</a>
+		<a href="${pageContext.request.contextPath}/cart/list" class="category-block-link"> 장바구니</a>
+	</div>
+	<div class="category-block d-flex flex-column">
+		<h5 class="mb-3">고객센터</h5>
+		<a href="${pageContext.request.contextPath}/member/myPage/inquiry" class="category-block-link"> 문의/신고</a>
+	</div>
 <!-- MyPage 메뉴 끝 -->

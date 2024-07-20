@@ -14,14 +14,18 @@
 	<div id="main_header">
 		<tiles:insertAttribute name="header" />
 	</div>
-	<div class="side-height">
-		<div id="page_nav">
-			<tiles:insertAttribute name="nav" />
+	<section class="news-section section-padding">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 col-12 mx-auto mt-4 mt-lg-0">
+					<tiles:insertAttribute name="nav" />
+				</div>
+				<div class="col-lg-7 col-12">
+					<tiles:insertAttribute name="body" />
+				</div>
+			</div>
 		</div>
-		<div id="page_body">
-			<tiles:insertAttribute name="body" />
-		</div>
-	</div>
+	</section>
 	<div id="main_footer" class="page-clear">
 		<tiles:insertAttribute name="footer" />
 	</div>
