@@ -129,7 +129,7 @@ public class SubscriptionController {
 		redirectAttributes.addFlashAttribute("payuidVO", payuid);
 		
 		//재결제 요청 후 resultView 페이지로 이동
-		 String paymentResult = insertSub_Payment(payuid.getPay_uid(), subscriptionVO.getSub_num(), session);
+		 String paymentResult = insertSub_Payment(payuid.getPay_uid(), subscriptionVO.getSub_num());
 
 		 if ("payment success".equals(paymentResult)) {
 		        model.addAttribute("accessTitle", "결제 결과");
@@ -169,9 +169,9 @@ public class SubscriptionController {
 	 *-------------------*/
 	@PostMapping("/subscription/paymentReservation")
 	@ResponseBody
-	public ResponseEntity<Map<String, String>> signUp(String pay_uid, long sub_num, HttpSession session) {
+	public ResponseEntity<Map<String, String>> signUp(String pay_uid, long sub_num) {
 	    // 결제 처리 로직
-	    String paymentResult = insertSub_Payment(pay_uid, sub_num, session);
+	    String paymentResult = insertSub_Payment(pay_uid, sub_num);
 
 	    Map<String, String> response = new HashMap<>();
 	    if ("payment success".equals(paymentResult)) {
@@ -231,8 +231,7 @@ public class SubscriptionController {
 		/*-----------------------
 		 * 결제
 		 ------------------------*/
-	    public String insertSub_Payment(String payuid, long sub_num, HttpSession session) {
-	    	MemberVO user = (MemberVO)session.getAttribute("user");
+	    public String insertSub_Payment(String payuid, long sub_num) {
 	    	SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
 	    	log.debug("sub_num" + sub_num);
 	    	DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
@@ -255,7 +254,7 @@ public class SubscriptionController {
 	        headers.setBearerAuth(access_token);
 	        Sub_paymentVO sub_paymentVO = new Sub_paymentVO();
 			sub_paymentVO.setSub_pay_num(sub_paymentService.getSub_payment_num());
-			sub_paymentVO.setMem_num(user.getMem_num());
+			sub_paymentVO.setMem_num(subscriptionVO.getMem_num());
 			sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
 			sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
 			sub_paymentVO.setSub_pay_date("2024-07-18");
