@@ -200,7 +200,7 @@ public class SubscriptionController {
         model.addAttribute("accessUrl", "/main/main");
 
         // JSP 파일명 반환
-        return "common/resultView"; // 상대경로로 지정
+        return "paymentResultView"; // 상대경로로 지정
     }
 
 
