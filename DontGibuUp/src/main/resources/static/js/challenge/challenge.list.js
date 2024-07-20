@@ -77,7 +77,7 @@ $(function() {
 
 				if (page * rowCount >= param.count) {
 					hasMoreData = false;
-					const scrollTarget = document.querySelector('#scroll-target');					
+					const scrollTarget = document.querySelector('#scroll-target');
 					if (scrollTarget) {
 						observer.unobserve(scrollTarget);
 					}
@@ -85,97 +85,93 @@ $(function() {
 				//챌린지 목록 작업
 				let output = '';
 				$(param.list).each(function(index, item) {
-					console.log(index+' : '+((page -1) * rowCount+index));
-					console.log(index+' : '+param.count);
-					realIdx = (page -1) * rowCount+index;
+					realIdx = (page - 1) * rowCount + index;
 					let sdate = new Date(item.chal_sdate);
 					let now = new Date();
 					now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
 					sdate.setHours(0, 0, 0, 0);
-					if (sdate.getTime() >= now.getTime()) {
-						output += '<div class="col-lg-4 col-md-6 col-12" style="margin-bottom: 30px;">';
-						output += '<div class="custom-block-wrap">';
-						if (item.chal_photo) {
-							output += '<img src="' + pageContext + '/upload/' + item.chal_photo + '" class="custom-block-image img-fluid" >'; //챌린지 썸네일
-						} else {
-							output += '<img src="' + pageContext + '/images/챌린지_기본이미지.jpg" class="custom-block-image img-fluid" >'; //챌린지 썸네일 - 기본 이미지
-						}
-						output += '<div class="custom-block">';
-						output += '<div class="custom-block-body">';
-						output += '<h5 class="mb-3">' + item.chal_title + '</h5>';
-						output += '<p>';
-						if (item.mem_photo) {
-							output += '<img src="' + pageContext + '/upload/' + item.mem_photo + '" width="20" height="20">'; //프사
-						} else {
-							output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20">'; //프사
-						}
-						output += ' <span>' + item.mem_nick + '</span>';
-						output += '</p>';
-						
-						output += '<div class="d-flex align-items-center my-2">';
-						output += '<p class="mb-0">';
-						if (item.chal_freq == 0) {
-							output += '<strong>매일</strong>';
-						} else if (item.chal_freq == 1) {
-							output += '<strong>주 1일</strong>';
-						} else if (item.chal_freq == 2) {
-							output += '<strong>주 2일</strong>';
-						} else if (item.chal_freq == 3) {
-							output += '<strong>주 3일</strong>';
-						} else if (item.chal_freq == 4) {
-							output += '<strong>주 4일</strong>';
-						} else if (item.chal_freq == 5) {
-							output += '<strong>주 5일</strong>';
-						} else if (item.chal_freq == 6) {
-							output += '<strong>주 6일</strong>';
-						}
-						output += '</p>';
+					output += '<div class="col-lg-4 col-md-6 col-12" style="margin-bottom: 30px;">';
+					output += '<div class="custom-block-wrap">';
+					if (item.chal_photo) {
+						output += '<img src="' + pageContext + '/upload/' + item.chal_photo + '" class="custom-block-image img-fluid" >'; //챌린지 썸네일
+					} else {
+						output += '<img src="' + pageContext + '/images/챌린지_기본이미지.jpg" class="custom-block-image img-fluid" >'; //챌린지 썸네일 - 기본 이미지
+					}
+					output += '<div class="custom-block">';
+					output += '<div class="custom-block-body">';
+					output += '<h5 class="mb-3">' + item.chal_title + '</h5>';
+					output += '<p>';
+					if (item.mem_photo) {
+						output += '<img src="' + pageContext + '/upload/' + item.mem_photo + '" width="20" height="20">'; //프사
+					} else {
+						output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20">'; //프사
+					}
+					output += ' <span>' + item.mem_nick + '</span>';
+					output += '</p>';
 
-						output += '<p class="ms-auto mb-0">';
-						if (sdate.getTime() == now.getTime()) {
-							output += '<strong>오늘부터 시작</strong>';
-						} else if (sdate > now) {
-							let difDays = (sdate - now) / (1000 * 60 * 60 * 24);
-							output += '<strong>' + Math.floor(difDays) + '일 뒤 시작</strong>';
-						}
-						output += '</p>';
-						output += '</div>';
-						
-						output += '</div>';
-						output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">Challenge now</a>';
-						output += '</div>';
-						
-						output += '</div>';
-						output += '</div>';
-					}					
+					output += '<div class="d-flex align-items-center my-2">';
+					output += '<p class="mb-0">';
+					if (item.chal_freq == 0) {
+						output += '<strong>매일</strong>';
+					} else if (item.chal_freq == 1) {
+						output += '<strong>주 1일</strong>';
+					} else if (item.chal_freq == 2) {
+						output += '<strong>주 2일</strong>';
+					} else if (item.chal_freq == 3) {
+						output += '<strong>주 3일</strong>';
+					} else if (item.chal_freq == 4) {
+						output += '<strong>주 4일</strong>';
+					} else if (item.chal_freq == 5) {
+						output += '<strong>주 5일</strong>';
+					} else if (item.chal_freq == 6) {
+						output += '<strong>주 6일</strong>';
+					}
+					output += '</p>';
+
+					output += '<p class="ms-auto mb-0">';
+					if (sdate.getTime() == now.getTime()) {
+						output += '<strong>오늘부터 시작</strong>';
+					} else if (sdate > now) {
+						let difDays = (sdate - now) / (1000 * 60 * 60 * 24);
+						output += '<strong>' + Math.floor(difDays) + '일 뒤 시작</strong>';
+					}
+					output += '</p>';
+					output += '</div>';
+
+					output += '</div>';
+					output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">Challenge now</a>';
+					output += '</div>';
+
+					output += '</div>';
+					output += '</div>';
 				});
 				$('#output').append(output);
-				
+
 				// 스크롤 타겟 추가 및 중복 방지
 				const scrollTarget = document.querySelector('#scroll-target');
 				if (scrollTarget) {
 					observer.unobserve(scrollTarget);
-					
+
 					scrollTarget.remove();
-					
-					const dif = page * rowCount - param.count;									
-					
+
+					const dif = page * rowCount - param.count;
+
 					console.log(realIdx);
 					console.log(param.count);
-					console.log(realIdx == param.count-1);
-					
-					if (realIdx == param.count-1) {
+					console.log(realIdx == param.count - 1);
+
+					if (realIdx == param.count - 1) {
 						const target = document.createElement('div');
 						target.id = 'scroll-target';
 						document.getElementById('output').appendChild(target);
-						if(dif == 1){							
+						if (dif == 1) {
 							target.style.width = '170px';
 							console.log(target);
 						}
-						else if(dif == 2){
+						else if (dif == 2) {
 							target.style.width = '390px';
 							return;
-						}						
+						}
 					}
 				}
 				const target = document.createElement('div');

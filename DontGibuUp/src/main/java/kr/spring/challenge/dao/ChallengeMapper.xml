@@ -26,7 +26,7 @@
 			</if>
 			<if test="chal_sdate != null and chal_sdate == 'pastList'">
 				<![CDATA[
-					TO_DATE(chal_sdate, 'YYYY-MM-DD') < TRUNC(SYSDATE)
+					TO_DATE(chal_edate, 'YYYY-MM-DD') < TRUNC(SYSDATE)
 				]]>
 			</if>
 			<if test="chal_type != null and chal_type != ''">
