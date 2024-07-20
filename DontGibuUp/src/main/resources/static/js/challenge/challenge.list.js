@@ -93,56 +93,60 @@ $(function() {
 					now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
 					sdate.setHours(0, 0, 0, 0);
 					if (sdate.getTime() >= now.getTime()) {
-						output = '<span class="chal_listElement">';
-						output += '<a href="detail?chal_num=' + item.chal_num + '">';
-						output += '<ul class="listElement_content">';
-						output += '<li>';
+						output += '<div class="col-lg-4 col-md-6 col-12">';
+						output += '<div class="custom-block-wrap">';
 						if (item.chal_photo) {
-							output += '<img src="' + pageContext + '/upload/' + item.chal_photo + '" width="100" height="40">'; //챌린지 썸네일
+							output += '<img src="' + pageContext + '/upload/' + item.chal_photo + '" class="custom-block-image img-fluid" >'; //챌린지 썸네일
 						} else {
-							output += '<img src="' + pageContext + '/images/챌린지_기본이미지.jpg" width="100" height="40">'; //챌린지 썸네일 - 기본 이미지
+							output += '<img src="' + pageContext + '/images/챌린지_기본이미지.jpg" class="custom-block-image img-fluid" >'; //챌린지 썸네일 - 기본 이미지
 						}
-						output += '</li>';
-						output += '<li>';
-						output += '<span>' + item.chal_title + '</span>';
-						output += '</li>';
-						output += '<li>';
+						output += '<div class="custom-block">';
+						output += '<div class="custom-block-body">';
+						output += '<h5 class="mb-3">' + item.chal_title + '</h5>';
+						output += '<p>';
 						if (item.mem_photo) {
-							output += '<img src="' + pageContext + '/upload/' + item.mem_photo + '" width="20" height="20">'; //
+							output += '<img src="' + pageContext + '/upload/' + item.mem_photo + '" width="20" height="20">'; //프사
 						} else {
-							output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20">'; //챌린지 썸네일 - 기본 이미지
+							output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20">'; //프사
 						}
 						output += '<span>' + item.mem_nick + '</span>';
-						output += '</li>';
-						output += '<li>';
+						output += '</p>';
+						
+						output += '<div class="d-flex align-items-center my-2">';
+						output += '<p class="mb-0">';
 						if (item.chal_freq == 0) {
-							output += '<span>매일</span>';
+							output += '<strong>매일</strong>';
 						} else if (item.chal_freq == 1) {
-							output += '<span>주1일</span>';
+							output += '<strong>주1일</strong>';
 						} else if (item.chal_freq == 2) {
-							output += '<span>주2일</span>';
+							output += '<strong>주2일</strong>';
 						} else if (item.chal_freq == 3) {
-							output += '<span>주3일</span>';
+							output += '<strong>주3일</strong>';
 						} else if (item.chal_freq == 4) {
-							output += '<span>주4일</span>';
+							output += '<strong>주4일</strong>';
 						} else if (item.chal_freq == 5) {
-							output += '<span>주5일</span>';
+							output += '<strong>주5일</strong>';
 						} else if (item.chal_freq == 6) {
-							output += '<span>주6일</span>';
+							output += '<strong>주6일</strong>';
 						}
-						output += '</li>';
+						output += '</p>';
 
-						output += '<li>';
+						output += '<p class="ms-auto mb-0">';
 						if (sdate.getTime() == now.getTime()) {
-							output += '<span>오늘부터 시작</span>';
+							output += '<strong>오늘부터 시작</strong>';
 						} else if (sdate > now) {
 							let difDays = (sdate - now) / (1000 * 60 * 60 * 24);
-							output += '<span>' + Math.floor(difDays) + '일 뒤 시작</span>';
+							output += '<strong>' + Math.floor(difDays) + '일 뒤 시작</strong>';
 						}
-						output += '</li>';
-						output += '</ul>';
-						output += '</a>';
-						output += '</span>';
+						output += '</p>';
+						output += '</div>';
+						
+						output += '</div>';
+						output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">Donate now</a>';
+						output += '</div>';
+						
+						output += '</div>';
+						output += '</div>';
 					}
 					$('#output').append(output);						
 				});
