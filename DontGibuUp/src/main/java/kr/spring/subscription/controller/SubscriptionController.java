@@ -296,35 +296,7 @@ public class SubscriptionController {
 	            return "api fail";
 	        }
 	    }	       
-
-	        @PostMapping("/payment1")
-	        @ResponseBody
-	        public Map<String,String> customer_uid(
-	               String customer_uid, int price, String merchant_uid) {
-	        	Map<String,String> mapJson = new HashMap<String,String>();
-	            // 파라미터 검증
-	            if (price <= 0) {
-	                log.debug("price : " + price);
-	            }
-	            if (customer_uid == null || customer_uid.trim().isEmpty()) {
-	            	log.debug("customerUid : " + customer_uid);
-	            }
-	            if (merchant_uid == null || merchant_uid.trim().isEmpty()) {
-	                log.debug("merchantUid"+merchant_uid);
-	            }
-	            
-	            try {
-	                // 예약 결제 스케줄 시작
-	                subscriptionService.startScheduler(customer_uid, price, merchant_uid);
-	                mapJson.put("result", "success");
-	                return mapJson;
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	                mapJson.put("result", "fail");
-	                return mapJson;
-	            }
-	        }
-	    }
+	}
 
 
 	    

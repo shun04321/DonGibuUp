@@ -20,11 +20,6 @@ public interface SubscriptionService {
 
     // 오늘 날짜 구하기
     String getTodayDateString();
-
-    // 예약 결제를 위한 메소드
-    String schedulePay(String customerUid, int price, String merchant_uid);
-    
-    void startScheduler(String customerUid, int price, String merchant_uid);
     
     String getToken();
 }
