@@ -17,7 +17,6 @@
     <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
 </head>
 
-
 <body id="section_1">
 
 	<header class="site-header">
