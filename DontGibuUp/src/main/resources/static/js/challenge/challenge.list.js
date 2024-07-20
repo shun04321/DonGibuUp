@@ -93,7 +93,7 @@ $(function() {
 					now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
 					sdate.setHours(0, 0, 0, 0);
 					if (sdate.getTime() >= now.getTime()) {
-						output += '<div class="col-lg-4 col-md-6 col-12">';
+						output += '<div class="col-lg-4 col-md-6 col-12" style="margin-bottom: 30px;">';
 						output += '<div class="custom-block-wrap">';
 						if (item.chal_photo) {
 							output += '<img src="' + pageContext + '/upload/' + item.chal_photo + '" class="custom-block-image img-fluid" >'; //챌린지 썸네일
@@ -109,7 +109,7 @@ $(function() {
 						} else {
 							output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20">'; //프사
 						}
-						output += '<span>' + item.mem_nick + '</span>';
+						output += ' <span>' + item.mem_nick + '</span>';
 						output += '</p>';
 						
 						output += '<div class="d-flex align-items-center my-2">';
@@ -117,17 +117,17 @@ $(function() {
 						if (item.chal_freq == 0) {
 							output += '<strong>매일</strong>';
 						} else if (item.chal_freq == 1) {
-							output += '<strong>주1일</strong>';
+							output += '<strong>주 1일</strong>';
 						} else if (item.chal_freq == 2) {
-							output += '<strong>주2일</strong>';
+							output += '<strong>주 2일</strong>';
 						} else if (item.chal_freq == 3) {
-							output += '<strong>주3일</strong>';
+							output += '<strong>주 3일</strong>';
 						} else if (item.chal_freq == 4) {
-							output += '<strong>주4일</strong>';
+							output += '<strong>주 4일</strong>';
 						} else if (item.chal_freq == 5) {
-							output += '<strong>주5일</strong>';
+							output += '<strong>주 5일</strong>';
 						} else if (item.chal_freq == 6) {
-							output += '<strong>주6일</strong>';
+							output += '<strong>주 6일</strong>';
 						}
 						output += '</p>';
 
@@ -142,14 +142,15 @@ $(function() {
 						output += '</div>';
 						
 						output += '</div>';
-						output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">Donate now</a>';
+						output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">Challenge now</a>';
 						output += '</div>';
 						
 						output += '</div>';
 						output += '</div>';
-					}
-					$('#output').append(output);						
+					}					
 				});
+				$('#output').append(output);
+				
 				// 스크롤 타겟 추가 및 중복 방지
 				const scrollTarget = document.querySelector('#scroll-target');
 				if (scrollTarget) {
