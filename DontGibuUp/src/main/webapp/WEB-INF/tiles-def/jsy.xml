@@ -25,7 +25,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/goods/goodsModify.jsp"/>
 	</definition>
-	<definition name="cartList" extends="main">
+	<definition name="cartList" extends="memberInfo">
 		<put-attribute name="title" value="장바구니"/>
 		<put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/cart/cartList.jsp"/>

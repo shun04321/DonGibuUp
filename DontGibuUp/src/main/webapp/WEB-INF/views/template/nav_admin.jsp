@@ -8,7 +8,7 @@
 	<li class="side-menu">기부박스 관리</li>
 	<li class="side-menu">굿즈 관리</li>
 	<li class="side-menu">결제 관리</li>
-	<li class="side-menu">카테고리 관리</li>
+	<li class="side-menu"><a href="${pageContext.request.contextPath}/category/categoryList">카테고리 관리</a></li>
 	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/managePoint">포인트 관리</a></li>
 	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/cs/faq">FAQ 관리</a></li>
 	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/cs/inquiry">1:1문의 관리</a></li>

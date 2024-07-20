@@ -10,7 +10,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/subscription/subscriptionCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/subscription/subscriptionMain.jsp"/>
 	</definition>
-	<definition name="categoryList" extends="main">
+	<definition name="categoryList" extends="adminInquiry">
 		<put-attribute name="title" value="기부 카테고리 관리"/>
 		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/category/categoryList.jsp"/>

@@ -17,10 +17,10 @@
 	<section class="news-section section-padding">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-4 col-12 mx-auto mt-4 mt-lg-0">
+				<div class="col-lg-3 col-12 mx-auto mt-4 mt-lg-0">
 					<tiles:insertAttribute name="nav" />
 				</div>
-				<div class="col-lg-7 col-12">
+				<div class="col-lg-9 col-12">
 					<tiles:insertAttribute name="body" />
 				</div>
 			</div>
