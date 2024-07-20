@@ -185,7 +185,7 @@ public class SubscriptionController {
 	        response.put("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
 	        response.put("accessBtn", "다시 시도");
 	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
-	        response.put("accessUrl", "/retryPayment");
+	        response.put("accessUrl", "categoryList");
 	    }
 
 	    return new ResponseEntity<>(response, HttpStatus.OK);
@@ -298,7 +298,9 @@ public class SubscriptionController {
 	    
 	    @Scheduled(cron = "0 35 18 * * ?")
 	    public void performDailyTask() {
-	        // 여기에 매일 00시에 실행할 작업을 작성합니다.
+			/*
+			 * payuidService. insertSub_payment(payuidVO.get);
+			 */
 	        System.out.println("매일 지정 시각에 작동하는 스케줄러입니다.");
 	    }
 	}
