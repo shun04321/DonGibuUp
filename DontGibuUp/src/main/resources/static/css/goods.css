@@ -2,7 +2,7 @@
 
 /* 전체 레이아웃
 ---------------------*/
-#main{
+/* #main{
 	width:1024px;
 	margin:0 auto;
 	font-size:10pt;
@@ -31,7 +31,7 @@ a:visited{
 a:hover{
 	text-decoration:none;
 	color:#6C6C6C;
-}
+} */
 /* 페이지 레이아웃
 ---------------------*/
 .page-main{
@@ -95,7 +95,7 @@ div#main_menu ul li{
 }
 /* 공통 등록, 수정 폼
 ---------------------*/
-form{
+/* form{
 	width:600px;
 	margin:0 auto;
 	border:1px solid #000;
@@ -115,7 +115,7 @@ input,select{
 input[type="text"],input[type="password"],
                                      input[type="email"]{
 	width:350px;	
-}
+} */
 /* Admin, MY페이지 공통
 ---------------------*/
 .side-bar{
@@ -226,9 +226,9 @@ table.striped-table tr:nth-child(odd){
 }
 /* 공통 버튼
 ---------------------*/
-[type="submit"],[type="button"]{
+/* [type="submit"],[type="button"]{
 	height:30px;
-}
+} */
 .menu-btn{
 	width:100%;
 	height:50px;

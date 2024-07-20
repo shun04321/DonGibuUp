@@ -25,7 +25,7 @@
 </head>
 <body>
 <h2>챌린지 참가</h2>
-<div class="container">
+<div class="join-container">
     <div class="line">
         <c:if test="${empty challengeVO.chal_photo}">
         		<img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진">

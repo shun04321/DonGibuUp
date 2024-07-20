@@ -234,7 +234,7 @@
 }
 
 /* 챌린지 참가 */
-.container {
+.join-container {
 	max-width: 600px;
 	margin: 50px auto;
 	padding: 20px;
@@ -424,7 +424,7 @@ h2 {
 }
 
 /* 챌린지 인증 */
-.container {
+.verify-container {
 	max-width: 600px;
 	margin: 20px auto;
 	padding: 20px;
