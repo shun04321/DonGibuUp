@@ -60,13 +60,17 @@ public class PurchaseController {
     public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid, HttpSession session) throws IamportResponseException, IOException {
         log.debug("결제 검증 요청: imp_uid = " + imp_uid);
         
-        IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
-
-        if (payment == null || payment.getResponse() == null) {
-            log.error("결제 정보 조회 실패: imp_uid = " + imp_uid);
-            throw new IamportResponseException("결제 정보 조회 실패", null);
+        IamportResponse<Payment> payment;
+        try {
+            payment = impClient.paymentByImpUid(imp_uid);
+            if (payment == null || payment.getResponse() == null) {
+                log.error("결제 정보 조회 실패: imp_uid = " + imp_uid);
+                throw new IamportResponseException("결제 정보 조회 실패", null);
+            }
+        } catch (IamportResponseException | IOException e) {
+            log.error("결제 검증 중 예외 발생: imp_uid = " + imp_uid, e);
+            throw e;
         }
-
         // 실 결제 금액 가져오기
         long paidAmount = payment.getResponse().getAmount().longValue();
 
@@ -76,54 +80,66 @@ public class PurchaseController {
         return payment;
     }
 
-    // 결제 정보 저장
     @PostMapping("/purchaseComplete")
     @ResponseBody
     public Map<String, String> savePurchaseInfo(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
             throws IllegalStateException, IOException {
-        String impUid = (String) data.get("imp_uid");
-        String merchantUid = (String) data.get("merchant_uid");
-        int amount = (Integer) data.get("amount");
-        String status = (String) data.get("status");
-        int itemNum = (Integer) data.get("item_num");
-        String itemName = (String) data.get("item_name");
-        String buyerName = (String) data.get("buyer_name");
-
-        log.debug("impUid : " + impUid);
-        log.debug("merchantUid : " + merchantUid);
-        log.debug("amount : " + amount);
-        log.debug("status : " + status);
-        log.debug("itemNum : " + itemNum);
-        log.debug("itemName : " + itemName);
-        log.debug("buyerName : " + buyerName);
         Map<String, String> mapJson = new HashMap<>();
 
-        // 세션 데이터 가져오기
-        MemberVO member = (MemberVO) session.getAttribute("user");
+        try {
+            String impUid = (String) data.get("imp_uid");
+            String merchantUid = (String) data.get("merchant_uid");
+            int amount = (Integer) data.get("amount");
+            String status = (String) data.get("status");
+            int itemNum = (Integer) data.get("item_num");
+            String itemName = (String) data.get("item_name");
+            String buyerName = (String) data.get("buyer_name");
 
-        if (member == null) {
-            mapJson.put("result", "logout");
-        } else {
-            // 결제 정보 저장
-            PurchaseVO purchaseVO = new PurchaseVO();
-            purchaseVO.setImp_uid(impUid);
-            purchaseVO.setMerchant_uid(merchantUid);
-            purchaseVO.setAmount(amount);
-            purchaseVO.setStatus(status);
-            purchaseVO.setItem_num(itemNum);
-            purchaseVO.setItem_name(itemName);
-            purchaseVO.setBuyer_name(buyerName);
+            log.debug("impUid : " + impUid);
+            log.debug("merchantUid : " + merchantUid);
+            log.debug("amount : " + amount);
+            log.debug("status : " + status);
+            log.debug("itemNum : " + itemNum);
+            log.debug("itemName : " + itemName);
+            log.debug("buyerName : " + buyerName);
 
-            try {
-                purchaseService.insertPurchase(purchaseVO);
-                mapJson.put("result", "success");
-            } catch (Exception e) {
-                log.error("결제 정보 저장 중 오류 발생", e);
-                mapJson.put("result", "error");
-                mapJson.put("message", "결제 정보 저장 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+            // 세션 데이터 가져오기
+            MemberVO member = (MemberVO) session.getAttribute("user");
+
+            if (member == null) {
+                mapJson.put("result", "logout");
+            } else {
+                // 결제 정보 저장
+                PurchaseVO purchaseVO = new PurchaseVO();
+                purchaseVO.setImp_uid(impUid);
+                purchaseVO.setMerchant_uid(merchantUid);
+                purchaseVO.setAmount(amount);
+                purchaseVO.setStatus(status);
+                purchaseVO.setItem_num(itemNum);
+                purchaseVO.setItem_name(itemName);
+                purchaseVO.setBuyer_name(buyerName);
+                purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
+
+                try {
+                    purchaseService.insertPurchase(purchaseVO);
+                    mapJson.put("result", "success");
+                } catch (Exception e) {
+                    log.error("결제 정보 저장 중 오류 발생", e);
+                    mapJson.put("result", "error");
+                    mapJson.put("message", "결제 정보 저장 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                }
             }
+        } catch (NumberFormatException e) {
+            log.error("데이터 형식 오류: ", e);
+            mapJson.put("result", "error");
+            mapJson.put("message", "데이터 형식 오류가 발생했습니다. 관리자에게 문의하세요.");
+        } catch (Exception e) {
+            log.error("알 수 없는 오류 발생: ", e);
+            mapJson.put("result", "error");
+            mapJson.put("message", "알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.");
         }
 
         return mapJson;
     }
+
 }

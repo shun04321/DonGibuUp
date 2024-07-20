@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class PurchaseVO {
     private int purchaseNum;
-    private long mem_num;
+    private long memNum;
     private long item_num;
     private String item_name;
     private String imp_uid;
@@ -24,4 +24,12 @@ public class PurchaseVO {
     
     private Date payDate;
     private int payStatus;
+    
+    public long getMemNum() {
+        return memNum;
+    }
+
+    public void setMemNum(long memNum) {
+        this.memNum = memNum;
+    }
 }

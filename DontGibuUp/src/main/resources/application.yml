@@ -77,7 +77,7 @@ naver:
   client_secret: zIDSLvMlCb
   
 iamport:
-  apiKey: 2501776226527075
-  secretKey: ICUCy6Nusg8jMZ2sAdnXqpTvBPr2Xecu6mal4nbWzegwMDwaPJ46SKznij8oOCjovXNXeG0xOBKQ7Jfs
+  apiKey: "2501776226527075"
+  secretKey: "qpZRCTf52Ldmm3eOgJwXu8lVk80JNJLszHOVhk9onjhCwSaUxMh2neAOtQmZcniVoveOdlaHBMtYX5Er"
 
 

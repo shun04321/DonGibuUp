@@ -3,11 +3,11 @@
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.spring.goods.dao.PurchaseMapper">
-	<insert id="insertPurchase" parameterType="purchaseVO">
+	<insert id="insertPurchase" parameterType="kr.spring.goods.vo.PurchaseVO">
     INSERT INTO purchase
-    (purchase_num, mem_num, od_imp_uid, pay_price, pay_date, pay_status)
+    (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status)
     VALUES
-    (purchase_seq.nextval, #{memNum}, #{odImpUid}, #{payPrice}, SYSDATE, #{payStatus})
+    (purchase_seq.nextval, #{memNum}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus})
 </insert>
 	
 </mapper>
