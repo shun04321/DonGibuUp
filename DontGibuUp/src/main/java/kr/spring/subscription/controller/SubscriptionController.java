@@ -264,7 +264,7 @@ public class SubscriptionController {
 	        
 	        Map<String, Object> map = new HashMap<>();
 	        map.put("customer_uid", payuid);
-	        map.put("merchant_uid", sub_paymentVO.getSub_pay_num());
+	        map.put("merchant_uid", "merchant_uid"+sub_paymentVO.getSub_pay_num());
 	        map.put("amount", sub_paymentVO.getSub_price());
 	        map.put("name", categoryVO.getDcate_name() + " 정기 기부");
 
@@ -273,16 +273,16 @@ public class SubscriptionController {
 
 	        HttpEntity<String> entity = new HttpEntity<>(json, headers);
 	        ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/subscribe/payments/again", entity, String.class);
-
+	        
 	        // API 응답을 문자열로 받음
 	        String responseBody = response.getBody();
 
 		    // API 응답 문자열에서 code 값을 추출
 	        Number codeNumber = (Number) gson.fromJson(responseBody, Map.class).get("code");
 	        int code = codeNumber.intValue();
+	        System.out.println("response : " + response);
 
-
-	        if (response.getStatusCode() == HttpStatus.OK) {
+	        if (response.getStatusCode() == HttpStatus.OK) {	        	
 	            // API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
 	            if (code == 0) {
 	                // 결제 성공
