@@ -43,37 +43,6 @@
                         data: {
                             pay_uid: "${payuidVO.pay_uid}",
                             sub_num: ${subscriptionVO.sub_num}
-                        },                  
-                        success: function(param) {
-                            if (param.result === "success") {
-                                alert('결제수단 등록에 성공했습니다.');
-                                $.ajax({
-                                	url: '/payment1',
-                                    type: 'POST',                                   
-                                    dataType: 'json',
-                                    data: {
-                                        customer_uid: "${payuidVO.pay_uid}",
-                                        price: ${subscriptionVO.sub_price},
-                                        merchant_uid: "${subscriptionVO.sub_num}" + new Date().getTime() // String으로 전달
-                                    },
-                                    success: function(param) {
-                                    	if(param.result=='success'){
-                                        alert('다음 결제 예약 성공');
-                                        location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
-                                    	}
-                                    },
-                                    error: function() {                                                         
-                                        console.error('Error:', 'fd');
-                                    }
-                                });
-                            } else {
-                                alert('결제수단 등록은 성공했지만 결제에 실패했습니다. 관리자에게 문의하세요.');
-                                location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('네트워크 오류 발생');
-                            location.href = '/category/detail?dcate_num=' + ${subscriptionVO.dcate_num};
                         }
                     });
                 } else {

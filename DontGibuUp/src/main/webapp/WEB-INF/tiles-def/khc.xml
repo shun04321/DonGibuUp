@@ -10,7 +10,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/subscription/subscriptionCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/subscription/subscriptionMain.jsp"/>
 	</definition>
-	<definition name="categoryList" extends="adminInquiry">
+	<definition name="categoryList" extends="main">
 		<put-attribute name="title" value="기부 카테고리 관리"/>
 		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/category/categoryList.jsp"/>
@@ -25,11 +25,13 @@
 		<put-attribute name="css" value="/WEB-INF/views/category/categoryCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/category/updateCategory.jsp"/>
 	</definition>
-	<definition name="categoryDetail" template="/WEB-INF/views/category/categoryDetail.jsp">
+	<definition name="categoryDetail" extends="main">
 		<put-attribute name="title" value="기부처 및 기부 카테고리 상세"/>
-		<put-attribute name="reg_Pay" value="/WEB-INF/views/subscription/reg_pay.jsp"/>
-		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
-		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/category/categoryDetail.jsp"/>
+	</definition>
+	<definition name="paymentResultView" extends="main">
+		<put-attribute name="title" value="정기기부 신청 결과"/>
+		<put-attribute name="body" value="/WEB-INF/views/common/resultView.jsp"/>
 	</definition>	
 </tiles-definitions>
 

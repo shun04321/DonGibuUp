@@ -127,7 +127,7 @@ public class CategoryController {
 	}
 
 	//기부 카테고리 상세
-	@GetMapping("/category/detail")
+	@GetMapping("/category/categoryDetail")
 	public ModelAndView detailCategory(long dcate_num, HttpSession session, Model model) {
 		model.addAttribute("subscriptionVO", new SubscriptionVO());
 		log.debug("dcate_num : " + dcate_num);

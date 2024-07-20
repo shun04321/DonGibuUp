@@ -77,7 +77,7 @@ public class SubscriptionController {
 			RedirectAttributes redirectAttributes,
 			@RequestParam(name = "sub_date") String subDate
 			) {
-		log.debug("정기기부 등록 subscriptionVO : " + subscriptionVO);
+
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		//비로그인 상태면 로그인 페이지로 이동
 		if(user==null) {
@@ -87,6 +87,7 @@ public class SubscriptionController {
 		subscriptionVO.setSub_num(subscriptionService.getSub_num());
 		//subDate int 형으로 변환
 		subscriptionVO.setSub_ndate(Integer.parseInt(subDate));
+		log.debug("정기기부 등록 subscriptionVO : " + subscriptionVO);
 		log.debug("subscriptionVO.card_nickname : " + subscriptionVO.getCard_nickname());
 		//로그인한 회원 정보 저장
 		MemberVO member_db = memberService.selectMemberDetail(user.getMem_num()); 
@@ -116,18 +117,35 @@ public class SubscriptionController {
 			redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 			redirectAttributes.addFlashAttribute("user", member_db);
 			redirectAttributes.addFlashAttribute("payuidVO", reg_payuid); // 등록되는 payuid 정보로 빌링키 발급 페이지 이동        
-
+			//빌링키 발급 성공 여부에 따라 insertSub_payment로 
 			return "redirect:/subscription/getpayuid"; 
 		}
-		
 		payuid = payuidService.getPayuidByMethod(payuid);
-		log.debug("등록된 결제수단 payuid = " + payuid);
+		subscriptionService.insertSubscription(subscriptionVO);
 		redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 		redirectAttributes.addFlashAttribute("user", member_db);
-		redirectAttributes.addFlashAttribute("payuidVO", payuid); // 이미 존재하는 payuid로 결제 예약 페이지 이동 
+		redirectAttributes.addFlashAttribute("payuidVO", payuid);
+		
+		//재결제 요청 후 resultView 페이지로 이동
+		 String paymentResult = insertSub_Payment(payuid.getPay_uid(), subscriptionVO.getSub_num(), session);
 
-		return "redirect:/subscription/paymentReservation";
-	}
+		 if ("payment success".equals(paymentResult)) {
+		        model.addAttribute("accessTitle", "결제 결과");
+		        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
+		        model.addAttribute("accessBtn", "홈으로 이동");
+		        model.addAttribute("accessUrl", "/main/main");
+		    } else {
+		        model.addAttribute("accessTitle", "결제 실패");
+		        model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
+		        model.addAttribute("accessBtn", "다시 시도");
+		        model.addAttribute("accessUrl", "/category/detail?decate_num=" + subscriptionVO.getDcate_num());
+		    }
+
+
+		    return "paymentResultView";
+		}
+		
+
 
 	/*--------------------
 	 * 결제수단 등록페이지로 이동
@@ -149,47 +167,29 @@ public class SubscriptionController {
 	 *-------------------*/
 	@PostMapping("/subscription/paymentReservation")
 	@ResponseBody
-	public Map<String, String> signUp(	      
+	public String signUp(	      
 	        String pay_uid, long sub_num,
 	        HttpSession session,
-	        Model model) {
-	    Map<String, String> mapJson = new HashMap<>();
-	    
+	        Model model) {   
 	    // 결제
 	    String paymentResult = insertSub_Payment(pay_uid, sub_num, session);
-	    if (paymentResult.equals("payment success")) {
-	        mapJson.put("result", "success");
+	    if ("payment success".equals(paymentResult)) {
+	        model.addAttribute("accessTitle", "결제 결과");
+	        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
+	        model.addAttribute("accessBtn", "홈으로 이동");
+	        model.addAttribute("accessUrl", "/main/main");
 	    } else {
-	        mapJson.put("result", "fail");
+	        model.addAttribute("accessTitle", "결제 실패");
+	        model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
+	        model.addAttribute("accessBtn", "다시 시도");
+	        SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+	        model.addAttribute("accessUrl", "/category/detail?decate_num=" + subscriptionVO.getDcate_num());
 	    }
 
-	    return mapJson; // JSON 형식의 결제 결과 반환
+
+	    return "paymentResultView";
 	}
 
-
-	/*--------------------
-	 * 결제수단 발급 성공 -> payuid 저장 이후 첫 결제 성공하면 정기기부 등록, 결제내역 등록
-	 *-------------------*/
-	@GetMapping("/subscription/paymentReservation")
-	public Map<String,String> sign_up2(String pay_uid, long sub_num, HttpSession session, Model model) {	    
-		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
-		log.debug("pay_uid : " + pay_uid );
-		log.debug("sub_num : " + sub_num);
-		PayuidVO payuidVO = payuidService.getPayuidVOByPayuid(pay_uid);
-		
-		//결제
-		Map<String,String> mapJson = new HashMap<String,String>();
-		//결제
-		String payment_result = insertSub_Payment(payuidVO.getPay_uid(), subscriptionVO.getSub_num(),session);
-		if(payment_result.equals("payment success")) {
-			mapJson.put("result", "success");			
-		}else {
-			mapJson.put("result", "fail");
-		}
-
-		// JSP 페이지로 이동
-		return mapJson; // 결제 결과를 보여줄 JSP 페이지의 이름
-	}
 
 	/*--------------------
 	 * 결제수단 등록 실패시 payuid 삭제
@@ -231,7 +231,7 @@ public class SubscriptionController {
 	
 	
 		/*-----------------------
-		 * 첫 결제
+		 * 결제
 		 ------------------------*/
 	    public String insertSub_Payment(String payuid, long sub_num, HttpSession session) {
 	    	MemberVO user = (MemberVO)session.getAttribute("user");
@@ -290,13 +290,16 @@ public class SubscriptionController {
 	                return "payment success";
 	            } else {
 	                // 결제 실패
-	                return "payment fail";
+	            	subscriptionService.deleteSubscription(sub_num);
+	            	return  "payment fail";
 	            }
 	        } else {
 	            // API 호출 실패
 	            return "api fail";
 	        }
 	    }
+	    
+	    
 	    @Scheduled(cron = "0 35 18 * * ?")
 	    public void performDailyTask() {
 	        // 여기에 매일 00시에 실행할 작업을 작성합니다.
