@@ -4,7 +4,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 
 <!-- MyPage 메뉴 시작 -->
-	<h4 class="mb-3" style="color: #5A6F80;">MYPAGE</h4>
+<c:if test="${!empty user && user.mem_status != 9}"><!-- 일반회원 -->
+	<h4 class="mb-3" style="color: #5A6F80;">MYPAGE</h4>	
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">나의 정보</h5>
 		<a href="${pageContext.request.contextPath}/member/myPage/memberInfo" class="category-block-link"> 회원정보 수정</a>
@@ -33,4 +34,13 @@
 		<a href="${pageContext.request.contextPath}/member/myPage/inquiry" class="category-block-link"> 1:1 문의</a>
 		<a href="#" class="category-block-link"> 신고</a>
 	</div>
+</c:if>
+<c:if test="${!empty user && user.mem_status == 9}"><!-- 관리자 -->
+	<h4 class="mb-3" style="color: #5A6F80;">MYPAGE</h4>	
+	<div class="category-block d-flex flex-column">
+		<h5 class="mb-3">나의 정보</h5>
+		<a href="${pageContext.request.contextPath}/member/myPage/memberInfo" class="category-block-link"> 회원정보 수정</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/changePassword" class="category-block-link"> 비밀번호 수정</a>
+	</div>
+</c:if>
 <!-- MyPage 메뉴 끝 -->

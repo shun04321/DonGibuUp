@@ -7,7 +7,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
         	  <li class="nav-item">
-            <p>
+            <p><br>
           </li>
           <li class="nav-item">
             <a class="nav-link">

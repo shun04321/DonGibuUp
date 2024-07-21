@@ -127,7 +127,6 @@
                         </c:if>
 
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/myPage"><small>마이페이지</small></a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/myPage/memberInfo"><small>나의 정보</small></a></li>
                             <li><a class="dropdown-item" href="#기부"><small>나의 기부</small></a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/challenge/join/list?status=on"><small>나의 챌린지</small></a></li>
@@ -139,13 +138,18 @@
                     </c:if>
                     <c:if test="${!empty user && user.mem_status == 9}"><!-- 관리자 -->
                     <li class="nav-item ms-3 dropdown nanum">
-                        <a class="nav-link custom-btn custom-border-btn" id="navbarLightDropdownMenuLink" aria-expanded="false" href="${pageContext.request.contextPath}/admin/manageMember">
+                        <a class="nav-link custom-btn custom-border-btn dropdown-toggle" id="navbarLightDropdownMenuLink" aria-expanded="false" href="${pageContext.request.contextPath}/admin/manageMember">
                         <c:if test="${!empty user.mem_photo}">
-                        <img src="${pageContext.request.contextPath}/upload/${user.mem_photo}" class="rounded-circle my-image">&nbsp;${user.mem_nick}님&nbsp;</a>
+                        <img src="${pageContext.request.contextPath}/upload/${user.mem_photo}" class="rounded-circle my-image">&nbsp;${user.mem_nick}님</a>
                         </c:if>
                         <c:if test="${empty user.mem_photo}">
-                        <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${user.mem_nick}님&nbsp;</a>
+                        <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${user.mem_nick}님</a>
                         </c:if>
+                        
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/myPage/memberInfo"><small>나의 정보</small></a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/logout"><small>로그아웃</small></a></li>
+                        </ul>
                     </li>
                     </c:if>
                 </ul>
