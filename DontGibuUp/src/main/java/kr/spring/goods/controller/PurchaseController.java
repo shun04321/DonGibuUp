@@ -10,13 +10,16 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import kr.spring.goods.service.PurchaseService;
 import kr.spring.goods.vo.PurchaseVO;
+import kr.spring.goods.vo.RefundVO;
 import kr.spring.member.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -141,5 +144,71 @@ public class PurchaseController {
 
         return mapJson;
     }
+    /*===================================
+     * 환불 처리
+     *==================================*/
+ // 기존 메서드 생략
 
+    @PostMapping("/refund")
+    @ResponseBody
+    public Map<String, String> processRefund(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
+            throws IllegalStateException, IOException {
+        Map<String, String> mapJson = new HashMap<>();
+
+        try {
+            String impUid = (String) data.get("imp_uid");
+            String reason = (String) data.get("reason");
+
+            log.debug("impUid : " + impUid);
+            log.debug("reason : " + reason);
+
+            // 세션 데이터 가져오기
+            MemberVO member = (MemberVO) session.getAttribute("user");
+
+            if (member == null) {
+                mapJson.put("result", "logout");
+            } else {
+                try {
+                    // 환불 요청
+                    CancelData cancelData = new CancelData(impUid, true); // imp_uid를 사용하여 환불 요청
+                    cancelData.setReason(reason);
+
+                    IamportResponse<Payment> cancelResponse = impClient.cancelPaymentByImpUid(cancelData);
+
+                    if (cancelResponse.getResponse() != null) {
+                        mapJson.put("result", "success");
+                        mapJson.put("message", "환불이 성공적으로 처리되었습니다.");
+                        log.debug("환불 성공: " + cancelResponse.getResponse().getImpUid());
+                    } else {
+                        mapJson.put("result", "error");
+                        mapJson.put("message", "환불 처리 중 오류가 발생했습니다.");
+                        log.error("환불 처리 중 오류 발생: " + cancelResponse.getMessage());
+                    }
+                } catch (IamportResponseException | IOException e) {
+                    log.error("환불 처리 중 예외 발생: ", e);
+                    mapJson.put("result", "error");
+                    mapJson.put("message", "환불 처리 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                }
+            }
+        } catch (Exception e) {
+            log.error("알 수 없는 오류 발생: ", e);
+            mapJson.put("result", "error");
+            mapJson.put("message", "알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.");
+        }
+
+        return mapJson;
+    }
+    @GetMapping("/purchaseHistory")
+    public String getPurchaseHistory(HttpSession session, Model model) {
+        MemberVO member = (MemberVO) session.getAttribute("user");
+
+        if (member == null) {
+            return "redirect:/member/login";
+        }
+
+        List<PurchaseVO> purchaseList = purchaseService.getPurchaseListByMember(member.getMem_num());
+        model.addAttribute("purchaseList", purchaseList);
+
+        return "goods/purchaseHistory";
+    }
 }

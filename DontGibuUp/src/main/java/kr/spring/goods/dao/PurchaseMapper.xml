@@ -10,4 +10,17 @@
     (purchase_seq.nextval, #{memNum}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus})
 </insert>
 	
+	<insert id="insertRefund" parameterType="kr.spring.goods.vo.RefundVO">
+    INSERT INTO refund
+    (refund_num, mem_num, imp_uid, reason, refund_date)
+    VALUES
+    (refund_seq.nextval, #{memNum}, #{impUid}, #{reason}, SYSDATE)
+	</insert>
+	
+	<select id="getPurchaseListByMember" parameterType="long" resultType="kr.spring.goods.vo.PurchaseVO">
+        SELECT *
+        FROM purchase
+        WHERE mem_num = #{memNum}
+    </select>
+	
 </mapper>
