@@ -23,6 +23,8 @@ import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxBudgetVO;
+import kr.spring.dbox.vo.DboxDonationVO;
+import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
@@ -52,16 +54,52 @@ public class DboxController {
         return "dboxList";
     }
     /*===================================
-     * 		기부박스 상세페이지
+     * 		기부박스 상세페이지 - content
      *==================================*/
     @GetMapping("/dbox/{dboxNum}/content")
-    public String detail(@PathVariable long dboxNum,Model model) {
-    	log.debug("<<상세 페이지 접속>> : " + dboxNum);
+    public String detailContent(@PathVariable long dboxNum,Model model) {
+    	log.debug("<<상세 페이지(content)>> : " + dboxNum);
     	
-    	//DboxVO dbox = dboxService.selectDbox;
+    	//기부박스 및 모금계획 불러오기
+    	DboxVO dbox = dboxService.selectDbox(dboxNum);
+    	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
+    	log.debug("<<상세 페이지(content) - Dbox : >>" + dbox);
+    	log.debug("<<상세 페이지(content) - DboxBudget : >>" + dboxBudget);
+   
+    	//뷰에 전달
+    	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxBudget",dboxBudget);
+    	return "dboxDetailContent";
+    }
+    /*===================================
+     * 		기부박스 상세페이지 - donators
+     *==================================*/
+    @GetMapping("/dbox/{dboxNum}/donators")
+    public String detailDonators(@PathVariable long dboxNum,Model model) {
+    	log.debug("<<상세 페이지 접속(donators)>> : " + dboxNum);
     	
-    	return "dboxDetail";
-    	//return "redirect:/dbox/"+dboxNum+"/content";
+    	//기부박스 및 모금계획 불러오기
+    	List<DboxDonationVO> dboxDonations = dboxService.selectDboxDonations(dboxNum);
+    	log.debug("<<상세 페이지(donators) - DboxDonations : >>" + dboxDonations);
+    	
+    	//뷰에 전달
+    	model.addAttribute("dbox",dboxDonations);
+    	return "dboxDetailDonators";
+    }
+    /*===================================
+     * 		기부박스 상세페이지 - news
+     *==================================*/
+    @GetMapping("/dbox/{dboxNum}/news")
+    public String detailNews(@PathVariable long dboxNum,Model model) {
+    	log.debug("<<상세 페이지 접속(news)>> : " + dboxNum);
+    	
+    	//기부박스 및 모금계획 불러오기
+    	DboxResultVO dboxResult = dboxService.selectDboxResult(dboxNum);
+    	log.debug("<<상세 페이지(news) - DboxResult : >>" + dboxResult);
+    	
+    	//뷰에 전달
+    	model.addAttribute("dbox",dboxResult);
+    	return "dboxDetailResult";
     }
 	
 	

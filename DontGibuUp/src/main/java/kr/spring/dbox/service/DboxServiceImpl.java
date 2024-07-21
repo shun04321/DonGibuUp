@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.dbox.dao.DboxMapper;
 import kr.spring.dbox.vo.DboxBudgetVO;
+import kr.spring.dbox.vo.DboxDonationVO;
+import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
 
 @Service
@@ -37,6 +39,26 @@ public class DboxServiceImpl implements DboxService {
 	@Override
 	public Integer selectListCount(Map<String, Object> map) {
 		return dboxMapper.selectListCount(map);
+	}
+	
+	@Override
+	public DboxVO selectDbox(long dbox_num) {
+		return dboxMapper.selectDbox(dbox_num);
+	}
+
+	@Override
+	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num) {
+		return dboxMapper.selectDboxBudgets(dbox_num);
+	}
+
+	@Override
+	public List<DboxDonationVO> selectDboxDonations(long dbox_num) {
+		return dboxMapper.selectDboxDonations(dbox_num);
+	}
+
+	@Override
+	public DboxResultVO selectDboxResult(long dbox_num) {
+		return dboxMapper.selectDboxResult(dbox_num);
 	}
 
 }
