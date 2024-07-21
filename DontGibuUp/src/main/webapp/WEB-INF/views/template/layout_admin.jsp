@@ -35,7 +35,7 @@
 	<div id="main_header">
 		<tiles:insertAttribute name="header" />
 	</div>
-	<div class="page-body-wrapper">
+	<div class="page-body-wrapper nanum">
 		<tiles:insertAttribute name="nav" />
 		
 		<div class="main-panel">

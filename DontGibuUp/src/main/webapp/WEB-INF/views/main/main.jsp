@@ -15,7 +15,7 @@
     <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
 </head>
-
+<body>
 	<main>
 		<section class="hero-section hero-section-full-height">
 			<div class="container-fluid">
@@ -772,7 +772,8 @@
 			</div>
 		</section>
 	</main>
-	
+</body>
+
 	<!-- JAVASCRIPT FILES -->
 	<script src="${pageContext.request.contextPath}/t1/js/jquery.min.js"></script>
 	<script src="${pageContext.request.contextPath}/t1/js/bootstrap.min.js"></script>

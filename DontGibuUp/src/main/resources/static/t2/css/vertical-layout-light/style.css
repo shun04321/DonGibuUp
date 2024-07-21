@@ -116,6 +116,8 @@
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
+@import url('https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css');
+
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
 @-moz-keyframes flash {
   0% {
@@ -9250,6 +9252,10 @@ progress {
 .figure-caption {
   font-size: 0.875em;
   color: #6c757d;
+}
+
+.nanum{
+	font-family: "NanumSquareNeo", sans-serif;
 }
 
 .container,
