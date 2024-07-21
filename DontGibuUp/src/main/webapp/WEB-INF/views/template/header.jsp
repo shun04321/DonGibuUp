@@ -72,12 +72,7 @@
 
     <nav class="navbar navbar-expand-lg bg-light shadow-lg">
         <div class="container">
-        		<c:if test="${empty user || user.mem_status != 9}">
             <a class="navbar-brand" href="${pageContext.request.contextPath}/main/main">
-            </c:if>
-            	<c:if test="${!empty user && user.mem_status == 9}">
-            	<a class="navbar-brand" href="${pageContext.request.contextPath}/main/admin">
-			</c:if>
                 <img src="${pageContext.request.contextPath}/t1/images/logo.png" class="logo img-fluid" alt="Kind Heart Charity">
                 <span>
                     Don Gibu Up
@@ -121,7 +116,7 @@
                     </li>
                     </c:if>
                     
-                    <c:if test="${!empty user}">
+                    <c:if test="${!empty user && user.mem_status != 9}"><!-- 일반회원 -->
                     <li class="nav-item ms-3 dropdown nanum">
                         <a class="nav-link custom-btn custom-border-btn dropdown-toggle" id="navbarLightDropdownMenuLink" aria-expanded="false">
                         <c:if test="${!empty user.mem_photo}">
@@ -142,7 +137,17 @@
                         </ul>
                     </li>
                     </c:if>
-
+                    <c:if test="${!empty user && user.mem_status == 9}"><!-- 관리자 -->
+                    <li class="nav-item ms-3 dropdown nanum">
+                        <a class="nav-link custom-btn custom-border-btn" id="navbarLightDropdownMenuLink" aria-expanded="false" href="${pageContext.request.contextPath}/admin/manageMember">
+                        <c:if test="${!empty user.mem_photo}">
+                        <img src="${pageContext.request.contextPath}/upload/${user.mem_photo}" class="rounded-circle my-image">&nbsp;${user.mem_nick}님&nbsp;</a>
+                        </c:if>
+                        <c:if test="${empty user.mem_photo}">
+                        <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${user.mem_nick}님&nbsp;</a>
+                        </c:if>
+                    </li>
+                    </c:if>
                 </ul>
             </div>
         </div>

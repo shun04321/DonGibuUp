@@ -191,7 +191,7 @@ public class MemberController {
 					log.debug("<<reg_type>> : {}", existingMember.getMem_reg_type());
 
 					if (existingMember.getMem_status() == 9) { // 관리자
-						redirectUrl = "/main/admin";
+						redirectUrl = "/admin/manageMember";
 					} else { // 일반 회원
 						redirectUrl = "/main/main";
 					}
@@ -332,7 +332,7 @@ public class MemberController {
 					log.debug("<<reg_type>> : {}", existingMember.getMem_reg_type());
 
 					if (existingMember.getMem_status() == 9) { // 관리자
-						redirectUrl = "/main/admin";
+						redirectUrl = "/admin/manageMember";
 					} else { // 일반 회원
 						redirectUrl = "/main/main";
 					}
@@ -413,7 +413,7 @@ public class MemberController {
 					log.debug("<<reg_type>> : {}", member.getMem_reg_type());
 
 					if (member.getMem_status() == 9) { // 관리자
-						return "redirect:/main/admin";
+						return "redirect:/admin/manageMember";
 					} else {
 						return "redirect:/main/main";
 					}

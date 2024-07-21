@@ -116,8 +116,6 @@
 /* === Import template variables === */
 /*-------------------------------------------------------------------*/
 /* === SCSS Compass Functions === */
-@import url('https://hangeul.pstatic.net/hangeul_static/css/nanum-square-neo.css');
-
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
 @-moz-keyframes flash {
   0% {
@@ -9252,10 +9250,6 @@ progress {
 .figure-caption {
   font-size: 0.875em;
   color: #6c757d;
-}
-
-.nanum{
-	font-family: "NanumSquareNeo", sans-serif;
 }
 
 .container,
@@ -25350,10 +25344,6 @@ dl li {
   padding-left: 0;
 }
 
-.home-tab {
-  font-family: "Manrope", sans-serif;
-}
-
 .home-tab .nav-tabs {
   font-family: "Manrope", sans-serif;
   border-bottom: none;
@@ -25390,7 +25380,6 @@ dl li {
 
 .home-tab .tab-content {
   padding: 24px 0;
-  font-family: "Manrope", sans-serif;
   border: none;
 }
 
@@ -28403,7 +28392,6 @@ div.tagsinput span.tag a {
 .sidebar {
   min-height: calc(100vh - 97px);
   background: #F4F5F7;
-  font-family: "Manrope", sans-serif;
   font-weight: 500;
   padding: 0;
   width: 220px;

@@ -4,7 +4,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 
 <!-- Admin 메뉴 시작 -->
-	<div class="nanum">
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
         	  <li class="nav-item">
@@ -84,7 +83,9 @@
               <span class="menu-title">통계</span>
             </a>
           </li>
+          <li class="nav-item">
+            <p><br>
+          </li>
         </ul>
       </nav>
-     </div>
 <!-- Admin 메뉴 끝 -->
