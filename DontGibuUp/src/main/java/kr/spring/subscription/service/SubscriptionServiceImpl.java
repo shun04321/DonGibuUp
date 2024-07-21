@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -77,8 +78,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public String getTodayDateString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        return sdf.format(new Date());
+    public int getTodayDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd", Locale.KOREA);
+        return Integer.parseInt(sdf.format(new Date()));
     }
+
+	@Override
+	public List<SubscriptionVO> getSubscriptionByDay(int today) {
+		return subscriptionMapper.getSubscriptionByDay(today);
+	}
 }

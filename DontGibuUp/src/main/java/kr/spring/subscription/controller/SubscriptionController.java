@@ -2,7 +2,9 @@ package kr.spring.subscription.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,8 +64,6 @@ public class SubscriptionController {
 	 *-------------------*/
 	@GetMapping("/subscription/subscriptionMain")
 	public String subScriptionMain() {
-
-		System.out.println(subscriptionService.getToken());
 
 		return "subscriptionMain";
 	}
@@ -297,24 +297,27 @@ public class SubscriptionController {
 	    }
 	    
 	    
-	    @Scheduled(cron = "0 35 18 * * ?")
+	    @Scheduled(cron = "0 0 * * * ?")
 	    public void performDailyTask() {
-			/*
-			 * payuidService. insertSub_payment(payuidVO.get);
-			 */
-	        System.out.println("매일 지정 시각에 작동하는 스케줄러입니다.");
-	    }
-	    
-	    public static int getTodayDateAsTwoDigitInt() {
-	        // 현재 날짜를 가져옵니다.
-	        LocalDate today = LocalDate.now();
-	        
-	        // 'dd' 형식으로 날짜를 포맷합니다.
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd");
-	        String formattedDate = today.format(formatter);
-	        
-	        // 문자열을 두 자리 정수로 변환합니다.
-	        return Integer.parseInt(formattedDate);
+	    	int today = subscriptionService.getTodayDate();
+	    	
+	    	List<SubscriptionVO> list = new ArrayList<SubscriptionVO>();
+	    	list = subscriptionService.getSubscriptionByDay(today);
+	    	
+	    	for(SubscriptionVO subscription : list) {
+	    		 PayuidVO payuid = new PayuidVO();
+	             payuid.setMem_num(subscription.getMem_num());
+
+	             // Check for easypay_method and cardNickname
+	             if (subscription.getEasypay_method() != null) {
+	                 payuid.setEasypay_method(subscription.getEasypay_method());
+	             } else if (subscription.getCard_nickname() != null) {
+	                 payuid.setCard_nickname(subscription.getCard_nickname());
+	             }
+              payuid = payuidService.getPayuidByMethod(payuid);
+              String response = insertSub_Payment(payuid.getPay_uid(), subscription.getSub_num());
+              System.out.println("금일 정기기부 목록 결제요청 완료 : " + response);
+	    	}
 	    }
 	}
 

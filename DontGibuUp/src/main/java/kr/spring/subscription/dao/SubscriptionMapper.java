@@ -1,5 +1,7 @@
 package kr.spring.subscription.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -31,8 +33,9 @@ public interface SubscriptionMapper {
 	public void deleteSubscription(long sub_num);
 	//정기결제를 위한 getToken
 	public String getToken();
-	//오늘 날짜 구하기
-	public String getTodayDateString();
+	
+	@Select("SELECT * FROM subscription WHERE sub_ndate = #{today} AND sub_status = 0")
+	public List<SubscriptionVO> getSubscriptionByDay(int today);
 	
 	
 }

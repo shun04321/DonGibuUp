@@ -1,25 +1,29 @@
 package kr.spring.subscription.service;
 
+import java.util.List;
+
 import kr.spring.subscription.vo.SubscriptionVO;
 
 public interface SubscriptionService {
     // 정기기부 번호 생성
-    long getSub_num();
+    public long getSub_num();
 
     // 정기기부 등록
-    void insertSubscription(SubscriptionVO subscriptionVO);
+    public void insertSubscription(SubscriptionVO subscriptionVO);
 
     // 정기기부 종료
-    void endSubscription(long sub_num);
+    public void endSubscription(long sub_num);
 
     // 정기기부 조회
-    SubscriptionVO getSubscription(long sub_num);
+    public SubscriptionVO getSubscription(long sub_num);
 
     // 정기기부 삭제
-    void deleteSubscription(long sub_num);
+    public void deleteSubscription(long sub_num);
 
     // 오늘 날짜 구하기
-    String getTodayDateString();
+    public int getTodayDate();
     
     String getToken();
+    //정기 결제 날짜가 오늘인 구독 목록 반환
+    public List<SubscriptionVO> getSubscriptionByDay(int today);
 }
