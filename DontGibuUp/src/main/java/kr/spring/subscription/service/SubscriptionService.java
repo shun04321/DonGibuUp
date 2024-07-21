@@ -26,4 +26,7 @@ public interface SubscriptionService {
     String getToken();
     //정기 결제 날짜가 오늘인 구독 목록 반환
     public List<SubscriptionVO> getSubscriptionByDay(int today);
+    
+    //정기기부 중단
+    public void updateSub_status(long sub_num);
 }

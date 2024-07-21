@@ -87,4 +87,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public List<SubscriptionVO> getSubscriptionByDay(int today) {
 		return subscriptionMapper.getSubscriptionByDay(today);
 	}
+
+	@Override
+	public void updateSub_status(long sub_num) {
+		subscriptionMapper.updateSub_status(sub_num);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import kr.spring.subscription.vo.SubscriptionVO;
 
@@ -23,6 +24,10 @@ public interface SubscriptionMapper {
 	//정기기부 수정 (결제일, 기부금)
 	
 	//정기기부 수정 (결제 수단)
+	
+	//정기기부 중단
+	@Update("UPDATE subscription SET sub_status=1 WHERE sub_num=#{sub_num}")
+	public void updateSub_status(long sub_num);
 	
 	//자신의 정기기부 현황 확인
 	

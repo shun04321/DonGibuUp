@@ -235,7 +235,7 @@ public class SubscriptionController {
 	    	SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
 	    	log.debug("sub_num" + sub_num);
 	    	DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
-	    	
+	    	MemberVO user = memberService.selectMemberDetail(subscriptionVO.getMem_num());
 	        String token = subscriptionService.getToken();
 	        Gson gson = new Gson();
 	        token = token.substring(token.indexOf("response") + 10);
@@ -264,6 +264,7 @@ public class SubscriptionController {
 	        map.put("merchant_uid", "merchant_uid"+sub_paymentVO.getSub_pay_num());
 	        map.put("amount", sub_paymentVO.getSub_price());
 	        map.put("name", categoryVO.getDcate_name() + " 정기 기부");
+	        map.put("buyer_name", user.getMem_name());
 
 	        String json = gson.toJson(map);
 	        System.out.println("json : " + json);
@@ -286,8 +287,10 @@ public class SubscriptionController {
 	            	sub_paymentService.insertSub_payment(sub_paymentVO);
 	                return "payment success";
 	            } else {
-	                // 결제 실패
-	            	subscriptionService.deleteSubscription(sub_num);
+	                // 결제 실패시 정기기부 중단
+	            	subscriptionService.updateSub_status(sub_num);
+	            	// 결제 실패 구독 정보 로그
+	            	log.debug("결제 실패 구독 정보 sub_num : "+subscriptionVO.getSub_num());
 	            	return  "payment fail";
 	            }
 	        } else {
@@ -297,7 +300,7 @@ public class SubscriptionController {
 	    }
 	    
 	    
-	    @Scheduled(cron = "0 0 * * * ?")
+	    @Scheduled(cron = "1 * * * * ?")
 	    public void performDailyTask() {
 	    	int today = subscriptionService.getTodayDate();
 	    	
@@ -317,6 +320,7 @@ public class SubscriptionController {
               payuid = payuidService.getPayuidByMethod(payuid);
               String response = insertSub_Payment(payuid.getPay_uid(), subscription.getSub_num());
               System.out.println("금일 정기기부 목록 결제요청 완료 : " + response);
+          
 	    	}
 	    }
 	}
