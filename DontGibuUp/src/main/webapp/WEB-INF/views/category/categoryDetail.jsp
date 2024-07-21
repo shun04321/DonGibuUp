@@ -42,9 +42,11 @@
 			<div class="detail-content">${category.dcate_content}</div>
 			<hr size="1" width="100%">
 			<div class="align-right">
-				<input type="button" value="수정"
-					onclick="location.href='/category/updateCategory?dcate_num=${category.dcate_num}'">
-				<input type="button" value="삭제" id="delete_btn">
+				<c:if test="${user.mem_auth==9}">
+					<input type="button" value="수정"
+						onclick="location.href='/category/updateCategory?dcate_num=${category.dcate_num}'">
+					<input type="button" value="삭제" id="delete_btn">
+				</c:if>
 				<script>
 					const delete_btn = document.getElementById('delete_btn');
 					delete_btn.onclick = function() {

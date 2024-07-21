@@ -131,6 +131,7 @@ public class CategoryController {
 		ModelAndView modelAndView = new ModelAndView("categoryDetail");
 		modelAndView.addObject("category", category);
 		modelAndView.addObject("subscriptionVO", new SubscriptionVO()); // 폼 데이터 초기화
+		modelAndView.addObject("user", user);
 		if(user!=null) {
 			modelAndView.addObject("user", user);
 			log.debug("user : " + user);

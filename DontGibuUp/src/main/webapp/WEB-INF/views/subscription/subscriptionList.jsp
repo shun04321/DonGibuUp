@@ -10,7 +10,18 @@ table.striped-table th {
     text-align: center; /* 텍스트 가운데 정렬 */
 }
 </style>
-
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        // 모든 sub_price 요소를 가져옵니다.
+        document.querySelectorAll('.sub-price').forEach(function(element) {
+            var price = parseInt(element.innerText, 10);
+            if (!isNaN(price)) {
+                // 가격을 천 단위로 구분하여 포맷합니다.
+                element.innerText = price.toLocaleString() + '원';
+            }
+        });
+    });
+</script>
 <div class="page-main">
     <h2>나의 정기기부 목록</h2>
     <c:if test="${count == 0}">
@@ -32,7 +43,7 @@ table.striped-table th {
                     <td>
                         ${subscription.donationCategory.dcate_name} / ${subscription.donationCategory.dcate_charity}
                     </td>
-                    <td>${subscription.sub_price}</td>
+                    <td><span class="sub-price">${subscription.sub_price}</span></td>
                     <td>${subscription.sub_ndate}</td>
                     <td>
                         <c:if test="${subscription.sub_status==0}">
