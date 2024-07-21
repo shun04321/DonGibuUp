@@ -197,37 +197,57 @@ ul.search li select{
 }
 /* 공통 테이블
 ---------------------*/
-table.basic-table{
-	width:100%;
-	border:1px solid #000;
-	border-collapse:collapse;
-	margin-top:5px;
+/* 공통 테이블 스타일 */
+table {
+    text-align: center; /* 모든 테이블 기본 가운데 정렬 */
 }
-table.basic-table td, table.basic-table th{
-	border:1px solid #000;
-	padding:5px;
+
+/* 기본 테이블 스타일 */
+table.basic-table {
+    width: 100%;
+    border: 1px solid #000;
+    border-collapse: collapse;
+    margin-top: 5px;
+    text-align: center; /* 모든 셀의 내용 가운데 정렬 */
 }
-table.striped-table{
-	width:100%;
-	border:1px solid #FFF;
-	border-collapse:collapse;
-	font-size:15px;
-	margin:7px 0;
+
+table.basic-table td, 
+table.basic-table th {
+    border: 1px solid #000;
+    padding: 5px;
+    text-align: center; /* 모든 셀의 내용 가운데 정렬 */
 }
-table.striped-table td, table.striped-table th{
-	padding:.7em .5em;
-	vertical-align:middle;
+
+/* 스트라이프 테이블 스타일 */
+table.striped-table {
+    width: 100%;
+    border: 1px solid #FFF;
+    border-collapse: collapse;
+    font-size: 15px;
+    margin: 7px 0;
+    text-align: center; /* 모든 셀의 내용 가운데 정렬 */
 }
-table.striped-table th{
-	font-weight:bold;
-	background:#E1E1E1;
+
+table.striped-table td, 
+table.striped-table th {
+    padding: .7em .5em;
+    vertical-align: middle;
+    text-align: center; /* 모든 셀의 내용 가운데 정렬 */
 }
-table.striped-table td{
-	border-bottom:1px solid rgba(0,0,0,.1);
+
+table.striped-table th {
+    font-weight: bold;
+    background: #E1E1E1;
 }
-table.striped-table tr:nth-child(odd){
-	background-color:rgb(250,250,247);
+
+table.striped-table td {
+    border-bottom: 1px solid rgba(0,0,0,.1);
 }
+
+table.striped-table tr:nth-child(odd) {
+    background-color: rgb(250,250,247);
+}
+
 /* 공통 버튼
 ---------------------*/
 /* [type="submit"],[type="button"]{
@@ -337,4 +357,48 @@ ul#delivery_info li span{
      background-color:yellow;
      border-color: yellow;
 }
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+}
+
+.carousel-item {
+    flex: 0 0 100%;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%; /* 세로 가운데 위치 */
+    width: 40px; /* 버튼의 너비 조정 */
+    height: 40px; /* 버튼의 높이 조정 */
+    border-radius: 50%; /* 둥근 버튼 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-50%); /* 세로 중앙 정렬 */
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.carousel-control img {
+    width: 40px; /* 버튼 아이콘 크기 */
+    height: auto;
+}
+
+.carousel-control.prev-button {
+    left: 10px; /* 왼쪽 버튼 위치 조정 */
+}
+
+.carousel-control.next-button {
+    right: 10px; /* 오른쪽 버튼 위치 조정 */
+}
+
 

@@ -38,7 +38,7 @@ public class CategoryController {
 
 	//기부 카테고리 및 기부처 리스트 호출
 	@GetMapping("/category/categoryList")
-	public String categoryList(@RequestParam(defaultValue="1") int pageNum, Model model) {
+	public String categoryList(Model model) {
 
 		Map<String,Object> map = 
 				new HashMap<String,Object>();
@@ -46,21 +46,13 @@ public class CategoryController {
 		//전체,검색 레코드수
 		int count = categoryService.getListCount(map);
 
-		//페이지 처리
-		PagingUtil page = 
-				new PagingUtil(pageNum,
-						count,20,10,"list");
 		List<DonationCategoryVO> list = null;
 		if(count > 0) {
-			map.put("start", page.getStartRow());
-			map.put("end", page.getEndRow());
-
-			list = categoryService.selectList(map);
+			list = categoryService.selectList();
 		}
 
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
-		model.addAttribute("page", page.getPage());
 
 		return "categoryList";
 	}
@@ -230,7 +222,7 @@ public class CategoryController {
 		}
 
 		model.addAttribute("message", "카테고리 수정완료");
-		model.addAttribute("url", request.getContextPath() + "/category/detail?dcate_num=" + categoryVO.getDcate_num());
+		model.addAttribute("url", request.getContextPath() + "/category/categoryDetail?dcate_num=" + categoryVO.getDcate_num());
 
 		return "common/resultAlert";
 	}

@@ -20,12 +20,12 @@
 			<th>기부처</th>
 		</tr>
 		<c:forEach var="dcate" items="${list}">
-		<tr>
-			<td class="align-center"><img src="${pageContext.request.contextPath}/upload/${dcate.dcate_icon}" alt="기부처 아이콘" width="30"></td>
-			<td class="align-center">${dcate.dcate_num}</td>
-			<td class="align-center"><a href="categoryDetail?dcate_num=${dcate.dcate_num}">${dcate.dcate_name}</a></td>
-			<td class="align-center">${dcate.dcate_charity}</td>
-		</tr>
+			<tr>
+				<td class="align-center"><img src="${pageContext.request.contextPath}/upload/${dcate.dcate_icon}" alt="기부처 아이콘" width="30"></td>
+				<td class="align-center">${dcate.dcate_num}</td>
+				<td class="align-center"><a href="categoryDetail?dcate_num=${dcate.dcate_num}">${dcate.dcate_name}</a></td>
+				<td class="align-center">${dcate.dcate_charity}</td>
+			</tr>
 		</c:forEach>
 	</table>
 	<div class="align-center">${page}</div>

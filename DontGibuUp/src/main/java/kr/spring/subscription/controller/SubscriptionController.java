@@ -64,7 +64,22 @@ public class SubscriptionController {
 	 * 정기 기부 메인창 이동
 	 *-------------------*/
 	@GetMapping("/subscription/subscriptionMain")
-	public String subScriptionMain() {
+	public String subScriptionMain(Model model) {
+		Map<String,Object> map = 
+				new HashMap<String,Object>();
+
+		//전체,검색 레코드수
+		int count = categoryService.getListCount(map);
+
+		//페이지 처리
+
+		List<DonationCategoryVO> list = null;
+		if(count > 0) {
+			list = categoryService.selectList();
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
 
 		return "subscriptionMain";
 	}

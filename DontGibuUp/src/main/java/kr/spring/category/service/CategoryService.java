@@ -11,7 +11,7 @@ public interface CategoryService {
 	// 기부 카테고리 수
 	public int getListCount(Map<String,Object> map);
 	// 기부 카테고리 목록
-	public List<DonationCategoryVO> selectList(Map<String,Object> map);
+	public List<DonationCategoryVO> selectList();
 	// 카테고리 목록 (페이지처리x)
 	public List<DonationCategoryVO> selectListNoPage();
 	// 기부 카테고리 상세

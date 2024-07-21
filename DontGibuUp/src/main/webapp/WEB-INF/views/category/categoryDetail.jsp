@@ -31,7 +31,7 @@
 </head>
 	<img
 		src="${pageContext.request.contextPath}/upload/${category.dcate_banner}"
-		id="banner" width="100%;" height="">
+		id="banner" width="100%;">
 	<div id="main">
 		<div class="page-main">
 			<h2>${category.dcate_name}</h2>

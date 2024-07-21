@@ -20,7 +20,7 @@
         #{dcate_banner,jdbcType=VARCHAR}
     )
 </insert>
-	<select id="selectList" parameterType="map" resultType="donationCategoryVO">
+	<select id="selectList" resultType="donationCategoryVO">
 		 	SELECT
 	 	   *
 	    FROM (SELECT
@@ -33,12 +33,10 @@
 	                  ]]>
 	                  dcate_charity,
 	                  dcate_icon,
-	                  dcate_content
+	                  dcate_content,
+	                  dcate_banner
 	                FROM dona_category 				<!-- 알리아스 -->
 	                )a)
-	 	<![CDATA[
-	 	WHERE rnum >= #{start} AND rnum <= #{end}
-	 	]]>
 	</select>
 	 <update id="updateDonationCategory" parameterType="DonationCategoryVO">
  		UPDATE dona_category SET

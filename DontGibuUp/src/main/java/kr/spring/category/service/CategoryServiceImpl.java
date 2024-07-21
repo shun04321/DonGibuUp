@@ -23,8 +23,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<DonationCategoryVO> selectList(Map<String, Object> map) {
-		return categoryMapper.selectList(map);
+	public List<DonationCategoryVO> selectList() {
+		return categoryMapper.selectList();
 	}
 	
 	@Override

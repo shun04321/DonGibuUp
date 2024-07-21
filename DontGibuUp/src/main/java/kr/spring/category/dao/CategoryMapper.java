@@ -19,7 +19,7 @@ public interface CategoryMapper {
 	@Select("SELECT COUNT(*) FROM dona_category")
 	public int getListCount(Map<String,Object> map);
 	// 기부 카테고리 목록
-	public List<DonationCategoryVO> selectList(Map<String,Object> map);
+	public List<DonationCategoryVO> selectList();
 	// 기부 카테고리 목록(페이지처리x)
 	@Select("SELECT * FROM dona_category")
 	public List<DonationCategoryVO> selectListNoPage();
