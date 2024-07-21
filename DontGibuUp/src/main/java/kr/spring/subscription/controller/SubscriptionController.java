@@ -300,7 +300,7 @@ public class SubscriptionController {
 	    }
 	    
 	    
-	    @Scheduled(cron = "1 * * * * ?")
+	    @Scheduled(cron = "0 0 * * * ?")
 	    public void performDailyTask() {
 	    	int today = subscriptionService.getTodayDate();
 	    	
