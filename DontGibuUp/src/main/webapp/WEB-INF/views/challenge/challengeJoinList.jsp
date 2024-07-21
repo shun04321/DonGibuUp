@@ -6,7 +6,6 @@
 	let contextPath = "${pageContext.request.contextPath}";
 	let status = "${status}";
 </script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.list.js"></script>
 <div id="challengeContainer">
 	<div class="month-section">
 		<h2 class="align-left">
@@ -39,16 +38,13 @@
 											onclick="deleteChallenge(${challengeJoin.chal_joi_num})">챌린지취소</a>
 									</c:when>
 									<c:when test="${status == 'on'}">
-										<a
-											href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
-										<a href="#" id="chal_talk${challengeJoin.chal_num}" data-chal-num="${challengeJoin.chal_num}"
+										<a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
+										<a href="#" class="chal_talk" data-chal-num="${challengeJoin.chal_num}"
 											data-chal-joi-num="${challengeJoin.chal_joi_num}" data-status="${status}">단체톡방</a>
 									</c:when>
 									<c:when test="${status == 'post'}">
-										<a
-											href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
-										<a
-											href="${pageContext.request.contextPath}/challenge/review/write?chal_num=${challengeJoin.chal_num}">후기작성</a>
+										<a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
+										<a href="${pageContext.request.contextPath}/challenge/review/write?chal_num=${challengeJoin.chal_num}">후기작성</a>
 									</c:when>
 								</c:choose>
 							</div>
@@ -79,3 +75,4 @@
 		<div class="align-center">${page}</div>
 	</div>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.join.list.js"></script>

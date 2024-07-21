@@ -176,6 +176,17 @@
 	    WHERE cj.chal_joi_num = #{chal_joi_num}
 	</select>
 	
+	<!-- 챌린지 참가 회원 목록 수 -->
+	<select id="selectJoinMemberRowCount" parameterType="map" resultType="Integer">
+		SELECT 
+			COUNT(*) 
+		FROM chal_join 
+		WHERE chal_num=#{chal_num}
+		<if test="chal_joi_num != null">
+		AND NOT chal_joi_num=#{chal_joi_num}
+		</if> 		
+	</select>
+	
 	<!-- 챌린지 참가 회원 목록 -->
 	<select id="selectJoinMemberList" parameterType="map" resultType="challengeJoinVO">
 		SELECT * FROM(
@@ -187,13 +198,17 @@
 				LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num 
 				<!-- 제보(신고) 조인 -->
 				WHERE chal_num=#{chal_num}
+				<if test="chal_joi_num != null">
 				AND NOT cj.chal_joi_num=#{chal_joi_num}
+				</if>
 				ORDER BY cj.chal_joi_num ASC
 			)a
 		)
+		<if test="start != null and end != null">
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
+		</if>
 	</select>	
 	
 	<!-- 챌린지 결제 -->
