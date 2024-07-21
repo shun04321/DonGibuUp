@@ -295,6 +295,7 @@ public class ChallengeAjaxController {
 	/*==========================
 	 *  챌린지 단체 채팅
 	 *==========================*/
+	//쿼리스트링 제거
 	@PostMapping("/challenge/join/joinChal_chat")
 	@ResponseBody
 	public Map<String,Object> joinChallengeChat(Long chal_num,HttpSession session) {	
@@ -312,6 +313,29 @@ public class ChallengeAjaxController {
 	/*==========================
 	 *  챌린지 인증 상세
 	 *==========================*/
+	//쿼리스트링 제거
+	@PostMapping("/challenge/join/list")
+	@ResponseBody
+	public Map<String,Object> joinChallenge(@RequestBody Map<String,Object> data,HttpSession session) {	
+		Map<String,Object> mapJson = new HashMap<>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("result","logout");
+		}else {
+			log.debug("data : "+data);
+			Long chal_num = ((Number) data.get("chal_num")).longValue();
+	        Long chal_joi_num = ((Number) data.get("chal_joi_num")).longValue();
+	        String status = (String) data.get("status");
+	        
+	        //세션에 데이터 저장
+			session.setAttribute("chal_num", chal_num);
+			session.setAttribute("chal_joi_num", chal_joi_num);
+			session.setAttribute("status", status);
+			mapJson.put("result", "success");
+		}			
+		return mapJson;
+	}
+	
 	//챌린지 참가 회원 목록
 	@GetMapping("/challenge/verify/joinMemberList")
 	@ResponseBody

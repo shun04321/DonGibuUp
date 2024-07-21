@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.ChallengeCategoryVO;
@@ -370,20 +369,7 @@ public class ChallengeController {
 	
 	/*==========================
 	 *  챌린지 단체 채팅
-	 *==========================*/
-	//쿼리스트링 chal_num 숨기기
-	/*
-	@GetMapping("/challenge/join/joinChal_chat")
-	public String joinChallengeChat(Long chal_num,HttpSession session,
-			HttpServletRequest request, Model model) {				
-		MemberVO user = (MemberVO) session.getAttribute("user");
-		if(user == null) {
-			return request.getContextPath()+"/member/login";
-		}
-		model.addAttribute("chal_num",chal_num);	//redirectAttributes.addFlashAttribute(, );		
-		return "redirect:/challenge/join/chal_chatDetail";
-	}*/
-	
+	 *==========================*/	
 	//챌린지 채팅방 입장
 	@GetMapping("/challenge/join/chal_chatDetail")
 	public String joinChallengeChatRedirect(HttpSession session,Model model) {
@@ -479,16 +465,23 @@ public class ChallengeController {
 
 	//챌린지 인증 목록
 	@GetMapping("/challenge/verify/list")
-	public ModelAndView verifyList( long chal_joi_num,long chal_num,
-			@RequestParam(value = "status", defaultValue = "pre") String status,
-			HttpSession session,@RequestParam(defaultValue="1") int pageNum) {
-		Map<String, Object> map = new HashMap<>();
+	public ModelAndView verifyList(HttpSession session,@RequestParam(defaultValue="1") int pageNum) {
+		log.debug("세션 확인! "+session.getAttribute("chal_num"));		
+		Long chal_num = (Long) session.getAttribute("chal_num");
+		Long chal_joi_num = (Long) session.getAttribute("chal_joi_num");
+		String status = (String) session.getAttribute("status");
+		
+		session.removeAttribute("chal_num");
+		session.removeAttribute("chal_joi_num");
+		session.removeAttribute("status");
+		
+		Map<String, Object> map = new HashMap<>();		
 		map.put("chal_joi_num", chal_joi_num);
 
 		//본인의 총 인증 개수 불러오기
 		int count = challengeService.selectChallengeVerifyListRowCount(map);
 
-		PagingUtil page = new PagingUtil(pageNum,count,6,10,"list","&chal_num="+chal_num+"&chal_joi_num="+chal_joi_num+"&status=on");
+		PagingUtil page = new PagingUtil(pageNum,count,6,10,"list");
 
 		List<ChallengeVerifyVO> verifyList = null;
 
@@ -499,6 +492,7 @@ public class ChallengeController {
 		map.put("end", page.getEndRow());
 		verifyList = challengeService.selectChallengeVerifyList(map); 
 		mav.addObject("verifyList", verifyList);
+		mav.addObject("chal_num",chal_num);		
 		mav.addObject("chal_joi_num", chal_joi_num);
 		mav.addObject("status", status);//추가
 		mav.addObject("page",page.getPage());
