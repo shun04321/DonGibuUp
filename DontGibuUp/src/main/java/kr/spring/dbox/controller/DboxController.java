@@ -1,6 +1,7 @@
 package kr.spring.dbox.controller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,12 +79,17 @@ public class DboxController {
     public String detailDonators(@PathVariable long dboxNum,Model model) {
     	log.debug("<<상세 페이지 접속(donators)>> : " + dboxNum);
     	
-    	//기부박스 및 모금계획 불러오기
-    	List<DboxDonationVO> dboxDonations = dboxService.selectDboxDonations(dboxNum);
+    	//기부현황
+		List<DboxDonationVO> dboxDonations = null;
+//		if(count > 0) {
+//			dboxDonations = dboxService.selectDboxDonations(dboxNum);
+//		}else {
+//			dboxDonations = Collections.emptyList();//null일 경우 빈 배열로 인식되게 세팅
+//		}
     	log.debug("<<상세 페이지(donators) - DboxDonations : >>" + dboxDonations);
     	
     	//뷰에 전달
-    	model.addAttribute("dbox",dboxDonations);
+    	model.addAttribute("dboxDonations",dboxDonations);
     	return "dboxDetailDonators";
     }
     /*===================================
@@ -93,13 +99,13 @@ public class DboxController {
     public String detailNews(@PathVariable long dboxNum,Model model) {
     	log.debug("<<상세 페이지 접속(news)>> : " + dboxNum);
     	
-    	//기부박스 및 모금계획 불러오기
+    	//소식
     	DboxResultVO dboxResult = dboxService.selectDboxResult(dboxNum);
     	log.debug("<<상세 페이지(news) - DboxResult : >>" + dboxResult);
     	
     	//뷰에 전달
-    	model.addAttribute("dbox",dboxResult);
-    	return "dboxDetailResult";
+    	model.addAttribute("dboxNews",dboxResult);
+    	return "dboxDetailNews";
     }
 	
 	
