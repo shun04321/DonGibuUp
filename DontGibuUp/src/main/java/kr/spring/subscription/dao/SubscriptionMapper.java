@@ -29,8 +29,12 @@ public interface SubscriptionMapper {
 	@Update("UPDATE subscription SET sub_status=1 WHERE sub_num=#{sub_num}")
 	public void updateSub_status(long sub_num);
 	
-	//자신의 정기기부 현황 확인
 	
+	//자신이 정기기부 개수
+	@Select("SELECT COUNT(*) FROM subscription WHERE mem_num=#{mem_num}")
+	public int getSubscriptionCount(long mem_num);
+	//자신의 정기기부 현황 확인
+	public List<SubscriptionVO> getSubscriptionByMem_num(long mem_num);
 	//모든 ,사용자의 정기기부 현황 확인
 	
 	//정기기부 삭제 (결제수단 등록 실패시)

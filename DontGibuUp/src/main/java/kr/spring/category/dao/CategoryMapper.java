@@ -34,7 +34,7 @@ public interface CategoryMapper {
 	// 기부 카테고리 수정시 파일 삭제
 	@Update("UPDATE dona_category SET dcate_icon='' WHERE dcate_num=#{dcate_num}")
 	public void deleteFile(Long dcate_num);
-	
+	//
 	
 	//Q. 챌린지 카테고리 페이징 처리가 있는지?
 	//챌린지 카테고리 등록

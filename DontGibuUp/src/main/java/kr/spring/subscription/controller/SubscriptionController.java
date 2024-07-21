@@ -32,6 +32,7 @@ import kr.spring.payuid.vo.PayuidVO;
 import kr.spring.subscription.service.Sub_paymentService;
 import kr.spring.subscription.service.SubscriptionService;
 import kr.spring.subscription.vo.SubscriptionVO;
+import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpEntity;
@@ -323,6 +324,27 @@ public class SubscriptionController {
           
 	    	}
 	    }
+	    
+	    @GetMapping("/subscription/subscriptionList")
+		public String subscriptionList(HttpSession session, Model model) {
+
+			Map<String,Object> map = 
+					new HashMap<String,Object>();
+
+			MemberVO user = (MemberVO)session.getAttribute("user");
+			
+			
+			//페이지 처리
+			int count = subscriptionService.getSubscriptionCount(user.getMem_num());
+			List<SubscriptionVO> list = null;
+			if(count > 0) {
+				list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
+			}
+			model.addAttribute("count", count);
+			model.addAttribute("list", list);
+
+			return "subscriptionList";
+		}
 	}
 
 

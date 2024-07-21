@@ -3,6 +3,7 @@ package kr.spring.subscription.vo;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
+import kr.spring.category.vo.DonationCategoryVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,5 +23,7 @@ public class SubscriptionVO {
 	private String sub_method;
 	private String easypay_method;
 	private String card_nickname;
+	
+	private DonationCategoryVO donationCategory;
 
 }

@@ -29,4 +29,9 @@ public interface SubscriptionService {
     
     //정기기부 중단
     public void updateSub_status(long sub_num);
+    
+    //정기기부 목록
+    public List<SubscriptionVO> getSubscriptionByMem_numWithCategories(long mem_num);
+    
+    public int getSubscriptionCount(long mem_num);
 }

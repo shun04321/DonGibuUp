@@ -15,7 +15,7 @@
 	</div>
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">기부활동</h5>
-		<a href="#" class="category-block-link"> 정기기부</a>
+		<a href="${pageContext.request.contextPath}/subscription/subscriptionList" class="category-block-link"> 정기기부</a>
 		<a href="#" class="category-block-link"> 기부박스</a>
 	</div>
 	<div class="category-block d-flex flex-column">

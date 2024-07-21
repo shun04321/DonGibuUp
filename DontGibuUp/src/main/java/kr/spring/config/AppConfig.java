@@ -53,6 +53,7 @@ public class AppConfig implements WebMvcConfigurer{
 		        .addPathPatterns("/category/insertCategory")
 		        .addPathPatterns("/category/deleteCategory")
 		        .addPathPatterns("/category/updateCategory")
+		        .addPathPatterns("/subscription/subscriptionList")
 				.addPathPatterns("/challenge/write")
 				.addPathPatterns("/challenge/join/write")
 		        .addPathPatterns("/challenge/join/list")

@@ -38,7 +38,18 @@
  		,#{card_nickname}
  		</if>
  		)   
- 	</insert>       
+ 	</insert>
+ 	<select id="getSubscriptionByMem_num" parameterType="long" resultType="subscriptionVO">
+		 	SELECT
+	 	   *
+	    FROM (SELECT
+	            a.*,
+	            rownum rnum
+	          FROM (SELECT
+	                  *
+	                FROM subscription 				<!-- 알리아스 -->
+	                )a) WHERE mem_num=#{mem_num}
+	</select>       
  </mapper>
 
 
