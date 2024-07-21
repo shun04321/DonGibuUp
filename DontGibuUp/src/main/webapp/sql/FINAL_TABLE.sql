@@ -641,7 +641,8 @@ CREATE TABLE DBOX_DONATION (
 	dbox_do_name		varchar2(45)						NULL,
 	dbox_do_comment		varchar2(300)	DEFAULT '기부합니다.'	NULL,
 	dbox_do_status		number(1)							NOT NULL,
-	dbox_do_annony		number(1)							NOT NULL
+	dbox_do_annony		number(1)							NOT NULL,
+	dbox_do_reg_date	date			DEFAULT SYSDATE		NOT NULL
 );
 
 COMMENT ON COLUMN DBOX_DONATION.dbox_do_num IS '기부신청 고유 식별 번호';

@@ -8,6 +8,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import kr.spring.dbox.vo.DboxBudgetVO;
+import kr.spring.dbox.vo.DboxDonationVO;
+import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
 
 @Mapper
@@ -30,4 +32,17 @@ public interface DboxMapper {
 	
 	//Dbox 개수
 	public Integer selectListCount(Map<String, Object> map);
+	
+	//Dbox 선택
+	@Select("SELECT * FROM dbox WHERE dbox_num=#{dbox_num}")
+	public DboxVO selectDbox(long dbox_num);
+	//Dbox 기부계획 선택
+	@Select("SELECT * FROM dbox_budget WHERE dbox_num=#{dbox_num}")
+	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num);
+	//Dbox_Donation
+	@Select("SELECT * FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
+	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
+	//Dbox_Result
+	@Select("SELECT * FROM dbox_result WHERE dbox_num=#{dbox_num}")
+	public DboxResultVO selectDboxResult(long dbox_num);
 }
