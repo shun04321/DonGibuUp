@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -276,7 +277,7 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 
-	//챌린지 참가 창 벗어날시 이미지 및 개설 데이터 삭제
+	//챌린지 참가 창 벗어날시 이미지 및 개설 데이터 삭제(리더)
 	@PostMapping("/challenge/deleteImage")
 	public void deleteImg(HttpSession session, HttpServletRequest request) {		
 		//세션에 저장된 파일 이름 가져오기
@@ -290,11 +291,27 @@ public class ChallengeAjaxController {
 		//챌린지 개설 정보 삭제
 		session.removeAttribute("challengeVO");
 	}
-
+	
 	/*==========================
-	 *  챌린지 인증 상세 (비동기 통신)
+	 *  챌린지 단체 채팅
 	 *==========================*/
-
+	@PostMapping("/challenge/join/joinChal_chat")
+	@ResponseBody
+	public Map<String,Object> joinChallengeChat(Long chal_num,HttpSession session) {	
+		Map<String,Object> mapJson = new HashMap<>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("result","logout");
+		}else {
+			session.setAttribute("chal_num", chal_num);
+			mapJson.put("result", "success");
+		}			
+		return mapJson;
+	}
+	
+	/*==========================
+	 *  챌린지 인증 상세
+	 *==========================*/
 	//챌린지 참가 회원 목록
 	@GetMapping("/challenge/verify/joinMemberList")
 	@ResponseBody

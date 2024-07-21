@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.ChallengeCategoryVO;
@@ -366,7 +367,47 @@ public class ChallengeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
 		}
 	}
-
+	
+	/*==========================
+	 *  챌린지 단체 채팅
+	 *==========================*/
+	//쿼리스트링 chal_num 숨기기
+	/*
+	@GetMapping("/challenge/join/joinChal_chat")
+	public String joinChallengeChat(Long chal_num,HttpSession session,
+			HttpServletRequest request, Model model) {				
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		if(user == null) {
+			return request.getContextPath()+"/member/login";
+		}
+		model.addAttribute("chal_num",chal_num);	//redirectAttributes.addFlashAttribute(, );		
+		return "redirect:/challenge/join/chal_chatDetail";
+	}*/
+	
+	//챌린지 채팅방 입장
+	@GetMapping("/challenge/join/chal_chatDetail")
+	public String joinChallengeChatRedirect(HttpSession session,Model model) {
+		long chal_num = (Long) session.getAttribute("chal_num");
+		session.removeAttribute("chal_num");
+		model.addAttribute("chal_num", chal_num);
+		
+		//채팅방 이름
+		ChallengeVO challenge = challengeService.selectChallenge(chal_num);
+		model.addAttribute("chal_room_name", challenge.getChal_title());
+		
+		//채팅 참여 인원 수
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_num", chal_num);
+		int chatJoinCount = challengeService.selectJoinMemberRowCount(map);
+		model.addAttribute("count", chatJoinCount);
+		
+		//채팅 참여 회원 목록
+		List<ChallengeJoinVO> list = challengeService.selectJoinMemberList(map);
+		model.addAttribute("list", list);
+		
+		return "chal_chatDetail";
+	}
+	
 	/*==========================
 	 *  챌린지 인증
 	 *==========================*/

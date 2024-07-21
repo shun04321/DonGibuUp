@@ -21,7 +21,7 @@
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeList.jsp"/>
 	</definition>
 	<definition name="challengePastList" extends="main">
-		<put-attribute name="title" value="이전 챌린지 목록"/>
+		<put-attribute name="title" value="지난 챌린지 목록"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengePastList.jsp"/>
 	</definition>
@@ -29,6 +29,11 @@
 		<put-attribute name="title" value="챌린지 상세"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeView.jsp"/>
+	</definition>
+	<definition name="chal_chatDetail" extends="main">
+		<put-attribute name="title" value="챌린지 단체채팅"/>
+		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/challenge/chal_chatDetail.jsp"/>
 	</definition>
 </tiles-definitions>
 

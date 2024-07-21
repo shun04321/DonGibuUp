@@ -38,7 +38,6 @@ public interface ChallengeMapper {
     public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
     public ChallengeJoinVO selectChallengeJoin(Long chal_num);
     //챌린지 참가 회원 목록
-    @Select("SELECT COUNT(*) FROM chal_join WHERE chal_num=#{chal_num} AND NOT chal_joi_num=#{chal_joi_num}")
     public Integer selectJoinMemberRowCount(Map<String,Object> map);
     public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);    
     public void deleteChallengeJoin(Long chal_joi_num);
