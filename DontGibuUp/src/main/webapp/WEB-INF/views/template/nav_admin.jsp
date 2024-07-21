@@ -1,19 +1,90 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!-- Admin 메뉴 시작 -->
-<ul class="side-bar">
-	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/manageMember">회원 관리</a></li>
-	<li class="side-menu">챌린지 관리</li>
-	<li class="side-menu">기부박스 관리</li>
-	<li class="side-menu">굿즈 관리</li>
-	<li class="side-menu">결제 관리</li>
-	<li class="side-menu"><a href="${pageContext.request.contextPath}/category/categoryList">카테고리 관리</a></li>
-	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/managePoint">포인트 관리</a></li>
-	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/cs/faq">FAQ 관리</a></li>
-	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/cs/inquiry">1:1문의 관리</a></li>
-	<li class="side-menu"><a href="${pageContext.request.contextPath}/admin/cs/report">신고 관리</a></li>
-	<li class="side-menu">통계</li>
-</ul>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+
+<!-- Admin 메뉴 시작 -->
+	<div class="nanum">
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+        	  <li class="nav-item">
+            <p>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link">
+              <span class="menu-title"><h4 class="mb-3" style="color: #5A6F80;">ADMIN</h4></span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">USER</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+              <i class="menu-icon mdi mdi-account-circle-outline"></i>
+              <span class="menu-title">회원관리</span>
+              <i class="menu-arrow"></i> 
+            </a>
+            <div class="collapse" id="ui-basic">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/manageMember">회원정보</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/managePoint">포인트</a></li>
+                <li class="nav-item"> <a class="nav-link" href="#">결제</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">PAGES</li>
+          <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/category/categoryList">
+              <i class="menu-icon mdi mdi-lan"></i>
+              <span class="menu-title">카테고리</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
+              <i class="menu-icon mdi mdi-database-plus"></i>
+              <span class="menu-title">기부활동</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="charts">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="#">정기기부</a></li>
+              	<li class="nav-item"> <a class="nav-link" href="#">기부박스</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="menu-icon mdi mdi-account-multiple-outline"></i>
+              <span class="menu-title">챌린지</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="menu-icon mdi mdi mdi-shopping"></i>
+              <span class="menu-title">굿즈샵</span>
+            </a>
+          </li>
+          <li class="nav-item nav-category">HELP</li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi mdi-help-circle-outline"></i>
+              <span class="menu-title">고객센터</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/cs/faq">FAQ</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/cs/inquiry">1:1문의</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/cs/report">신고</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item nav-category">STATS</li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <i class="menu-icon mdi mdi-chart-line"></i>
+              <span class="menu-title">통계</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+     </div>
 <!-- Admin 메뉴 끝 -->

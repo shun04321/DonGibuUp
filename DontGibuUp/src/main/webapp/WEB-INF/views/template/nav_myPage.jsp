@@ -4,6 +4,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 
 <!-- MyPage 메뉴 시작 -->
+	<h4 class="mb-3" style="color: #5A6F80;">MYPAGE</h4>
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">나의 정보</h5>
 		<a href="${pageContext.request.contextPath}/member/myPage/memberInfo" class="category-block-link"> 회원정보 수정</a>
@@ -12,7 +13,7 @@
 		<a href="${pageContext.request.contextPath}/member/myPage/point" class="category-block-link"> 포인트</a>
 	</div>
 	<div class="category-block d-flex flex-column">
-		<h5 class="mb-3">기부</h5>
+		<h5 class="mb-3">기부활동</h5>
 		<a href="#" class="category-block-link"> 정기기부</a>
 		<a href="#" class="category-block-link"> 기부박스</a>
 	</div>
@@ -23,12 +24,13 @@
 		<a href="${pageContext.request.contextPath}/challenge/join/list?status=post" class="category-block-link"> 완료된 챌린지</a>
 	</div>
 	<div class="category-block d-flex flex-column">
-		<h5 class="mb-3">주문</h5>
-		<a href="#" class="category-block-link"> 주문/배송조회</a>
+		<h5 class="mb-3">굿즈샵</h5>
+		<a href="#" class="category-block-link"> 주문 배송 조회</a>
 		<a href="${pageContext.request.contextPath}/cart/list" class="category-block-link"> 장바구니</a>
 	</div>
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">고객센터</h5>
-		<a href="${pageContext.request.contextPath}/member/myPage/inquiry" class="category-block-link"> 문의/신고</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/inquiry" class="category-block-link"> 1:1 문의</a>
+		<a href="#" class="category-block-link"> 신고</a>
 	</div>
 <!-- MyPage 메뉴 끝 -->

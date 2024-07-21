@@ -16,7 +16,7 @@
 	</div>
 	<section class="news-section section-padding">
 		<div class="container">
-			<div class="row">
+			<div class="row nanum">
 				<div class="col-lg-3 col-12 mx-auto mt-4 mt-lg-0">
 					<tiles:insertAttribute name="nav" />
 				</div>

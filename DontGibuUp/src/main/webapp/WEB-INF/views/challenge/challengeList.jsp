@@ -8,7 +8,7 @@
 	let pageContext = "${pageContext.request.contextPath}";
 </script>
 
-<div>
+<div class="nanum">
 	<div class="align-center">
 		<a href="list">참가 가능한 챌린지 목록</a> <a href="pastList">지난 챌린지 목록</a>
 	</div>
