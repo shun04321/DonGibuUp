@@ -521,6 +521,7 @@ public class ChallengeController {
 	}
 
 	//챌린지 인증 상세
+	/*
 	@GetMapping("/challenge/verify/detail")
 	@ResponseBody
 	public String getVerify(@RequestParam("chal_ver_num") long chal_ver_num) {
@@ -530,7 +531,7 @@ public class ChallengeController {
 		editForm += "<button onclick='hideEditForm(" + chal_ver_num + ")'>취소</button>";
 
 		return editForm;
-	}
+	}*/
 
 	//챌린지 인증 수정
 	@PostMapping("/challenge/verify/update")

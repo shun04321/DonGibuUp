@@ -276,48 +276,24 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 
-	//챌린지 참가 창 벗어날시 이미지 삭제
+	//챌린지 참가 창 벗어날시 이미지 및 개설 데이터 삭제
 	@PostMapping("/challenge/deleteImage")
 	public void deleteImg(HttpSession session, HttpServletRequest request) {		
 		//세션에 저장된 파일 이름 가져오기
-		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");
-
+		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");		
+		
 		if (challenge != null) {
 			//파일 삭제
 			FileUtil.removeFile(request, challenge.getChal_photo());
 		}
+		
+		//챌린지 개설 정보 삭제
+		session.removeAttribute("challengeVO");
 	}
 
 	/*==========================
 	 *  챌린지 인증 상세 (비동기 통신)
 	 *==========================*/
-	/*
-	//본인 챌린지 인증 내역 
-	@GetMapping("/challenge/verify/myList")
-	@ResponseBody
-	public Map<String,Object> verifyList(@RequestParam(defaultValue="1") int pageNum,Long chal_joi_num,int rowCount){
-		Map<String,Object> map = new HashMap<>();
-		map.put("chal_joi_num", chal_joi_num);
-
-		//총 챌린지 참가 멤버수
-		int count = challengeService.selectChallengeVerifyListRowCount(map);
-
-		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
-
-		int start = page.getStartRow();
-		int end = page.getEndRow();
-		map.put("start", start);
-		map.put("end", end);
-
-		List<ChallengeVerifyVO> myList = challengeService.selectChallengeVerifyList(map);
-
-		Map<String,Object> mapJson = new HashMap<>();
-		mapJson.put("list", myList);
-		mapJson.put("page", page.getPage());
-
-		return mapJson;
-	}*/
 
 	//챌린지 참가 회원 목록
 	@GetMapping("/challenge/verify/joinMemberList")
