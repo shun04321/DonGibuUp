@@ -670,8 +670,7 @@ CREATE TABLE CHAL_CHAT (
 	chat_content	varchar2(900)					NOT NULL,
 	chat_filename	varchar2(400)					NULL,
 	chat_date		date			DEFAULT SYSDATE	NOT NULL,
-	chat_status		number							NOT NULL,
-	Field			VARCHAR(255)					NULL
+	chat_status		number							NOT NULL
 );
 
 COMMENT ON COLUMN CHAL_CHAT.chat_id IS '메시지 식별 번호,sequence 사용';

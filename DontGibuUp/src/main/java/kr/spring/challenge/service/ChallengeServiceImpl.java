@@ -35,8 +35,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 		challengeMapper.insertChallengeJoin(joinVO);
 		payVO.setChal_joi_num(joinVO.getChal_joi_num());
 		challengeMapper.insertChallengePayment(payVO);
-		chatVO.setChal_num(chalVO.getChal_num());		
-		challengeMapper.insertChallengeChat(chatVO);
+		chatVO.setChal_num(chalVO.getChal_num());	
+		long chat_id = challengeMapper.selectChat_id();
+		chatVO.setChat_id(chat_id);
+		challengeMapper.insertChallengeChat(chatVO);		
 	}	
 
 	@Override
