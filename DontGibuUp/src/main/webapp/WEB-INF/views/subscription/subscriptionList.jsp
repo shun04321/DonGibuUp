@@ -93,17 +93,21 @@ hr {
 		<c:forEach var="subscription" items="${list}">
 			<div class="item_subscribe">			
 				<dl class="header-item">
-					<dt>
-						<img src="${pageContext.request.contextPath}/upload/${subscription.donationCategory.dcate_icon}" alt="기부처 아이콘">
-						${subscription.donationCategory.dcate_name} / ${subscription.donationCategory.dcate_charity}
-					</dt>
+						<dt>
+							<a href="${pageContext.request.contextPath}/subscription/subscriptionDetail?sub_num=${subscription.sub_num}">
+								<img src="${pageContext.request.contextPath}/upload/${subscription.donationCategory.dcate_icon}" alt="기부처 아이콘">
+								${subscription.donationCategory.dcate_name} / ${subscription.donationCategory.dcate_charity}
+							</a>
+						</dt>
 					<dd>
-						<c:if test="${subscription.sub_status==0}">
-							이용중
-						</c:if>
-						<c:if test="${subscription.sub_status==1}">
-							중단
-						</c:if>
+						<a href="${pageContext.request.contextPath}/subscription/subscriptionDetail?sub_num=${subscription.sub_num}">
+							<c:if test="${subscription.sub_status==0}">
+								상태 : 기부 진행중 >
+							</c:if>
+							<c:if test="${subscription.sub_status==1}">
+								상태 : 기부 중단 >
+							</c:if>
+						</a>
 					</dd>
 				</dl>
 				<div class="cont-item">
