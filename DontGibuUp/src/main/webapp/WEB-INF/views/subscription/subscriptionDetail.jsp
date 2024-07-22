@@ -37,7 +37,7 @@
                 </c:if>
             </dt>
             <dd>
-               	 이번 결제&nbsp;&nbsp;<fmt:formatNumber value="${subscription.sub_price}" type="number"/>원<br><br>
+               	 이번 결제&nbsp;&nbsp;<fmt:formatNumber value="${subscription.sub_price}" type="number"/>원  (결제일 ${sub_paydate})<br><br>
                 <c:if test="${subscription.sub_status == 0}">
                  다음 결제&nbsp;&nbsp;<fmt:formatNumber value="${subscription.sub_price}" type="number"/>원 (결제일 <span class="next-pay-date"></span>)
                 </c:if>
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         month = month.toString().padStart(2, '0');
         day = day.toString().padStart(2, '0');
 
-        return `${year}-${month}-${day}`;
+        return year+"-"+month+"-"+day;
     }
 
     let subPayDate = "${sub_paydate}".trim();
