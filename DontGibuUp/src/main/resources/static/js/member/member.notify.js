@@ -47,7 +47,7 @@ $(function() {
 
 								// 읽지 않은 항목의 배경색을 연한 하늘색으로 설정
 	                            if (item.not_read_datetime === null) {
-	                                listItem.css('background-color', '#e8f6fc');
+	                                listItem.css('background-color', '#e6f1fa');
 	                            } else {  // 읽은 항목의 배경색을 연한 회색으로 설정
                                 	listItem.css('background-color', '#f5f5f5');
                             	}
