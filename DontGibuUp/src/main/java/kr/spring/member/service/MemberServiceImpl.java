@@ -24,8 +24,6 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	@Autowired
-	MemberService memberService;
-	@Autowired
 	PointService pointService;
 	@Autowired
 	PasswordEncoder pwEncoder;
@@ -71,8 +69,8 @@ public class MemberServiceImpl implements MemberService {
 			pointService.insertPointLog(point_revent2);
 			
 			//member_detail 업데이트
-			memberService.updateMemPoint(point_revent1);
-			memberService.updateMemPoint(point_revent2);
+			updateMemPoint(point_revent1);
+			updateMemPoint(point_revent2);
 		}
 		
 	}
