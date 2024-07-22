@@ -66,7 +66,7 @@
     </form:form>
 </div>
 <script>
-	$(window).on('beforeunload', function(e){
+	function handleBeforeUnload(e){
 		e.preventDefault();
     	const url = '/challenge/deleteImage';
             
@@ -77,5 +77,7 @@
         // 서버에 이미지 삭제 요청을 POST 방식으로 보냅니다.
         navigator.sendBeacon(url, data);	        
 	}); 
+	
+	$(window).on('beforeunload', handleBeforeUnload);
 </script>
 <script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>

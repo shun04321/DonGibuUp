@@ -107,7 +107,8 @@ function payAndEnroll2() {
                                     let now = new Date();
                                     now.setHours(0, 0, 0, 0);
                                     sdate.setHours(0, 0, 0, 0);
-                                    if (sdate.getTime() == now.getTime()) {
+                                     $(window).off('beforeunload', handleBeforeUnload);
+                                    if (sdate.getTime() == now.getTime()) {										
                                         window.location.href = pageContextPath + '/challenge/join/list?status=on';
                                     } else if (sdate > now) {
                                         window.location.href = pageContextPath + '/challenge/join/list?status=pre';

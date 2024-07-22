@@ -3,10 +3,12 @@ package kr.spring.challenge.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import kr.spring.category.vo.DonationCategoryVO;
+import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -47,6 +49,22 @@ public interface ChallengeMapper {
 	//챌린지 결제
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
 	
+    /*챌린지 채팅*/
+    //채팅 메시지 번호 생성
+    @Select("SELECT chal_chat_seq.nextval FROM dual")
+    public Long selectChat_id();
+    //채팅 메시지 등록
+    public void insertChallengeChat(ChallengeChatVO chalChatVO);
+    //읽지 않은 채팅 기록 저장
+    @Insert("INSERT INTO chal_chat_read (chal_num,chat_id,mem_num) VALUES (#{chal_num},#{chat_id},#{mem_num})")
+    public void insertChatRead(Map<String,Object> map);
+    //채팅 메시지 읽기
+    public List<ChallengeChatVO> selectChallengeChat(Map<String,Object> map);
+    //읽은 채팅 기록 삭제
+    public void deleteChatRead(Map<String,Object> map);
+    //챌린지 종료시 채팅기록 삭제
+    public void deleteChallengeChat(Long chal_num);
+    
 	//챌린지 인증
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     @Select("SELECT COUNT(*) FROM chal_verify WHERE chal_joi_num=#{chal_joi_num}")
@@ -66,9 +84,7 @@ public interface ChallengeMapper {
     public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num);       
     public ChallengeReviewVO selectChallengeReview(Long chal_rev_num);   
     public void updateChallengeReview(ChallengeReviewVO chalReviewVO);
-    public void deleteChallengeReview(Long chal_rev_num);
-
-	//챌린지 채팅	
+    public void deleteChallengeReview(Long chal_rev_num);	
     
 	//챌린지...
 }

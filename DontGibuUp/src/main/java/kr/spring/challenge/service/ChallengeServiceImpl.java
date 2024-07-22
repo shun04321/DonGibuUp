@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.dao.ChallengeMapper;
+import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -26,7 +27,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	//챌린지 개설//
 	@Override
-	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO) {
+	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO,ChallengeChatVO chatVO) {
 		chalVO.setChal_num(challengeMapper.selectChal_num());
 		challengeMapper.insertChallenge(chalVO);
 		joinVO.setChal_num(chalVO.getChal_num());
@@ -34,6 +35,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 		challengeMapper.insertChallengeJoin(joinVO);
 		payVO.setChal_joi_num(joinVO.getChal_joi_num());
 		challengeMapper.insertChallengePayment(payVO);
+		chatVO.setChal_num(chalVO.getChal_num());		
+		challengeMapper.insertChallengeChat(chatVO);
 	}	
 
 	@Override
@@ -196,6 +199,36 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public Integer selectChallengeJoinListRowCount(Map<String, Object> map) {
 		return challengeMapper.selectChallengeJoinListRowCount(map);
+	}
+	
+	//챌린지 채팅 메시지 넣기
+	@Override
+	public void insertChallengeChat(ChallengeChatVO chatVO) {
+		//chal_chat 테이블에 레코드 삽입
+		long chat_id = challengeMapper.selectChat_id();
+		chatVO.setChat_id(chat_id);
+		challengeMapper.insertChallengeChat(chatVO);
+		//chal_chat_read 테이블에 레코드 삽입
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_num", chatVO.getChal_num());
+		map.put("chat_id",chat_id);
+		for(ChallengeJoinVO vo:challengeMapper.selectJoinMemberList(map)) {			
+			map.put("mem_num", vo.getMem_num());
+			challengeMapper.insertChatRead(map);
+		}		
+	}
+	
+	//챌린지 채팅 메시지 읽기
+	@Override
+	public List<ChallengeChatVO> selectChallengeChat(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	//챌린지 채팅방 삭제
+	@Override
+	public void deleteChallengeChat(Long chal_num) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -30,7 +30,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeView.jsp"/>
 	</definition>
-	<definition name="chal_chatDetail" extends="main">
+	<definition name="chal_chatDetail" template="/WEB-INF/views/template/layout_chalTalk.jsp">
 		<put-attribute name="title" value="챌린지 단체채팅"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/chal_chatDetail.jsp"/>

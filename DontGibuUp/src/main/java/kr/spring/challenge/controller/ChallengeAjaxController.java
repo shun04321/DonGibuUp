@@ -31,6 +31,7 @@ import com.siot.IamportRestClient.response.Payment;
 import kr.spring.category.service.CategoryService;
 import kr.spring.challenge.service.ChallengeService;
 import kr.spring.category.vo.ChallengeCategoryVO;
+import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
@@ -253,7 +254,7 @@ public class ChallengeAjaxController {
 			//챌린지 참가 정보 저장
 			ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
 			challengeJoinVO.setMem_num(member.getMem_num());
-			challengeJoinVO.setChal_num(challenge.getChal_num());
+			//challengeJoinVO.setChal_num(challenge.getChal_num());
 			challengeJoinVO.setDcate_num(dcateNum);
 			challengeJoinVO.setChal_joi_ip(request.getRemoteAddr());
 
@@ -263,8 +264,13 @@ public class ChallengeAjaxController {
 			challengePaymentVO.setChal_pay_price(chalPayPrice);
 			challengePaymentVO.setChal_point(chalPoint);
 			challengePaymentVO.setOd_imp_uid(odImpUid);
+			
+			//챌린지 시작 채팅 메시지 설정
+			ChallengeChatVO chatVO = new ChallengeChatVO();
+			chatVO.setChat_content("챌린지가 시작되었습니다!");
+			chatVO.setMem_num(member.getMem_num());
 
-			challengeService.insertChallenge(challenge,challengeJoinVO,challengePaymentVO);
+			challengeService.insertChallenge(challenge,challengeJoinVO,challengePaymentVO,chatVO);
 
 			String sdate = challenge.getChal_sdate();
 

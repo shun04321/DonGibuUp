@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
+
+import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -13,7 +16,7 @@ import kr.spring.challenge.vo.ChallengeVerifyVO;
 public interface ChallengeService {
 	
 	//챌린지 개설
-	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO);
+	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO,ChallengeChatVO chatVO);
 	public List<ChallengeVO> selectList(Map<String,Object> map);
 	public Integer selectRowCount(Map<String,Object> map);
 	public ChallengeVO selectChallenge(Long chal_num);
@@ -39,6 +42,13 @@ public interface ChallengeService {
 	//챌린지 결제
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
 	
+    //채팅 메시지 등록
+    public void insertChallengeChat(ChallengeChatVO chalChatVO);
+    //채팅 메시지 읽기
+    public List<ChallengeChatVO> selectChallengeChat(Map<String,Object> map);
+    //챌린지 종료시 채팅기록 삭제
+    public void deleteChallengeChat(Long chal_num);
+    
 	//챌린지 인증
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public Integer selectChallengeVerifyListRowCount(Map<String,Object> map);
