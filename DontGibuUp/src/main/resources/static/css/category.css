@@ -347,16 +347,31 @@ ul#delivery_info li span{
 	text-align:center;
 }
 
-#paybutton{
-	 position: fixed;
-	 bottom: 20px; /* 화면 하단에서 20px 위 */
-	 width: 300px;          
-	 left: 50%; /* 화면 가로 중앙 정렬을 위한 시작점 */
-     transform: translateX(-50%);
-     z-index: 1000; /* 다른 요소들보다 앞에 오도록 설정 */
-     background-color:yellow;
-     border-color: yellow;
+#paybutton {
+    position: fixed;
+    bottom: 20px; /* 화면 하단에서 20px 위 */
+    width: 600px;          
+    left: 50%; /* 화면 가로 중앙 정렬을 위한 시작점 */
+    transform: translateX(-50%);
+    z-index: 1000; /* 다른 요소들보다 앞에 오도록 설정 */
+     background-color: #66cdaa; /* 마우스 오버 시 조금 더 어두운 파스텔 초록색 */
+    border-color: #66cdaa; /* 마우스 오버 시 조금 더 어두운 테두리 */
+    color: white; /* 흰색 텍스트 */
+    font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif; /* 둥근 글씨체 설정 */
+    font-weight: bold; /* 글자 두껍게 설정 */
+    padding: 15px; /* 버튼 내 패딩 추가 */
+    font-size: 16px; /* 텍스트 크기 설정 */
+    border-radius: 5px; /* 둥근 모서리 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+    text-align: center; /* 텍스트 중앙 정렬 */
 }
+
+#paybutton:hover {
+  	background-color: #55b895; /* 호버 상태의 더 어두운 색상 */
+    border-color: #55b895; /* 호버 상태의 더 어두운 테두리 색상 */
+}
+
+
 
 .carousel {
     position: relative;
