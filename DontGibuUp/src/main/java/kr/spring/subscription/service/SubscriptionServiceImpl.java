@@ -74,7 +74,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public SubscriptionVO getSubscription(long sub_num) {
-        return subscriptionMapper.getSubscription(sub_num);
+    	SubscriptionVO subscription = subscriptionMapper.getSubscription(sub_num);
+    	  if (subscription != null) {
+			  String regDate = subscription.getReg_date(); // reg_date는 문자열로 가정
+			  subscription.setReg_date(regDate); // 변환된 Date 객체를 설정
+          }
+        return subscription;
     }
 
     @Override

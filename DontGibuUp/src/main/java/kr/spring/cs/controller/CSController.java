@@ -248,6 +248,8 @@ public class CSController {
 			return "adminInquiryReply";
 		}
 		
+		log.debug("<<1:1문의 답변 수정 - inquiry_num>> : " + inquiryVO.getInquiry_num());
+		
 		//답변 수정
 		csService.replyInquiry(inquiryVO);
 
@@ -303,8 +305,8 @@ public class CSController {
 	public String replyReportForm(@RequestParam long report_num, Model model) {
 		ReportVO report = csService.selectReport(report_num);
 
-		log.debug("<<문의 상세 - report_num>> : " + report_num);
-		log.debug("<<문의 상세>> : " + report);
+		log.debug("<<신고 상세 - report_num>> : " + report_num);
+		log.debug("<<신고 상세>> : " + report);
 
 		model.addAttribute("report", report);
 		return "adminReportReply";

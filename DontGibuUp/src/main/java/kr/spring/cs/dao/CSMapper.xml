@@ -32,6 +32,14 @@
 		WHERE inquiry_num=#{inquiry_num}
 	</update>
 	
+	<!-- 문의 답변 -->
+	<update id="replyInquiry" parameterType="map">
+	    UPDATE inquiry
+	    SET inquiry_reply = #{inquiry_reply},
+	        inquiry_rdate = SYSDATE
+	    WHERE inquiry_num = #{inquiry_num}
+	</update>
+	
 	<!-- 관리자 문의 조건절 -->
 	<sql id="inquirySearch">
 		<where>
@@ -114,7 +122,7 @@
 	<!-- 관리자 신고 상세 -->
 	<select id="selectReport" parameterType="long" resultType="reportVO">
 		SELECT
-			r.*, a.mem_nick mem_nick, b.mem_nick reported_mem_nick 
+			r.*, a.mem_nick mem_nick, b.mem_nick reported_mem_nick, b.mem_status reported_mem_status 
 		FROM report r
 		JOIN member a
 		ON (r.mem_num=a.mem_num)
@@ -122,6 +130,14 @@
 		ON (r.reported_mem_num=b.mem_num)
 		WHERE report_num=#{report_num}
 	</select>
+	
+	<update id="replyReport" parameterType="map">
+        UPDATE report 
+        SET report_reply=#{report_reply}, 
+            report_status=#{report_status}, 
+            report_rdate=SYSDATE 
+        WHERE report_num=#{report_num}
+    </update>
 </mapper>
 
 

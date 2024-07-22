@@ -1,8 +1,11 @@
 package kr.spring.subscription.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -360,8 +363,30 @@ public class SubscriptionController {
 
 			return "subscriptionList";
 		}
-	}
+	    @GetMapping("/subscription/subscriptionDetail")
+	    public String subscriptionDetail(long sub_num, Model model) throws ParseException {
+	        SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
+	        DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
+	        Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate();
+	        
+	        // 날짜 문자열을 Date 객체로 변환
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
+	        String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
 
+	        // 모델에 날짜 문자열 추가
+	        model.addAttribute("reg_date", regDate);
+	        model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식
+	        model.addAttribute("category", category);
+	        model.addAttribute("subscription", subscription);
+	        model.addAttribute("subpayment", subpayment);
+
+	        return "subscriptionDetail";
+	    }
+
+
+
+}
 
 	    
 

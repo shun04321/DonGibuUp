@@ -23,6 +23,7 @@ public class ReportVO {
 	
 	private String mem_nick;
 	private String reported_mem_nick;
+	private int reported_mem_status;
 
 	private long chal_num;
 	private long chal_rev_num;

@@ -15,7 +15,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class InquiryVO {
-	private long inquiry_num;			//문의번호
+	private Long inquiry_num;			//문의번호
 	private long mem_num;				//회원번호
 	@NotNull
 	private Integer inquiry_category;	//문의카테고리(0: 정기기부, 1: 기부박스, 2: 챌린지, 3: 굿즈샵, 4: 기타)

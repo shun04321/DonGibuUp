@@ -34,9 +34,13 @@
 		<put-attribute name="body" value="/WEB-INF/views/common/resultView.jsp"/>
 	</definition>
 	<definition name="subscriptionList" extends="memberInfo">
-		<put-attribute name="title" value="나의 정기기부 목록" />
-		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="title" value="나의 정기기부 목록"/>
 		<put-attribute name="body" value="/WEB-INF/views/subscription/subscriptionList.jsp"/>
+	</definition>
+	<definition name="subscriptionDetail" extends="memberInfo">
+		<put-attribute name="title" value="정기기부 상세" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/subscription/subscriptionDetail.jsp"/>
 	</definition>	
 </tiles-definitions>
 
