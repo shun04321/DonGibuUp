@@ -127,6 +127,7 @@ public class CategoryController {
 		log.debug("donationcategoryVO : " + category);
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		
+		System.out.println("user : " + user);
 		
 		ModelAndView modelAndView = new ModelAndView("categoryDetail");
 		modelAndView.addObject("category", category);

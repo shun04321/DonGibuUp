@@ -89,7 +89,6 @@ hr {
 		<div class="result-display">표시할 정기기부 현황이 없습니다.</div>
 	</c:if>
 	<c:if test="${count > 0}">
-		<strong>기부처</strong>
 		<c:forEach var="subscription" items="${list}">
 			<div class="item_subscribe">			
 				<dl class="header-item">

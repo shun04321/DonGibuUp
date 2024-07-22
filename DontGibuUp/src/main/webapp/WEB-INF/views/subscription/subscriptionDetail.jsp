@@ -109,9 +109,9 @@
     <dl class="header-item">
         <dt>
             <img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}" alt="기부처 아이콘">
-            ${category.dcate_name} / ${category.dcate_charity} &nbsp;
+            ${category.dcate_name} / ${category.dcate_charity}
             <c:if test="${subscription.sub_status == 0}">
-                에<span class="focus">정기 기부중</span> 입니다.
+                 &nbsp; <span class="focus">정기 기부중</span> 입니다.
             </c:if>
 
         </dt>
@@ -191,6 +191,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     $('.modify-btn').on('click', function() {
+    	if (!confirm('정말 해지하시겠습니까?')) {
+            return; // 사용자가 취소 버튼을 클릭한 경우 아무 동작도 하지 않음
+        }
         var subNum = $(this).data('num');
         var action = $(this).val() === '해지하기' ? 'cancel' : 'start';
 
@@ -211,7 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     $('.modify-btn').each(function() {
                         $(this).val('해지된 정기기부');
                         $(this).prop('disabled', true);
-                        init(this);
+                        location.reload();
                     });
                 } else {
                     alert('정기기부 중지 오류 발생');
