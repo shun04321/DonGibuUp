@@ -52,7 +52,7 @@ $(function() {
 				}
 			});
 		}
-	})
+	});
 	
 	//활성화 버튼 클릭
 	$('.activateBtn').click(function() {
@@ -88,5 +88,5 @@ $(function() {
 				}
 			});
 		}
-	})
+	});
 });

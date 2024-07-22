@@ -1,14 +1,23 @@
 <!-- reportReplyModifyForm -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <form:form action="reply" modelAttribute="reportVO">
 	<form:hidden path="mem_num" value="${report.mem_num}"/>
 	<form:hidden path="report_num" value="${report.report_num}"/>
-	<form:radiobutton path="report_status" value="1" id="report_status_1" />
+	<c:if test="${report.report_status == 1}">
+	<form:radiobutton path="report_status" value="1" id="report_status_1" checked="checked" />
        <label for="report_status_1">승인</label><br>
 	<form:radiobutton path="report_status" value="2" id="report_status_2" />
-       <label for="report_status_2">반려</label><br>
+       <label for="report_status_2">반려</label><br>	
+	</c:if>
+	<c:if test="${report.report_status == 2}">
+	<form:radiobutton path="report_status" value="1" id="report_status_1" />
+       <label for="report_status_1">승인</label><br>
+	<form:radiobutton path="report_status" value="2" id="report_status_2" checked="checked" />
+       <label for="report_status_2">반려</label><br>	
+	</c:if>
 	<div>
 		<form:label path="report_reply">답변</form:label>				
 	</div>

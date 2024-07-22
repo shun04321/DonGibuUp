@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <div class="page-main">
 	<h2>신고</h2>
 	<div>
@@ -54,6 +53,9 @@
 					<button onclick='location.href="report/reply?report_num=${report.report_num}"'>
 					답변 하기
 					</button>
+					</c:if>
+					<c:if test="${!empty report.report_reply}">
+					답변완료
 					</c:if>
 					</td>
 				</tr>
