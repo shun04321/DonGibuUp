@@ -29,14 +29,17 @@ public class NotifyServiceImpl implements NotifyService {
 
 	@Override
 	public List<NotifyVO> selectNotListByMemNum(long mem_num) {
-		// TODO Auto-generated method stub
-		return null;
+		return notifyMapper.selectNotListByMemNum(mem_num);
+	}
+	
+	@Override
+	public int countUnreadNot(long mem_num) {
+		return notifyMapper.countUnreadNot(mem_num);
 	}
 
 	@Override
 	public void readNotifyLog(long not_num) {
-		// TODO Auto-generated method stub
-		
+		notifyMapper.readNotifyLog(not_num);
 	}
 	
 	//알림 메시지 생성
@@ -55,4 +58,5 @@ public class NotifyServiceImpl implements NotifyService {
 
         return template;
     }
+
 }

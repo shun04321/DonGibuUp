@@ -17,6 +17,9 @@ public interface NotifyMapper {
 	public void insertNotifyLog(NotifyVO notifyVO);
 	//알림 목록(안 읽은 것, 최근 2주)
 	public List<NotifyVO> selectNotListByMemNum(long mem_num);
+	//안 읽은 알림 유무 검색
+	@Select("SELECT COUNT(*) FROM notify_log WHERE not_read_datetime IS NULL AND mem_num=#{mem_num}")
+	public int countUnreadNot(long mem_num);
 	//알림 확인
 	@Update("UPDATE notify_log SET not_read_datetime = SYSDATE WHERE not_num=#{not_num}")
 	public void readNotifyLog(long not_num);

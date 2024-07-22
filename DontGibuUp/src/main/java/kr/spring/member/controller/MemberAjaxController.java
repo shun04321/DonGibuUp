@@ -1,6 +1,7 @@
 package kr.spring.member.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,9 @@ public class MemberAjaxController {
 	
 	@Autowired
 	private PointService pointService;
+	
+	@Autowired
+	private NotifyService notifyService;
 
 	/*===============================
 	   		이메일 중복 체크
@@ -75,6 +81,27 @@ public class MemberAjaxController {
 			}
 		}
 		log.debug("<<닉네임 중복체크>> : " + mapAjax.toString());
+		return mapAjax;
+	}
+	/*===================================
+	 * 			회원 알림 불러오기
+	 *==================================*/
+	@ResponseBody
+	@GetMapping("/member/getNotification")
+	public Map<String, Object> getNotification(HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		}  else {
+			List<NotifyVO> list = notifyService.selectNotListByMemNum(user.getMem_num());
+			log.debug("<<회원 알림>> : " + list);
+			mapAjax.put("list", list);
+		}
+
 		return mapAjax;
 	}
 
