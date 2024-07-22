@@ -251,85 +251,93 @@ public class ChallengeController {
 	//챌린지 참가 목록
 	@GetMapping("/challenge/join/list")
 	public String list(@RequestParam(value = "status", defaultValue = "pre") String status,
-			@RequestParam(value = "month", required = false) String month, Model model,
-			HttpSession session,@RequestParam(defaultValue="1") int pageNum) {
-		MemberVO member = (MemberVO) session.getAttribute("user");
-		Map<String, Object> map = new HashMap<>();
-		map.put("mem_num", member.getMem_num());
-		map.put("status", status);        
+	                   @RequestParam(value = "month", required = false) String month, Model model,
+	                   HttpSession session, @RequestParam(defaultValue="1") int pageNum) {
+	    MemberVO member = (MemberVO) session.getAttribute("user");
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("mem_num", member.getMem_num());
+	    map.put("status", status);
 
-		//현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
-		LocalDate currentMonth = month != null ? LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")) : LocalDate.now().withDayOfMonth(1);
-		String currentMonthString = currentMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+	    // 현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
+	    LocalDate currentMonth = month != null ? LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")) : LocalDate.now().withDayOfMonth(1);
+	    String currentMonthString = currentMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
-		//페이징 정보
-		int count = challengeService.selectChallengeJoinListRowCount(map);
-		log.debug("count : "+count);
-		PagingUtil page = new PagingUtil(pageNum,count,3,10,"list","&status=on");
-		map.put("start", page.getStartRow());
-		map.put("end", page.getEndRow());
+	    // 페이징 정보
+	    int count = challengeService.selectChallengeJoinListRowCount(map);
+	    log.debug("count : " + count);
+	    PagingUtil page = new PagingUtil(pageNum, count, 3, 10, "list", "&status=on");
+	    map.put("start", page.getStartRow());
+	    map.put("end", page.getEndRow());
 
-		//이번 달의 챌린지만 필터링
-		List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map).stream()
-				.filter(challenge -> {
-					if (challenge.getChal_sdate() == null) {
-						return false;
-					}
-					return challenge.getChal_sdate().substring(0, 7).equals(currentMonthString);
-				})
-				.collect(Collectors.toList());
+	    // 이번 달의 챌린지만 필터링
+	    List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map).stream()
+	            .filter(challenge -> {
+	                if (challenge.getChal_sdate() == null) {
+	                    return false;
+	                }
+	                return challenge.getChal_sdate().substring(0, 7).equals(currentMonthString);
+	            })
+	            .collect(Collectors.toList());
 
-		//각 챌린지에 대한 달성률과 참여금 계산
-		List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
-			Map<String, Object> challengeData = new HashMap<>();
-			long chal_joi_num = challengeJoin.getChal_joi_num();
-			Map<String, Object> verifyMap = new HashMap<>();
-			verifyMap.put("chal_joi_num", chal_joi_num);
+	    // 각 챌린지에 대한 달성률과 참여금 계산
+	    List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
+	        Map<String, Object> challengeData = new HashMap<>();
+	        long chal_joi_num = challengeJoin.getChal_joi_num();
+	        Map<String, Object> verifyMap = new HashMap<>();
+	        verifyMap.put("chal_joi_num", chal_joi_num);
 
-			PagingUtil samePage = new PagingUtil(pageNum,count,3);
-			verifyMap.put("start", samePage.getStartRow());
-			verifyMap.put("end", samePage.getEndRow());
+	        PagingUtil samePage = new PagingUtil(pageNum, count, 3);
+	        verifyMap.put("start", samePage.getStartRow());
+	        verifyMap.put("end", samePage.getEndRow());
 
-			List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(verifyMap);
+	        List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(verifyMap);
 
-			//인증 성공 횟수
-			long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+	        // 인증 성공 횟수
+	        long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
 
-			//전체 주 수 계산
-			LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
-			LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
-			long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+	        // 전체 주 수 계산
+	        LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
+	        LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
+	        long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
 
-			//전체 인증 횟수
-			long totalCount = totalWeeks * challengeJoin.getChal_freq();
+	        // 전체 인증 횟수
+	        long totalCount = totalWeeks * challengeJoin.getChal_freq();
 
-			//달성률 계산
-			int achieveRate = totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
+	        // 달성률 계산
+	        int achieveRate = totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
 
-			//참여금 관련 계산
-			Long chal_fee = challengeJoin.getChal_fee();
-			int returnPoint = (int) (achieveRate / 100.0 * chal_fee);
-			int donaAmount = (int) (chal_fee - returnPoint);
+	        // 참여금 관련 계산
+	        Long chal_fee = challengeJoin.getChal_fee();
+	        int returnPoint = (int) (achieveRate / 100.0 * chal_fee);
+	        int donaAmount = (int) (chal_fee - returnPoint);
 
-			//숫자를 포맷팅
-			NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+	        // 숫자를 포맷팅
+	        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
 
-			//챌린지 데이터 추가
-			challengeData.put("challengeJoin", challengeJoin);
-			challengeData.put("achieveRate", achieveRate);
-			challengeData.put("returnPoint", numberFormat.format(returnPoint));
-			challengeData.put("donaAmount", numberFormat.format(donaAmount));
-			challengeData.put("formattedFee", numberFormat.format(chal_fee));
+	        // 후기 작성 여부 확인
+	        Map<String, Object> reviewCheckMap = new HashMap<>();
+	        reviewCheckMap.put("chal_num", challengeJoin.getChal_num());
+	        reviewCheckMap.put("mem_num", member.getMem_num());
+	        ChallengeReviewVO review = challengeService.selectChallengeReviewByMemberAndChallenge(reviewCheckMap);
+	        boolean hasReview = review != null;
 
-			return challengeData;
-		}).collect(Collectors.toList());
+	        // 챌린지 데이터 추가
+	        challengeData.put("challengeJoin", challengeJoin);
+	        challengeData.put("achieveRate", achieveRate);
+	        challengeData.put("returnPoint", numberFormat.format(returnPoint));
+	        challengeData.put("donaAmount", numberFormat.format(donaAmount));
+	        challengeData.put("formattedFee", numberFormat.format(chal_fee));
+	        challengeData.put("hasReview", hasReview);
 
-		model.addAttribute("challengesByMonth", Map.of(currentMonthString, challengeDataList));
-		model.addAttribute("status", status);
-		model.addAttribute("currentMonth", currentMonthString);
-		model.addAttribute("page", page.getPage());
+	        return challengeData;
+	    }).collect(Collectors.toList());
 
-		return "challengeJoinList";
+	    model.addAttribute("challengesByMonth", Map.of(currentMonthString, challengeDataList));
+	    model.addAttribute("status", status);
+	    model.addAttribute("currentMonth", currentMonthString);
+	    model.addAttribute("page", page.getPage());
+
+	    return "challengeJoinList";
 	}
 
 

@@ -38,6 +38,8 @@ public interface ChallengeService {
 	public void deleteChallengeJoinsByChallengeId(Long chal_num);
     //리더 여부 확인
 	public boolean isChallengeLeader(Long chal_num, Long mem_num);
+	//후기 작성 여부
+	public ChallengeReviewVO selectChallengeReviewByMemberAndChallenge(Map<String, Object> map);
 	
 	//챌린지 결제
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);

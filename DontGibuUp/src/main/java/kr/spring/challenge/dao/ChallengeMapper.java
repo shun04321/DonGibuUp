@@ -45,6 +45,9 @@ public interface ChallengeMapper {
     public void deleteChallengeJoin(Long chal_joi_num);
     //챌린지 ID로 챌린지 참가 데이터 삭제
     public void deleteChallengeJoinsByChallengeId(Long chal_num);
+    //후기 작성 여부
+    @Select("SELECT * FROM CHAL_REVIEW WHERE chal_num = #{chal_num} AND mem_num = #{mem_num}")
+    public ChallengeReviewVO selectChallengeReviewByMemberAndChallenge(Map<String, Object> map);
     
 	//챌린지 결제
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);

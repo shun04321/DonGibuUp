@@ -114,6 +114,12 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challenge != null && challenge.getMem_num() == mem_num;
     }
     
+    //후기 작성 여부
+    @Override
+    public ChallengeReviewVO selectChallengeReviewByMemberAndChallenge(Map<String, Object> map) {
+        return challengeMapper.selectChallengeReviewByMemberAndChallenge(map);
+    }
+    
     //챌린지 결제//
     @Override
     public void insertChallengePayment(ChallengePaymentVO chalPayVO) {
