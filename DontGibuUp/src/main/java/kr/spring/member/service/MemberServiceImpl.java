@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberVO;
-import kr.spring.point.dao.PointMapper;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.RCodeGenerator;
@@ -25,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	@Autowired
-	PointMapper pointMapper;
+	MemberService memberService;
 	@Autowired
 	PointService pointService;
 	@Autowired
@@ -57,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
 		point_signup.setMem_num(mem_num);
 		
 		//회원가입 포인트 로그 추가
-		pointMapper.insertPointLog(point_signup);
+		pointService.insertPointLog(point_signup);
 		
 		//추천인 이벤트 참여
 		if (memberVO.getRecommend_status() == 1) {
@@ -68,12 +67,12 @@ public class MemberServiceImpl implements MemberService {
 			PointVO point_revent2 = new PointVO(10, 3000, recipientMemNum);
 			
 			//포인트 로그 추가
-			pointMapper.insertPointLog(point_revent1);
-			pointMapper.insertPointLog(point_revent2);
+			pointService.insertPointLog(point_revent1);
+			pointService.insertPointLog(point_revent2);
 			
 			//member_detail 업데이트
-			memberMapper.updateMemPoint(point_revent1);
-			memberMapper.updateMemPoint(point_revent2);
+			memberService.updateMemPoint(point_revent1);
+			memberService.updateMemPoint(point_revent2);
 		}
 		
 	}
@@ -147,6 +146,13 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updateMember(memberVO);
 		memberMapper.updateMemberDetail(memberVO);
 	}
+	
+
+	@Override
+	public void updateMemPoint(PointVO pointVO) {
+		memberMapper.updateMemPoint(pointVO);
+	}
+
 
 	//비밀번호 수정
 	@Override
