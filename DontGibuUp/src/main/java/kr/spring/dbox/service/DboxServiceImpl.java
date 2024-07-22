@@ -52,8 +52,8 @@ public class DboxServiceImpl implements DboxService {
 	}
 	
 	@Override
-	public void insertDboxDonation(long dbox_num) {
-		dboxMapper.insertDboxDonation(dbox_num);
+	public void insertDboxDonation(DboxDonationVO dboxDonationVO) {
+		dboxMapper.insertDboxDonation(dboxDonationVO);
 	}
 
 	@Override

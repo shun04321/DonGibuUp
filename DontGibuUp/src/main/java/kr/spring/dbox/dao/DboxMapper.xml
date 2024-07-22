@@ -25,7 +25,7 @@
 			dbox_goal,
 			dbox_sdate,
 			dbox_edate)
-		VALUES (
+		VALUES(
 		 	dbox_seq.nextval,
 			#{mem_num},
 			#{dcate_num},
@@ -140,4 +140,28 @@
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
 	</select>
+	<!-- 기부박스 기부신청 등록 -->
+	<insert id="insertDboxDonation" parameterType="dboxDonationVO">
+		INSERT INTO dbox_donation(
+		 	dbox_do_num,
+		 	dbox_num,
+			mem_num,
+			dbox_do_price,
+			dbox_do_point,
+			dbox_imp_uid,
+			dbox_do_comment,
+			dbox_do_status,
+			dbox_do_annony)
+		VALUES(
+		 	dbox_donation_seq.nextval,
+		 	#{dbox_num},
+			#{mem_num},
+			#{dbox_do_price},
+			#{dbox_do_point},
+			#{dbox_imp_uid},
+			#{dbox_do_comment},
+			#{dbox_do_status},
+			#{dbox_do_annony})
+
+	</insert>
 </mapper>

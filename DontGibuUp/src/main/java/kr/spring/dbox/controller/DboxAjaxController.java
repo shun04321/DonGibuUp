@@ -1,10 +1,12 @@
 package kr.spring.dbox.controller;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -16,13 +18,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
 import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.dbox.service.DboxService;
+import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
@@ -90,4 +101,85 @@ public class DboxAjaxController {
 		log.debug("<<목록 - JSON : >> : " + mapJson);
 		return mapJson;
 	}
+	/*========================================
+	 * 	결제 
+	 *========================================*/
+	//IamportClient 초기화 하기
+	private IamportClient impClient; 
+
+	private String apiKey = "1768802126155655";
+	private String secretKey = "7lbuqivNTuXgdJ0ELcC9KH7mo8ruzxAQz6i7NEw72bobO7JIPfH8I07YSYcQUmPypmQg0S3H9XxqM9wQ";
+
+	@PostConstruct
+	public void initImp() {
+		this.impClient = new IamportClient(apiKey,secretKey);
+	}
+	//결제 검증
+	@PostMapping("/dbox/payment/{imp_uid}")
+	@ResponseBody	
+	public IamportResponse<Payment> validateIamportWrite(@PathVariable String imp_uid, HttpSession session, HttpServletRequest request)
+			throws IamportResponseException, IOException {
+
+		log.debug("<<결제 검증>> - imp_uid: " +imp_uid);
+//		log.debug("<<결제 검증>> - amount: " + amount);
+		IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
+		// 로그인 여부 확인하기
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		
+		// PG결제 금액 가져오기
+		long realPay = payment.getResponse().getAmount().longValue();
+		log.debug("<<결제 검증>> - amount: " + realPay);
+		
+//		if(payAmount != realPay || member==null) {
+//			CancelData cancelData = new CancelData(imp_uid, true);
+//			impClient.cancelPaymentByImpUid(cancelData);
+//		}
+		
+		log.debug("<<결제 검증>> - payment: " + payment);
+
+		return payment;
+	}
+	
+	
+	@PostMapping("/dbox/donation")
+	@ResponseBody
+	public Map<String, String> dboxDonation(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request){
+		log.debug("<<결제정보>> : " + data);
+		
+		long dbox_num=Long.parseLong((String) data.get("dbox_num"));
+		//long pay_price=(Long)data.get("pay_price");
+		long price=Long.parseLong((String) data.get("price"));
+		long point=Long.parseLong((String) data.get("point"));
+		String imp_uid=(String)data.get("dbox_imp_uid");
+		String comment=(String)data.get("comment");
+		int status=(Integer)data.get("pay_status");
+		int annony=(Integer)data.get("annony");
+		
+		Map<String, String> mapJson = new HashMap<String, String>();
+		
+		MemberVO member = (MemberVO)session.getAttribute("user");
+		if(member == null) {
+			mapJson.put("result", "logout");
+		}else {
+			DboxDonationVO dboxDonationVO = new DboxDonationVO();
+			dboxDonationVO.setDbox_num(dbox_num);
+			dboxDonationVO.setMem_num(member.getMem_num());
+			dboxDonationVO.setDbox_do_price(price);
+			dboxDonationVO.setDbox_do_point(point);
+			dboxDonationVO.setDbox_imp_uid(imp_uid);
+			dboxDonationVO.setDbox_do_comment(comment);
+			dboxDonationVO.setDbox_do_status(status);
+			dboxDonationVO.setDbox_do_annony(annony);
+			
+			try {
+				dboxService.insertDboxDonation(dboxDonationVO);
+				mapJson.put("result", "success");
+			}catch(Exception e) {
+				log.error("기부박스 결제 오류 발생",e);
+			}
+		}
+		
+		return mapJson;
+	}
+	
 }

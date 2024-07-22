@@ -638,7 +638,7 @@ CREATE TABLE DBOX_DONATION (
 	mem_num				number								NOT NULL,
 	dbox_do_price		number(15)							NOT NULL,
 	dbox_do_point		number(9)		DEFAULT 0			NOT NULL,
-	dbox_do_name		varchar2(45)						NULL,
+	dbox_imp_uid		varchar2(45)						NOT NULL,
 	dbox_do_comment		varchar2(300)	DEFAULT '기부합니다.'	NULL,
 	dbox_do_status		number(1)							NOT NULL,
 	dbox_do_annony		number(1)							NOT NULL,
@@ -655,7 +655,7 @@ COMMENT ON COLUMN DBOX_DONATION.dbox_do_price IS '직접 기부하는 기부금�
 
 COMMENT ON COLUMN DBOX_DONATION.dbox_do_point IS '사용된 포인트';
 
-COMMENT ON COLUMN DBOX_DONATION.dbox_do_name IS '기부자명 입력';
+COMMENT ON COLUMN DBOX_DONATION.dbox_imp_uid IS '포트원 결제id';
 
 COMMENT ON COLUMN DBOX_DONATION.dbox_do_comment IS '기부 시 남길 코멘트';
 

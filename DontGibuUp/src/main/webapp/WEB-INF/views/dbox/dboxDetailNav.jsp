@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/dbox/dbox.donation.js"></script>
+
 <div class="container">
 <div class="custom-block-body">
 	<!-- 제목 -->
@@ -29,26 +35,41 @@
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<form>
+				<form:form action="donation" id="dbox_donation" modelAttribute="dboxDonationVO">
+					<input type="hidden" name="dbox_num" id="dbox_num" value="${dbox.dbox_num}"/>
 					<div class="modal-header">
 						<h5 class="modal-title">기부하기</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 					</div>
 					<div class="modal-body">
 						<div class="mb-3">
-						  <label for="dbox_pay" class="form-label">기부금액 입력</label>
-						  <input type="text" class="form-control" id="dbox_do_price" placeholder="기부할 금액을 입력해주세요.">
+						  <label for="dbox_do_price" class="form-label">기부금액 입력</label>
+						  <input type="text" class="form-control caculate" id="dbox_do_price" placeholder="기부할 금액을 입력해주세요.">
 						</div>
 						<div class="mb-3">
-						  <label for="dbox_pay" class="form-label">포인트 입력</label>
-						  <input type="text" class="form-control" id="dbox_do_point" placeholder="사용할 포인트를 입력해주세요.">
+						  <label for="dbox_do_point" class="form-label">포인트 입력</label>
+						  <input type="text" class="form-control caculate" id="dbox_do_point" placeholder="사용할 포인트를 입력해주세요.">
+						</div>
+						<div class="text-end mb-3">
+							결제금액 : <strong id="pay_sum">0</strong>원 (기부금액 - 포인트)<br><br>
+							<span id="no" style="color:red;"></span><br>
+							<small>* 기부금은 기부금액에 기입하신 만큼 기부됩니다.</small><br>
+							<small>* 포인트만 기부를 희망하시는 경우 기부금액과 포인트를 같은 값으로 기입해주세요.</small>
+						</div>
+						<input type="hidden" id="pay_price" name="pay_price" value="">
+						
+						<div class="mb-3">
+						  <label for="dbox_do_comment" class="form-label">포인트 입력</label>
+						  <textarea class="form-control" id="dbox_do_comment" placeholder="남길 코멘트를 입력해주세요."></textarea>
+						</div>
+						<div class="text-end">
+							<input type="checkbox" class="form-check-input annony"> 익명으로 기부하기					
 						</div>
 					</div>
 					<div class="modal-footer text-center">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-						<button type="submit" class="btn btn-success">기부하기</button>
+						<button type="button" class="btn btn-success col-12" id="imp_donation">기부하기</button>			
 					</div>
-				</form>
+				</form:form>
 			</div>
 		</div>
 	</div>

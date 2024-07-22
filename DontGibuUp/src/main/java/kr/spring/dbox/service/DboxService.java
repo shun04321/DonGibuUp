@@ -20,7 +20,7 @@ public interface DboxService {
 	//Dbox 기부계획 선택
 	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num);
 	//Dbox_Donation
-	public void insertDboxDonation(long dbox_num);
+	public void insertDboxDonation(DboxDonationVO dboxDonationVO);
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
 	public Integer selectDboxDonationsCount(long dbox_num);
 	//Dbox_Result
