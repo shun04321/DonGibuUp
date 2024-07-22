@@ -44,7 +44,7 @@ table.striped-table th {
                         ${subscription.donationCategory.dcate_name} / ${subscription.donationCategory.dcate_charity}
                     </td>
                     <td><span class="sub-price">${subscription.sub_price}</span></td>
-                    <td>${subscription.sub_ndate}</td>
+                    <td>${subscription.sub_ndate} 일</td>
                     <td>
                         <c:if test="${subscription.sub_status==0}">
                             진행중

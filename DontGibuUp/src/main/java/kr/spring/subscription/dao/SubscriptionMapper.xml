@@ -48,7 +48,7 @@
 	          FROM (SELECT
 	                  *
 	                FROM subscription 				<!-- 알리아스 -->
-	                )a) WHERE mem_num=#{mem_num}
+	                )a) WHERE mem_num=#{mem_num} ORDER BY sub_num DESC
 	</select>       
  </mapper>
 
