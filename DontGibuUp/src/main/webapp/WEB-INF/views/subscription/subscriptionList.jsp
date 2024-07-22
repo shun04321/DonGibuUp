@@ -84,7 +84,7 @@ hr {
     });
 </script>
 <div class="page-main">
-	<h2>나의 정기기부 목록</h2>
+	<h3>나의 정기기부 목록</h3>
 	<c:if test="${count == 0}">
 		<div class="result-display">표시할 정기기부 현황이 없습니다.</div>
 	</c:if>
@@ -109,14 +109,14 @@ hr {
 						</a>
 					</dd>
 				</dl>
-				<div class="cont-item">
+				<div class="cont-item">					
 					<dl class="info-item">
-						<dt>결제일</dt>
-						<dd>${subscription.sub_ndate}</dd>
+						<dt>기부금액</dt>
+						<dd>${subscription.sub_price}원</dd>
 					</dl>
 					<dl class="info-item">
-						<dt>결제금액</dt>
-						<dd>${subscription.sub_price}원</dd>
+						<dt>결제일</dt>
+						<dd> ${subscription.sub_ndate}일</dd>
 					</dl>
 					<dl class="info-item">
 						<dt>결제방법</dt>
