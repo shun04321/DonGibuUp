@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.vo.PointVO;
 
 @Mapper
@@ -85,5 +86,17 @@ public interface MemberMapper {
 	@Delete("DELETE FROM member_detail WHERE mem_num=#{mem_num}")
 	public void deleteMemberDetail(long mem_num);
 	
-	
+	/*---------------------------------------
+				알림
+	---------------------------------------*/
+	//알림 log 찍기
+	public void insertNotifyLog(NotifyVO notifyVO);
+	//알림 목록(안 읽은 것, 최근 2주)
+	public List<NotifyVO> selectNotListByMemNum(long mem_num);
+	//알림 확인
+	@Update("UPDATE notify_log SET not_read_datetime = SYSDATE WHERE not_num=#{not_num}")
+	public void readNotifyLog(long not_num);
+	//알림 템플릿 가져오기
+	@Select("SELECT notify_template FROM db_otify_template WHERE notify_type=#{notify_type}")
+	public String selectNotifyTemplate(int notify_type);
 }
