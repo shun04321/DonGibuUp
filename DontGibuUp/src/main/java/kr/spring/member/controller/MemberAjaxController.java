@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,6 +87,25 @@ public class MemberAjaxController {
 	/*===================================
 	 * 				회원 알림
 	 *==================================*/
+	//안읽은 알림 개수
+	@ResponseBody
+	@GetMapping("/member/getUnreadCount")
+	public Map<String, Object> getUnreadCount(HttpSession session, Model model) {
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+		
+		if (user == null) {
+			mapAjax.put("result", "logout");
+		} else {
+			int unreadCount = notifyService.countUnreadNot(user.getMem_num());
+			mapAjax.put("unreadCount", unreadCount);
+			mapAjax.put("result", "success");	
+		}
+		
+		return mapAjax;
+	}
+	
+	
 	//알림 목록
 	@ResponseBody
 	@GetMapping("/member/getNotification")

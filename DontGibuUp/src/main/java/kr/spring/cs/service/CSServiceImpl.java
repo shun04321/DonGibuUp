@@ -120,9 +120,21 @@ public class CSServiceImpl implements CSService {
 		return csMapper.selectReport(report_num);
 	}
 
+	//관리자 신고 답변
 	@Override
 	public void replyReport(ReportVO reportVO) {
 		csMapper.replyReport(reportVO);
+		
+		NotifyVO notifyVO = new NotifyVO();
+		notifyVO.setMem_num(reportVO.getMem_num());
+		notifyVO.setNotify_type(21);
+		notifyVO.setNot_url("/member/myPage/report/detail?report_num=" + reportVO.getReport_num());
+		
+		Map<String, String> dynamicValues = new HashMap<String, String>();
+		//value로 전달하는 값은 String이어야 함. String이 아닐 시에는 형변환하고 넣을 것
+		dynamicValues.put("reportNum", String.valueOf(reportVO.getReport_num()));
+		
+		notifyService.insertNotifyLog(notifyVO, dynamicValues);
 	}
 
 	@Override

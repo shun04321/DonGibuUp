@@ -1,4 +1,26 @@
 $(function() {
+	$.ajax({
+		url: '/member/getUnreadCount',
+		type: 'get',
+		dataType: 'json',
+		success: function(param) {
+					if (param.result == 'logout') {
+					} else if (param.result == 'success') {
+						if (param.unreadCount > 0) {
+							$('.notification-badge').show();
+						} else {							
+							$('.notification-badge').hide();
+						}
+					} else {
+						alert('알림 불러오기 오류 발생');
+					}
+		},
+		error: function() {
+			alert('네트워크 오류 발생');
+		}
+	});
+	
+	
 	let hideTimeout;
 	let notificationsLoaded = false;
 
