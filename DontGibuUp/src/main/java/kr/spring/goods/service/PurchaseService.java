@@ -10,4 +10,8 @@ public interface PurchaseService {
 
     void processRefund(RefundVO refundVO);
     List<PurchaseVO> getPurchaseListByMember(long memNum);
+    
+    
+    void updateRefundStatus(String impUid, int status);
+    
 }

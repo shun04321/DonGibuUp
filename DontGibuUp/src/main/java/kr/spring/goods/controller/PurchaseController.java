@@ -144,10 +144,18 @@ public class PurchaseController {
 
         return mapJson;
     }
+
+
     /*===================================
      * 환불 처리
      *==================================*/
  // 기존 메서드 생략
+
+    @PostMapping("/refundPage")
+    public String refundPage(@RequestParam("imp_uid") String impUid, Model model) {
+        model.addAttribute("imp_uid", impUid);
+        return "goods/refund";
+    }
 
     @PostMapping("/refund")
     @ResponseBody
@@ -176,6 +184,9 @@ public class PurchaseController {
                     IamportResponse<Payment> cancelResponse = impClient.cancelPaymentByImpUid(cancelData);
 
                     if (cancelResponse.getResponse() != null) {
+                        // 환불 성공 시, 데이터베이스에서 해당 항목 업데이트
+                        purchaseService.updateRefundStatus(impUid, 2); // 2: 환불 완료 상태
+
                         mapJson.put("result", "success");
                         mapJson.put("message", "환불이 성공적으로 처리되었습니다.");
                         log.debug("환불 성공: " + cancelResponse.getResponse().getImpUid());

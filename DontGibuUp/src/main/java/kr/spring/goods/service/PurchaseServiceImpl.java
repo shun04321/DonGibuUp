@@ -26,4 +26,9 @@ public class PurchaseServiceImpl implements PurchaseService {
     public List<PurchaseVO> getPurchaseListByMember(long memNum) {
         return purchaseMapper.getPurchaseListByMember(memNum);
     }
+    @Override
+    public void updateRefundStatus(String impUid, int status) {
+        purchaseMapper.updateRefundStatus(impUid, status);
+    }
+    
 }

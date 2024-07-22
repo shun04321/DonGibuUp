@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", function() {
     // 페이지 로드 시 필요한 초기 작업들
-    let pageContextPath = "${pageContext.request.contextPath}";
+    let pageContextPath = contextPath;
 });
 
 function requestRefund(impUid, reason) {
-    let pageContextPath = "${pageContext.request.contextPath}";
+    let pageContextPath = contextPath;
 
     $.ajax({
         url: pageContextPath + '/goods/refund',
