@@ -247,7 +247,6 @@ public class ChallengeController {
 		return "common/resultAlert";
 	}
 
-
 	//챌린지 참가 목록
 	@GetMapping("/challenge/join/list")
 	public String list(@RequestParam(value = "status", defaultValue = "pre") String status,

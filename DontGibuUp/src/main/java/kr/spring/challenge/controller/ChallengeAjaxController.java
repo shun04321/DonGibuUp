@@ -2,6 +2,7 @@ package kr.spring.challenge.controller;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -60,51 +61,80 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/addlist")
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
-			@RequestParam(defaultValue="1") int rowCount,@RequestParam(defaultValue="0") int order,
-			String chal_type,@RequestParam(defaultValue="") String freqOrder,
-			@RequestParam(defaultValue="") String keyword,String chal_sdate,String chal_edate){
-		log.debug("chal_type : "+chal_type);
-		Map<String,Object> map = new HashMap<>();
-		//map에 검색할 자기계발 카테고리 넣기
-		List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
-		map.put("categories", categories);
+	                                  @RequestParam(defaultValue="1") int rowCount,
+	                                  @RequestParam(defaultValue="0") int order,
+	                                  String chal_type,
+	                                  @RequestParam(defaultValue="") String freqOrder,
+	                                  @RequestParam(defaultValue="") String keyword,
+	                                  String chal_sdate,
+	                                  String chal_edate,
+	                                  HttpSession session) {
+	    log.debug("chal_type : " + chal_type);
+	    Map<String,Object> map = new HashMap<>();
+	    //map에 검색할 자기계발 카테고리 넣기
+	    List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
+	    map.put("categories", categories);
 
-		map.put("chal_type", chal_type);
-		map.put("freqOrder", freqOrder);
-		map.put("keyword", keyword);
-		map.put("order", order);
-		map.put("chal_sdate", chal_sdate);
-		map.put("chal_edate", chal_edate);
+	    map.put("chal_type", chal_type);
+	    map.put("freqOrder", freqOrder);
+	    map.put("keyword", keyword);
+	    map.put("order", order);
+	    map.put("chal_sdate", chal_sdate);
+	    map.put("chal_edate", chal_edate);
 
-		//총 챌린지 개수
-		int count = challengeService.selectRowCount(map);
+	    //총 챌린지 개수
+	    int count = challengeService.selectRowCount(map);
 
-		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
-		map.put("start", page.getStartRow());
-		map.put("end", page.getEndRow());
+	    //페이지 처리
+	    PagingUtil page = new PagingUtil(pageNum, count, rowCount);
+	    map.put("start", page.getStartRow());
+	    map.put("end", page.getEndRow());
 
-		log.debug("keyword : "+keyword);
-		log.debug("order : "+order);
-		log.debug("start : "+page.getStartRow());
-		log.debug("end : "+page.getEndRow());
+	    log.debug("keyword : " + keyword);
+	    log.debug("order : " + order);
+	    log.debug("start : " + page.getStartRow());
+	    log.debug("end : " + page.getEndRow());
 
-		List<ChallengeVO> list = null;
-		if(count > 0) {
-			list = challengeService.selectList(map);			
-		}else {
-			list = Collections.emptyList();
-		}
+	    List<ChallengeVO> list = null;
+	    if (count > 0) {
+	        list = challengeService.selectList(map);
+	    } else {
+	        list = Collections.emptyList();
+	    }
 
-		Map<String,Object> mapJson = new HashMap<>();
+	    MemberVO member = (MemberVO) session.getAttribute("user");
+	    Map<String, Object> mapJson = new HashMap<>();
 
-		mapJson.put("freqOrder", freqOrder);
-		mapJson.put("keyword", keyword);
-		mapJson.put("order", order);
-		mapJson.put("count", count);
-		mapJson.put("list", list);
+	    mapJson.put("freqOrder", freqOrder);
+	    mapJson.put("keyword", keyword);
+	    mapJson.put("order", order);
+	    mapJson.put("count", count);
+	    mapJson.put("list", list);
 
-		return mapJson;
+	    // 각 챌린지에 대해 추가 정보를 조회하여 mapJson에 추가
+	    List<Map<String, Object>> challengeDetailsList = new ArrayList<>();
+	    for (ChallengeVO challenge : list) {
+	        Map<String, Object> challengeDetails = new HashMap<>();
+	        challengeDetails.put("challenge", challenge);
+
+	        boolean isJoined = false;
+	        if (member != null) {
+	            Map<String, Object> joinMap = new HashMap<>();
+	            joinMap.put("chal_num", challenge.getChal_num());
+	            joinMap.put("mem_num", member.getMem_num());
+	            List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(joinMap);
+	            isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == challenge.getChal_num());
+	        }
+	        challengeDetails.put("isJoined", isJoined);
+
+	        int currentParticipants = challengeService.countCurrentParticipants(challenge.getChal_num());
+	        challengeDetails.put("currentParticipants", currentParticipants);
+
+	        challengeDetailsList.add(challengeDetails);
+	    }
+	    mapJson.put("challengeDetailsList", challengeDetailsList);
+
+	    return mapJson;
 	}
 
 	/*==========================
