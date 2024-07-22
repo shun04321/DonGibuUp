@@ -154,7 +154,7 @@ public class SubscriptionController {
 		        model.addAttribute("accessTitle", "결제 결과");
 		        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
 		        model.addAttribute("accessBtn", "홈으로 이동");
-		        model.addAttribute("accessUrl", "/main/main");
+		        model.addAttribute("accessUrl", "/subscription/subscriptionList");
 		    } else {
 		        model.addAttribute("accessTitle", "결제 실패");
 		        model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
@@ -197,8 +197,8 @@ public class SubscriptionController {
 	        response.put("status", "success");
 	        response.put("accessTitle", "결제 결과");
 	        response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
-	        response.put("accessBtn", "홈으로 이동");
-	        response.put("accessUrl", "/main/main"); 
+	        response.put("accessBtn", "정기기부 현황");
+	        response.put("accessUrl", "subscriptionList"); 
 	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
 	    } else {
 	        response.put("status", "fail");
@@ -217,8 +217,8 @@ public class SubscriptionController {
         // Model attributes 설정
 		model.addAttribute("accessTitle", "결제 결과");
         model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-        model.addAttribute("accessBtn", "홈으로 이동");
-        model.addAttribute("accessUrl", "/main/main");
+        model.addAttribute("accessBtn", "정기기부 목록");
+        model.addAttribute("accessUrl", "subscriptionList");
 
         // JSP 파일명 반환
         return "paymentResultView"; // 상대경로로 지정
@@ -406,9 +406,7 @@ public class SubscriptionController {
 	    	
 	    	return mapJson;
 	    }
-
-
-
+	    
 }
 
 	    

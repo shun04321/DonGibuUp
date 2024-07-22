@@ -4,85 +4,8 @@
 <!-- 게시판 목록 시작 -->
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<style>
-/* item_subscribe를 테두리가 있는 박스로 만듭니다. */
-.item_subscribe {
-	text-align: center; /* 텍스트 가운데 정렬 */
-	width: 600px;
-	border: 1px solid #ccc;
-	border-radius: 10px; /* 둥근 테두리 */
-	padding: 10px;
-	margin: 10px 0;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	background-color: #f9f9f9; /* 배경 색상 추가 */
-}
-.item_subscribe img {
-	width: 30px; /* 아이콘 크기 조정 */
-	height: 30px;
-}
-.cont-item {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-}
-.info-item {
-	display: flex;
-	justify-content: space-between;
-	padding-top: 5px;
-	margin-top: 5px;
-}
-.info-item dt, .info-item dd {
-	margin: 0;
-}
-.info-item dt {
-	flex: 1;
-	text-align: left;
-	padding-left: 50px;
-}
-.info-item dd {
-	flex: 1;
-	text-align: right;
-	padding-right: 50px;
-}
-.header-item {
-	margin-top:5px;
-	padding-bottom:10px;
-	display: flex;
-	width: 100%;
-	justify-content: space-between;
-	align-items: center;
-	border-bottom: 1px solid #ccc;
-}
-.header-item dt {
-	padding-left: 50px;
-	display: flex;
-	align-items: center;
-}
-.header-item dt img {
-	margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
-}
-.header-item dd {
-	margin-left: auto;
-	padding-right: 50px;
-}
-hr {
-
-}
-</style>
-<script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function() {
-        // 모든 sub_price 요소를 가져옵니다.
-        document.querySelectorAll('.sub-price').forEach(function(element) {
-            var price = parseInt(element.innerText, 10);
-            if (!isNaN(price)) {
-                // 가격을 천 단위로 구분하여 포맷합니다.
-                element.innerText = price.toLocaleString() + '원';
-            }
-        });
-    });
-</script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/subscriptionList.css" type="text/css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/subscriptionList.js"></script>
 <div class="page-main">
 	<h3>나의 정기기부 목록</h3>
 	<c:if test="${count == 0}">
