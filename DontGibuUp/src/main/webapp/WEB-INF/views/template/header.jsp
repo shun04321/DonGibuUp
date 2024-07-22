@@ -59,8 +59,8 @@
                         </li>
                         
                         <c:if test="${!empty user}">
-	                    <li class="social-icon-item nav-item dropdown nanum">
-	                        <a href="#알림" class="social-icon-link bi-bell-fill" id="notify_icon" data-memnum="${user.mem_num}">
+	                    <li class="social-icon-item nav-item dropdown nanum" id="notify_icon" data-memnum="${user.mem_num}">
+	                        <a href="#알림" class="social-icon-link bi-bell-fill">
 							    <c:if test="${!empty unreadCount}"><span class="notification-badge"></span></c:if>
 							</a>
 	                        <ul id="notify_icon_list" class="custom-dropdown-menu dropdown-menu dropdown-menu-light px-2" aria-labelledby="navbarLightDropdownMenuLink">
