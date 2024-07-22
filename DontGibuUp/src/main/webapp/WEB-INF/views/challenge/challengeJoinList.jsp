@@ -4,7 +4,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	let contextPath = "${pageContext.request.contextPath}";
-	let status = "${status}";
+	let status = "${status}"; 
 </script>
 <div id="challengeContainer">
 	<div class="month-section">
