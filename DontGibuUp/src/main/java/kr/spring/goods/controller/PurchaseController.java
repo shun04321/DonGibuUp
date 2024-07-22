@@ -57,7 +57,17 @@ public class PurchaseController {
     public String getPurchasePage() {
         return "goods/purchase";
     }
+    
+    @GetMapping("/goodsList")
+    public String goodsList() {
+        return "goods/goodsList";
+    }
 
+    @GetMapping("/home")
+    public String home() {
+        return "main/main";
+    }
+    
     @PostMapping("/paymentVerify/{imp_uid}")
     @ResponseBody
     public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid, HttpSession session) throws IamportResponseException, IOException {

@@ -2,6 +2,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <h2>구매내역</h2>
+     <div>
+<div>
+    <input type="button" value="상품 목록" onclick="location.href='${pageContext.request.contextPath}/goods/list'">
+    <input type="button" value="홈" onclick="location.href='${pageContext.request.contextPath}/main/main'">
+</div>
+</div>
 <c:if test="${not empty purchaseList}">
     <table border="1">
         <thead>
