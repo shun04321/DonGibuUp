@@ -46,7 +46,9 @@
 							test="${inquiry.inquiry_category == 4}">
                기타
                </c:if></td>
-					<td class="clickable" onclick="location.href='inquiry/reply?inquiry_num=${inquiry.inquiry_num}'">${inquiry.inquiry_title}</td>
+					<td class="clickable" onclick="location.href='inquiry/reply?inquiry_num=${inquiry.inquiry_num}'">
+					${inquiry.inquiry_title} <c:if test="${!empty inquiry.inquiry_filename}"><img src="${pageContext.request.contextPath}/images/attach-file.png" width="15px"></c:if>
+					</td>
 					<td>${inquiry.mem_nick}(${inquiry.mem_email})</td>					
 					<td>${inquiry.inquiry_date}</td>
 					<td>

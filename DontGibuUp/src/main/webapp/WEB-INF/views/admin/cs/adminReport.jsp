@@ -41,7 +41,9 @@
 					<c:if test="${report.report_type == 4}">음란물/부적절한 콘텐츠</c:if>
 					<c:if test="${report.report_type == 5}">챌린지 인증</c:if>
                		</td>
-					<td class="report-content"><a href="report/reply?report_num=${report.report_num}">${report.report_content}</a></td>
+					<td><a href="report/reply?report_num=${report.report_num}">
+					<span class="report-content">${report.report_content}</span> <c:if test="${!empty report.report_filename}"><img src="${pageContext.request.contextPath}/images/attach-file.png" width="15px"></c:if>
+					</a></td>
 					<td>${report.report_date}</td>					
 					<td>
 					<c:if test="${report.report_status == 0}">처리중</c:if>
