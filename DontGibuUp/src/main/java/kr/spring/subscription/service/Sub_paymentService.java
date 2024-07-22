@@ -13,7 +13,7 @@ public interface Sub_paymentService {
 	//예약된 결제 상태 변경
 	//sub_pay_num 생성
 	public long getSub_payment_num();
-	public Sub_paymentVO getSub_paymentByDate();
+	public Sub_paymentVO getSub_paymentByDate(long mem_num);
 	public List<Sub_paymentVO> getSub_payment();
 	public List<Sub_paymentVO> getSub_paymentByMem_num(long mem_num);
 }

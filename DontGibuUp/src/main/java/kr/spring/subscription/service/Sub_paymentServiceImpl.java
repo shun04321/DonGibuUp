@@ -26,8 +26,8 @@ public class Sub_paymentServiceImpl implements Sub_paymentService{
 	}
 
 	@Override
-	public Sub_paymentVO getSub_paymentByDate() {
-		return Sub_paymentMapper.getSub_paymentByDate();
+	public Sub_paymentVO getSub_paymentByDate(long mem_num) {
+		return Sub_paymentMapper.getSub_paymentByDate(mem_num);
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public interface Sub_paymentMapper {
 	@Select("SELECT sub_payment_seq.nextval FROM dual")
 	public long getSub_payment_num();
 	//결제 예약 내역 저장
-	@Insert("INSERT INTO sub_payment(sub_pay_num,mem_num,sub_num,sub_price,sub_pay_date) VALUES(#{sub_pay_num},#{mem_num},#{sub_num},#{sub_price},#{sub_pay_date})")
+	@Insert("INSERT INTO sub_payment(sub_pay_num,mem_num,sub_num,sub_price) VALUES(#{sub_pay_num},#{mem_num},#{sub_num},#{sub_price})")
 	public void insertSub_payment(Sub_paymentVO subpaymentVO);
 	//예약된 결제 상태 변경
 	//가장 최근 결제 정보 가져오기

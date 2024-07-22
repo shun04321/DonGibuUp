@@ -276,7 +276,6 @@ public class SubscriptionController {
 			sub_paymentVO.setMem_num(subscriptionVO.getMem_num());
 			sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
 			sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
-			sub_paymentVO.setSub_pay_date("2024-07-18");
 	        
 	        Map<String, Object> map = new HashMap<>();
 	        map.put("customer_uid", payuid);
@@ -367,7 +366,7 @@ public class SubscriptionController {
 	    public String subscriptionDetail(long sub_num, Model model) throws ParseException {
 	        SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
 	        DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
-	        Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate();
+	        Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
 	        
 	        // 날짜 문자열을 Date 객체로 변환
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -382,6 +381,26 @@ public class SubscriptionController {
 	        model.addAttribute("subpayment", subpayment);
 
 	        return "subscriptionDetail";
+	    }
+	    
+	    @PostMapping("/subscription/updateSub_status")
+	    @ResponseBody
+	    public Map<String,String> updateSub_status(long sub_num,HttpSession session){
+	    	Map<String, String> mapJson = new HashMap<String,String>();
+	    	MemberVO user = (MemberVO)session.getAttribute("user");
+	    	if(user == null) {
+	    		mapJson.put("result", "logout");
+	    	}
+	    	
+	    	SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+	    	if(subscriptionVO.getSub_status()==0) {
+	    		subscriptionService.updateSub_status(sub_num);
+	    		mapJson.put("result", "success");
+	    	}else {
+	    		mapJson.put("result", "fail");
+	    	}
+	    	
+	    	return mapJson;
 	    }
 
 
