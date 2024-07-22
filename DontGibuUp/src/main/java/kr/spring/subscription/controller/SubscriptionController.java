@@ -367,13 +367,17 @@ public class SubscriptionController {
 	        SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
 	        DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
 	        Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
-	        
+	        String cancelDate = "";
 	        // 날짜 문자열을 Date 객체로 변환
 	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	        String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
 	        String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
+	        if(subscription.getCancel_date()!=null) {
+	        	cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
+	        }
 
 	        // 모델에 날짜 문자열 추가
+	        model.addAttribute("cancel_date",cancelDate);
 	        model.addAttribute("reg_date", regDate);
 	        model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식
 	        model.addAttribute("category", category);

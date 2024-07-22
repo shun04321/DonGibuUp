@@ -26,6 +26,7 @@ public class SubscriptionVO {
 	private String easypay_method;
 	private String card_nickname;
 	private String reg_date;
+	private String cancel_date;
 	
 	private DonationCategoryVO donationCategory;
 

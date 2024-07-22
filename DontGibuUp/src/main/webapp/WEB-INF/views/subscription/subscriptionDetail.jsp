@@ -22,34 +22,33 @@
 
 .cont-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* 세로로 정렬 */
     width: 100%;
+    text-align: left; /* 왼쪽 정렬 */
 }
 
 .info-item {
     display: flex;
-    justify-content: space-between;
-    padding-top: 5px;
     margin-top: 5px;
-    white-space: nowrap; /* 줄바꿈 방지 */
+    white-space: normal; /* 줄바꿈 허용 */
 }
 
 .info-item dt, .info-item dd {
     margin: 0;
-    white-space: nowrap; /* 줄바꿈 방지 */
+    text-align: left; /* 왼쪽 정렬 */
 }
+
 
 .info-item dt {
     flex: 1;
     text-align: left;
-    padding-left: 20px; /* 간격 조절 */
     font-size: 14px;
     padding-top: 30px;
 }
 
 .info-item dd {
     flex: 1;
-    text-align: right;
+    text-align: left;
     padding-right: 20px; /* 간격 조절 */
     font-size: 14px;
     padding-top: 30px;
@@ -98,33 +97,54 @@
     text-decoration: underline; /* 밑줄 추가 */
     color: #ff6600; /* 강조 색상 (원하는 색상으로 조절) */
 }
+
+.small{
+	font-size: 10px;
+	text-decoration: underline; /* 밑줄 추가 */
+    color: #ff6600; /* 강조 색상 (원하는 색상으로 조절) */
+}
 </style>
 
 <div class="item_subscribe">
     <dl class="header-item">
         <dt>
- 				<img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}" alt="기부처 아이콘">
-                ${category.dcate_name} / ${category.dcate_charity}에 <span class="focus">정기 기부중</Span> 입니다.
+            <img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}" alt="기부처 아이콘">
+            ${category.dcate_name} / ${category.dcate_charity} &nbsp;
+            <c:if test="${subscription.sub_status == 0}">
+                에<span class="focus">정기 기부중</span> 입니다.
+            </c:if>
 
         </dt>
         <dd>
-                <c:if test="${subscription.sub_status == 0}">
-                    상태 : 기부 진행중 >
-                </c:if>
-                <c:if test="${subscription.sub_status == 1}">
-                    상태 : 기부 중단 >
-                </c:if>
+            <c:if test="${subscription.sub_status == 0}">
+                상태 : 기부 진행중 >
+            </c:if>
+             <c:if test="${subscription.sub_status == 1}">
+                <span class="small"> 해지됨 (${cancel_date})</span>
+            </c:if>
         </dd>
     </dl>
     <div class="cont-item">
         <dl class="info-item">
             <dt>
-                시작일 <span class="reg_date">${reg_date}</span><br>
-                기간 <span class="reg_date">${reg_date}</span> ~ <span class="next-pay-date"></span>
+                시작일 <span class="reg_date">${reg_date}</span>
+                <br><br>
+                기간 <span class="reg_date">${reg_date}</span> ~ 
+                <c:if test="${subscription.sub_status == 0}">
+                    <span class="next-pay-date"></span>
+                </c:if>
+                <c:if test="${subscription.sub_status == 1}">
+                    ${cancel_date}
+                </c:if>
             </dt>
             <dd>
-                이번 결제 ${subscription.sub_price}원 (결제일 ${sub_paydate})<br>
-                다음 결제 ${subscription.sub_price}원 (결제일 <span class="next-pay-date"></span>)
+               	 이번 결제&nbsp;&nbsp;<fmt:formatNumber value="${subscription.sub_price}" type="number"/>원<br><br>
+                <c:if test="${subscription.sub_status == 0}">
+                 다음 결제&nbsp;&nbsp;<fmt:formatNumber value="${subscription.sub_price}" type="number"/>원 (결제일 <span class="next-pay-date"></span>)
+                </c:if>
+                <c:if test="${subscription.sub_status == 1}">
+                    다음 결제 --
+                </c:if>
             </dd>
         </dl>
     </div>
@@ -156,7 +176,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     let subPayDate = "${sub_paydate}".trim();
-
+    let cancelDate = "${cancel_date}".trim();
+    
     if (/^\d{4}-\d{2}-\d{2}$/.test(subPayDate)) {
         let nextPayDate = addMonthToDateString(subPayDate);
         document.querySelectorAll('.next-pay-date').forEach(function(element) {
