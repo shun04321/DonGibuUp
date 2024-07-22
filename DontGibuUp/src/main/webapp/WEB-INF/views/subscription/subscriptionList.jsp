@@ -7,7 +7,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/subscriptionList.css" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/subscriptionList.js"></script>
 <div class="page-main">
-	<h3>나의 정기기부 목록</h3>
+	<div style="nowrap:nowrap;">
+		<a href="#"><span>정기기부</span></a> <span>|</span> <a href="#"><span>결제정보</span></a>
+	</div>
 	<c:if test="${count == 0}">
 		<div class="result-display">표시할 정기기부 현황이 없습니다.</div>
 	</c:if>
