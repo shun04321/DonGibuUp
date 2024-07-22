@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.vo.PointVO;
 
 public interface MemberService {
 	//회원가입
@@ -41,6 +42,9 @@ public interface MemberService {
 	
 	//임시 비밀번호 설정
 	public String SetTempPassword(MemberVO memberVO);
+	
+	//회원 포인트 업데이트
+	public void updateMemPoint(PointVO pointVO);
 	
 	//관리자
 	//회원 리스트 선택
