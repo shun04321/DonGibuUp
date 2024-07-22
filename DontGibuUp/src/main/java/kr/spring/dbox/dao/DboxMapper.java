@@ -34,14 +34,17 @@ public interface DboxMapper {
 	public Integer selectListCount(Map<String, Object> map);
 	
 	//Dbox 선택
-	@Select("SELECT * FROM dbox WHERE dbox_num=#{dbox_num}")
+	@Select("SELECT * FROM dbox JOIN dona_category USING(dcate_num) WHERE dbox_num=#{dbox_num}")
 	public DboxVO selectDbox(long dbox_num);
 	//Dbox 기부계획 선택
 	@Select("SELECT * FROM dbox_budget WHERE dbox_num=#{dbox_num}")
 	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num);
 	//Dbox_Donation
+	public void insertDboxDonation(long dbox_num);
 	@Select("SELECT * FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
+	@Select("SELECT COUNT(*) FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
+	public Integer selectDboxDonationsCount(long dbox_num);
 	//Dbox_Result
 	@Select("SELECT * FROM dbox_result WHERE dbox_num=#{dbox_num}")
 	public DboxResultVO selectDboxResult(long dbox_num);

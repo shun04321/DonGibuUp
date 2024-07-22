@@ -79,7 +79,15 @@ public class DboxController {
     public String detailDonators(@PathVariable long dboxNum,Model model) {
     	log.debug("<<상세 페이지 접속(donators)>> : " + dboxNum);
     	
+    	//기부박스 및 모금계획 불러오기
+    	DboxVO dbox = dboxService.selectDbox(dboxNum);
+    	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
+    	log.debug("<<상세 페이지(donators) - Dbox : >>" + dbox);
+    	log.debug("<<상세 페이지(donators) - DboxBudget : >>" + dboxBudget);
+   
+    	
     	//기부현황
+    	int count = dboxService.selectDboxDonationsCount(dboxNum);
 		List<DboxDonationVO> dboxDonations = null;
 //		if(count > 0) {
 //			dboxDonations = dboxService.selectDboxDonations(dboxNum);
@@ -90,6 +98,8 @@ public class DboxController {
     	
     	//뷰에 전달
     	model.addAttribute("dboxDonations",dboxDonations);
+    	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxBudget",dboxBudget);
     	return "dboxDetailDonators";
     }
     /*===================================
@@ -99,12 +109,20 @@ public class DboxController {
     public String detailNews(@PathVariable long dboxNum,Model model) {
     	log.debug("<<상세 페이지 접속(news)>> : " + dboxNum);
     	
+    	//기부박스 및 모금계획 불러오기
+    	DboxVO dbox = dboxService.selectDbox(dboxNum);
+    	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
+    	log.debug("<<상세 페이지(news) - Dbox : >>" + dbox);
+    	log.debug("<<상세 페이지(news) - DboxBudget : >>" + dboxBudget);
+    	
     	//소식
     	DboxResultVO dboxResult = dboxService.selectDboxResult(dboxNum);
     	log.debug("<<상세 페이지(news) - DboxResult : >>" + dboxResult);
     	
     	//뷰에 전달
     	model.addAttribute("dboxNews",dboxResult);
+    	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxBudget",dboxBudget);
     	return "dboxDetailNews";
     }
 	

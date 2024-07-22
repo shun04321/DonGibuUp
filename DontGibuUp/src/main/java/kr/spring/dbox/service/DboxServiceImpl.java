@@ -50,15 +50,27 @@ public class DboxServiceImpl implements DboxService {
 	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num) {
 		return dboxMapper.selectDboxBudgets(dbox_num);
 	}
+	
+	@Override
+	public void insertDboxDonation(long dbox_num) {
+		dboxMapper.insertDboxDonation(dbox_num);
+	}
 
 	@Override
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num) {
 		return dboxMapper.selectDboxDonations(dbox_num);
+	}
+	
+	@Override
+	public Integer selectDboxDonationsCount(long dbox_num) {
+		return dboxMapper.selectDboxDonationsCount(dbox_num);
 	}
 
 	@Override
 	public DboxResultVO selectDboxResult(long dbox_num) {
 		return dboxMapper.selectDboxResult(dbox_num);
 	}
+
+
 
 }
