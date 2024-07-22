@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.siot.IamportRestClient.IamportClient;
@@ -51,7 +52,7 @@ public class ChallengeAjaxController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	@Autowired
 	private MemberService memberService;
 
@@ -61,80 +62,80 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/addlist")
 	@ResponseBody
 	public Map<String,Object> getList(@RequestParam(defaultValue="1") int pageNum,
-	                                  @RequestParam(defaultValue="1") int rowCount,
-	                                  @RequestParam(defaultValue="0") int order,
-	                                  String chal_type,
-	                                  @RequestParam(defaultValue="") String freqOrder,
-	                                  @RequestParam(defaultValue="") String keyword,
-	                                  String chal_sdate,
-	                                  String chal_edate,
-	                                  HttpSession session) {
-	    log.debug("chal_type : " + chal_type);
-	    Map<String,Object> map = new HashMap<>();
-	    //map에 검색할 자기계발 카테고리 넣기
-	    List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
-	    map.put("categories", categories);
+			@RequestParam(defaultValue="1") int rowCount,
+			@RequestParam(defaultValue="0") int order,
+			String chal_type,
+			@RequestParam(defaultValue="") String freqOrder,
+			@RequestParam(defaultValue="") String keyword,
+			String chal_sdate,
+			String chal_edate,
+			HttpSession session) {
+		log.debug("chal_type : " + chal_type);
+		Map<String,Object> map = new HashMap<>();
+		//map에 검색할 자기계발 카테고리 넣기
+		List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();
+		map.put("categories", categories);
 
-	    map.put("chal_type", chal_type);
-	    map.put("freqOrder", freqOrder);
-	    map.put("keyword", keyword);
-	    map.put("order", order);
-	    map.put("chal_sdate", chal_sdate);
-	    map.put("chal_edate", chal_edate);
+		map.put("chal_type", chal_type);
+		map.put("freqOrder", freqOrder);
+		map.put("keyword", keyword);
+		map.put("order", order);
+		map.put("chal_sdate", chal_sdate);
+		map.put("chal_edate", chal_edate);
 
-	    //총 챌린지 개수
-	    int count = challengeService.selectRowCount(map);
+		//총 챌린지 개수
+		int count = challengeService.selectRowCount(map);
 
-	    //페이지 처리
-	    PagingUtil page = new PagingUtil(pageNum, count, rowCount);
-	    map.put("start", page.getStartRow());
-	    map.put("end", page.getEndRow());
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, rowCount);
+		map.put("start", page.getStartRow());
+		map.put("end", page.getEndRow());
 
-	    log.debug("keyword : " + keyword);
-	    log.debug("order : " + order);
-	    log.debug("start : " + page.getStartRow());
-	    log.debug("end : " + page.getEndRow());
+		log.debug("keyword : " + keyword);
+		log.debug("order : " + order);
+		log.debug("start : " + page.getStartRow());
+		log.debug("end : " + page.getEndRow());
 
-	    List<ChallengeVO> list = null;
-	    if (count > 0) {
-	        list = challengeService.selectList(map);
-	    } else {
-	        list = Collections.emptyList();
-	    }
+		List<ChallengeVO> list = null;
+		if (count > 0) {
+			list = challengeService.selectList(map);
+		} else {
+			list = Collections.emptyList();
+		}
 
-	    MemberVO member = (MemberVO) session.getAttribute("user");
-	    Map<String, Object> mapJson = new HashMap<>();
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		Map<String, Object> mapJson = new HashMap<>();
 
-	    mapJson.put("freqOrder", freqOrder);
-	    mapJson.put("keyword", keyword);
-	    mapJson.put("order", order);
-	    mapJson.put("count", count);
-	    mapJson.put("list", list);
+		mapJson.put("freqOrder", freqOrder);
+		mapJson.put("keyword", keyword);
+		mapJson.put("order", order);
+		mapJson.put("count", count);
+		mapJson.put("list", list);
 
-	    // 각 챌린지에 대해 추가 정보를 조회하여 mapJson에 추가
-	    List<Map<String, Object>> challengeDetailsList = new ArrayList<>();
-	    for (ChallengeVO challenge : list) {
-	        Map<String, Object> challengeDetails = new HashMap<>();
-	        challengeDetails.put("challenge", challenge);
+		// 각 챌린지에 대해 추가 정보를 조회하여 mapJson에 추가
+		List<Map<String, Object>> challengeDetailsList = new ArrayList<>();
+		for (ChallengeVO challenge : list) {
+			Map<String, Object> challengeDetails = new HashMap<>();
+			challengeDetails.put("challenge", challenge);
 
-	        boolean isJoined = false;
-	        if (member != null) {
-	            Map<String, Object> joinMap = new HashMap<>();
-	            joinMap.put("chal_num", challenge.getChal_num());
-	            joinMap.put("mem_num", member.getMem_num());
-	            List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(joinMap);
-	            isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == challenge.getChal_num());
-	        }
-	        challengeDetails.put("isJoined", isJoined);
+			boolean isJoined = false;
+			if (member != null) {
+				Map<String, Object> joinMap = new HashMap<>();
+				joinMap.put("chal_num", challenge.getChal_num());
+				joinMap.put("mem_num", member.getMem_num());
+				List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(joinMap);
+				isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == challenge.getChal_num());
+			}
+			challengeDetails.put("isJoined", isJoined);
 
-	        int currentParticipants = challengeService.countCurrentParticipants(challenge.getChal_num());
-	        challengeDetails.put("currentParticipants", currentParticipants);
+			int currentParticipants = challengeService.countCurrentParticipants(challenge.getChal_num());
+			challengeDetails.put("currentParticipants", currentParticipants);
 
-	        challengeDetailsList.add(challengeDetails);
-	    }
-	    mapJson.put("challengeDetailsList", challengeDetailsList);
+			challengeDetailsList.add(challengeDetails);
+		}
+		mapJson.put("challengeDetailsList", challengeDetailsList);
 
-	    return mapJson;
+		return mapJson;
 	}
 
 	/*==========================
@@ -294,7 +295,7 @@ public class ChallengeAjaxController {
 			challengePaymentVO.setChal_pay_price(chalPayPrice);
 			challengePaymentVO.setChal_point(chalPoint);
 			challengePaymentVO.setOd_imp_uid(odImpUid);
-			
+
 			//챌린지 시작 채팅 메시지 설정
 			ChallengeChatVO chatVO = new ChallengeChatVO();
 			chatVO.setChat_content("챌린지가 시작되었습니다!");
@@ -318,16 +319,16 @@ public class ChallengeAjaxController {
 	public void deleteImg(HttpSession session, HttpServletRequest request) {		
 		//세션에 저장된 파일 이름 가져오기
 		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");		
-		
+
 		if (challenge != null) {
 			//파일 삭제
 			FileUtil.removeFile(request, challenge.getChal_photo());
 		}
-		
+
 		//챌린지 개설 정보 삭제
 		session.removeAttribute("challengeVO");
 	}
-	
+
 	/*==========================
 	 *  챌린지 단체 채팅
 	 *==========================*/
@@ -345,7 +346,32 @@ public class ChallengeAjaxController {
 		}			
 		return mapJson;
 	}
-	
+
+	//채팅 작성하기
+	@PostMapping("/challenge/join/chalWriteChat")
+	@ResponseBody
+	public Map<String,String> writeChallengeChat(long chal_num,String chat_content,
+			@RequestParam("upload") MultipartFile upload,HttpSession session,HttpServletRequest request) throws IllegalStateException, IOException{
+		log.debug("chalWriteChat 메서드 진입");
+		Map<String,String> mapJson = new HashMap<>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else {
+			ChallengeChatVO chatVO = new ChallengeChatVO();
+			chatVO.setChal_num(chal_num);
+			chatVO.setChat_content(chat_content);
+			chatVO.setChat_filename(FileUtil.createFile(request, upload));
+			chatVO.setMem_num(user.getMem_num());
+
+			challengeService.insertChallengeChat(chatVO);
+
+			mapJson.put("result", "success");
+		}
+		return mapJson;
+	}
+
 	/*==========================
 	 *  챌린지 인증 상세
 	 *==========================*/
@@ -360,10 +386,10 @@ public class ChallengeAjaxController {
 		}else {
 			log.debug("data : "+data);
 			Long chal_num = ((Number) data.get("chal_num")).longValue();
-	        Long chal_joi_num = ((Number) data.get("chal_joi_num")).longValue();
-	        String status = (String) data.get("status");
-	        
-	        //세션에 데이터 저장
+			Long chal_joi_num = ((Number) data.get("chal_joi_num")).longValue();
+			String status = (String) data.get("status");
+
+			//세션에 데이터 저장
 			session.setAttribute("chal_num", chal_num);
 			session.setAttribute("chal_joi_num", chal_joi_num);
 			session.setAttribute("status", status);
@@ -371,7 +397,7 @@ public class ChallengeAjaxController {
 		}			
 		return mapJson;
 	}
-	
+
 	//챌린지 참가 회원 목록
 	@GetMapping("/challenge/verify/joinMemberList")
 	@ResponseBody
@@ -426,7 +452,7 @@ public class ChallengeAjaxController {
 		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
 
 		Map<String,Object> mapJson = new HashMap<>();
-		
+
 		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
 		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
 		MemberVO user = (MemberVO) session.getAttribute("user"); 
@@ -439,7 +465,7 @@ public class ChallengeAjaxController {
 			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
 			mapJson.put("member", userInfo);
 		}
-				
+
 		mapJson.put("list", verifyList);
 		mapJson.put("count", count);
 

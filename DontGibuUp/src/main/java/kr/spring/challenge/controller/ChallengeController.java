@@ -141,31 +141,31 @@ public class ChallengeController {
 			List<ChallengeJoinVO> joinList = challengeService.selectChallengeJoinList(map);
 			isJoined = joinList.stream().anyMatch(join -> join.getChal_num() == chal_num);
 		}
-		
+
 		//현재 참가 중인 인원 수 조회
-        int currentParticipants = challengeService.countCurrentParticipants(chal_num);
-        
+		int currentParticipants = challengeService.countCurrentParticipants(chal_num);
+
 		//참여금을 포맷팅
 		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
 		String formattedFee = numberFormat.format(challenge.getChal_fee());
-		
+
 		// 챌린지 리뷰 가져오기
-        List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
-        double averageRating = reviewList.stream()
-                                         .mapToInt(ChallengeReviewVO::getChal_rev_grade)
-                                         .average()
-                                         .orElse(0.0);
-        averageRating = Math.round(averageRating * 10) / 10.0; // 소수점 첫째 자리까지만 표시
-        int reviewCount = reviewList.size();
-        
+		List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
+		double averageRating = reviewList.stream()
+				.mapToInt(ChallengeReviewVO::getChal_rev_grade)
+				.average()
+				.orElse(0.0);
+		averageRating = Math.round(averageRating * 10) / 10.0; // 소수점 첫째 자리까지만 표시
+		int reviewCount = reviewList.size();
+
 		ModelAndView mav = new ModelAndView("challengeView");
 		mav.addObject("challenge", challenge);
 		mav.addObject("isJoined", isJoined);
 		mav.addObject("formattedFee", formattedFee);
-        mav.addObject("currentParticipants", currentParticipants);
-        mav.addObject("reviewList", reviewList);
-        mav.addObject("averageRating", averageRating);
-        mav.addObject("reviewCount", reviewCount);
+		mav.addObject("currentParticipants", currentParticipants);
+		mav.addObject("reviewList", reviewList);
+		mav.addObject("averageRating", averageRating);
+		mav.addObject("reviewCount", reviewCount);
 
 		return mav;
 	}
@@ -247,96 +247,97 @@ public class ChallengeController {
 		return "common/resultAlert";
 	}
 
+
 	//챌린지 참가 목록
 	@GetMapping("/challenge/join/list")
 	public String list(@RequestParam(value = "status", defaultValue = "pre") String status,
-	                   @RequestParam(value = "month", required = false) String month, Model model,
-	                   HttpSession session, @RequestParam(defaultValue="1") int pageNum) {
-	    MemberVO member = (MemberVO) session.getAttribute("user");
-	    Map<String, Object> map = new HashMap<>();
-	    map.put("mem_num", member.getMem_num());
-	    map.put("status", status);
+			@RequestParam(value = "month", required = false) String month, Model model,
+			HttpSession session, @RequestParam(defaultValue="1") int pageNum) {
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		Map<String, Object> map = new HashMap<>();
+		map.put("mem_num", member.getMem_num());
+		map.put("status", status);
 
-	    // 현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
-	    LocalDate currentMonth = month != null ? LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")) : LocalDate.now().withDayOfMonth(1);
-	    String currentMonthString = currentMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+		// 현재 날짜를 기반으로 month가 없는 경우 이번 달로 설정
+		LocalDate currentMonth = month != null ? LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd")) : LocalDate.now().withDayOfMonth(1);
+		String currentMonthString = currentMonth.format(DateTimeFormatter.ofPattern("yyyy-MM"));
 
-	    // 페이징 정보
-	    int count = challengeService.selectChallengeJoinListRowCount(map);
-	    log.debug("count : " + count);
-	    PagingUtil page = new PagingUtil(pageNum, count, 3, 10, "list", "&status=on");
-	    map.put("start", page.getStartRow());
-	    map.put("end", page.getEndRow());
+		// 페이징 정보
+		int count = challengeService.selectChallengeJoinListRowCount(map);
+		log.debug("count : " + count);
+		PagingUtil page = new PagingUtil(pageNum, count, 3, 10, "list", "&status=on");
+		map.put("start", page.getStartRow());
+		map.put("end", page.getEndRow());
 
-	    // 이번 달의 챌린지만 필터링
-	    List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map).stream()
-	            .filter(challenge -> {
-	                if (challenge.getChal_sdate() == null) {
-	                    return false;
-	                }
-	                return challenge.getChal_sdate().substring(0, 7).equals(currentMonthString);
-	            })
-	            .collect(Collectors.toList());
+		// 이번 달의 챌린지만 필터링
+		List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map).stream()
+				.filter(challenge -> {
+					if (challenge.getChal_sdate() == null) {
+						return false;
+					}
+					return challenge.getChal_sdate().substring(0, 7).equals(currentMonthString);
+				})
+				.collect(Collectors.toList());
 
-	    // 각 챌린지에 대한 달성률과 참여금 계산
-	    List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
-	        Map<String, Object> challengeData = new HashMap<>();
-	        long chal_joi_num = challengeJoin.getChal_joi_num();
-	        Map<String, Object> verifyMap = new HashMap<>();
-	        verifyMap.put("chal_joi_num", chal_joi_num);
+		// 각 챌린지에 대한 달성률과 참여금 계산
+		List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
+			Map<String, Object> challengeData = new HashMap<>();
+			long chal_joi_num = challengeJoin.getChal_joi_num();
+			Map<String, Object> verifyMap = new HashMap<>();
+			verifyMap.put("chal_joi_num", chal_joi_num);
 
-	        PagingUtil samePage = new PagingUtil(pageNum, count, 3);
-	        verifyMap.put("start", samePage.getStartRow());
-	        verifyMap.put("end", samePage.getEndRow());
+			PagingUtil samePage = new PagingUtil(pageNum, count, 3);
+			verifyMap.put("start", samePage.getStartRow());
+			verifyMap.put("end", samePage.getEndRow());
 
-	        List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(verifyMap);
+			List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(verifyMap);
 
-	        // 인증 성공 횟수
-	        long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+			// 인증 성공 횟수
+			long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
 
-	        // 전체 주 수 계산
-	        LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
-	        LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
-	        long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+			// 전체 주 수 계산
+			LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
+			LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
+			long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
 
-	        // 전체 인증 횟수
-	        long totalCount = totalWeeks * challengeJoin.getChal_freq();
+			// 전체 인증 횟수
+			long totalCount = totalWeeks * challengeJoin.getChal_freq();
 
-	        // 달성률 계산
-	        int achieveRate = totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
+			// 달성률 계산
+			int achieveRate = totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
 
-	        // 참여금 관련 계산
-	        Long chal_fee = challengeJoin.getChal_fee();
-	        int returnPoint = (int) (achieveRate / 100.0 * chal_fee);
-	        int donaAmount = (int) (chal_fee - returnPoint);
+			// 참여금 관련 계산
+			Long chal_fee = challengeJoin.getChal_fee();
+			int returnPoint = (int) (achieveRate / 100.0 * chal_fee);
+			int donaAmount = (int) (chal_fee - returnPoint);
 
-	        // 숫자를 포맷팅
-	        NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+			// 숫자를 포맷팅
+			NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
 
-	        // 후기 작성 여부 확인
-	        Map<String, Object> reviewCheckMap = new HashMap<>();
-	        reviewCheckMap.put("chal_num", challengeJoin.getChal_num());
-	        reviewCheckMap.put("mem_num", member.getMem_num());
-	        ChallengeReviewVO review = challengeService.selectChallengeReviewByMemberAndChallenge(reviewCheckMap);
-	        boolean hasReview = review != null;
+			// 후기 작성 여부 확인
+			Map<String, Object> reviewCheckMap = new HashMap<>();
+			reviewCheckMap.put("chal_num", challengeJoin.getChal_num());
+			reviewCheckMap.put("mem_num", member.getMem_num());
+			ChallengeReviewVO review = challengeService.selectChallengeReviewByMemberAndChallenge(reviewCheckMap);
+			boolean hasReview = review != null;
 
-	        // 챌린지 데이터 추가
-	        challengeData.put("challengeJoin", challengeJoin);
-	        challengeData.put("achieveRate", achieveRate);
-	        challengeData.put("returnPoint", numberFormat.format(returnPoint));
-	        challengeData.put("donaAmount", numberFormat.format(donaAmount));
-	        challengeData.put("formattedFee", numberFormat.format(chal_fee));
-	        challengeData.put("hasReview", hasReview);
+			// 챌린지 데이터 추가
+			challengeData.put("challengeJoin", challengeJoin);
+			challengeData.put("achieveRate", achieveRate);
+			challengeData.put("returnPoint", numberFormat.format(returnPoint));
+			challengeData.put("donaAmount", numberFormat.format(donaAmount));
+			challengeData.put("formattedFee", numberFormat.format(chal_fee));
+			challengeData.put("hasReview", hasReview);
 
-	        return challengeData;
-	    }).collect(Collectors.toList());
+			return challengeData;
+		}).collect(Collectors.toList());
 
-	    model.addAttribute("challengesByMonth", Map.of(currentMonthString, challengeDataList));
-	    model.addAttribute("status", status);
-	    model.addAttribute("currentMonth", currentMonthString);
-	    model.addAttribute("page", page.getPage());
+		model.addAttribute("challengesByMonth", Map.of(currentMonthString, challengeDataList));
+		model.addAttribute("status", status);
+		model.addAttribute("currentMonth", currentMonthString);
+		model.addAttribute("page", page.getPage());
 
-	    return "challengeJoinList";
+		return "challengeJoinList";
 	}
 
 
@@ -373,7 +374,7 @@ public class ChallengeController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
 		}
 	}
-	
+
 	/*==========================
 	 *  챌린지 단체 채팅
 	 *==========================*/	
@@ -381,26 +382,25 @@ public class ChallengeController {
 	@GetMapping("/challenge/join/chal_chatDetail")
 	public String joinChallengeChatRedirect(HttpSession session,Model model) {
 		long chal_num = (Long) session.getAttribute("chal_num");
-		session.removeAttribute("chal_num");
 		model.addAttribute("chal_num", chal_num);
-		
+
 		//채팅방 이름
 		ChallengeVO challenge = challengeService.selectChallenge(chal_num);
 		model.addAttribute("chal_room_name", challenge.getChal_title());
-		
+
 		//채팅 참여 인원 수
 		Map<String,Object> map = new HashMap<>();
 		map.put("chal_num", chal_num);
 		int chatJoinCount = challengeService.selectJoinMemberRowCount(map);
 		model.addAttribute("count", chatJoinCount);
-		
+
 		//채팅 참여 회원 목록
 		List<ChallengeJoinVO> list = challengeService.selectJoinMemberList(map);
 		model.addAttribute("list", list);
-		
+
 		return "chal_chatDetail";
 	}
-	
+
 	/*==========================
 	 *  챌린지 인증
 	 *==========================*/
@@ -472,16 +472,13 @@ public class ChallengeController {
 
 	//챌린지 인증 목록
 	@GetMapping("/challenge/verify/list")
-	public ModelAndView verifyList(HttpSession session,@RequestParam(defaultValue="1") int pageNum) {
-		log.debug("세션 확인! "+session.getAttribute("chal_num"));		
+	public ModelAndView verifyList(HttpSession session,@RequestParam(defaultValue="1") int pageNum) {		
 		Long chal_num = (Long) session.getAttribute("chal_num");
 		Long chal_joi_num = (Long) session.getAttribute("chal_joi_num");
 		String status = (String) session.getAttribute("status");
-		
-		session.removeAttribute("chal_num");
-		session.removeAttribute("chal_joi_num");
+
 		session.removeAttribute("status");
-		
+
 		Map<String, Object> map = new HashMap<>();		
 		map.put("chal_joi_num", chal_joi_num);
 
@@ -637,8 +634,8 @@ public class ChallengeController {
 	//챌린지 후기 목록
 	@GetMapping("/challenge/review/list")
 	public String reviewList(@RequestParam("chal_num") long chal_num, 
-            @RequestParam(value = "sortType", defaultValue = "latest") String sortType, 
-            Model model) {
+			@RequestParam(value = "sortType", defaultValue = "latest") String sortType, 
+			Model model) {
 		ChallengeVO challenge = challengeService.selectChallenge(chal_num);
 		List<ChallengeReviewVO> reviewList = challengeService.selectChallengeReviewList(chal_num);
 

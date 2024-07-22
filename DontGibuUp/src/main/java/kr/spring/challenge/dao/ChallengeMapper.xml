@@ -238,13 +238,19 @@
 		INSERT INTO chal_chat
 		(chat_id, chal_num, mem_num, chat_content, chat_filename, chat_date)
 		VALUES
-		(#{chat_id},#{chal_num},#{mem_num},#{chat_content},
+		(#{chat_id},#{chal_num},#{mem_num},
+		<if test="chat_content != null">
+    	#{chat_content}
+    </if>
+    <if test="chat_content == null">
+    	null
+    </if>,
 		<if test="chat_filename != null">
-      		#{chat_filename}
-    	</if>
-    	<if test="chat_filename == null">
-      		null
-    	</if>,SYSDATE)
+    	#{chat_filename}
+    </if>
+    <if test="chat_filename == null">
+    	null
+    </if>,SYSDATE)
 	</insert>
 	
 	

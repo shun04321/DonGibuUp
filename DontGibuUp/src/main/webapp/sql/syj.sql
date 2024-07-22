@@ -85,6 +85,6 @@ create table chal_chat_read(
   chat_id number not null,
   mem_num number not null,
   constraint read_fk foreign key (chal_num) references challenge (chal_num),
-  constraint read_fk2 foreign key (chal_id) references chal_chat (chat_id),
+  constraint read_fk2 foreign key (chat_id) references chal_chat (chat_id),
   constraint read_fk3 foreign key (mem_num) references member (mem_num)
 );
