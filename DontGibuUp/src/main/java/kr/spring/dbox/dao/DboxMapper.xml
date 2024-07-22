@@ -125,6 +125,7 @@
 			  		  REPLACE(REPLACE(dbox_team_name,'<','&lt;'),'>','&gt;') dbox_team_name,
 			  		  ]]>
 			  		  dcate_name,
+			  		  dcate_icon,
 			  		  dbox_sdate,
 			  		  dbox_edate,
 			  		  dbox_rdate,

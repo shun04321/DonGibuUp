@@ -1,5 +1,5 @@
 $(function(){
-	let rowCount=8;
+	let rowCount=6;
 	let currentPage;
 	let count;
 	let category;
@@ -84,16 +84,16 @@ $(function(){
 				
 				$('#category_output').empty();
 				if(category=='' || category==null){
-					$('#category_output').append('<button type="button" class="btn btn-outline-dark active" onclick="location.href=\'list\'">전체</button>');										
+					$('#category_output').append('<button type="button" class="btn btn-outline-success active" onclick="location.href=\'list\'">전체</button>');										
 				}else{
-					$('#category_output').append('<button type="button" class="btn btn-outline-dark" onclick="location.href=\'list\'">전체</button>');					
+					$('#category_output').append('<button type="button" class="btn btn-outline-success" onclick="location.href=\'list\'">전체</button>');					
 				}
 				let category_output = '';
 				$(param.category_list).each(function(index,item){
 					if(item.dcate_num == category){
-						category_output += ' <button type="button" class="btn btn-outline-dark active" onclick="location.href=\'list?category='+item.dcate_num+'\'">'+item.dcate_name+'</button>'						
+						category_output += ' <button type="button" class="btn btn-outline-success active" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
 					}else{
-						category_output += ' <button type="button" class="btn btn-outline-dark" onclick="location.href=\'list?category='+item.dcate_num+'\'">'+item.dcate_name+'</button>'						
+						category_output += ' <button type="button" class="btn btn-outline-success" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
 					}
 				});
 				$('#category_output').append(category_output);
@@ -106,18 +106,31 @@ $(function(){
 				}
 				
 				$(param.list).each(function(index,item){
-					let output = '<div class="col">';
-					output += '		<a href="../dbox/'+item.dbox_num+'/content">';
-					output += '   	<div class="card h-100" style="width:15rem">';
-					output += '     	<img src="../upload/dbox/'+item.dbox_photo+'" class="card-img-top" style="height:10.5rem">';
-					//console.log("photo : " + item.dbox_photo)
-					output += '         	<div class="card-body">';
-					output += '       			<h5 class="card-title">'+item.dbox_title+'</h5>';
-					output += '       			<h6 class="card-subtitle mb-2 text-body-secondary">'+item.dcate_name+'</h6>';
-					output += '       			<p class="card-text">'+item.dbox_team_name+'</p>';
+					let output = '<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">';
+					output += '		<div class="custom-block-wrap">';
+					output += '		<img src="../upload/dbox/'+item.dbox_photo+'" class="custom-block-image img-fluid" style="height:14rem;">';
+					
+					output += '   	<div class="custom-block">';
+					output += '     	<div class="custom-block-body">';
+					output += '         	<h5 class="mb-3">'+item.dbox_title+'</h5>';
+					output += '       			<span class="badge text-bg-success mb-3"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</span>';
+					output += '       			<p>'+item.dbox_team_name+'</p>';
+					output += '       			<div class="progress" role="progressbar" aria-label="" aria-valuenow="'+2000/item.dbox_goal*100+'" aria-valuemin="0" aria-valuemax="100">';
+					output += '       				<div class="progress-bar progress-bar-striped bg-success" style="width: '+2000/item.dbox_goal*100+'%"></div>';
+					output += '       			</div>';
+					output += '					<div class="align-items-center my-2">';
+					output += '						<p class="text-end">';
+					output += '							<strong>달성률 : </strong>'+Math.floor(2000/item.dbox_goal*100)+'%';
+					output += '						</p>';
+					output += '						<p class="text-end">';
+					output += '							<strong>목표금액 : </strong>'+item.dbox_goal.toLocaleString()+'원';
+					output += '						</p>';
+					output += '					</div>';
 					output += '				</div>';
-					output += '		</div>';
-					output += '		</a>';
+					
+					output += '				<a href="../dbox/'+item.dbox_num+'/content" class="custom-btn btn">Donate now</a>';
+					output += '	  		</div>';
+					output += '	 	 </div>';
 					output += '	  </div>';
 					//문서 객체에 추가
 					$('#output').append(output);
@@ -143,7 +156,7 @@ $(function(){
 		});
 	}
 	//다음 댓글 보기 버튼 클릭시 데이터 추가
-	$('.paging-button input').click(function(){
+	$('.paging-button button').click(function(){
 		selectList(currentPage + 1);
 	});
 

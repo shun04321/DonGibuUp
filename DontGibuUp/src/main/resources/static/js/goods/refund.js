@@ -1,10 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
     // 페이지 로드 시 필요한 초기 작업들
-    let pageContextPath = "${pageContext.request.contextPath}";
+    let pageContextPath = contextPath;
 });
 
-function requestRefund(impUid, reason) {
-    let pageContextPath = "${pageContext.request.contextPath}";
+function requestRefund(impUid) {
+    let reason = prompt("환불 사유를 입력하세요:");
+
+    if (reason === null || reason.trim() === "") {
+        alert("환불 사유를 입력해야 합니다.");
+        return;
+    }
+
+    let pageContextPath = contextPath;
 
     $.ajax({
         url: pageContextPath + '/goods/refund',
@@ -15,7 +22,6 @@ function requestRefund(impUid, reason) {
         success: function(response) {
             if (response.result === 'success') {
                 alert('환불이 성공적으로 처리되었습니다.');
-                // 페이지를 새로고침하거나 환불 상태를 업데이트할 수 있습니다.
                 location.reload();
             } else if (response.result === 'logout') {
                 alert('로그인이 필요합니다.');

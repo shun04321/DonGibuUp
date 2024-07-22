@@ -51,6 +51,10 @@
 				test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
 				<input type="button" value="상품 등록" onclick="location.href='write'">
 			</c:if>
+			
+			<c:if test="${sessionScope.user != null}">
+				<input type="button" value="내 구매내역" onclick="location.href='purchaseHistory'">
+			</c:if>
 		</div>
 	</form>
 	<c:if test="${count == 0}">

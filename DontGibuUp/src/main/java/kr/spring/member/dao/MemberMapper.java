@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.vo.PointVO;
 
 @Mapper
@@ -84,6 +85,4 @@ public interface MemberMapper {
 	//회원 detail 삭제
 	@Delete("DELETE FROM member_detail WHERE mem_num=#{mem_num}")
 	public void deleteMemberDetail(long mem_num);
-	
-	
 }

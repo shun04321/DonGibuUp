@@ -24,6 +24,7 @@ import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.cs.vo.ReportVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -241,12 +242,15 @@ public class CSController {
 		return "adminInquiryReply";
 	}
 
+	//관리자 문의 답변
 	@PostMapping("/admin/cs/inquiry/reply")
-	public String replyInquiry(@Valid InquiryVO inquiryVO, BindingResult result, Model model) {
+	public String replyInquiry(@Valid InquiryVO inquiryVO, BindingResult result, Model model, HttpServletRequest request) {
 		if (inquiryVO.getInquiry_reply() == null || inquiryVO.getInquiry_reply().equals("")) {
 			result.rejectValue("inquiry_reply", "notBlank.inquiry_reply");
 			return "adminInquiryReply";
 		}
+		
+		log.debug("<<1:1문의 답변 - inquiry_num>> : " + inquiryVO.getInquiry_num());
 		
 		//답변 수정
 		csService.replyInquiry(inquiryVO);
@@ -303,8 +307,8 @@ public class CSController {
 	public String replyReportForm(@RequestParam long report_num, Model model) {
 		ReportVO report = csService.selectReport(report_num);
 
-		log.debug("<<문의 상세 - report_num>> : " + report_num);
-		log.debug("<<문의 상세>> : " + report);
+		log.debug("<<신고 상세 - report_num>> : " + report_num);
+		log.debug("<<신고 상세>> : " + report);
 
 		model.addAttribute("report", report);
 		return "adminReportReply";

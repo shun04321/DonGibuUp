@@ -1,8 +1,11 @@
 package kr.spring.subscription.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,7 +154,7 @@ public class SubscriptionController {
 		        model.addAttribute("accessTitle", "결제 결과");
 		        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
 		        model.addAttribute("accessBtn", "홈으로 이동");
-		        model.addAttribute("accessUrl", "/main/main");
+		        model.addAttribute("accessUrl", "/subscription/subscriptionList");
 		    } else {
 		        model.addAttribute("accessTitle", "결제 실패");
 		        model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
@@ -194,8 +197,8 @@ public class SubscriptionController {
 	        response.put("status", "success");
 	        response.put("accessTitle", "결제 결과");
 	        response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
-	        response.put("accessBtn", "홈으로 이동");
-	        response.put("accessUrl", "/main/main"); 
+	        response.put("accessBtn", "정기기부 현황");
+	        response.put("accessUrl", "subscriptionList"); 
 	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
 	    } else {
 	        response.put("status", "fail");
@@ -214,8 +217,8 @@ public class SubscriptionController {
         // Model attributes 설정
 		model.addAttribute("accessTitle", "결제 결과");
         model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-        model.addAttribute("accessBtn", "홈으로 이동");
-        model.addAttribute("accessUrl", "/main/main");
+        model.addAttribute("accessBtn", "정기기부 목록");
+        model.addAttribute("accessUrl", "subscriptionList");
 
         // JSP 파일명 반환
         return "paymentResultView"; // 상대경로로 지정
@@ -273,7 +276,6 @@ public class SubscriptionController {
 			sub_paymentVO.setMem_num(subscriptionVO.getMem_num());
 			sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
 			sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
-			sub_paymentVO.setSub_pay_date("2024-07-18");
 	        
 	        Map<String, Object> map = new HashMap<>();
 	        map.put("customer_uid", payuid);
@@ -360,8 +362,52 @@ public class SubscriptionController {
 
 			return "subscriptionList";
 		}
-	}
+	    @GetMapping("/subscription/subscriptionDetail")
+	    public String subscriptionDetail(long sub_num, Model model) throws ParseException {
+	        SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
+	        DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
+	        Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
+	        String cancelDate = "";
+	        // 날짜 문자열을 Date 객체로 변환
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	        String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
+	        String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
+	        if(subscription.getCancel_date()!=null) {
+	        	cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
+	        }
 
+	        // 모델에 날짜 문자열 추가
+	        model.addAttribute("cancel_date",cancelDate);
+	        model.addAttribute("reg_date", regDate);
+	        model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식
+	        model.addAttribute("category", category);
+	        model.addAttribute("subscription", subscription);
+	        model.addAttribute("subpayment", subpayment);
+
+	        return "subscriptionDetail";
+	    }
+	    
+	    @PostMapping("/subscription/updateSub_status")
+	    @ResponseBody
+	    public Map<String,String> updateSub_status(long sub_num,HttpSession session){
+	    	Map<String, String> mapJson = new HashMap<String,String>();
+	    	MemberVO user = (MemberVO)session.getAttribute("user");
+	    	if(user == null) {
+	    		mapJson.put("result", "logout");
+	    	}
+	    	
+	    	SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+	    	if(subscriptionVO.getSub_status()==0) {
+	    		subscriptionService.updateSub_status(sub_num);
+	    		mapJson.put("result", "success");
+	    	}else {
+	    		mapJson.put("result", "fail");
+	    	}
+	    	
+	    	return mapJson;
+	    }
+	    
+}
 
 	    
 

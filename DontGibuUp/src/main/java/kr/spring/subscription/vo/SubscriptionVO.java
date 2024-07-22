@@ -1,5 +1,7 @@
 package kr.spring.subscription.vo;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -23,6 +25,8 @@ public class SubscriptionVO {
 	private String sub_method;
 	private String easypay_method;
 	private String card_nickname;
+	private String reg_date;
+	private String cancel_date;
 	
 	private DonationCategoryVO donationCategory;
 

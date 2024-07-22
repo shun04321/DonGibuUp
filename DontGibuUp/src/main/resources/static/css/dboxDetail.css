@@ -1,11 +1,13 @@
 @charset "UTF-8";
 
-#page_nav{
+#page_body_d{
+	width:65%;
 	float:left;
-	width:25%;
-	min-height:530px;
 }
-#page_body{
-	width:75%;
+#page_nav_d{
 	float:left;
+	width:35%;
+}
+#main_footer{
+	clear:both;
 }

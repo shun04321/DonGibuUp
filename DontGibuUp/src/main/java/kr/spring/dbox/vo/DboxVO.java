@@ -70,4 +70,5 @@ public class DboxVO {
 	
 	//카테고리
 	private String dcate_name;
+	private String dcate_icon;
 }

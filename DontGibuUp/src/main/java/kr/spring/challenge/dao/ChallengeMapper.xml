@@ -233,6 +233,21 @@
 		DELETE FROM chal_join WHERE chal_num = #{chal_num}
 	</delete>
 	
+	<!-- 챌린지 채팅방 메시지 생성 -->
+	<insert id="insertChallengeChat" parameterType="challengeChatVO">
+		INSERT INTO chal_chat
+		(chat_id, chal_num, mem_num, chat_content, chat_filename, chat_date)
+		VALUES
+		(#{chat_id},#{chal_num},#{mem_num},#{chat_content},
+		<if test="chat_filename != null">
+      		#{chat_filename}
+    	</if>
+    	<if test="chat_filename == null">
+      		null
+    	</if>,SYSDATE)
+	</insert>
+	
+	
 	<!-- 챌린지 인증 -->
 	<insert id="insertChallengeVerify"
 		parameterType="challengeVerifyVO">

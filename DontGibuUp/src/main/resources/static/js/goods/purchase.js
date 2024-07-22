@@ -34,29 +34,29 @@ function buyNow() {
                         // 결제 정보에 넣을 데이터 가공하기
                         let customData = JSON.parse(data.response.customData);
 
-                        // 결제 정보 처리 및 완료하기
-                       $.ajax({
-    url: pageContextPath + '/goods/purchaseComplete',
-    method: 'POST',
-    data: JSON.stringify({
-        imp_uid: rsp.imp_uid,
-        merchant_uid: rsp.merchant_uid,
-        amount: parseInt(data.response.amount, 10), // 정수로 변환
-        status: data.response.status,
-        item_num: parseInt(itemNum, 10), // 정수로 변환
-        item_name: itemName,
-        buyer_name: buyerName,
-    }),
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json',
-    success: function(param) {
-        if (param.result == 'success') {
-            alert('구매가 완료되었습니다.');
-            window.location.href = pageContextPath + '/goods/purchaseSuccess';
-        } else {
-            alert('구매 처리 중 오류가 발생했습니다.');
-        }
-    },
+                         // 결제 정보 처리 및 완료하기
+                        $.ajax({
+                            url: pageContextPath + '/goods/purchaseComplete',
+                            method: 'POST',
+                            data: JSON.stringify({
+                                imp_uid: rsp.imp_uid,
+                                merchant_uid: rsp.merchant_uid,
+                                amount: parseInt(data.response.amount, 10), // 정수로 변환
+                                status: data.response.status,
+                                item_num: parseInt(itemNum, 10), // 정수로 변환
+                                item_name: itemName,
+                                buyer_name: buyerName,
+                            }),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            success: function(param) {
+                                if (param.result == 'success') {
+                                    alert('구매가 완료되었습니다.');
+                                    window.location.href = pageContextPath + '/goods/purchaseHistory';
+                                } else {
+                                    alert('구매 처리 중 오류가 발생했습니다.');
+                                }
+                            },
     error: function(xhr, status, error) {
         alert('구매 처리 오류 발생: ' + error);
     }

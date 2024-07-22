@@ -79,3 +79,12 @@ COMMENT ON COLUMN CHAL_REVIEW.chal_rev_content IS '후기 내용';
 COMMENT ON COLUMN CHAL_REVIEW.chal_rev_grade IS '챌린지 별점(5점 만점)';
 
 COMMENT ON COLUMN CHAL_REVIEW.chal_rev_ip IS '챌린지 후기 작성자 ip';
+
+create table chal_chat_read(
+  chal_num number not null,
+  chat_id number not null,
+  mem_num number not null,
+  constraint read_fk foreign key (chal_num) references challenge (chal_num),
+  constraint read_fk2 foreign key (chal_id) references chal_chat (chat_id),
+  constraint read_fk3 foreign key (mem_num) references member (mem_num)
+);

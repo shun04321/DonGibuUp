@@ -1,6 +1,7 @@
 package kr.spring.member.service;
 
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -12,7 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberVO;
-import kr.spring.point.dao.PointMapper;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.RCodeGenerator;
@@ -25,9 +27,9 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	@Autowired
-	PointMapper pointMapper;
-	@Autowired
 	PointService pointService;
+	@Autowired
+	NotifyService notifyService;
 	@Autowired
 	PasswordEncoder pwEncoder;
 
@@ -57,7 +59,20 @@ public class MemberServiceImpl implements MemberService {
 		point_signup.setMem_num(mem_num);
 		
 		//회원가입 포인트 로그 추가
-		pointMapper.insertPointLog(point_signup);
+		pointService.insertPointLog(point_signup);
+		
+			//알림 추가
+			//NotifyVO 객체 정의
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(mem_num);
+			notifyVO.setNotify_type(22);
+			notifyVO.setNot_url("/member/myPage/point"); 
+			//동적 데이터 매핑
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("pointAmount", String.valueOf(point_signup.getPoint_amount()));
+			dynamicValues.put("peventDetail", "회원가입");
+			//NotifyService 호출
+			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
 		
 		//추천인 이벤트 참여
 		if (memberVO.getRecommend_status() == 1) {
@@ -68,12 +83,37 @@ public class MemberServiceImpl implements MemberService {
 			PointVO point_revent2 = new PointVO(10, 3000, recipientMemNum);
 			
 			//포인트 로그 추가
-			pointMapper.insertPointLog(point_revent1);
-			pointMapper.insertPointLog(point_revent2);
+			pointService.insertPointLog(point_revent1);
+			pointService.insertPointLog(point_revent2);
+			
+				//알림 추가
+				//NotifyVO 객체 정의
+				NotifyVO notifyVO1 = new NotifyVO();
+				notifyVO1.setMem_num(mem_num);
+				notifyVO1.setNotify_type(22);    
+				notifyVO1.setNot_url("/member/myPage/point");
+				//동적 데이터 매핑
+				Map<String, String> dynamicValues1 = new HashMap<String, String>();
+				dynamicValues1.put("pointAmount", String.valueOf(point_revent1.getPoint_amount()));
+				dynamicValues1.put("peventDetail", "추천인 이벤트 참여");
+				//NotifyService 호출
+				notifyService.insertNotifyLog(notifyVO1, dynamicValues1); //알림 로그 찍기
+				
+				//NotifyVO 객체 정의
+				NotifyVO notifyVO2 = new NotifyVO();
+				notifyVO2.setMem_num(recipientMemNum); 
+				notifyVO2.setNotify_type(22);
+				notifyVO2.setNot_url("/member/myPage/point");
+				//동적 데이터 매핑
+				Map<String, String> dynamicValues2 = new HashMap<String, String>();
+				dynamicValues2.put("pointAmount", String.valueOf(point_revent2.getPoint_amount()));
+				dynamicValues2.put("peventDetail", "추천인 이벤트 추천");
+				//NotifyService 호출
+				notifyService.insertNotifyLog(notifyVO2, dynamicValues2); //알림 로그 찍기
 			
 			//member_detail 업데이트
-			memberMapper.updateMemPoint(point_revent1);
-			memberMapper.updateMemPoint(point_revent2);
+			updateMemPoint(point_revent1);
+			updateMemPoint(point_revent2);
 		}
 		
 	}
@@ -147,6 +187,13 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updateMember(memberVO);
 		memberMapper.updateMemberDetail(memberVO);
 	}
+	
+
+	@Override
+	public void updateMemPoint(PointVO pointVO) {
+		memberMapper.updateMemPoint(pointVO);
+	}
+
 
 	//비밀번호 수정
 	@Override

@@ -108,6 +108,36 @@
 	WHERE rnum >= ${start} AND rnum <= #{end}
 	]]>
 	</select>
+	
+	
+	<!-- 알림 로그 찍기 -->
+	<insert id="insertNotifyLog" parameterType="notifyVO">
+		INSERT INTO notify_log(
+							not_num,
+							mem_num,
+							notify_type,
+							not_message,
+							not_url,
+							not_datetime)
+					VALUES(
+							not_seq.nextval,
+							#{mem_num},
+							#{notify_type},
+							#{not_message},
+							#{not_url, jdbcType=VARCHAR},
+							#{not_datetime})
+	</insert>
+	
+	<!-- 알림 목록(안 읽은 것, 최근 2주) -->
+	<select id="selectNotListByMemNum" parameterType="long" resultType="notifyVO">
+        SELECT *
+        FROM notify_log
+        JOIN db_notify_template
+        USING (notify_type)
+        WHERE mem_num = #{mem_num}
+          AND (not_read_datetime IS NULL OR not_datetime >= SYSDATE - INTERVAL '14' DAY)
+        ORDER BY not_datetime DESC
+    </select>
 </mapper>
 
 

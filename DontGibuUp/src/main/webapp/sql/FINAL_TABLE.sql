@@ -550,12 +550,12 @@ COMMENT ON COLUMN DB_PREFERENCE.pref_detail IS '기부 성향 조사 결과 설�
 
 CREATE TABLE CHAL_FAV (
 	mem_num			number		NOT NULL,
-	chal_rev_num	number		NOT NULL
+	chal_num		number		NOT NULL
 );
 
 COMMENT ON COLUMN CHAL_FAV.mem_num IS '회원을 식별하는 번호,sequence 사용';
 
-COMMENT ON COLUMN CHAL_FAV.chal_rev_num IS '후기 고유 번호,sequence 사용';
+COMMENT ON COLUMN CHAL_FAV.chal_num IS '챌린지 고유 번호,sequence 사용';
 
 CREATE TABLE REPORT (
 	report_num			number							NOT NULL,
@@ -670,8 +670,7 @@ CREATE TABLE CHAL_CHAT (
 	chat_content	varchar2(900)					NOT NULL,
 	chat_filename	varchar2(400)					NULL,
 	chat_date		date			DEFAULT SYSDATE	NOT NULL,
-	chat_status		number							NOT NULL,
-	Field			VARCHAR(255)					NULL
+	chat_status		number							NOT NULL
 );
 
 COMMENT ON COLUMN CHAL_CHAT.chat_id IS '메시지 식별 번호,sequence 사용';
@@ -1048,11 +1047,11 @@ REFERENCES MEMBER (
 	mem_num
 );
 
-ALTER TABLE CHAL_FAV ADD CONSTRAINT FK_CHAL_REVIEW_TO_CHAL_FAV_1 FOREIGN KEY (
-	chal_rev_num
+ALTER TABLE CHAL_FAV ADD CONSTRAINT FK_CHAL_TO_CHAL_FAV_1 FOREIGN KEY (
+	chal_num
 )
-REFERENCES CHAL_REVIEW (
-	chal_rev_num
+REFERENCES CHALLANGE (
+	chal_num
 );
 
 ALTER TABLE REPORT ADD CONSTRAINT FK_MEMBER_TO_REPORT_1 FOREIGN KEY (

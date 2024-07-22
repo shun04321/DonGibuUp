@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+
+/************모달************/
+
 /* 전체 레이아웃
 ---------------------*/
 /* #main{
@@ -285,6 +288,7 @@ label[for="order_quatity"]{
 .item-image li{
 	padding:0 0 5px 0;
 }
+
 .item-detail form{
 	border:none;
 	width:470px;

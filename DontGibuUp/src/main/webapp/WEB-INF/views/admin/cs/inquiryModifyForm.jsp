@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <form:form action="reply" modelAttribute="inquiryVO">
+	<form:hidden path="inquiry_title" value="${inquiry.inquiry_title}"/>
 	<form:hidden path="mem_num" value="${inquiry.mem_num}"/>
 	<form:hidden path="inquiry_num" value="${inquiry.inquiry_num}"/>
 	<div>

@@ -315,3 +315,104 @@ ul#delivery_info li span{
 	display: inline-block;
 }
 
+/* 스타일 정의 */
+.item_subscribe {
+    text-align: center;
+    width: 600px;
+    padding: 10px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+}
+
+.item_subscribe img {
+    width: 30px;
+    height: 30px;
+}
+
+.cont-item {
+    display: flex;
+    flex-direction: column; /* 세로로 정렬 */
+    width: 100%;
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.info-item {
+    display: flex;
+    margin-top: 5px;
+    white-space: normal; /* 줄바꿈 허용 */
+}
+
+.info-item dt, .info-item dd {
+    margin: 0;
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+
+.info-item dt {
+    flex: 1;
+    text-align: left;
+    font-size: 14px;
+    padding-top: 30px;
+}
+
+.info-item dd {
+    flex: 1;
+    text-align: left;
+    padding-right: 20px; /* 간격 조절 */
+    font-size: 14px;
+    padding-top: 30px;
+}
+
+.header-item {
+    margin-top: 5px;
+    padding-bottom: 10px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.header-item dt {
+    padding-left: 20px; /* 간격 조절 */
+    display: flex;
+    align-items: center;
+}
+
+.header-item dt img {
+    margin-right: 10px;
+}
+
+.header-item dd {
+    margin-left: auto;
+    padding-right: 20px; /* 간격 조절 */
+}
+
+.modify-btn {
+     width: 600px;
+     height: 45px;
+     border: 0;
+     background-color: #007bff;
+     color: white;
+     font-size: 16px;
+     cursor: pointer;
+}
+.reg_date{
+	padding-left : 10px;
+}
+
+.focus {
+    font-size: 23px; /* 폰트 크기를 기본보다 작게 조절 */
+    text-decoration: underline; /* 밑줄 추가 */
+    color: #ff6600; /* 강조 색상 (원하는 색상으로 조절) */
+}
+
+.small{
+	font-size: 10px;
+	text-decoration: underline; /* 밑줄 추가 */
+    color: #ff6600; /* 강조 색상 (원하는 색상으로 조절) */
+}
+

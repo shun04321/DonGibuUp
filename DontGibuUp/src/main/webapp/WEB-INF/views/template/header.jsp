@@ -15,6 +15,7 @@
     <link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/header.css" rel="stylesheet">
 </head>
 
 <body id="section_1">
@@ -37,7 +38,8 @@
                         </a>
                     </p>
                 </div>
-
+				<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+				<script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.notify.js"></script>
                 <div class="col-lg-3 col-12 ms-auto d-lg-block d-none">
                     <ul class="social-icon">
                         <li class="social-icon-item">
@@ -56,12 +58,16 @@
                             <a href="#채팅" class="social-icon-link bi-chat-dots"></a>
                         </li>
                         
-	                    <li class="social-icon-item nav-item dropdown nanum">
-	                        <a href="#알림" class="social-icon-link bi-bell-fill"></a>
-	                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-	                            <li><a class="dropdown-item" href="#알림"><small>알림</small></a></li>
+                        <c:if test="${!empty user}">
+	                    <li class="social-icon-item nav-item dropdown nanum" id="notify_icon" data-memnum="${user.mem_num}">
+	                        <a href="#알림" class="social-icon-link bi-bell-fill">
+							    <span class="notification-badge" style="display:none;"></span>
+							</a>
+	                        <ul id="notify_icon_list" class="custom-dropdown-menu dropdown-menu dropdown-menu-light px-2" aria-labelledby="navbarLightDropdownMenuLink">
+	                            <li><a class="dropdown-item" href="#알림"></a></li>
 	                        </ul>
 	                    </li>
+	                    </c:if>
 
                     </ul>
                 </div>

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/admin.report.js"></script>
 <div class="page-main">
 	<h2>문의 내용</h2>
 	<div id="reportDetails">
@@ -15,13 +16,28 @@
 					<c:if test="${report.report_type == 5}">챌린지 인증</c:if>
 				</span>
 				<span>신고 등록일</span> <span id="reportDateText">${report.report_date}</span>
-			</div>		
+			</div>
+			<div>
+				<div>
+					<span>신고자</span> <span>${report.mem_num}</span> <span>${report.mem_nick}</span>
+				</div>
+				<div id="reported_mem">
+					<span>피신고자</span> <span>${report.reported_mem_num}</span> <span>${report.reported_mem_nick}</span>
+					<button class="expelBtn" data-nick="${report.reported_mem_nick}" data-num="${report.reported_mem_num}"  <c:if test="${report.reported_mem_status == 9}">disabled</c:if>>제명</button> 
+					<button class="suspendBtn" data-nick="${report.reported_mem_nick}" data-num="${report.reported_mem_num}" <c:if test="${report.reported_mem_status != 2}">disabled</c:if>>정지</button>				
+				</div>
+			</div>
 		</div>
 		<!-- 파일 다운로드 뷰 넣기 -->
 		<c:if test="${!empty report.report_filename}">
 		<div><span>첨부파일</span> <a href="file?report_num=${report.report_num}">${report.report_filename}</a></div>
 		</c:if>
 		<div id="reportContent">
+			<span>
+			<c:if test="${report.report_status == 0}">미처리</c:if>
+			<c:if test="${report.report_status == 1}">승인</c:if>
+			<c:if test="${report.report_status == 2}">반려</c:if>
+			</span>
 			<p>${report.report_content}</p>
 		</div>
 		<c:if test="${empty report.report_reply}">

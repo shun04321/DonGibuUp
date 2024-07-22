@@ -4,7 +4,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	let contextPath = "${pageContext.request.contextPath}";
-	let status = "${status}";
+	let status = "${status}"; 
 </script>
 <div id="challengeContainer">
 	<div class="month-section">
@@ -44,7 +44,12 @@
 									</c:when>
 									<c:when test="${status == 'post'}">
 										<a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
-										<a href="${pageContext.request.contextPath}/challenge/review/write?chal_num=${challengeJoin.chal_num}">후기작성</a>
+										<c:if test="${challengeData.hasReview}">
+							                <a href="${pageContext.request.contextPath}/challenge/review/list?chal_num=${challengeJoin.chal_num}">후기보기</a>
+							            </c:if>
+							            <c:if test="${!challengeData.hasReview}">
+							                <a href="${pageContext.request.contextPath}/challenge/review/write?chal_num=${challengeJoin.chal_num}">후기작성</a>
+							            </c:if>
 									</c:when>
 								</c:choose>
 							</div>

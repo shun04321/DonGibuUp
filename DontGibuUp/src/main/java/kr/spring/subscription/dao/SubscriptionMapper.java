@@ -26,7 +26,7 @@ public interface SubscriptionMapper {
 	//정기기부 수정 (결제 수단)
 	
 	//정기기부 중단
-	@Update("UPDATE subscription SET sub_status=1 WHERE sub_num=#{sub_num}")
+	@Update("UPDATE subscription SET sub_status=1, cancel_date=SYSDATE WHERE sub_num=#{sub_num}")
 	public void updateSub_status(long sub_num);
 	
 	
