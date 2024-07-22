@@ -84,8 +84,9 @@ public class MemberAjaxController {
 		return mapAjax;
 	}
 	/*===================================
-	 * 			회원 알림 불러오기
+	 * 				회원 알림
 	 *==================================*/
+	//알림 목록
 	@ResponseBody
 	@GetMapping("/member/getNotification")
 	public Map<String, Object> getNotification(HttpSession session) {
@@ -96,10 +97,30 @@ public class MemberAjaxController {
 		if (user == null) {
 			// 로그인 안 됨
 			mapAjax.put("result", "logout");
-		}  else {
+		} else {
 			List<NotifyVO> list = notifyService.selectNotListByMemNum(user.getMem_num());
 			log.debug("<<회원 알림>> : " + list);
 			mapAjax.put("list", list);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
+	}
+	
+	//알림 읽기
+	@ResponseBody
+	@PostMapping("/member/readNotification")
+	public Map<String, Object> readNotification(long not_num, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else {
+			notifyService.readNotifyLog(not_num);
+			mapAjax.put("result", "success");
 		}
 
 		return mapAjax;
