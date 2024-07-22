@@ -23,6 +23,8 @@ public class PurchaseVO {
     private String item_photo;
     private Date payDate;
     private int payStatus;
+    private String deliveryStatus;  // 배송 상태 필드 추가
+    
     
     public long getMemNum() {
         return memNum;

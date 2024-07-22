@@ -5,9 +5,9 @@
 <mapper namespace="kr.spring.goods.dao.PurchaseMapper">
 	<insert id="insertPurchase" parameterType="kr.spring.goods.vo.PurchaseVO">
     INSERT INTO purchase
-    (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, item_num)
+    (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, item_num, delivery_status)
     VALUES
-    (purchase_seq.nextval, #{memNum}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, #{item_num})
+    (purchase_seq.nextval, #{memNum}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, #{item_num}, '배송 준비 중')
 </insert>
 	
 	<insert id="insertRefund" parameterType="kr.spring.goods.vo.RefundVO">
@@ -17,12 +17,18 @@
     (refund_seq.nextval, #{memNum}, #{impUid}, #{reason}, SYSDATE)
 	</insert>
 	
-	  <select id="getPurchaseListByMember" resultType="kr.spring.goods.vo.PurchaseVO">
-    SELECT p.purchase_num, p.mem_num, p.item_num, i.item_name, i.item_photo, p.imp_uid, p.pay_price AS amount, p.pay_date AS payDate, p.pay_status AS payStatus
+	 <select id="getPurchaseListByMember" resultType="kr.spring.goods.vo.PurchaseVO">
+    SELECT p.purchase_num, p.mem_num, p.item_num, i.item_name, i.item_photo, p.imp_uid, p.pay_price AS amount, p.pay_date AS payDate, p.pay_status AS payStatus, p.delivery_status AS deliveryStatus
     FROM purchase p
     JOIN item i ON p.item_num = i.item_num
     WHERE p.mem_num = #{memNum}
 </select>
+
+<update id="updateDeliveryStatus">
+    UPDATE purchase
+    SET delivery_status = #{deliveryStatus}
+    WHERE purchase_num = #{purchaseNum}
+</update>
 
 	<update id="updateRefundStatus">
     UPDATE purchase
