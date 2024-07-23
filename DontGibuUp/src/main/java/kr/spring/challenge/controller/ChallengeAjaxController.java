@@ -298,7 +298,7 @@ public class ChallengeAjaxController {
 
 			//챌린지 시작 채팅 메시지 설정
 			ChallengeChatVO chatVO = new ChallengeChatVO();
-			chatVO.setChat_content("챌린지가 시작되었습니다!");
+			chatVO.setChat_content("챌린지가 시작되었습니다! @{common}");
 			chatVO.setMem_num(member.getMem_num());
 
 			challengeService.insertChallenge(challenge,challengeJoinVO,challengePaymentVO,chatVO);
@@ -371,6 +371,31 @@ public class ChallengeAjaxController {
 		}
 		return mapJson;
 	}
+	
+	//채팅 메시지 읽어오기
+	@GetMapping("/challenge/join/chalReadChat")
+	@ResponseBody
+	public Map<String,Object> readChallengeChat(long chal_num,HttpSession session){
+		Map<String,Object> mapJson = new HashMap<>();
+		
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else {
+			Map<String,Object> map = new HashMap<>();
+			map.put("chal_num", chal_num);
+			map.put("mem_num", user.getMem_num());
+			List<ChallengeChatVO> chatList = challengeService.selectChallengeChat(map);
+			
+			mapJson.put("result", "success");
+			mapJson.put("chatList", chatList);
+			mapJson.put("mem_num", user.getMem_num());
+		}
+				
+		return mapJson;
+	}
+	
 
 	/*==========================
 	 *  챌린지 인증 상세

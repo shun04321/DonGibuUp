@@ -19,9 +19,9 @@ public class ChallengeChatVO {
 	private MultipartFile upload;
 	private String chat_filename;
 	private Date chat_date;
-	private int chat_status;
 	
 	//추가 외부 필드
 	private String mem_nick;
 	private String mem_photo;
+	private int chat_readCount;
 }

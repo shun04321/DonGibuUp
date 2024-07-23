@@ -229,8 +229,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 	//챌린지 채팅 메시지 읽기
 	@Override
 	public List<ChallengeChatVO> selectChallengeChat(Map<String, Object> map) {
-		// TODO Auto-generated method stub
-		return null;
+		//채팅 읽음 표시처리
+		challengeMapper.deleteChatRead(map);
+		//채팅 내용 불러오기				 
+		return challengeMapper.selectChallengeChat(map);
 	}
 	//챌린지 채팅방 삭제
 	@Override

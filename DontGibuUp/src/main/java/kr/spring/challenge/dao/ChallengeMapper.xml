@@ -253,6 +253,33 @@
     </if>,SYSDATE)
 	</insert>
 	
+	<!-- 챌린지 채팅 읽기 -->
+	<select id="selectChallengeChat" parameterType="map" resultType="challengeChatVO">
+		SELECT 
+			<![CDATA[
+			REPLACE(REPLACE(chat_content,'<','&lt;'),'>','&gt;') chat_content,
+			]]>
+			chat_filename,
+			chat_date,
+			chat_readCount,
+			mem_nick,
+			mem_photo
+		FROM chal_chat
+		LEFT OUTER JOIN (SELECT 
+							chat_id,
+							COUNT(*) chat_readCount
+						 FROM chal_chat_read
+						 GROUP BY chat_id)
+		USING(chat_id)
+		JOIN member USING(mem_num)
+		JOIN member_detail USING(mem_num)
+		WHERE chal_num=#{chal_num}
+		AND chat_date >= (SELECT chal_joi_date
+							FROM chal_join
+							WHERE chal_num=#{chal_num}
+							AND mem_num=#{mem_num})
+		ORDER BY chat_date ASC								 
+	</select>
 	
 	<!-- 챌린지 인증 -->
 	<insert id="insertChallengeVerify"

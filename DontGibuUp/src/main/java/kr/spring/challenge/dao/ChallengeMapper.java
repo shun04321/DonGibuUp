@@ -3,6 +3,7 @@ package kr.spring.challenge.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -64,6 +65,7 @@ public interface ChallengeMapper {
     //채팅 메시지 읽기
     public List<ChallengeChatVO> selectChallengeChat(Map<String,Object> map);
     //읽은 채팅 기록 삭제
+    @Delete("DELETE FROM chal_chat_read WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
     public void deleteChatRead(Map<String,Object> map);
     //챌린지 종료시 채팅기록 삭제
     public void deleteChallengeChat(Long chal_num);
