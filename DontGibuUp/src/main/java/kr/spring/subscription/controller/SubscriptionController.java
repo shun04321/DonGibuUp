@@ -341,27 +341,50 @@ public class SubscriptionController {
           
 	    	}
 	    }
-	    
+	    //정기기부 현황 및 정기결제 내역
 	    @GetMapping("/subscription/subscriptionList")
 		public String subscriptionList(HttpSession session, Model model) {
 
-			Map<String,Object> map = 
-					new HashMap<String,Object>();
-
 			MemberVO user = (MemberVO)session.getAttribute("user");
-			
-			
+			int payCount = sub_paymentService.getSub_paymentCountByMem_num(user.getMem_num());
+			List<Sub_paymentVO> paylist = null;
+			if(payCount > 0) {
+				
+				paylist = sub_paymentService.getSub_paymentByMem_num(user.getMem_num());
+			}
+			for (Sub_paymentVO payment : paylist) {
+	            // sub_num을 사용하여 관련된 SubscriptionVO 가져오기
+	            SubscriptionVO subscription = subscriptionService.getSubscription(payment.getSub_num());
+	            DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscription.getDcate_num());
+	            subscription.setDonationCategory(categoryVO);
+	            if (subscription != null) {
+	                // SubscriptionVO에서 필요한 정보를 설정
+	                payment.setDcate_name(subscription.getDonationCategory().getDcate_name());
+	                payment.setDcate_charity(subscription.getDonationCategory().getDcate_charity());
+	                payment.setSub_method(subscription.getSub_method());
+	                if(subscription.getEasypay_method()!=null) {
+	                	payment.setEasypay_method(subscription.getEasypay_method());
+	                }
+	                if(subscription.getCard_nickname()!=null) {
+	                	payment.setCard_nickname(subscription.getCard_nickname());
+	                }
+	            }
+			}
 			//페이지 처리
 			int count = subscriptionService.getSubscriptionCount(user.getMem_num());
 			List<SubscriptionVO> list = null;
 			if(count > 0) {
 				list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
 			}
+			model.addAttribute("payCount",payCount);
+			model.addAttribute("paylist",paylist);
 			model.addAttribute("count", count);
 			model.addAttribute("list", list);
 
 			return "subscriptionList";
 		}
+	    
+	    //정기기부 상세
 	    @GetMapping("/subscription/subscriptionDetail")
 	    public String subscriptionDetail(long sub_num, Model model) throws ParseException {
 	        SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);

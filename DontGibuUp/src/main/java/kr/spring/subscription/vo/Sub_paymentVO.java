@@ -14,4 +14,10 @@ public class Sub_paymentVO {
 	private int sub_price;
 	private String sub_pay_date;
 	private int sub_pay_status;
+	
+	private String dcate_name;
+	private String dcate_charity;
+	private String sub_method;
+	private String easypay_method;
+	private String card_nickname;
 }
