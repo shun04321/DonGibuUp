@@ -14,15 +14,15 @@
 </script>
 <h2>챌린지 인증내역</h2>
 <div class="challenge-summary">
-	<div class="challenge-info">
+	<div class="challenge-header">
 		<img src="<c:url value='/images/${challenge.chal_photo}'/>"
 			class="challenge-thumbnail responsive-image" alt="챌린지 썸네일">
-		<div class="challenge-info">
-			<div class="details">
-				<h3>${challenge.chal_title}</h3>
+		<div class="challenge-info">			
+			<h2 class="align-left">${challenge.chal_title}</h2>
+			<div class="details">	
 				<button class="detail-button"
 					onclick="location.href='${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}'">상세보기</button>
-			</div>
+			</div>		
 		</div>
 	</div>
 		<div class="challenge-stats">
