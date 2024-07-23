@@ -88,4 +88,11 @@
 			<div id="verify_content"></div>						
 		</div>
 </div>
+
+<!-- 모달 창 구조 추가 -->
+<div id="photoModal" class="custom-modal">
+    <span class="custom-close">&times;</span>
+    <img class="custom-modal-content" id="modalImage">
+</div>
+
 <script src="${pageContext.request.contextPath}/js/challenge/challenge.verify.js"></script>

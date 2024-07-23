@@ -57,6 +57,27 @@
 		chal_joi_num = user_joi_num;
 		getItems(1);
 	});
+	
+	$(document).ready(function() {
+	    // 이미지 클릭 이벤트
+	    $(document).on('click', '.verify-photo', function() {
+	        var src = $(this).attr('data-photo-src');
+	        $('#modalImage').attr('src', src);
+	        $('#photoModal').css('display', 'block');
+	    });
+	
+	    // 모달 닫기 이벤트
+	    $(document).on('click', '.custom-close', function() {
+	        $('#photoModal').css('display', 'none');
+	    });
+	
+	    // 모달 외부 클릭 시 닫기
+	    $(window).on('click', function(event) {
+	        if ($(event.target).is('#photoModal')) {
+	            $('#photoModal').css('display', 'none');
+	        }
+	    });
+	});
 		
  	//참가자 목록을 불러오는 메서드
 	function getItems(currentPage){
@@ -123,7 +144,7 @@
 						let reg_date = new Date(item.chal_reg_date);
 						reg_date.setHours(0,0,0,0);						
 						output += '<div class="challenge-verify-card">';
-						output += '<img src="'+contextPath+'/upload/'+item.chal_ver_photo+'" width="100" height="50" class="responsive-image">';	
+						output += '<img src="'+contextPath+'/upload/'+item.chal_ver_photo+'" width="100" height="50" class="responsive-image verify-photo" data-photo-src="'+contextPath+'/upload/'+item.chal_ver_photo+'">'; 
 						output += '<div class="content">';
 						output += '<div class="date-status">';
 						output += '<span class="date">'+item.chal_reg_date+'</span>';	
