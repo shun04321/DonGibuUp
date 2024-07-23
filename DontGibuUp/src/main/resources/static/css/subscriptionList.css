@@ -60,3 +60,62 @@
 	margin-left: auto;
 	padding-right: 50px;
 }
+
+.page-container {
+    padding: 20px;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    background-color: #f1f1f1;
+    margin-right: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.tab-button:hover {
+    background-color: #ddd;
+}
+
+.tab-button.active {
+    background-color: #007bff;
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.item_subscribe {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.header-item dt a img {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.header-item dt a {
+    display: flex;
+    align-items: center;
+}
+
+.cont-item dl.info-item {
+    margin-bottom: 10px;
+}
