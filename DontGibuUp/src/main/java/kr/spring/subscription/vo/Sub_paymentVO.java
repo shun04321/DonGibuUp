@@ -15,6 +15,7 @@ public class Sub_paymentVO {
 	private String sub_pay_date;
 	private int sub_pay_status;
 	
+	private long dcate_num;
 	private String dcate_name;
 	private String dcate_charity;
 	private String sub_method;

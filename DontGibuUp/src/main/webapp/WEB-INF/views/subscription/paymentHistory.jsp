@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/subscriptionList.css" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/subscriptionList.js"></script>
-
 <div class="page-container">
     <div class="tabs">
         <button class="tab-button" onclick="location.href='subscriptionList'">나의 정기기부 목록</button>
@@ -40,19 +39,21 @@
                 <div class="result-display">표시할 게시물이 없습니다.</div>
             </c:if>
             <c:if test="${payCount > 0}">
-                <table class="striped-table">
-                    <tr>
-                        <th>결제시각</th>
+             <div class="align-left">
+            	<span class="small">(결제일로부터 21일이 지나면 환불이 불가능합니다.)</span>
+            </div>
+                <table class="striped-table">               
+                    <tr>	
+                        <th>결제일</th>
                         <th>기부처</th>
                         <th>결제수단</th>
-                        <th>결제금액</th>
+                        <th>결제금액</th>      
                     </tr>
                     <c:forEach var="subpayment" items="${paylist}">
                         <tr>
                             <td class="align-center">${subpayment.sub_pay_date}</td>
-                            <td class="align-center">${subpayment.dcate_charity}</td>
-                            <td class="align-center">
-                                <a href="categoryDetail?dcate_num=${dcate.dcate_num}">
+                            <td class="align-center"><a href="/category/categoryDetail?dcate_num=${subpayment.dcate_num}">${subpayment.dcate_charity}</a></td>
+                            <td class="align-center">   
                                     <c:choose>
                                         <c:when test="${subpayment.sub_method == 'card'}">
                                             카드 / ${subpayment.card_nickname}
@@ -63,13 +64,13 @@
                                         <c:otherwise>
                                             알 수 없음
                                         </c:otherwise>
-                                    </c:choose>
-                                </a>
+                                    </c:choose>                              
                             </td>
                             <td class="align-center sub-price">${subpayment.sub_price}</td>
                         </tr>
                     </c:forEach>
                 </table>
+               
                 <div class="align-center">${page}</div>
             </c:if>
         </div>

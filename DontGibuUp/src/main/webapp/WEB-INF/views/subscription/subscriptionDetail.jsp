@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
-<head>
     <meta charset="UTF-8">
     <title>Subscription Page</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
@@ -14,8 +13,10 @@
         var cancelDate = "${cancel_date}".trim();
     </script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/subscriptionDetail.js"></script>
-</head>
-<body>
+    <div class="tabs">
+        <button class="tab-button active" onclick="location.href='subscriptionList'">나의 정기기부 목록</button>
+        <button class="tab-button" onclick="location.href='paymentHistory'">정기기부 결제내역</button>
+    </div>
     <div class="item_subscribe">
         <dl class="header-item">
             <dt>
@@ -66,5 +67,3 @@
     <c:if test="${subscription.sub_status == 1}">
         <input type="button" value="해지된 정기기부" class="modify-btn" disabled="disabled">
     </c:if>
-</body>
-</html>

@@ -416,3 +416,30 @@ ul#delivery_info li span{
     color: #ff6600; /* 강조 색상 (원하는 색상으로 조절) */
 }
 
+.tabs {
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 20px;
+}
+
+.tab-button {
+	padding: 10px 20px;
+	cursor: pointer;
+	border: none;
+	background-color: #f1f1f1;
+	margin-right: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.tab-button:hover {
+	background-color: #ddd;
+}
+
+.tab-button.active {
+	background-color: #007bff;
+	color: white;
+	border-bottom: 2px solid white;
+}
+
+

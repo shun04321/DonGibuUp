@@ -377,7 +377,8 @@ public class SubscriptionController {
 		map.put("keyfield", keyfield);
 		map.put("keyword", keyword);
 		map.put("mem_num", user.getMem_num());
-
+		
+		
 		int payCount = sub_paymentService.getSub_paymentCountByMem_num(map);
 		//결제내역 페이징
 		 PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, payCount, 10, 10, "paymentHistory", "&category=" + category);
@@ -387,7 +388,21 @@ public class SubscriptionController {
 			map.put("start", page.getStartRow());
 			map.put("end", page.getEndRow());
 			paylist = sub_paymentService.getSub_paymentByMem_num(map);
-		}
+			
+
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm");
+
+            for (Sub_paymentVO payment : paylist) {
+                try {
+                    Date date = inputFormat.parse(payment.getSub_pay_date());
+                    payment.setSub_pay_date(outputFormat.format(date));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+		
 
 		model.addAttribute("page",page.getPage());
 		model.addAttribute("payCount",payCount);

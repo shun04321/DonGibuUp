@@ -169,7 +169,6 @@
 #paymentHistory .striped-table {
 	width: 100%;
 	border-collapse: collapse;
-	margin-top: 20px;
 }
 
 #paymentHistory .striped-table th, #paymentHistory .striped-table td {
@@ -231,4 +230,9 @@
 
 #search_form{
 	margin-top:25px;
+}
+
+.small{
+	font-size:10px;
+	margin-top:20px;
 }
