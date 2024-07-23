@@ -5,6 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+    <!-- CSS FILES -->
+    <link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
 <title><tiles:getAsString name="title" /></title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css" type="text/css">
 <tiles:insertAttribute name="css" ignore="true" />

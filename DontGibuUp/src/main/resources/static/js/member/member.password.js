@@ -25,9 +25,9 @@ $(function() {
 				} else if (param.result == "notMatched" && currentPassword != "") {
 					cur_pw_checked = 0;
 					feedbackElement.text('비밀번호가 일치하지 않습니다.');
-					feedbackElement.css('color', 'red');
+					feedbackElement.css('color', '#dc3545');
 
-					inputElement.css('border-color', 'red');
+					inputElement.css('border-color', '#dc3545');
 					inputElement.val('');
 				} else if (currentPassword == "") {
 					cur_pw_checked = 0;

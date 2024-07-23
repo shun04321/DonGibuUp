@@ -29,12 +29,12 @@ public class FileUtil {
 		if(file!=null && !file.isEmpty()) {
 			//파일명이 중복되지 않도록 파일명 변경
 			//원래 파일명을 보존하지 않을 경우
-			filename = UUID.randomUUID()+
-					    file.getOriginalFilename().substring(
-					    	file.getOriginalFilename()
-					    	    .lastIndexOf("."));
+//			filename = UUID.randomUUID()+
+//					    file.getOriginalFilename().substring(
+//					    	file.getOriginalFilename()
+//					    	    .lastIndexOf("."));
 			// _ 이후에 원래 파일명을 보존할 경우
-			//filename = UUID.randomUUID()+"_"+file.getOriginalFilename();
+			filename = UUID.randomUUID()+"_"+file.getOriginalFilename();
 			file.transferTo(new File(path+"/"+filename));
 		}		
 		return filename;

@@ -14,7 +14,7 @@ $(function() {
 			} else {
 				pw_checked = 0;
 				check_pw_msg.text('비밀번호가 일치하지 않습니다');
-				check_pw_msg.css('color', 'red');
+				check_pw_msg.css('color', '#dc3545');
 			}
 		}
 	});
@@ -50,7 +50,7 @@ $(function() {
 						email_checked = 0;
 						err_msg.text('');
 						email_check_msg.text('사용할 수 없는 이메일입니다');
-						email_check_msg.css('color', 'red');
+						email_check_msg.css('color', '#dc3545');
 					} else if (param.result == "notExist") {
 						email_checked = 1;
 						err_msg.text('');
@@ -93,7 +93,7 @@ $(function() {
 						nick_checked = 0;
 						err_msg.text('');
 						nick_check_msg.text('사용할 수 없는 닉네임입니다');
-						nick_check_msg.css('color', 'red');
+						nick_check_msg.css('color', '#dc3545');
 					} else if (param.result == "notExist") {
 						nick_checked = 1;
 						err_msg.text('');

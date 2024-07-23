@@ -111,7 +111,7 @@ $(function() {
 						nick_checked = 0;
 						err_msg.text('');
 						nick_check_msg.text('사용할 수 없는 닉네임입니다');
-						nick_check_msg.css('color', 'red');
+						nick_check_msg.css('color', '#dc3545');
 					} else if (param.result == "notExist") {
 						nick_checked = 1;
 						err_msg.text('');
@@ -138,11 +138,25 @@ $(function() {
 		nick_checked = 0;
 		nick_check_msg.text('');
 	});
+	
+	/*===============================
+		전송 버튼 매핑
+	================================*/
+    $('#update_btn').click(function(event) {
+        event.preventDefault();
+        $('#update_btn_hide').click();
+    });
 
 	/*===============================
 		전송방지
 	================================*/
-	$('#member_update').submit(function(event) {
+	$('#member_update').submit(function() {
+		
+		if (nick_checked == 0) {
+			$('#mem_nick').trigger('blur');
+			return false;
+		}
+		
 		let phone2 = $('#phone2').val();
 		let phone3 = $('#phone3').val();
 		
