@@ -63,6 +63,83 @@
 .pageBtn {
 	margin: 0 5px;
 }
+/*챌린지 채팅*/
+#chatting_message{
+	border:1px solid black;
+	width:660px;
+	height:500px;
+	margin:0 auto;
+	padding:10px;
+	overflow:auto;
+}
+.date-position{
+	text-align:center;
+	
+}
+.date-position span{
+    display:inline-block;
+	width:300px;
+	height:20px;
+	border-radius:10px;	
+	background-color:#f2efef;
+}
+.from-position{
+	width:300px;
+	margin:10px 0 10px 330px;
+}
+
+.from-position .item{
+	background-color:yellow;
+	padding:10px;
+	min-height:50px;	
+	border-radius: 20px;
+	border-top-right-radius:0;	
+}
+.to-position{
+	width:300px;
+	margin:10px 0 10px 0;
+}
+.to-position .item{
+	background-color:pink;
+	padding:10px;
+	min-height:50px;
+	border-radius: 20px;
+	border-top-left-radius:0;
+}
+
+.to-position div.space-photo{
+	float:left;
+	width:15%;
+}
+.to-position div.space-message{
+	float:left;
+	width:85%;
+}
+
+.to-position div.space-clear{
+	clear:both;
+}
+.greeting-message{
+	width:230px;
+	min-height:24px;
+	border-radius:10px;
+	background-color:#eee;
+	margin:10px auto;
+	text-align:center;
+	padding:8px 4px;
+	clear:both;
+}
+form#chat_writeForm{
+	margin-top:5px;
+	border:none;
+	width:682px;
+	padding:0;
+	overflow:hidden;
+}
+#chat_content{
+	width:100%;
+	margin:0;
+}
 /* SY */
 /* 챌린지 상세 */
 .challenge-detail {

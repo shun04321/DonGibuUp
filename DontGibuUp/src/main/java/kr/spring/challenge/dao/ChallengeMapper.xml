@@ -236,7 +236,7 @@
 	<!-- 챌린지 채팅방 메시지 생성 -->
 	<insert id="insertChallengeChat" parameterType="challengeChatVO">
 		INSERT INTO chal_chat
-		(chat_id, chal_num, mem_num, chat_content, chat_filename, chat_date)
+		(chat_id, chal_num, mem_num, chat_content, chat_filename)
 		VALUES
 		(#{chat_id},#{chal_num},#{mem_num},
 		<if test="chat_content != null">
@@ -250,7 +250,7 @@
     </if>
     <if test="chat_filename == null">
     	null
-    </if>,SYSDATE)
+    </if>)
 	</insert>
 	
 	<!-- 챌린지 채팅 읽기 -->
@@ -263,7 +263,8 @@
 			chat_date,
 			chat_readCount,
 			mem_nick,
-			mem_photo
+			mem_photo,
+			mem_num
 		FROM chal_chat
 		LEFT OUTER JOIN (SELECT 
 							chat_id,

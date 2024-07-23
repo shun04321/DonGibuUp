@@ -2,7 +2,30 @@ $(function() {
 	/*----------------------
 	 * 웹 소켓 연결
 	 *----------------------*/
+	function connectWebSocket(){
+		message_socket = new WebSocket('ws://localhost:8000/message-ws');
+		message_socket.onopen=function(evt){
+			console.log('채팅메시지 접속 : '+ $('#chatDetail').length);
+			//$('#talkDetail').length = 0이면 접속, 1이면 미접속
+			if($('#chatDetail').length == 1){
+				message_socket.send('msg');
+			}
+		};
+		//서버로부터 메시지를 받으면 호출되는 함수 지정
+		message_socket.onmessage=function(evt){
+			//메시지 읽기
+			let data = evt.data;
 
+			if($('#chatDetail').length==1){
+				readChat();
+			}
+		};
+		message_socket.onclose=function(evt){
+			//소켓이 종료된 후 부가적인 작성이 있을 경우 명시
+			console.log('chat close');
+			window.close();
+		}
+	}
 
 	/*----------------------
 	 * 채팅하기
@@ -78,18 +101,17 @@ $(function() {
 						//날짜 표시
 						if (chat_date != item.chat_date.split(' ')[0]) {
 							chat_date = item.chat_date.split(' ')[0];
-							output += '<div class="날짜 표시 css 지정"><span>' + chat_date + '</span></div>';
+							output += '<div class="date-position"><span>' + chat_date + '</span></div>';
 						}
 
 						//메시지 표시
 						if (item.chat_content != null && item.chat_filename != null) {//메시지,이미지 모두 있는 경우
-
+							output += readImageAndMessage(param,item);
 						} else if (item.chat_content != null) {//메시지만 있는 경우
-							readContent(param,item);
+							output += readContent(param, item);
 						} else {//이미지만 있는 경우
-
+							output += readImage(param,item);
 						}
-
 						//문서 객체에 추가
 						$('#chatting_message').append(output);
 						//스크롤을 하단에 위치시킴
@@ -104,11 +126,11 @@ $(function() {
 			}
 		});
 	}
-
-	function readContent(param,item) {
+	//전송한 채팅 메시지 불러오기
+	function readContent(param, item) {
 		let sub_output = '';
 		if (item.chat_content.indexOf('@{common}@') >= 0) {
-			//챌린지 시작, 신규 회원 입장 메시지
+			//챌린지 시작, 신규 회원 입장 메시지(제외 예정)
 			sub_output += '<div class="greeting-message">';
 			sub_output += item.chat_content.substring(0, item.message.indexOf('@{common}@'));
 			sub_output += '</div>';
@@ -117,18 +139,18 @@ $(function() {
 			if (item.mem_num != param.mem_num) {
 				sub_output += '<div class="to-position">';
 				sub_output += '<div class="space-photo">';
-				if(item.mem_photo != null){
+				if (item.mem_photo != null) {
 					sub_output += `<img src="${contextPath}/upload/${item.mem_photo}" width="40" height="40" class="my-photo">`;
-				}else{
-					sub_output += `<img src="${contextPath}/image/basicProfile.png" width="40" height="40" class="my-photo">`;
-				}				
+				} else {
+					sub_output += `<img src="${contextPath}/images/basicProfile.png" width="40" height="40" class="my-photo">`;
+				}
 				sub_output += '</div><div class="space-message">';
-				sub_output += item.id;
-			}else{
+				sub_output += item.mem_nick;
+			} else {
 				sub_output += '<div class="from-position">';
 			}
 			sub_output += '<div class="item">';
-			sub_output +=  + ' <span>' + item.chal_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</span>';
+			sub_output += '<span>' + item.chat_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</span>';
 			sub_output += '</div>';
 			//안 읽은 사람수, 작성 시간 추출
 			sub_output += `<span>
@@ -138,11 +160,70 @@ $(function() {
 			sub_output += '</div><div class="space-clear"></div>';
 			sub_output += '</div>';
 		}
+		return sub_output;
 	}
-
-	function readImage(item) {
+	
+	//채팅시 전송한 이미지 불러오기
+	function readImage(param,item) {
 		let sub_output = '';
-
+		if (item.mem_num != param.mem_num) {
+			sub_output += '<div class="to-position">';
+			sub_output += '<div class="space-photo">';
+			if (item.mem_photo != null) {
+				sub_output += `<img src="${contextPath}/upload/${item.mem_photo}" width="40" height="40" class="my-photo">`;
+			} else {
+				sub_output += `<img src="${contextPath}/images/basicProfile.png" width="40" height="40" class="my-photo">`;
+			}
+			sub_output += '</div><div class="space-message">';
+			sub_output += item.mem_nick;
+		} else {
+			sub_output += '<div class="from-position">';
+			sub_output += '<div class="space-message">';
+		}
+		sub_output += '<div class="item">';
+		sub_output += `<span><img src="${contextPath}/upload/${item.chat_filename}"></span>`;
+		sub_output += '</div>';
+		//안 읽은 사람수, 작성 시간 추출
+		sub_output += `<span>
+						    <div>${item.chat_readCount}</div>
+						    <div>${item.chat_date.split(' ')[1]}</div>
+					   </span>`;
+		sub_output += '</div><div class="space-clear"></div>';
+		sub_output += '</div>';
+		
+		return sub_output;
+	}
+	
+	//채팅시 이미지,메시지가 모두 존재하는 경우
+	function readImageAndMessage(param,item){
+		let sub_output = '';
+		if (item.mem_num != param.mem_num) {
+			sub_output += '<div class="to-position">';
+			sub_output += '<div class="space-photo">';
+			if (item.mem_photo != null) {
+				sub_output += `<img src="${contextPath}/upload/${item.mem_photo}" width="40" height="40" class="my-photo">`;
+			} else {
+				sub_output += `<img src="${contextPath}/images/basicProfile.png" width="40" height="40" class="my-photo">`;
+			}
+			sub_output += '</div><div class="space-message">';
+			sub_output += item.mem_nick;
+		} else {
+			sub_output += '<div class="from-position">';
+			sub_output += '<div class="space-message">';
+		}
+		sub_output += '<div class="item">';
+		sub_output += `<div><img src="${contextPath}/upload/${item.chat_filename}"></div>`;
+		sub_output += '<div>' + item.chat_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</div>';
+		sub_output += '</div>';
+		//안 읽은 사람수, 작성 시간 추출
+		sub_output += `<span>
+						    <div>${item.chat_readCount}</div>
+						    <div>${item.chat_date.split(' ')[1]}</div>
+					   </span>`;
+		sub_output += '</div><div class="space-clear"></div>';
+		sub_output += '</div>';
+		
+		return sub_output;
 	}
 
 	readChat();

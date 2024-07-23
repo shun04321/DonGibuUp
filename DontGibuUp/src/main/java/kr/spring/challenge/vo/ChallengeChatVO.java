@@ -1,7 +1,5 @@
 package kr.spring.challenge.vo;
 
-import java.sql.Date;
-
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -18,7 +16,7 @@ public class ChallengeChatVO {
 	private String chat_content;
 	private MultipartFile upload;
 	private String chat_filename;
-	private Date chat_date;
+	private String chat_date;
 	
 	//추가 외부 필드
 	private String mem_nick;

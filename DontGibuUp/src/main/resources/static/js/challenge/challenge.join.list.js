@@ -36,7 +36,7 @@ $(document).on('click','.chal_talk',function(e){
 			if(rsp.result == 'logout'){
 				window.location.replace(contextPath+'/member/login');
 			}else if(rsp.result == 'success'){
-				window.open('chal_chatDetail','Popup','width="400" height="800"');
+				window.open('chal_chatDetail','Popup','width=800,height=800');
 			}
 		},
 		error:function(){

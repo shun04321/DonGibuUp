@@ -211,7 +211,7 @@ public class ChallengeAjaxController {
 			challengePaymentVO.setMem_num(member.getMem_num());
 			challengePaymentVO.setChal_pay_price(chalPayPrice);
 			challengePaymentVO.setChal_point(chalPoint);
-			challengePaymentVO.setOd_imp_uid(odImpUid);
+			challengePaymentVO.setOd_imp_uid(odImpUid);			
 
 			try {
 				challengeService.insertChallengeJoin(challengeJoinVO, challengePaymentVO);
@@ -285,7 +285,6 @@ public class ChallengeAjaxController {
 			//챌린지 참가 정보 저장
 			ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
 			challengeJoinVO.setMem_num(member.getMem_num());
-			//challengeJoinVO.setChal_num(challenge.getChal_num());
 			challengeJoinVO.setDcate_num(dcateNum);
 			challengeJoinVO.setChal_joi_ip(request.getRemoteAddr());
 
