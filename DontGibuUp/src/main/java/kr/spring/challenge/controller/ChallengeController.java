@@ -472,20 +472,16 @@ public class ChallengeController {
 
 	//챌린지 인증 목록
 	@GetMapping("/challenge/verify/list")
-	public ModelAndView verifyList(HttpSession session,@RequestParam(defaultValue="1") int pageNum) {		
-		Long chal_num = (Long) session.getAttribute("chal_num");
-		Long chal_joi_num = (Long) session.getAttribute("chal_joi_num");
-		String status = (String) session.getAttribute("status");
-
-		session.removeAttribute("status");
-
+	public ModelAndView verifyList(long chal_joi_num,long chal_num,
+			@RequestParam(value = "status", defaultValue = "pre") String status,
+			@RequestParam(defaultValue="1") int pageNum) {		
 		Map<String, Object> map = new HashMap<>();		
 		map.put("chal_joi_num", chal_joi_num);
 
 		//본인의 총 인증 개수 불러오기
 		int count = challengeService.selectChallengeVerifyListRowCount(map);
 
-		PagingUtil page = new PagingUtil(pageNum,count,6,10,"list");
+		PagingUtil page = new PagingUtil(pageNum,count,6,10,"list","&chal_num="+chal_num+"&chal_joi_num="+chal_joi_num+"&status=on");
 
 		List<ChallengeVerifyVO> verifyList = null;
 

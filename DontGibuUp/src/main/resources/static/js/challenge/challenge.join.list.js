@@ -1,4 +1,4 @@
-$(document).on('click','.chal_join',function(e){
+/*$(document).on('click','.chal_join',function(e){
 	e.preventDefault();
 	let chal_num = $(this).data('chal-num');
 	let chal_joi_num = $(this).data('chal-joi-num');
@@ -23,7 +23,7 @@ $(document).on('click','.chal_join',function(e){
 			alert('네트워크 오류');
 		}
 	});
-});
+});*/
 
 $(document).on('click','.chal_talk',function(e){
 	e.preventDefault();

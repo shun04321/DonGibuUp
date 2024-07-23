@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script>
+	let contextPath = ${pageContext.request.contextPath}
+</script>
 <script src="${pageContext.request.contextPath}/js/challenge/challenge.chat.js"></script>
 <div>
 	<div>

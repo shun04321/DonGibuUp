@@ -401,6 +401,7 @@ public class ChallengeAjaxController {
 	 *  챌린지 인증 상세
 	 *==========================*/
 	//쿼리스트링 제거
+	/*
 	@PostMapping("/challenge/join/list")
 	@ResponseBody
 	public Map<String,Object> joinChallenge(@RequestBody Map<String,Object> data,HttpSession session) {	
@@ -421,7 +422,7 @@ public class ChallengeAjaxController {
 			mapJson.put("result", "success");
 		}			
 		return mapJson;
-	}
+	}*/
 
 	//챌린지 참가 회원 목록
 	@GetMapping("/challenge/verify/joinMemberList")
