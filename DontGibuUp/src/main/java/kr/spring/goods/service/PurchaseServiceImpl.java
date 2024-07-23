@@ -30,5 +30,13 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void updateRefundStatus(String impUid, int status) {
         purchaseMapper.updateRefundStatus(impUid, status);
     }
-    
+    @Override
+    public List<PurchaseVO> getAllPurchases() {
+        return purchaseMapper.getAllPurchases();
+    }
+
+    @Override
+    public void updateDeliveryStatus(int purchaseNum, String deliveryStatus) {
+        purchaseMapper.updateDeliveryStatus(purchaseNum, deliveryStatus);
+    }
 }
