@@ -1,6 +1,7 @@
 package kr.spring.subscription.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,8 +23,7 @@ public interface Sub_paymentMapper {
 	public Sub_paymentVO getSub_paymentByDate(long mem_num);
 	@Select("SELECT * FROM sub_payment")
 	public List<Sub_paymentVO> getSub_payment();
-	
-	@Select("SELECT COUNT(*) FROM sub_payment WHERE mem_num=#{mem_num}")
-	public int getSub_paymentCountByMem_num(long mem_num);
-	public List<Sub_paymentVO> getSub_paymentByMem_num(long mem_num);
+
+	public int getSub_paymentCountByMem_num(Map<String,Object> map);
+	public List<Sub_paymentVO> getSub_paymentByMem_num(Map<String,Object> map);
 }

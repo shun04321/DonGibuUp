@@ -146,26 +146,26 @@ public class SubscriptionController {
 		redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 		redirectAttributes.addFlashAttribute("user", member_db);
 		redirectAttributes.addFlashAttribute("payuidVO", payuid);
-		
+
 		//재결제 요청 후 resultView 페이지로 이동
-		 String paymentResult = insertSub_Payment(payuid.getPay_uid(), subscriptionVO.getSub_num());
+		String paymentResult = insertSub_Payment(payuid.getPay_uid(), subscriptionVO.getSub_num());
 
-		 if ("payment success".equals(paymentResult)) {
-		        model.addAttribute("accessTitle", "결제 결과");
-		        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-		        model.addAttribute("accessBtn", "홈으로 이동");
-		        model.addAttribute("accessUrl", "/subscription/subscriptionList");
-		    } else {
-		        model.addAttribute("accessTitle", "결제 실패");
-		        model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
-		        model.addAttribute("accessBtn", "다시 시도");
-		        model.addAttribute("accessUrl", "/category/detail?decate_num=" + subscriptionVO.getDcate_num());
-		    }
-
-
-		    return "paymentResultView";
+		if ("payment success".equals(paymentResult)) {
+			model.addAttribute("accessTitle", "결제 결과");
+			model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
+			model.addAttribute("accessBtn", "홈으로 이동");
+			model.addAttribute("accessUrl", "/subscription/subscriptionList");
+		} else {
+			model.addAttribute("accessTitle", "결제 실패");
+			model.addAttribute("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
+			model.addAttribute("accessBtn", "다시 시도");
+			model.addAttribute("accessUrl", "/category/detail?decate_num=" + subscriptionVO.getDcate_num());
 		}
-		
+
+
+		return "paymentResultView";
+	}
+
 
 
 	/*--------------------
@@ -189,40 +189,40 @@ public class SubscriptionController {
 	@PostMapping("/subscription/paymentReservation")
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> signUp(String pay_uid, long sub_num) {
-	    // 결제 처리 로직
-	    String paymentResult = insertSub_Payment(pay_uid, sub_num);
+		// 결제 처리 로직
+		String paymentResult = insertSub_Payment(pay_uid, sub_num);
 
-	    Map<String, String> response = new HashMap<>();
-	    if ("payment success".equals(paymentResult)) {
-	        response.put("status", "success");
-	        response.put("accessTitle", "결제 결과");
-	        response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
-	        response.put("accessBtn", "정기기부 현황");
-	        response.put("accessUrl", "subscriptionList"); 
-	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
-	    } else {
-	        response.put("status", "fail");
-	        response.put("accessTitle", "결제 실패");
-	        response.put("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
-	        response.put("accessBtn", "다시 시도");
-	        response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
-	        response.put("accessUrl", "categoryList");
-	    }
+		Map<String, String> response = new HashMap<>();
+		if ("payment success".equals(paymentResult)) {
+			response.put("status", "success");
+			response.put("accessTitle", "결제 결과");
+			response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
+			response.put("accessBtn", "정기기부 현황");
+			response.put("accessUrl", "subscriptionList"); 
+			response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
+		} else {
+			response.put("status", "fail");
+			response.put("accessTitle", "결제 실패");
+			response.put("accessMsg", "결제에 실패하였습니다. 다시 시도해주세요.");
+			response.put("accessBtn", "다시 시도");
+			response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
+			response.put("accessUrl", "categoryList");
+		}
 
-	    return new ResponseEntity<>(response, HttpStatus.OK);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
-	
-	@GetMapping("/subscription/resultView")
-    public String showResult(Model model) {
-        // Model attributes 설정
-		model.addAttribute("accessTitle", "결제 결과");
-        model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-        model.addAttribute("accessBtn", "정기기부 목록");
-        model.addAttribute("accessUrl", "subscriptionList");
 
-        // JSP 파일명 반환
-        return "paymentResultView"; // 상대경로로 지정
-    }
+	@GetMapping("/subscription/resultView")
+	public String showResult(Model model) {
+		// Model attributes 설정
+		model.addAttribute("accessTitle", "결제 결과");
+		model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
+		model.addAttribute("accessBtn", "정기기부 목록");
+		model.addAttribute("accessUrl", "subscriptionList");
+
+		// JSP 파일명 반환
+		return "paymentResultView"; // 상대경로로 지정
+	}
 
 
 	/*--------------------
@@ -245,194 +245,211 @@ public class SubscriptionController {
 		}	
 		return mapJson;
 	}
-	
-	
-		/*-----------------------
-		 * 결제
+
+
+	/*-----------------------
+	 * 결제
 		 ------------------------*/
-	    public String insertSub_Payment(String payuid, long sub_num) {
-	    	SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
-	    	log.debug("sub_num" + sub_num);
-	    	DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
-	    	MemberVO user = memberService.selectMemberDetail(subscriptionVO.getMem_num());
-	        String token = subscriptionService.getToken();
-	        Gson gson = new Gson();
-	        token = token.substring(token.indexOf("response") + 10);
-	        token = token.substring(0, token.length() - 1);
+	public String insertSub_Payment(String payuid, long sub_num) {
+		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+		log.debug("sub_num" + sub_num);
+		DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
+		MemberVO user = memberService.selectMemberDetail(subscriptionVO.getMem_num());
+		String token = subscriptionService.getToken();
+		Gson gson = new Gson();
+		token = token.substring(token.indexOf("response") + 10);
+		token = token.substring(0, token.length() - 1);
 
-	        // token에서 response 부분을 추출하여 GetTokenVO로 변환
-	        GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
+		// token에서 response 부분을 추출하여 GetTokenVO로 변환
+		GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
 
-	        String access_token = vo.getAccess_token();
-	        System.out.println(access_token);
+		String access_token = vo.getAccess_token();
+		System.out.println(access_token);
 
-	        RestTemplate restTemplate = new RestTemplate();
-	        
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setContentType(MediaType.APPLICATION_JSON);
-	        headers.setBearerAuth(access_token);
-	        Sub_paymentVO sub_paymentVO = new Sub_paymentVO();
-			sub_paymentVO.setSub_pay_num(sub_paymentService.getSub_payment_num());
-			sub_paymentVO.setMem_num(subscriptionVO.getMem_num());
-			sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
-			sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
-	        
-	        Map<String, Object> map = new HashMap<>();
-	        map.put("customer_uid", payuid);
-	        map.put("merchant_uid", "merchant_uid"+sub_paymentVO.getSub_pay_num());
-	        map.put("amount", sub_paymentVO.getSub_price());
-	        map.put("name", categoryVO.getDcate_name() + " 정기 기부");
-	        map.put("buyer_name", user.getMem_name());
+		RestTemplate restTemplate = new RestTemplate();
 
-	        String json = gson.toJson(map);
-	        System.out.println("json : " + json);
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(access_token);
+		Sub_paymentVO sub_paymentVO = new Sub_paymentVO();
+		sub_paymentVO.setSub_pay_num(sub_paymentService.getSub_payment_num());
+		sub_paymentVO.setMem_num(subscriptionVO.getMem_num());
+		sub_paymentVO.setSub_num(subscriptionVO.getSub_num());
+		sub_paymentVO.setSub_price(subscriptionVO.getSub_price());
 
-	        HttpEntity<String> entity = new HttpEntity<>(json, headers);
-	        ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/subscribe/payments/again", entity, String.class);
-	        
-	        // API 응답을 문자열로 받음
-	        String responseBody = response.getBody();
+		Map<String, Object> map = new HashMap<>();
+		map.put("customer_uid", payuid);
+		map.put("merchant_uid", "merchant_uid"+sub_paymentVO.getSub_pay_num());
+		map.put("amount", sub_paymentVO.getSub_price());
+		map.put("name", categoryVO.getDcate_name() + " 정기 기부");
+		map.put("buyer_name", user.getMem_name());
 
-		    // API 응답 문자열에서 code 값을 추출
-	        Number codeNumber = (Number) gson.fromJson(responseBody, Map.class).get("code");
-	        int code = codeNumber.intValue();
-	        System.out.println("response : " + response);
+		String json = gson.toJson(map);
+		System.out.println("json : " + json);
 
-	        if (response.getStatusCode() == HttpStatus.OK) {	        	
-	            // API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
-	            if (code == 0) {
-	                // 결제 성공
-	            	sub_paymentService.insertSub_payment(sub_paymentVO);
-	                return "payment success";
-	            } else {
-	                // 결제 실패시 정기기부 중단
-	            	subscriptionService.updateSub_status(sub_num);
-	            	// 결제 실패 구독 정보 로그
-	            	log.debug("결제 실패 구독 정보 sub_num : "+subscriptionVO.getSub_num());
-	            	return  "payment fail";
-	            }
-	        } else {
-	            // API 호출 실패
-	            return "api fail";
-	        }
-	    }
-	    
-	    
-	    @Scheduled(cron = "0 0 * * * ?")
-	    public void performDailyTask() {
-	    	int today = subscriptionService.getTodayDate();
-	    	
-	    	List<SubscriptionVO> list = new ArrayList<SubscriptionVO>();
-	    	list = subscriptionService.getSubscriptionByDay(today);
-	    	
-	    	for(SubscriptionVO subscription : list) {
-	    		 PayuidVO payuid = new PayuidVO();
-	             payuid.setMem_num(subscription.getMem_num());
+		HttpEntity<String> entity = new HttpEntity<>(json, headers);
+		ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/subscribe/payments/again", entity, String.class);
 
-	             // Check for easypay_method and cardNickname
-	             if (subscription.getEasypay_method() != null) {
-	                 payuid.setEasypay_method(subscription.getEasypay_method());
-	             } else if (subscription.getCard_nickname() != null) {
-	                 payuid.setCard_nickname(subscription.getCard_nickname());
-	             }
-              payuid = payuidService.getPayuidByMethod(payuid);
-              String response = insertSub_Payment(payuid.getPay_uid(), subscription.getSub_num());
-              System.out.println("금일 정기기부 목록 결제요청 완료 : " + response);
-          
-	    	}
-	    }
-	    //정기기부 현황 및 정기결제 내역
-	    @GetMapping("/subscription/subscriptionList")
-		public String subscriptionList(HttpSession session, Model model) {
+		// API 응답을 문자열로 받음
+		String responseBody = response.getBody();
 
-			MemberVO user = (MemberVO)session.getAttribute("user");
-			int payCount = sub_paymentService.getSub_paymentCountByMem_num(user.getMem_num());
-			List<Sub_paymentVO> paylist = null;
-			if(payCount > 0) {
-				
-				paylist = sub_paymentService.getSub_paymentByMem_num(user.getMem_num());
+		// API 응답 문자열에서 code 값을 추출
+		Number codeNumber = (Number) gson.fromJson(responseBody, Map.class).get("code");
+		int code = codeNumber.intValue();
+		System.out.println("response : " + response);
+
+		if (response.getStatusCode() == HttpStatus.OK) {	        	
+			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
+			if (code == 0) {
+				// 결제 성공
+				sub_paymentService.insertSub_payment(sub_paymentVO);
+				return "payment success";
+			} else {
+				// 결제 실패시 정기기부 중단
+				subscriptionService.updateSub_status(sub_num);
+				// 결제 실패 구독 정보 로그
+				log.debug("결제 실패 구독 정보 sub_num : "+subscriptionVO.getSub_num());
+				return  "payment fail";
 			}
-			for (Sub_paymentVO payment : paylist) {
-	            // sub_num을 사용하여 관련된 SubscriptionVO 가져오기
-	            SubscriptionVO subscription = subscriptionService.getSubscription(payment.getSub_num());
-	            DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscription.getDcate_num());
-	            subscription.setDonationCategory(categoryVO);
-	            if (subscription != null) {
-	                // SubscriptionVO에서 필요한 정보를 설정
-	                payment.setDcate_name(subscription.getDonationCategory().getDcate_name());
-	                payment.setDcate_charity(subscription.getDonationCategory().getDcate_charity());
-	                payment.setSub_method(subscription.getSub_method());
-	                if(subscription.getEasypay_method()!=null) {
-	                	payment.setEasypay_method(subscription.getEasypay_method());
-	                }
-	                if(subscription.getCard_nickname()!=null) {
-	                	payment.setCard_nickname(subscription.getCard_nickname());
-	                }
-	            }
-			}
-			//페이지 처리
-			int count = subscriptionService.getSubscriptionCount(user.getMem_num());
-			List<SubscriptionVO> list = null;
-			if(count > 0) {
-				list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
-			}
-			model.addAttribute("payCount",payCount);
-			model.addAttribute("paylist",paylist);
-			model.addAttribute("count", count);
-			model.addAttribute("list", list);
-
-			return "subscriptionList";
+		} else {
+			// API 호출 실패
+			return "api fail";
 		}
-	    
-	    //정기기부 상세
-	    @GetMapping("/subscription/subscriptionDetail")
-	    public String subscriptionDetail(long sub_num, Model model) throws ParseException {
-	        SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
-	        DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
-	        Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
-	        String cancelDate = "";
-	        // 날짜 문자열을 Date 객체로 변환
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	        String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
-	        String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
-	        if(subscription.getCancel_date()!=null) {
-	        	cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
-	        }
-	        System.out.println("subpaydate : " + subPayDate);
+	}
 
-	        // 모델에 날짜 문자열 추가
-	        model.addAttribute("cancel_date",cancelDate);
-	        model.addAttribute("reg_date", regDate);
-	        model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식
-	        model.addAttribute("category", category);
-	        model.addAttribute("subscription", subscription);
-	        model.addAttribute("subpayment", subpayment);
 
-	        return "subscriptionDetail";
-	    }
-	    
-	    @PostMapping("/subscription/updateSub_status")
-	    @ResponseBody
-	    public Map<String,String> updateSub_status(long sub_num,HttpSession session){
-	    	Map<String, String> mapJson = new HashMap<String,String>();
-	    	MemberVO user = (MemberVO)session.getAttribute("user");
-	    	if(user == null) {
-	    		mapJson.put("result", "logout");
-	    	}
-	    	
-	    	SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
-	    	if(subscriptionVO.getSub_status()==0) {
-	    		subscriptionService.updateSub_status(sub_num);
-	    		mapJson.put("result", "success");
-	    	}else {
-	    		mapJson.put("result", "fail");
-	    	}
-	    	
-	    	return mapJson;
-	    }
-	    
+	@Scheduled(cron = "0 0 * * * ?")
+	public void performDailyTask() {
+		int today = subscriptionService.getTodayDate();
+
+		List<SubscriptionVO> list = new ArrayList<SubscriptionVO>();
+		list = subscriptionService.getSubscriptionByDay(today);
+
+		for(SubscriptionVO subscription : list) {
+			PayuidVO payuid = new PayuidVO();
+			payuid.setMem_num(subscription.getMem_num());
+
+			// Check for easypay_method and cardNickname
+			if (subscription.getEasypay_method() != null) {
+				payuid.setEasypay_method(subscription.getEasypay_method());
+			} else if (subscription.getCard_nickname() != null) {
+				payuid.setCard_nickname(subscription.getCard_nickname());
+			}
+			payuid = payuidService.getPayuidByMethod(payuid);
+			String response = insertSub_Payment(payuid.getPay_uid(), subscription.getSub_num());
+			System.out.println("금일 정기기부 목록 결제요청 완료 : " + response);
+
+		}
+	}
+	//정기기부 현황 및 정기결제 내역
+	@GetMapping("/subscription/subscriptionList")
+	public String subscriptionList(HttpSession session, Model model,
+			@RequestParam(defaultValue="1") int pageNum,
+			@RequestParam(defaultValue="") String category,
+			String keyfield,String keyword){
+
+		MemberVO user = (MemberVO)session.getAttribute("user");
+
+		Map<String,Object> map = 
+				new HashMap<String,Object>();
+		map.put("category", category);
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+		map.put("mem_num", user.getMem_num());
+
+		int payCount = sub_paymentService.getSub_paymentCountByMem_num(map);
+		//결제내역 페이징
+		PagingUtil page = 
+				new PagingUtil(keyfield,keyword,pageNum,
+						       payCount,10,10,"list", "&category="+category);
+		
+		List<Sub_paymentVO> paylist = null;
+		if(payCount > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			paylist = sub_paymentService.getSub_paymentByMem_num(map);
+		}
+		/* sql 수정으로 데이터 셋팅 불필요해짐
+		 *  
+		 * for (Sub_paymentVO payment : paylist) { // sub_num을 사용하여 관련된 SubscriptionVO
+		 * 가져오기 SubscriptionVO subscription =
+		 * subscriptionService.getSubscription(payment.getSub_num()); DonationCategoryVO
+		 * categoryVO =
+		 * categoryService.selectDonationCategory(subscription.getDcate_num());
+		 * subscription.setDonationCategory(categoryVO); if (subscription != null) { //
+		 * SubscriptionVO에서 필요한 정보를 설정
+		 * payment.setDcate_name(subscription.getDonationCategory().getDcate_name());
+		 * payment.setDcate_charity(subscription.getDonationCategory().getDcate_charity(
+		 * )); payment.setSub_method(subscription.getSub_method());
+		 * if(subscription.getEasypay_method()!=null) {
+		 * payment.setEasypay_method(subscription.getEasypay_method()); }
+		 * if(subscription.getCard_nickname()!=null) {
+		 * payment.setCard_nickname(subscription.getCard_nickname()); } } }
+		 */
+		//페이지 처리
+		int count = subscriptionService.getSubscriptionCount(user.getMem_num());
+		List<SubscriptionVO> list = null;
+		if(count > 0) {
+			list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
+		}
+		model.addAttribute("page",page.getPage());
+		model.addAttribute("payCount",payCount);
+		model.addAttribute("paylist",paylist);
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+
+		return "subscriptionList";
+	}
+
+	//정기기부 상세
+	@GetMapping("/subscription/subscriptionDetail")
+	public String subscriptionDetail(long sub_num, Model model) throws ParseException {
+		SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
+		DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
+		Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
+		String cancelDate = "";
+		// 날짜 문자열을 Date 객체로 변환
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
+		String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
+		if(subscription.getCancel_date()!=null) {
+			cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
+		}
+		System.out.println("subpaydate : " + subPayDate);
+
+		// 모델에 날짜 문자열 추가
+		model.addAttribute("cancel_date",cancelDate);
+		model.addAttribute("reg_date", regDate);
+		model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식
+		model.addAttribute("category", category);
+		model.addAttribute("subscription", subscription);
+		model.addAttribute("subpayment", subpayment);
+
+		return "subscriptionDetail";
+	}
+
+	@PostMapping("/subscription/updateSub_status")
+	@ResponseBody
+	public Map<String,String> updateSub_status(long sub_num,HttpSession session){
+		Map<String, String> mapJson = new HashMap<String,String>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}
+
+		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+		if(subscriptionVO.getSub_status()==0) {
+			subscriptionService.updateSub_status(sub_num);
+			mapJson.put("result", "success");
+		}else {
+			mapJson.put("result", "fail");
+		}
+
+		return mapJson;
+	}
+
 }
 
-	    
+
 
 

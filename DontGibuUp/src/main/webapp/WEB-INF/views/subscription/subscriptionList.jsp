@@ -17,6 +17,7 @@
 			결제내역</button>
 	</div>
 	<div id="subscriptionList" class="tab-content active">
+		<div class="page-main">
 		<h3>나의 정기기부 목록</h3>
 		<c:if test="${count == 0}">
 			<div class="result-display">표시할 정기기부 현황이 없습니다.</div>
@@ -76,13 +77,28 @@
 				</div>
 			</c:forEach>
 		</c:if>
+		</div>
 	</div>
 	<div id="paymentHistory" class="tab-content">
 		<!-- 결제내역 리스트를 여기에 추가 -->
 		<div class="page-main">
 			<h3>나의 정기기부 결제내역</h3>
-			<div class="align-right">
-			</div>
+			<form action="subscriptionList" id="search_form" method="get">
+				<input type="hidden" name="category" value="${param.category}">
+				<ul class="search">
+					<li>
+						<select name="keyfield" id="keyfield">
+								<option value="1"
+									<c:if test="${param.keyfield == 1}">selected</c:if>>기부처</option>
+								<option value="2"
+									<c:if test="${param.keyfield == 2}">selected</c:if>>결제수단</option>
+						</select>
+					</li>
+					<li><input type="search" name="keyword" id="keyword"
+						value="${param.keyword}"></li>
+					<li><input type="submit" value="찾기"></li>
+				</ul>
+			</form>
 			<c:if test="${payCount == 0}">
 				<div class="result-display">표시할 게시물이 없습니다.</div>
 			</c:if>
@@ -97,19 +113,19 @@
 					<c:forEach var="subpayment" items="${paylist}">
 						<tr>
 							<td class="align-center">${subpayment.sub_pay_date}</td>
-							<td class="align-center">${subpayment.dcate_name}/${subpayment.dcate_charity}</td>
+							<td class="align-center">${subpayment.dcate_charity}</td>
 							<td class="align-center"><a
 								href="categoryDetail?dcate_num=${dcate.dcate_num}"><c:choose>
-									<c:when test="${subpayment.sub_method == 'card'}">
+										<c:when test="${subpayment.sub_method == 'card'}">
                                         카드 / ${subpayment.card_nickname}
                                     </c:when>
-									<c:when test="${subpayment.sub_method == 'easy_pay'}">
+										<c:when test="${subpayment.sub_method == 'easy_pay'}">
                                         간편결제 / ${subpayment.easypay_method}
                                     </c:when>
-									<c:otherwise>
+										<c:otherwise>
                                         알 수 없음
                                     </c:otherwise>
-								</c:choose></a></td>
+									</c:choose></a></td>
 							<td class="align-center">${subpayment.sub_price}</td>
 						</tr>
 					</c:forEach>

@@ -1,6 +1,7 @@
 package kr.spring.subscription.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +37,13 @@ public class Sub_paymentServiceImpl implements Sub_paymentService{
 	}
 
 	@Override
-	public List<Sub_paymentVO> getSub_paymentByMem_num(long mem_num) {
-		return Sub_paymentMapper.getSub_paymentByMem_num(mem_num);
+	public List<Sub_paymentVO> getSub_paymentByMem_num(Map<String,Object> map) {
+		return Sub_paymentMapper.getSub_paymentByMem_num(map);
 	}
 
 	@Override
-	public int getSub_paymentCountByMem_num(long mem_num) {
-		return Sub_paymentMapper.getSub_paymentCountByMem_num(mem_num);
+	public int getSub_paymentCountByMem_num(Map<String,Object> map) {
+		return Sub_paymentMapper.getSub_paymentCountByMem_num(map);
 	}
 
 }

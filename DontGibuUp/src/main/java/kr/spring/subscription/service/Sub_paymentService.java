@@ -1,6 +1,7 @@
 package kr.spring.subscription.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Select;
 
@@ -15,6 +16,6 @@ public interface Sub_paymentService {
 	public long getSub_payment_num();
 	public Sub_paymentVO getSub_paymentByDate(long mem_num);
 	public List<Sub_paymentVO> getSub_payment();
-	public List<Sub_paymentVO> getSub_paymentByMem_num(long mem_num);
-	public int getSub_paymentCountByMem_num(long mem_num);
+	public int getSub_paymentCountByMem_num(Map<String,Object> map);
+	public List<Sub_paymentVO> getSub_paymentByMem_num(Map<String,Object> map);
 }
