@@ -14,9 +14,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         return year+"-"+month+"-"+day;
     }
-
-    let subPayDate = "${sub_paydate}".trim();
-    let cancelDate = "${cancel_date}".trim();
     
     if (/^\d{4}-\d{2}-\d{2}$/.test(subPayDate)) {
         let nextPayDate = addMonthToDateString(subPayDate);

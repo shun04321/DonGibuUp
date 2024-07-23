@@ -375,6 +375,7 @@ public class SubscriptionController {
 	        if(subscription.getCancel_date()!=null) {
 	        	cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
 	        }
+	        System.out.println("subpaydate : " + subPayDate);
 
 	        // 모델에 날짜 문자열 추가
 	        model.addAttribute("cancel_date",cancelDate);
