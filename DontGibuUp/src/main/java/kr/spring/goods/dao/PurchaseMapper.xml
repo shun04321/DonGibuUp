@@ -66,5 +66,4 @@
     VALUES
     (purchase_item_seq.nextval, #{purchase_num}, #{item_num}, #{cart_quantity}, #{price})
 </insert>
-
 </mapper>

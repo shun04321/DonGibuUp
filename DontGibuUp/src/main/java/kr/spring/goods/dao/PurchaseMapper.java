@@ -17,6 +17,6 @@ public interface PurchaseMapper {
 	    void updateDeliveryStatus(int purchaseNum, String deliveryStatus);
 	    void insertPurchaseForCart(PurchaseVO purchaseVO);
 	    void insertPurchaseItem(CartVO cartVO);
-	    List<CartVO> getPurchaseItems(long purchase_num);
+	    List<CartVO> getPurchaseItems(long purchaseNum);
     
 }

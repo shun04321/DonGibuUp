@@ -10,10 +10,13 @@ import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.dao.PurchaseMapper;
 import kr.spring.goods.vo.PurchaseVO;
 import kr.spring.goods.vo.RefundVO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
 
+	
     @Autowired
     private PurchaseMapper purchaseMapper;
     
@@ -23,20 +26,22 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartItems) {
+    public void insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartList) {
+        log.debug("Inserting purchase: " + purchaseVO);
+
+        log.debug("memNum: " + purchaseVO.getMemNum());
+        log.debug("impUid: " + purchaseVO.getImp_uid());
+        log.debug("amount: " + purchaseVO.getAmount());
+        log.debug("status: " + purchaseVO.getStatus());
+
         purchaseMapper.insertPurchaseForCart(purchaseVO);
 
-        // purchaseNum이 제대로 설정되었는지 확인
-        if (purchaseVO.getPurchaseNum() == null) {
-            throw new IllegalStateException("purchaseNum is null after insert");
-        }
-
-        for (CartVO item : cartItems) {
-            item.setPurchase_num(purchaseVO.getPurchaseNum()); // purchaseNum 설정
-            purchaseMapper.insertPurchaseItem(item);
+        for (CartVO cart : cartList) {
+            cart.setPurchase_num(purchaseVO.getPurchaseNum());
+            log.debug("Inserting purchase item: " + cart);
+            purchaseMapper.insertPurchaseItem(cart);
         }
     }
-
     @Override
     public List<CartVO> getPurchaseItems(long purchase_num) {
         return purchaseMapper.getPurchaseItems(purchase_num);
