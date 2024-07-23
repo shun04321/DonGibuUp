@@ -80,7 +80,20 @@
 	margin-bottom: 20px;
 }
 
+.challenge-header2 {
+	text-align: center;
+	width: 100%;
+}
+
 .challenge-header img {
+	width: 100%;
+	height: auto;
+	max-height: 300px;
+	border-radius: 10px;
+	object-fit: cover;
+}
+
+.challenge-header2 img {
 	width: 100%;
 	height: auto;
 	max-height: 300px;

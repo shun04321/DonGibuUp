@@ -12,11 +12,14 @@
 	let pageSize = 10;
 	var currentPage;
 </script>
-<h2>챌린지 인증내역</h2>
 <div class="challenge-summary">
-	<div class="challenge-header">
-		<img src="<c:url value='/images/${challenge.chal_photo}'/>"
-			class="challenge-thumbnail responsive-image" alt="챌린지 썸네일">
+	<div class="challenge-header2">
+		<c:if test="${empty challenge.chal_photo}">
+        	<img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진">
+        </c:if>
+        <c:if test="${!empty challenge.chal_photo}">
+        	<img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진">
+        </c:if>
 		<div class="challenge-info">			
 			<h2 class="align-left">${challenge.chal_title}</h2>
 			<div class="details">	
