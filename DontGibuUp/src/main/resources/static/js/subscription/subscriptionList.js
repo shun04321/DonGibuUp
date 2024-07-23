@@ -1,12 +1,15 @@
 document.addEventListener("DOMContentLoaded", function() {
+    $(document).ready(function() {
     $('.sub-price').each(function() {
-        var price = parseInt($(this).text(), 10);
+        var priceText = $(this).text().replace(/[^0-9]/g, ''); // 숫자만 추출
+        var price = parseInt(priceText, 10); // 숫자로 변환
         if (!isNaN(price)) {
             // 가격을 천 단위로 구분하여 포맷합니다.
             $(this).text(price.toLocaleString() + '원');
-          }
-          })
-          })
+        }
+    });
+});
+});
 
     // 탭 전환 함수 정의
     function openTab(event, tabId) {
@@ -28,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // 클릭된 탭 버튼 활성화
         event.currentTarget.classList.add('active');
     }
+    
 
     // openTab 함수를 글로벌 스코프에 노출
     window.openTab = openTab;
