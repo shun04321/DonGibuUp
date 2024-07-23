@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>  
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/dbox/dbox.donation.js"></script>
@@ -16,7 +17,7 @@
 	<!-- 목표금액, 달성률 -->
 	<div class="align-items-center my-2">
 		<h4 class="text-end">
-			<strong>목표금액 : </strong>${dbox.dbox_goal}원
+			<strong>목표금액 : </strong><fmt:formatNumber value="${dbox.dbox_goal}" pattern="#,###원" />
 		</h4>
 		<p class="text-end">
 			<strong>달성률 : </strong>${dbox.dbox_goal}%
@@ -51,10 +52,10 @@
 						  <input type="text" class="form-control caculate" id="dbox_do_point" placeholder="사용할 포인트를 입력해주세요.">
 						</div>
 						<div class="text-end mb-3">
-							결제금액 : <strong id="pay_sum">0</strong>원 (기부금액 - 포인트)<br><br>
+							결제금액 : <strong id="pay_sum" style="color:red;">0</strong>원<small>(기부금액 - 포인트)</small><br><br>
 							<span id="no" style="color:red;"></span><br>
 							<small>* 기부금은 기부금액에 기입하신 만큼 기부됩니다.</small><br>
-							<small>* 포인트만 기부를 희망하시는 경우 기부금액과 포인트를 같은 값으로 기입해주세요.</small>
+							<!-- <small>* 포인트만 기부를 희망하시는 경우 기부금액과 포인트를 같은 값으로 기입해주세요.</small> -->
 						</div>
 						<input type="hidden" id="pay_price" name="pay_price" value="">
 						

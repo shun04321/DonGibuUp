@@ -89,11 +89,11 @@ public class DboxController {
     	//기부현황
     	int count = dboxService.selectDboxDonationsCount(dboxNum);
 		List<DboxDonationVO> dboxDonations = null;
-//		if(count > 0) {
-//			dboxDonations = dboxService.selectDboxDonations(dboxNum);
-//		}else {
-//			dboxDonations = Collections.emptyList();//null일 경우 빈 배열로 인식되게 세팅
-//		}
+		if(count > 0) {
+			dboxDonations = dboxService.selectDboxDonations(dboxNum);
+		}else {
+			dboxDonations = Collections.emptyList();//null일 경우 빈 배열로 인식되게 세팅
+		}
     	log.debug("<<상세 페이지(donators) - DboxDonations : >>" + dboxDonations);
     	
     	//뷰에 전달
@@ -124,6 +124,16 @@ public class DboxController {
     	model.addAttribute("dbox",dbox);
     	model.addAttribute("dboxBudget",dboxBudget);
     	return "dboxDetailNews";
+    }
+    /*===================================
+     * 		기부박스 상세페이지 - 기부완료
+     *==================================*/
+    @PostMapping("/dbox/{dboxNum}/donation")
+    public String donation(@PathVariable long dboxNum,Model model) {
+    	log.debug("<<기부완료>> : " + dboxNum);
+
+    	model.addAttribute("dbox_num",dboxNum);
+    	return "dboxDonation";
     }
 	
 	

@@ -31,7 +31,7 @@
 				팀의 로고나 대표할 수 있는 이미지로 등록해주세요.<br>
 				*미등록시 기본 이미지가 노출됩니다.
 				</p>
-				<img id="preview" src="${pageContext.request.contextPath}/images/teamProfile.png" width="100" height="100" class="my-photo">
+				<img id="preview" src="${pageContext.request.contextPath}/images/teamProfile.png" width="100" height="100" class="profile-photo">
 				<input type="file" name="dbox_team_photo_file" id="dbox_team_photo_file" accept="image/gif,image/png,image/jpeg" >
 			</li>
 			<%-- 프로젝트 팀 소개 --%>

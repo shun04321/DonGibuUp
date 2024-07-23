@@ -174,6 +174,7 @@ public class DboxAjaxController {
 			try {
 				dboxService.insertDboxDonation(dboxDonationVO);
 				mapJson.put("result", "success");
+				log.debug("<<<<<<<<<<<<<<<<결제 성공>>>>>>>>>>>>>>>>>>>");
 			}catch(Exception e) {
 				log.error("기부박스 결제 오류 발생",e);
 			}

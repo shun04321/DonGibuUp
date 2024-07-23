@@ -1,5 +1,5 @@
 $(function(){
-	IMP.init("imp04826433");
+	
 	
 	const button = document.getElementById('imp_donation');
 	const form = document.getElementById('dbox_donation');
@@ -12,6 +12,7 @@ $(function(){
 		let total = 0;
 		let pt = parseInt($('#dbox_do_point').val());
 		let pr = parseInt($('#dbox_do_price').val());
+		$('#no').empty();
 		if(isNaN(pr) && !isNaN(pt)){
 			total = 0;
 		}else if(isNaN(pr) && isNaN(pt)){
@@ -20,7 +21,6 @@ $(function(){
 			total =  pr;
 		}else if(pr < pt){
 			total = 0;
-			$('#no').empty();
 			$('#no').append('<small>기부금액보다 포인트가 클 수 없습니다.</small>');
 		}else{
 			total = pr-pt;			
@@ -47,9 +47,10 @@ $(function(){
 		console.log("point : " + point);
 		console.log("comment : " + comment);
 		console.log("annony : " + annony);
-        
+		
+        IMP.init("imp04826433");
 		IMP.request_pay({
-			pg:"tosspayments",
+			pg:"tosspayments.iamporttest_3",
 			pay_method:"card",
 			amount:pay_price,
 			name:"기부하기",

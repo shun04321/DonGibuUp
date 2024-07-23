@@ -72,6 +72,7 @@ $(function(){
 				pageNum:pageNum,
 				rowCount:rowCount},//왼쪽은 AjaxController의 @RequestParam으로 받음 
 			dataType:'json',
+			contentType: 'application/json; charset=utf-8',
 			beforeSend:function(){
 				$('#loading').show();//로딩 이미지 표시
 			},
@@ -81,7 +82,7 @@ $(function(){
 			},
 			success:function(param){
 				count = param.count;
-				
+
 				$('#category_output').empty();
 				if(category=='' || category==null){
 					$('#category_output').append('<button type="button" class="btn btn-outline-success active" onclick="location.href=\'list\'">전체</button>');										
@@ -109,12 +110,12 @@ $(function(){
 					let output = '<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">';
 					output += '		<div class="custom-block-wrap">';
 					output += '		<img src="../upload/dbox/'+item.dbox_photo+'" class="custom-block-image img-fluid" style="height:14rem;">';
-					
+					//console.log('dbox_photo' + item.dbox_photo);
 					output += '   	<div class="custom-block">';
 					output += '     	<div class="custom-block-body">';
 					output += '         	<h5 class="mb-3">'+item.dbox_title+'</h5>';
 					output += '       			<span class="badge text-bg-success mb-3"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</span>';
-					output += '       			<p>'+item.dbox_team_name+'</p>';
+					output += '       			<p><img src="../upload/dbox/'+item.dbox_team_photo+'" class="team-profile-photo">'+item.dbox_team_name+'</p>';
 					output += '       			<div class="progress" role="progressbar" aria-label="" aria-valuenow="'+2000/item.dbox_goal*100+'" aria-valuemin="0" aria-valuemax="100">';
 					output += '       				<div class="progress-bar progress-bar-striped bg-success" style="width: '+2000/item.dbox_goal*100+'%"></div>';
 					output += '       			</div>';
