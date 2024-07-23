@@ -28,7 +28,6 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public void insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartList) {
         log.debug("Inserting purchase: " + purchaseVO);
-
         log.debug("memNum: " + purchaseVO.getMemNum());
         log.debug("impUid: " + purchaseVO.getImp_uid());
         log.debug("amount: " + purchaseVO.getAmount());
@@ -42,6 +41,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             purchaseMapper.insertPurchaseItem(cart);
         }
     }
+
     @Override
     public List<CartVO> getPurchaseItems(long purchase_num) {
         return purchaseMapper.getPurchaseItems(purchase_num);

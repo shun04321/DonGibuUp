@@ -19,7 +19,7 @@ public class PurchaseVO {
     private String item_name;
     private String imp_uid;
     private String Merchant_uid;
-    private long amount;
+    private int amount;
     private String status;
     private String buyer_name;
     private String buyer_email;

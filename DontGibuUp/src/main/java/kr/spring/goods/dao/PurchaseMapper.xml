@@ -53,11 +53,11 @@
         JOIN item i ON p.item_num = i.item_num
     </select>
     
-   <insert id="insertPurchaseForCart" parameterType="kr.spring.goods.vo.PurchaseVO" useGeneratedKeys="true" keyProperty="purchaseNum">
+   <insert id="insertPurchaseForCart" parameterType="kr.spring.goods.vo.PurchaseVO">
     INSERT INTO purchase
     (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, item_num, delivery_status)
     VALUES
-    (purchase_seq.nextval, #{memNum}, #{imp_uid}, #{amount}, SYSDATE, #{status}, 0, '배송 준비 중')
+    (purchase_seq.nextval, #{memNum}, #{impUid}, #{amount}, SYSDATE, #{status}, #{itemNum}, '배송 준비 중')
 </insert>
 
 <insert id="insertPurchaseItem" parameterType="kr.spring.cart.vo.CartVO">
