@@ -10,7 +10,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CartVO {
-	
 	@NotBlank
 	private long cart_num; //장바구니 식별번호
 	@NotBlank
@@ -19,7 +18,8 @@ public class CartVO {
 	private long mem_num;	//회원 식별 번호
 	@NotBlank
 	private long cart_quantity;  //장바구니 상품 수량
-	
+	private long purchase_num; // 구매 식별번호 추가
+    private int price; // 가격 필드 추가
 	private GoodsVO goods;	
 	}
 

@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <h2>구매내역</h2>
-     <div>
 <div>
     <input type="button" value="상품 목록" onclick="location.href='${pageContext.request.contextPath}/goods/list'">
     <input type="button" value="홈" onclick="location.href='${pageContext.request.contextPath}/main/main'">
-</div>
 </div>
 <c:if test="${not empty purchaseList}">
     <table border="1">
@@ -26,7 +25,7 @@
                     <td>${purchase.item_name}</td>
                     <td><img src="${pageContext.request.contextPath}${purchase.item_photo}" alt="${purchase.item_name}" width="100" height="100"></td>
                     <td>${purchase.amount}</td>
-                    <td>${purchase.payDate}</td>
+                    <td class="align-center"><fmt:formatDate value="${purchase.payDate}" pattern="yyyy-MM-dd" /></td>
                     <td>
                         <c:choose>
                             <c:when test="${purchase.payStatus == 0}">
@@ -43,6 +42,14 @@
                         </c:if>
                     </td>
                 </tr>
+                <c:forEach var="item" items="${purchase.cart_items}">
+                    <tr>
+                        <td>${item.item_name}</td>
+                        <td><img src="${pageContext.request.contextPath}${item.item_photo}" alt="${item.item_name}" width="50" height="50"></td>
+                        <td>${item.price}</td>
+                        <td>${item.cart_quantity}</td>
+                    </tr>
+                </c:forEach>
             </c:forEach>
         </tbody>
     </table>
@@ -50,7 +57,6 @@
 <c:if test="${empty purchaseList}">
     <p>구매 내역 없음</p>
 </c:if>
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
     var contextPath = "${pageContext.request.contextPath}";

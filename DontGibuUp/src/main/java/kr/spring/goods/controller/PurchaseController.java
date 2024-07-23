@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,8 @@ import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
+
+import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.service.PurchaseService;
 import kr.spring.goods.vo.PurchaseVO;
 import kr.spring.goods.vo.RefundVO;
@@ -219,6 +222,78 @@ public class PurchaseController {
 
         return mapJson;
     }
+    
+    @PostMapping("/purchaseFromCart")
+    @ResponseBody
+    public Map<String, String> purchaseFromCart(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
+            throws IllegalStateException, IOException {
+        Map<String, String> mapJson = new HashMap<>();
+
+        try {
+            String impUid = (String) data.get("imp_uid");
+            String merchantUid = (String) data.get("merchant_uid");
+            int amount = (Integer) data.get("amount");
+            String status = (String) data.get("status");
+            String itemName = (String) data.get("item_name");
+            String buyerName = (String) data.get("buyer_name");
+            List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
+
+            log.debug("impUid : " + impUid);
+            log.debug("merchantUid : " + merchantUid);
+            log.debug("amount : " + amount);
+            log.debug("status : " + status);
+            log.debug("itemName : " + itemName);
+            log.debug("buyerName : " + buyerName);
+            log.debug("cartItems : " + cartItems);
+
+            // 세션 데이터 가져오기
+            MemberVO member = (MemberVO) session.getAttribute("user");
+
+            if (member == null) {
+                mapJson.put("result", "logout");
+            } else {
+                // 결제 정보 저장
+                PurchaseVO purchaseVO = new PurchaseVO();
+                purchaseVO.setImp_uid(impUid);
+                purchaseVO.setMerchant_uid(merchantUid);
+                purchaseVO.setAmount(amount);
+                purchaseVO.setStatus(status);
+                purchaseVO.setItem_name(itemName);
+                purchaseVO.setBuyer_name(buyerName);
+                purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
+
+                try {
+                    List<CartVO> cartItemList = new ArrayList<>();
+                    for (Map<String, Object> item : cartItems) {
+                        CartVO cartItem = new CartVO();
+                        cartItem.setItem_num(((Number) item.get("item_num")).longValue());
+                        cartItem.setCart_quantity(((Number) item.get("cart_quantity")).longValue());
+                        cartItem.setPrice(((Number) item.get("price")).intValue());
+                        cartItem.setPurchase_num(purchaseVO.getPurchaseNum()); // purchase_num 설정
+                        cartItemList.add(cartItem);
+                    }
+                    purchaseService.insertPurchaseWithCartItems(purchaseVO, cartItemList);
+                    mapJson.put("result", "success");
+                } catch (Exception e) {
+                    log.error("결제 정보 저장 중 오류 발생", e);
+                    mapJson.put("result", "error");
+                    mapJson.put("message", "결제 정보 저장 중 오류가 발생했습니다. 관리자에게 문의하세요.");
+                }
+            }
+        } catch (NumberFormatException e) {
+            log.error("데이터 형식 오류: ", e);
+            mapJson.put("result", "error");
+            mapJson.put("message", "데이터 형식 오류가 발생했습니다. 관리자에게 문의하세요.");
+        } catch (Exception e) {
+            log.error("알 수 없는 오류 발생: ", e);
+            mapJson.put("result", "error");
+            mapJson.put("message", "알 수 없는 오류가 발생했습니다. 관리자에게 문의하세요.");
+        }
+
+        return mapJson;
+    }
+
+    
     @GetMapping("/purchaseHistory")
     public String getPurchaseHistory(HttpSession session, Model model) {
         MemberVO member = (MemberVO) session.getAttribute("user");

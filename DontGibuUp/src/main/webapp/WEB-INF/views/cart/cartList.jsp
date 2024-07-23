@@ -2,8 +2,11 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!-- 상품 목록 출력 -->
-<script type="text/javascript"
-    src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/goods/cart.js"></script>
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+
+<div id="contextPath" data-context-path="${pageContext.request.contextPath}"></div>
 
 <script type="text/javascript">
 function deleteSelectedCarts() {
@@ -18,7 +21,7 @@ function deleteSelectedCarts() {
     }
 
     $.ajax({
-        url: '${pageContext.request.contextPath}/cart/deleteSelected',
+        url: $('#contextPath').data('context-path') + '/cart/deleteSelected',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(selectedCarts),
@@ -40,7 +43,7 @@ function updateCartQuantity(cart_num) {
     var newQuantity = $('#cart_quantity_' + cart_num).val();
 
     $.ajax({
-        url: '${pageContext.request.contextPath}/cart/updateQuantity',
+        url: $('#contextPath').data('context-path') + '/cart/updateQuantity',
         type: 'POST',
         data: {
             cart_num: cart_num,
@@ -52,36 +55,6 @@ function updateCartQuantity(cart_num) {
                 location.reload();
             } else {
                 alert('업데이트 실패. 다시 시도해주세요.');
-            }
-        },
-        error: function() {
-            alert('에러가 발생했습니다. 다시 시도해주세요.');
-        }
-    });
-}
-
-function purchaseSelectedCarts() {
-    var selectedCarts = [];
-    $('input[name="cart_num"]:checked').each(function() {
-        selectedCarts.push($(this).val());
-    });
-
-    if (selectedCarts.length === 0) {
-        alert('구매할 항목을 선택해주세요.');
-        return;
-    }
-
-    $.ajax({
-        url: '${pageContext.request.contextPath}/cart/purchaseSelected',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify(selectedCarts),
-        success: function(response) {
-            if(response === 'success') {
-                alert('선택된 항목들이 구매되었습니다.');
-                location.reload();
-            } else {
-                alert('구매 실패. 다시 시도해주세요.');
             }
         },
         error: function() {
@@ -126,7 +99,9 @@ function purchaseSelectedCarts() {
                 <td class="align-left">
                     <a href="detail?item_num=${cart.goods.item_num}">${cart.goods.item_name}</a>
                 </td>
-                <td class="align-center">${cart.goods.item_price}</td>
+                <td class="align-center">
+                    <span id="price_${cart.cart_num}">${cart.goods.item_price}</span>
+                </td>
                 <td class="align-center">${cart.goods.item_stock}</td>
                 <td class="align-center">
                     <input type="number" id="cart_quantity_${cart.cart_num}" value="${cart.cart_quantity}" min="1">
@@ -140,7 +115,7 @@ function purchaseSelectedCarts() {
 </table>
 <div align="center">
     <button type="button" onclick="deleteSelectedCarts()">선택 항목 삭제</button>
-    <button type="button" onclick="purchaseSelectedCarts()">선택 항목 구매</button>
+    <button type="button" id="purchaseButton">선택 항목 구매</button>
 </div>
 <div align="center">${page}</div>
 </c:if>

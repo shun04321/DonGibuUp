@@ -24,7 +24,7 @@
         <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: ${goods.item_price}<br> 수량: <input type="number" id="cart_quantity" name="cart_quantity" value="1" min="1" max="${goods.item_stock}"></li>
     </ul>
     <div class="detail-content">${goods.item_detail}</div>
-    <div>
+    <div>ㅁ
         <input type="button" value="목록" onclick="location.href='list'">
 
         <form id="purchaseForm" method="post">
