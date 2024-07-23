@@ -115,7 +115,9 @@ $(function() {
 						//문서 객체에 추가
 						$('#chatting_message').append(output);
 						//스크롤을 하단에 위치시킴
-						$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
+						requestAnimationFrame(function(){
+							$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
+						});						
 					});
 				} else {
 					alert('채팅 오류 발생');
