@@ -57,6 +57,10 @@
 						<p>${challengeJoin.chal_sdate}- ${challengeJoin.chal_edate}</p>
 						<div>
 							<b> <span>달성률</span> <span>${challengeData.achieveRate}%</span>
+								<div class="progress progress-md">
+									<div class="progress-bar bg-success" role="progressbar"style="width: ${challengeData.achieveRate}%" 
+									aria-valuenow="100-${challengeData.achieveRate}" aria-valuemin="0" aria-valuemax="100"></div>
+								</div>
 							</b>
 						</div>
 						<div class="details">

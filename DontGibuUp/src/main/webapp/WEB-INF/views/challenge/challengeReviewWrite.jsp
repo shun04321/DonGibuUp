@@ -47,7 +47,7 @@
         </div>
         <br>
         <div class="review-content3">
-            <form:textarea path="chal_rev_content" rows="5" cols="50" placeholder="후기 작성시 ( )p가 지급됩니다." id="chal_rev_content"></form:textarea>
+            <form:textarea path="chal_rev_content" rows="5" cols="50" placeholder="후기 작성시 500p가 지급됩니다." id="chal_rev_content"></form:textarea>
             <div class="char-count">
                 0 / 최소 20자
             </div>
