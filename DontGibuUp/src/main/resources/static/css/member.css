@@ -4,23 +4,19 @@
 	margin-top: 5rem !important;
 }
 
-.form-error {
-	color: red;
-}
-
 .clickable-image, .clickable {
 	cursor: pointer;
 }
 
 /*마이페이지 - 회원정보*/
 .my-photo {
-    border-radius: 50%;
-    border: 2px solid #ddd; /* 기본 테두리 색상 */
+	border-radius: 50%;
+	border: 2px solid #ddd; /* 기본 테두리 색상 */
 }
 
 .photo-preview {
 	border-radius: 30px;
-	object-fit:cover;
+	object-fit: cover;
 	width: 6rem;
 	height: 6rem;
 }
@@ -39,13 +35,13 @@
 }
 
 .position-relative {
-    position: relative;
+	position: relative;
 }
 
 .position-absolute {
-    position: absolute;
-    top: 0;
-    right: 0;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 
 .photo-flex {
@@ -56,35 +52,34 @@
 .full-height {
 	height: 100% !important;
 }
-	
+
 .top-0 {
-    top: 0;
+	top: 0;
 }
 
 .end-0 {
-    right: 0;
+	right: 0;
 }
 
 .translate-middle {
-    transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
 
 .btn-custom {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .img-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 20px;
 }
 
 .btn-custom {
-    border-radius: 50%;
-    padding: 0.5rem 1rem;
+	border-radius: 50%;
+	padding: 0.5rem 1rem;
 }
-
 
 .no-margin {
 	margin: 0 !important;
@@ -153,4 +148,66 @@
 #inquiryResponse {
 	margin: 5px 0;
 	white-space: pre-line;
+}
+
+/*result-body*/
+.result-display {
+	background-color: #f8f9fa;
+	padding: 30px;
+	border-radius: 5px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.align-center {
+	text-align: center;
+}
+
+#result_p {
+	font-size: 1.2rem;
+	margin-top: 4rem;
+	margin-bottom: 3rem;
+	margin-top: 4rem;
+}
+
+.result-btn-custom {
+	background-color: #007bff;
+	color: white;
+}
+
+.result-btn-custom:hover {
+	background-color: #0056b3;
+}
+
+/*마이페이지 - 친구초대*/
+#rcode {
+	width: 10rem;
+	border: 1px solid #424242;
+	border-radius: 4px;
+	padding: 0.6rem 0.8rem;
+	margin-left: 1rem;
+	text-align: center;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+}
+
+.banner-img {
+	border-radius: 30px;
+	margin-bottom: 2rem;
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+}
+
+.sns-share-div {
+	width: 10rem !important;
+}
+
+.sns-share-div img.clickable-image {
+	display: flex;
+	margin: 0.5rem;
+	width: 4rem;
+	height: 4rem;
+	background-color: #5bc1ac;
+	padding: 0.5rem;
+	border-radius: 50%;
 }

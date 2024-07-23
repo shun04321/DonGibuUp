@@ -350,6 +350,27 @@ public class SubscriptionController {
 
 		MemberVO user = (MemberVO)session.getAttribute("user");
 
+		
+		//페이지 처리
+		int count = subscriptionService.getSubscriptionCount(user.getMem_num());
+		List<SubscriptionVO> list = null;
+		if(count > 0) {
+			list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
+		}
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+
+		return "subscriptionList";
+	}
+	
+	@GetMapping("/subscription/paymentHistory")
+	public String paymentHistory(HttpSession session, Model model,
+			@RequestParam(defaultValue="1") int pageNum,
+			@RequestParam(defaultValue="") String category,
+			String keyfield,String keyword){
+
+		MemberVO user = (MemberVO)session.getAttribute("user");
+
 		Map<String,Object> map = 
 				new HashMap<String,Object>();
 		map.put("category", category);
@@ -359,9 +380,7 @@ public class SubscriptionController {
 
 		int payCount = sub_paymentService.getSub_paymentCountByMem_num(map);
 		//결제내역 페이징
-		PagingUtil page = 
-				new PagingUtil(keyfield,keyword,pageNum,
-						       payCount,10,10,"list", "&category="+category);
+		 PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, payCount, 10, 10, "paymentHistory", "&category=" + category);
 		
 		List<Sub_paymentVO> paylist = null;
 		if(payCount > 0) {
@@ -369,36 +388,13 @@ public class SubscriptionController {
 			map.put("end", page.getEndRow());
 			paylist = sub_paymentService.getSub_paymentByMem_num(map);
 		}
-		/* sql 수정으로 데이터 셋팅 불필요해짐
-		 *  
-		 * for (Sub_paymentVO payment : paylist) { // sub_num을 사용하여 관련된 SubscriptionVO
-		 * 가져오기 SubscriptionVO subscription =
-		 * subscriptionService.getSubscription(payment.getSub_num()); DonationCategoryVO
-		 * categoryVO =
-		 * categoryService.selectDonationCategory(subscription.getDcate_num());
-		 * subscription.setDonationCategory(categoryVO); if (subscription != null) { //
-		 * SubscriptionVO에서 필요한 정보를 설정
-		 * payment.setDcate_name(subscription.getDonationCategory().getDcate_name());
-		 * payment.setDcate_charity(subscription.getDonationCategory().getDcate_charity(
-		 * )); payment.setSub_method(subscription.getSub_method());
-		 * if(subscription.getEasypay_method()!=null) {
-		 * payment.setEasypay_method(subscription.getEasypay_method()); }
-		 * if(subscription.getCard_nickname()!=null) {
-		 * payment.setCard_nickname(subscription.getCard_nickname()); } } }
-		 */
-		//페이지 처리
-		int count = subscriptionService.getSubscriptionCount(user.getMem_num());
-		List<SubscriptionVO> list = null;
-		if(count > 0) {
-			list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
-		}
+
 		model.addAttribute("page",page.getPage());
 		model.addAttribute("payCount",payCount);
 		model.addAttribute("paylist",paylist);
-		model.addAttribute("count", count);
-		model.addAttribute("list", list);
 
-		return "subscriptionList";
+
+		return "paymentHistory";
 	}
 
 	//정기기부 상세

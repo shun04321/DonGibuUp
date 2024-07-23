@@ -4,24 +4,29 @@
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
   integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
-<div class="page-main">
-	<h2>친구초대</h2>
-	<div>
-		<h1>친구 초대하면 나도 친구도 3,000 포인트</h1>
-		<p>지금 돈기부업에 친구를 초대해보세요! 초대한 회원님과 초대받은 친구에게 모두 3,000원 포인트를 드려요.</p>
-	</div>
-	<div>
-		<label>내 추천인 코드</label> <span>${rcode}</span>
-	</div>
-	<div>
-		<h4>지금 친구 초대하기</h4>
-		<img src="${pageContext.request.contextPath}/images/revent_banner.png" width="500"><br>
-		<img src="${pageContext.request.contextPath}/images/hyperlink.png"
-			width="30" id="link_sharing_btn" class="clickable-image"
-			data-link="/member/signup?rcode=${rcode}"> 
-		<img src="${pageContext.request.contextPath}/images/talk.png" width="30"
-			id="kakaotalk_sharing_btn" class="clickable-image"
-			data-link="${pageContext.request.contextPath}/some/other/link">
+<div class="container mt-4">
+	<h2 class="mb-4">친구초대</h2>
+	<div class="row justify-content-left main-content-container">
+		<img src="${pageContext.request.contextPath}/images/revent_banner_horizontal.png" class="banner-img">
+		<div class="mb-3">
+			<h3 class="mb-3">친구 초대하면 나도 친구도 3,000 포인트</h3>
+			<p>지금 돈기부업에 친구를 초대해보세요! 초대한 회원님과 초대받은 친구에게 모두 3,000원 포인트를 드려요.</p>
+		</div>
+		<div class="sns-share-div mt-1 mb-4">
+			<div class="font-weight-bold mb-2">지금 친구 초대하기</div>
+			<div class="d-flex justify-content-center">
+				<img src="${pageContext.request.contextPath}/images/hyperlink.png"
+					id="link_sharing_btn" class="clickable-image"
+					data-link="/member/signup?rcode=${rcode}">
+				<img src="${pageContext.request.contextPath}/images/talk.png"
+					id="kakaotalk_sharing_btn" class="clickable-image">
+			</div>
+		</div>
+		<div class="mt-1 mb-5">
+				<span class="font-weight-bold fs-5">내 추천인 코드</span> 
+				<span id="rcode">${rcode}</span>
+			</div>
+		</div>
 	</div>
 </div>
 

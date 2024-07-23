@@ -59,8 +59,12 @@ $(function() {
 	//새 비밀번호 다시 입력시 알림 메세지 없애기
 	$('#mem_pw').on('keydown', function() {
 		const feedbackElement = $('.form-error');
+		const inputElement = $('#mem_pw');
+		const inputElement2 = $('#check_pw');
 		feedbackElement.text('');
 		feedbackElement.css('color', 'black');
+		inputElement.css('border-color', 'black');
+		inputElement2.css('border-color', 'black');
 	});
 	
 	/*===============================
@@ -78,7 +82,9 @@ $(function() {
 			} else {
 				pw_checked = 0;
 				check_pw_msg.text('비밀번호가 일치하지 않습니다');
-				check_pw_msg.css('color', 'red');
+				$('#mem_pw').css('border-color', '#dc3545');
+				$('#check_pw').css('border-color', '#dc3545');
+				check_pw_msg.css('color', '#dc3545');
 			}
 		}
 	});
