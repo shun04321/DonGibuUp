@@ -90,12 +90,16 @@
 				<form:errors path="chal_max" cssClass="error-color"/>
 			</li>
 			<li>
-				<form:label path="upload">대표사진</form:label>
-				<input type="file" name="upload" id="upload"/>
-				<div id="challProfile"></div>
-				<script>
-				/* 파일 이미지 미리보기 */
-				</script>
+			    <form:label path="upload">대표사진</form:label>
+			    <input type="file" name="upload" id="upload" onchange="previewImage(event)"/>
+			    <div id="challProfile"></div>
+			    
+			    <!-- 미리보기 이미지 요소 추가 -->
+			    <div>
+			        <div class="image-preview">
+			            <img id="imagePreview" src="#" alt="Image Preview" style="display: none;"/>
+			        </div>
+			    </div>
 			</li>
 		</ul>
 		<div class="align-center">
@@ -103,3 +107,15 @@
 		</div>
 	</form:form>
 </div>
+
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
