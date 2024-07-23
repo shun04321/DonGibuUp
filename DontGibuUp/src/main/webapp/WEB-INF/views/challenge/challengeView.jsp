@@ -1,6 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%-- 현재 날짜를 캡처 --%>
+<%
+    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+    String currentDate = sdf.format(new java.util.Date());
+    request.setAttribute("currentDate", currentDate);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -35,6 +43,9 @@
             </div>
         </div>
         <c:choose>
+            <c:when test="${currentDate > challenge.chal_edate}">
+                <button disabled>챌린지 마감</button>
+            </c:when>
             <c:when test="${isJoined}">
                 <button disabled>참가중</button>
             </c:when>
