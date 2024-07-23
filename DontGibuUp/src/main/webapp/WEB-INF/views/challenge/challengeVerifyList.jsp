@@ -27,7 +27,7 @@
 	</div>
 		<div class="challenge-stats">
 			<div class="challenge-stat-item">
-				<span>인증 빈도</span>
+				<span>인증 빈도</span>&nbsp;&nbsp;
 				<c:if test="${chalFreq == 0}">
 					<span>매일</span>
 				</c:if>
@@ -36,24 +36,33 @@
 				</c:if>
 			</div>
 			<div class="challenge-stat-item">
-				<span>기간</span> <span>${chal_sdate} ~ ${chal_edate}</span>
+				<span>기간</span>&nbsp;&nbsp;
+				<span>${chal_sdate} ~ ${chal_edate}</span>
 			</div>
 			<div class="challenge-stat-item1">
-				<span>달성률</span> <span>${achievementRate}%</span>
+			    <span>달성률</span>&nbsp;&nbsp;
+			    <span><b>${achievementRate}%</b></span>&nbsp;&nbsp;
+			    <div class="progress progress-md">
+			        <div class="progress-bar bg-success" role="progressbar" style="width: ${achievementRate}%" 
+			        aria-valuenow="${achievementRate}" aria-valuemin="0" aria-valuemax="100"></div>
+			    </div>
 			</div>
 			<div class="challenge-stat-item2">
-				<span>인증 성공</span> <span>${successCount}회</span>
+				<span>인증 성공</span> &nbsp;&nbsp;
+				<span>${successCount}회</span>
 			</div>
 			<div class="challenge-stat-item2">
-				<span>인증 실패</span> <span>${failureCount}회</span>
+				<span>인증 실패</span>&nbsp;&nbsp;
+				<span>${failureCount}회</span>
 			</div>
 			<div class="challenge-stat-item2">
-				<span>남은 인증</span> <span>${remainingCount}회</span>
+				<span>남은 인증</span>&nbsp;&nbsp;
+				<span>${remainingCount}회</span>
 			</div>
 			<div class="challenge-stat-item2">
 				<c:choose>
 					<c:when test="${status == 'post'}">
-						<!-- 완료된 챌린지의 경우 버튼 숨김 -->
+						<button class="disabled-button" disabled>완료된 챌린지</button>
 					</c:when>
 					<c:when test="${hasTodayVerify}">
 						<button class="disabled-button" disabled>오늘 인증 완료</button>
@@ -70,7 +79,7 @@
 		</div>
 		<div class="challenge-verify-stats">
 			<div class="verify-stats-nav">
-				<span id="verify_my_states">나의 인증 현황</span> 
+				<span id="verify_my_states">나의 인증 현황</span> | 
 				<span id="join_member_list">참가자 인증 현황</span>
 			</div>
 			<div id="verify_content"></div>						
