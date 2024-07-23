@@ -4,7 +4,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.modifyinquiry.js"></script>
-<h2>문의 수정</h2>
+<h4>문의 수정</h4>
 <form:form action="modify" id="inquiry" enctype="multipart/form-data" modelAttribute="inquiryVO">
 	<ul>
 	<form:hidden path="inquiry_num" value="${inquiryVO.inquiry_num}" />

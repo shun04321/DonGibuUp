@@ -29,50 +29,45 @@
 				}
 			});
 </script>
-<div class="page-main">
-	<h2>포인트</h2>
-	<c:if test="${count == 0}">
-	<div class="result-display">표시할 게시물이 없습니다.</div>
-	</c:if>
-	<c:if test="${count > 0}">
-	<table>
-		<thead>
-			<tr>
-				<th>분류</th>
-				<th>일자</th>
-				<th>내역</th>
-				<th>포인트</th>
-				<th>잔여포인트</th>
-			</tr>
-		</thead>
-		<tbody>
-			<!-- 데이터 행 추가 -->
-			<c:forEach var="point" items="${list}">
-				<tr>
-					<td><c:if
-							test="${point.pevent_type >= 10 && point.pevent_type < 20}">
-               적립
-               </c:if> <c:if
-							test="${point.pevent_type >= 20 && point.pevent_type < 30}">
-               사용
-               </c:if> <c:if
-							test="${point.pevent_type >= 30 && point.pevent_type < 40}">
-               환불
-               </c:if> <c:if
-							test="${point.pevent_type >= 40 && point.pevent_type < 50}">
-               회수
-               </c:if> <c:if
-							test="${point.pevent_type >= 50}">
-               기타
-               </c:if></td>
-					<td>${point.point_date}</td>
-					<td>${point.pevent_detail}</td>
-					<td>${point.point_amount}</td>
-					<td id="remain_${point.point_num}"></td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-	<div class="align-center">${page}</div>
-	</c:if>
+<div class="container mt-4">
+	<h4 class="mb-4">포인트</h4>
+	<div class="row justify-content-left main-content-container">
+		<c:if test="${count == 0}">
+		<div class="result-display">표시할 게시물이 없습니다.</div>
+		</c:if>
+		<c:if test="${count > 0}">
+            <table class="table table-clean">
+                <thead>
+                    <tr>
+                        <th>분류</th>
+                        <th>일자</th>
+                        <th>내역</th>
+                        <th>포인트</th>
+                        <th>잔여포인트</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 데이터 행 추가 -->
+                    <c:forEach var="point" items="${list}">
+                        <tr>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${point.pevent_type >= 10 && point.pevent_type < 20}">적립</c:when>
+                                    <c:when test="${point.pevent_type >= 20 && point.pevent_type < 30}">사용</c:when>
+                                    <c:when test="${point.pevent_type >= 30 && point.pevent_type < 40}">환불</c:when>
+                                    <c:when test="${point.pevent_type >= 40 && point.pevent_type < 50}">회수</c:when>
+                                    <c:otherwise>기타</c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>${point.point_date}</td>
+                            <td>${point.pevent_detail}</td>
+                            <td>${point.point_amount}</td>
+                            <td id="remain_${point.point_num}"></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+		<div class="align-center">${page}</div>
+		</c:if>
+	</div>
 </div>

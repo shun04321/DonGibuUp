@@ -5,7 +5,7 @@
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
   integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 <div class="container mt-4">
-	<h2 class="mb-4">친구초대</h2>
+	<h4 class="mb-4">친구초대</h4>
 	<div class="row justify-content-left main-content-container">
 		<img src="${pageContext.request.contextPath}/images/revent_banner_horizontal.png" class="banner-img">
 		<div class="mb-3">

@@ -10,7 +10,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/member/member.info.js"></script>
 <div class="container mt-4">
-    <h2 class="mb-4">회원정보 수정</h2>
+    <h4 class="mb-4">회원정보 수정</h4>
     <div class="row justify-content-left main-content-container">
 	<div class="col-lg-4 text-center p-0">
 	    <div class="mb-3">

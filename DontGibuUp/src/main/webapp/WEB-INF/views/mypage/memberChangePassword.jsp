@@ -8,7 +8,7 @@
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.password.js"></script>
 <div class="container mt-4">
-	<h2 class="mb-4">비밀번호 수정</h2>
+	<h4 class="mb-4">비밀번호 수정</h4>
 	<div class="row justify-content-left main-content-container">
 		<div>
 			<form:form action="changePassword" id="change_password" modelAttribute="memberVO">

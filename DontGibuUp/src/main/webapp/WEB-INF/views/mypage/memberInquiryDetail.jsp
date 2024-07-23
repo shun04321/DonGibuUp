@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="page-main">
-	<h2>문의 내용</h2>
+	<h4>문의 내용</h4>
 	<div id="inquiryDetails">
 		<h3 id="inquiryTitle">${inquiry.inquiry_title}</h3>
 		<div id="inquiryInfo">

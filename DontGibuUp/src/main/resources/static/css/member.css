@@ -211,3 +211,32 @@
 	padding: 0.5rem;
 	border-radius: 50%;
 }
+
+/*마이페이지 - 포인트*/
+/* 기본 폰트 크기 */
+.table-clean th, .table-clean td {
+	font-size: 1rem; /* 기본 폰트 크기 설정 */
+}
+
+/* 모바일 화면에서 폰트 크기 조정 */
+@media ( max-width : 576px) {
+	.table-clean th, .table-clean td {
+		font-size: 0.7rem; /* 모바일 화면에서 폰트 크기 축소 */
+	}
+}
+
+/* 기본 스타일 */
+.table-clean thead th {
+	border-bottom: 2px solid #dee2e6;
+	background-color: #f8f9fa;
+}
+
+.table-clean tbody td {
+	border-bottom: 1px solid #dee2e6;
+}
+
+.table-clean tbody tr:last-child td {
+	border-bottom: none;
+}
+
+/*마이페이지 - 문의*/

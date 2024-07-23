@@ -5,7 +5,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.findpassword.js"></script>
 <div class="page-main">
-<h2>비밀번호 재발급</h2>
+<h4>비밀번호 재발급</h4>
 <form action="findPasswordResult" method="get" id="member_password">
     <ul>
         <li>
