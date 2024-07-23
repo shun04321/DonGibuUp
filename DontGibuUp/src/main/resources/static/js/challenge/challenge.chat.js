@@ -1,4 +1,10 @@
 $(function() {
+	let message_socket;//웹소켓 식별자
+	
+	if($('#chatDetail').length > 0){
+		connectWebSocket();		
+	}
+	
 	/*----------------------
 	 * 웹 소켓 연결
 	 *----------------------*/
@@ -6,7 +12,7 @@ $(function() {
 		message_socket = new WebSocket('ws://localhost:8000/message-ws');
 		message_socket.onopen=function(evt){
 			console.log('채팅메시지 접속 : '+ $('#chatDetail').length);
-			//$('#talkDetail').length = 0이면 접속, 1이면 미접속
+			//$('#chatkDetail').length = 0이면 접속, 1이면 미접속
 			if($('#chatDetail').length == 1){
 				message_socket.send('msg');
 			}
@@ -23,7 +29,6 @@ $(function() {
 		message_socket.onclose=function(evt){
 			//소켓이 종료된 후 부가적인 작성이 있을 경우 명시
 			console.log('chat close');
-			window.close();
 		}
 	}
 
@@ -62,18 +67,23 @@ $(function() {
 			success: function(param) {
 				if (param.result == 'logout') {
 					alert('로그인 후 채팅 가능합니다.');
+					message_socket.close();
+					window.close();
+					window.location.href=`${contextPath}/member/login`;
 				} else if (param.result = 'success') {
 					//폼 초기화
 					$('#chat_content').val('');
 					$('#fileUpload').val('');
-					//웹 소켓으로 바꿀 예정
-					readChat();
+					//웹 소켓 통신 - 1:1 채팅과 구분하기 위한 코드 작성 
+					message_socket.send('msg');
 				} else {
 					alert('채팅 메시지 등록 오류 발생');
+					message_socket.close();
 				}
 			},
 			error: function() {
 				alert('네트워크 오류');
+				message_socket.close();
 			}
 		});//end of ajax
 		e.preventDefault();
@@ -88,7 +98,10 @@ $(function() {
 			dataType: 'json',
 			success: function(param) {
 				if (param.result == 'logout') {
-					alert('로그인 후 채팅 가능합니다.')
+					alert('로그인 후 채팅 가능합니다.');
+					message_socket.close();
+					window.close();
+					window.location.href=`${contextPath}/member/login`;
 				} else if (param.result == 'success') {
 					console.log('success');
 					//채팅창 UI 초기화
@@ -121,10 +134,12 @@ $(function() {
 					});
 				} else {
 					alert('채팅 오류 발생');
+					message_socket.close();
 				}
 			},
 			error: function() {
 				alert('채팅 통신 오류 발생!');
+				message_socket.close();
 			}
 		});
 	}
@@ -228,5 +243,4 @@ $(function() {
 		return sub_output;
 	}
 
-	readChat();
 });
