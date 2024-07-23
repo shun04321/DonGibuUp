@@ -45,6 +45,8 @@ public interface DboxMapper {
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
 	@Select("SELECT COUNT(*) FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
 	public Integer selectDboxDonationsCount(long dbox_num);
+	@Select("SELECT SUM(dbox_do_price) FROM dbox_donation WHERE dbox_num=#{dbox_num}")
+	public Long selecDoantionTotal(long dbox_num);
 	//Dbox_Result
 	@Select("SELECT * FROM dbox_result WHERE dbox_num=#{dbox_num}")
 	public DboxResultVO selectDboxResult(long dbox_num);

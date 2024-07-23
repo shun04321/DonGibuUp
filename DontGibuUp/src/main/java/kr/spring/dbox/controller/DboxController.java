@@ -69,6 +69,7 @@ public class DboxController {
    
     	//뷰에 전달
     	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
     	model.addAttribute("dboxBudget",dboxBudget);
     	return "dboxDetailContent";
     }
@@ -83,6 +84,7 @@ public class DboxController {
     	DboxVO dbox = dboxService.selectDbox(dboxNum);
     	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
     	log.debug("<<상세 페이지(donators) - Dbox : >>" + dbox);
+    	
     	log.debug("<<상세 페이지(donators) - DboxBudget : >>" + dboxBudget);
    
     	
@@ -98,6 +100,7 @@ public class DboxController {
     	
     	//뷰에 전달
     	model.addAttribute("dboxDonations",dboxDonations);
+    	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
     	model.addAttribute("dbox",dbox);
     	model.addAttribute("dboxBudget",dboxBudget);
     	return "dboxDetailDonators";
@@ -122,6 +125,7 @@ public class DboxController {
     	//뷰에 전달
     	model.addAttribute("dboxNews",dboxResult);
     	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
     	model.addAttribute("dboxBudget",dboxBudget);
     	return "dboxDetailNews";
     }

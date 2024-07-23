@@ -11,3 +11,19 @@
 #main_footer{
 	clear:both;
 }
+.donator-profile-photo{
+	object-fit:cover;
+	/*정사각형이 아니라 직사각형일 경우 원 안에 보여지게 할 중심 이미지의 위치를 지정*/
+	object-position:top;
+	border-radius:50%;
+	height:2rem;
+	width:2rem;
+}
+.team-profile-photo{
+	object-fit:cover;
+	/*정사각형이 아니라 직사각형일 경우 원 안에 보여지게 할 중심 이미지의 위치를 지정*/
+	object-position:top;
+	border-radius:50%;
+	height:3rem;
+	width:3rem;
+}

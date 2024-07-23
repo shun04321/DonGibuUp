@@ -23,6 +23,7 @@ public interface DboxService {
 	public void insertDboxDonation(DboxDonationVO dboxDonationVO);
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
 	public Integer selectDboxDonationsCount(long dbox_num);
+	public Long selecDoantionTotal(long dbox_num);
 	//Dbox_Result
 	public DboxResultVO selectDboxResult(long dbox_num);
 }

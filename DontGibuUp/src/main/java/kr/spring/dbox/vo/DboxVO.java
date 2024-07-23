@@ -71,4 +71,7 @@ public class DboxVO {
 	//카테고리
 	private String dcate_name;
 	private String dcate_icon;
+	
+	//기부 총합
+	private long total;
 }

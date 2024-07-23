@@ -137,6 +137,7 @@
 			  		<include refid="dboxStatus"></include>
 			  		<include refid="dboxOrder"></include>
 			  		)a)
+		LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total FROM dbox_donation group by dbox_num ) USING(dbox_num) 	  		
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
