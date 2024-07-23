@@ -17,6 +17,7 @@
         <button class="tab-button active" onclick="location.href='subscriptionList'">나의 정기기부 목록</button>
         <button class="tab-button" onclick="location.href='paymentHistory'">정기기부 결제내역</button>
     </div>
+  <div style="display: flex; /* Flexbox를 사용하여 요소를 가로로 정렬합니다. */">
     <div class="item_subscribe">
         <dl class="header-item">
             <dt>
@@ -59,7 +60,7 @@
                 </dd>
             </dl>
         </div>
-    </div>
+    
 
     <c:if test="${subscription.sub_status == 0}">
         <input type="button" value="해지하기" class="modify-btn" data-num="${subscription.sub_num}">
@@ -67,3 +68,8 @@
     <c:if test="${subscription.sub_status == 1}">
         <input type="button" value="해지된 정기기부" class="modify-btn" disabled="disabled">
     </c:if>
+    </div>
+    <div class="refundDiv">
+    	<input type="button" value="환불 신청">
+    </div>
+</div>
