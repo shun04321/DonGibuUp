@@ -262,9 +262,6 @@ public class PurchaseController {
                 purchaseVO.setBuyer_name(buyerName);
                 purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
 
-                // 디버깅용 로그 추가
-                log.debug("purchaseVO: " + purchaseVO);
-
                 try {
                     List<CartVO> cartItemList = new ArrayList<>();
                     for (Map<String, Object> item : cartItems) {
@@ -272,12 +269,10 @@ public class PurchaseController {
                         cartItem.setItem_num(((Number) item.get("item_num")).longValue());
                         cartItem.setCart_quantity(((Number) item.get("cart_quantity")).longValue());
                         cartItem.setPrice(((Number) item.get("price")).intValue());
+                        cartItem.setPurchase_num(purchaseVO.getPurchaseNum()); // purchase_num 설정
                         cartItemList.add(cartItem);
                     }
                     purchaseService.insertPurchaseWithCartItems(purchaseVO, cartItemList);
-
-                    log.debug("Inserted purchase with purchaseNum: " + purchaseVO.getPurchaseNum());
-
                     mapJson.put("result", "success");
                 } catch (Exception e) {
                     log.error("결제 정보 저장 중 오류 발생", e);
@@ -297,6 +292,7 @@ public class PurchaseController {
 
         return mapJson;
     }
+
     
     @GetMapping("/purchaseHistory")
     public String getPurchaseHistory(HttpSession session, Model model) {
