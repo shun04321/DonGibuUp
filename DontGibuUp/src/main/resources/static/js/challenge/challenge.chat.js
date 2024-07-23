@@ -161,8 +161,8 @@ $(function() {
 				} else {
 					sub_output += `<img src="${contextPath}/images/basicProfile.png" width="40" height="40" class="my-photo">`;
 				}
-				sub_output += '</div><div class="space-message">';
-				sub_output += item.mem_nick;
+				sub_output += '</div><div class="space-clear"></div>';
+				sub_output += `${item.mem_nick}<div class="space-message">`;
 			} else {
 				sub_output += '<div class="from-position">';
 			}
@@ -170,11 +170,11 @@ $(function() {
 			sub_output += '<span>' + item.chat_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</span>';
 			sub_output += '</div>';
 			//안 읽은 사람수, 작성 시간 추출
-			sub_output += `<span>
+			sub_output += `<div class="item2">
 						    <div>${item.chat_readCount}</div>
 						    <div>${item.chat_date.split(' ')[1]}</div>
-						   </span>`;
-			sub_output += '</div><div class="space-clear"></div>';
+						   </div>`;			   
+			sub_output += '</div></div>';
 			sub_output += '</div>';
 		}
 		return sub_output;
@@ -191,21 +191,20 @@ $(function() {
 			} else {
 				sub_output += `<img src="${contextPath}/images/basicProfile.png" width="40" height="40" class="my-photo">`;
 			}
-			sub_output += '</div><div class="space-message">';
-			sub_output += item.mem_nick;
+			sub_output += '</div><div class="space-clear"></div>';
+			sub_output += `${item.mem_nick}<div class="space-message">`;
 		} else {
 			sub_output += '<div class="from-position">';
-			sub_output += '<div class="space-message">';
 		}
 		sub_output += '<div class="item">';
-		sub_output += `<span><img src="${contextPath}/upload/${item.chat_filename}"></span>`;
+		sub_output += `<img src="${contextPath}/upload/${item.chat_filename}" max-width="200">`;
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
-		sub_output += `<span>
+		sub_output += `<div class="item2">
 						    <div>${item.chat_readCount}</div>
 						    <div>${item.chat_date.split(' ')[1]}</div>
-					   </span>`;
-		sub_output += '</div><div class="space-clear"></div>';
+					   </div>`;
+		sub_output += '</div></div>';
 		sub_output += '</div>';
 		
 		return sub_output;
@@ -222,22 +221,21 @@ $(function() {
 			} else {
 				sub_output += `<img src="${contextPath}/images/basicProfile.png" width="40" height="40" class="my-photo">`;
 			}
-			sub_output += '</div><div class="space-message">';
-			sub_output += item.mem_nick;
+			sub_output += '</div><div class="space-clear"></div>';
+			sub_output += `${item.mem_nick}<div class="space-message">`;
 		} else {
 			sub_output += '<div class="from-position">';
-			sub_output += '<div class="space-message">';
 		}
 		sub_output += '<div class="item">';
 		sub_output += `<div><img src="${contextPath}/upload/${item.chat_filename}"></div>`;
 		sub_output += '<div>' + item.chat_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</div>';
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
-		sub_output += `<span>
+		sub_output += `<div class="item2">
 						    <div>${item.chat_readCount}</div>
 						    <div>${item.chat_date.split(' ')[1]}</div>
-					   </span>`;
-		sub_output += '</div><div class="space-clear"></div>';
+					   </div>`;
+		sub_output += '</div></div>';
 		sub_output += '</div>';
 		
 		return sub_output;

@@ -77,47 +77,60 @@
 	
 }
 .date-position span{
-    display:inline-block;
+  display:inline-block;
 	width:300px;
 	height:20px;
 	border-radius:10px;	
 	background-color:#f2efef;
 }
 .from-position{
-	width:300px;
-	margin:10px 0 10px 330px;
+	width:350px;
+	margin:10px 0 10px 280px;
+	display: flex;
+	flex-direction:row-reverse;
+  align-items: flex-end;
 }
-
 .from-position .item{
-	background-color:yellow;
+	background-color:#98D6C9;
 	padding:10px;
+	min-width:235px;
 	min-height:50px;	
 	border-radius: 20px;
 	border-top-right-radius:0;	
 }
+.from-position .item img{	
+	border-radius: 10px;
+}
+.from-position .item2{
+	display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 10px;
+}
 .to-position{
-	width:300px;
+	width:350px;
 	margin:10px 0 10px 0;
 }
-.to-position .item{
-	background-color:pink;
-	padding:10px;
-	min-height:50px;
-	border-radius: 20px;
-	border-top-left-radius:0;
-}
-
 .to-position div.space-photo{
 	float:left;
 	width:15%;
 }
 .to-position div.space-message{
-	float:left;
-	width:85%;
+	display: flex;
+	align-items: flex-end;
 }
-
-.to-position div.space-clear{
-	clear:both;
+.to-position .item{
+	background-color:pink;
+	padding:10px;
+	min-width:235px;
+	min-height:50px;
+	border-radius: 20px;
+	border-top-left-radius:0;
+}
+.to-position .item2{
+	display: flex;
+  flex-direction: column;
+  padding-left: 10px;
 }
 .greeting-message{
 	width:230px;
