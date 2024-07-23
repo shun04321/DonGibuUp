@@ -17,19 +17,25 @@
     (refund_seq.nextval, #{memNum}, #{impUid}, #{reason}, SYSDATE)
 	</insert>
 	
-	 <select id="getPurchaseListByMember" resultType="kr.spring.goods.vo.PurchaseVO">
+	<select id="getPurchaseListByMember" resultType="kr.spring.goods.vo.PurchaseVO">
     SELECT p.purchase_num, p.mem_num, p.item_num, i.item_name, i.item_photo, p.imp_uid, p.pay_price AS amount, p.pay_date AS payDate, p.pay_status AS payStatus, p.delivery_status AS deliveryStatus
     FROM purchase p
     JOIN item i ON p.item_num = i.item_num
     WHERE p.mem_num = #{memNum}
 </select>
 
-<update id="updateDeliveryStatus">
-    UPDATE purchase
-    SET delivery_status = #{deliveryStatus}
-    WHERE purchase_num = #{purchaseNum}
-</update>
+<select id="getAllPurchases" resultType="kr.spring.goods.vo.PurchaseVO">
+        SELECT p.purchase_num AS purchaseNum, p.mem_num AS memNum, p.item_num, i.item_name, i.item_photo, p.imp_uid, p.pay_price AS amount, p.pay_date AS payDate, p.pay_status AS payStatus, p.delivery_status AS deliveryStatus
+        FROM purchase p
+        JOIN item i ON p.item_num = i.item_num
+    </select>
 
+    <update id="updateDeliveryStatus">
+        UPDATE purchase
+        SET delivery_status = #{deliveryStatus}
+        WHERE purchase_num = #{purchaseNum}
+    </update>
+    
 	<update id="updateRefundStatus">
     UPDATE purchase
     SET pay_status = #{status}

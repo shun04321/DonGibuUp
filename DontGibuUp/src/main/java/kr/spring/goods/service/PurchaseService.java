@@ -11,7 +11,8 @@ public interface PurchaseService {
     void processRefund(RefundVO refundVO);
     List<PurchaseVO> getPurchaseListByMember(long memNum);
     
-    
+    List<PurchaseVO> getAllPurchases();
+    void updateDeliveryStatus(int purchaseNum, String deliveryStatus);
     void updateRefundStatus(String impUid, int status);
     
 }

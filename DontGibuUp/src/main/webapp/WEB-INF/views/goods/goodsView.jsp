@@ -10,6 +10,11 @@
     let buyerName = "${sessionScope.user.mem_nick}";
     let itemNum = "${goods.item_num}";
     let pageContextPath = "${pageContext.request.contextPath}";  
+    
+    function addToCart() {
+        var form = document.getElementById('cartForm');
+        form.submit();
+    }
 </script>
 
 <div class="page-main">

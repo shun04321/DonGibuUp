@@ -12,4 +12,6 @@ public interface PurchaseMapper {
     void insertRefund(RefundVO refundVO);
     List<PurchaseVO> getPurchaseListByMember(long memNum);
     void updateRefundStatus(String impUid, int status);
+    List<PurchaseVO> getAllPurchases();
+    void updateDeliveryStatus(int purchaseNum, String deliveryStatus);
 }

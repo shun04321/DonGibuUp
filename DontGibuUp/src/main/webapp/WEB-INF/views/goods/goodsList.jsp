@@ -50,6 +50,7 @@
 			<c:if
 				test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
 				<input type="button" value="상품 등록" onclick="location.href='write'">
+				<input type="button" value="구매 관리" onclick="location.href='${pageContext.request.contextPath}/admin/purchaseList'">
 			</c:if>
 			
 			<c:if test="${sessionScope.user != null}">
@@ -110,7 +111,8 @@
 										<input type="hidden" name="item_num" value="${goods.item_num}">
 										<input type="submit" value="삭제"
 											onclick="return confirm('정말로 삭제하시겠습니까?');">
-									</form></td>
+									</form>
+								</td>
 							</c:if>
 						</tr>
 					</c:if>
