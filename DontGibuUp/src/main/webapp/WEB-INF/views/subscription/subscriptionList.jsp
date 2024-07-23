@@ -39,7 +39,7 @@
                     <div class="cont-item">
                         <dl class="info-item">
                             <dt>기부금액</dt>
-                            <dd>${subscription.sub_price}원</dd>
+                            <dd class="sub-price" data-original-price="${subscription.sub_price}">${subscription.sub_price}원</dd>
                         </dl>
                         <dl class="info-item">
                             <dt>결제일</dt>
