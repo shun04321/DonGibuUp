@@ -2,7 +2,7 @@ $(function(){
 	let rowCount=6;
 	let currentPage;
 	let count;
-	let category;
+	let category='';
 	let order;
 	let keyfield;
 	let keyword;
@@ -115,7 +115,11 @@ $(function(){
 					output += '     	<div class="custom-block-body">';
 					output += '         	<h5 class="mb-3">'+item.dbox_title+'</h5>';
 					output += '       			<span class="badge text-bg-success mb-3"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</span>';
-					output += '       			<p><img src="../upload/dbox/'+item.dbox_team_photo+'" class="team-profile-photo">'+item.dbox_team_name+'</p>';
+					if(item.dbox_team_photo!=null){
+					output += '       			<p><img src="../upload/dbox/'+item.dbox_team_photo+'" class="team-profile-photo">'+item.dbox_team_name+'</p>';						
+					}else{
+					output += '       			<p><img src="../images/teamProfile.png" class="team-profile-photo">'+item.dbox_team_name+'</p>';												
+					}
 					output += '       			<div class="progress" role="progressbar" aria-label="기부박스 달성률" aria-valuenow="'+Math.floor(item.total/item.dbox_goal*100)+'" aria-valuemin="0" aria-valuemax="100">';
 					output += '       				<div class="progress-bar progress-bar-striped bg-success" style="width: '+Math.floor(item.total/item.dbox_goal*100)+'%"></div>';
 					output += '       			</div>';

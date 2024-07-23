@@ -27,3 +27,9 @@
 	height:3rem;
 	width:3rem;
 }
+figure {
+    display: block;
+    margin: auto; /* 부모의 너비에 맞게 중앙 정렬 */
+    max-width: 100%; /* 부모 요소의 너비를 넘지 않도록 */
+    unicode-bidi: isolate;
+}
