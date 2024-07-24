@@ -219,6 +219,26 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 	
+	//리더의 챌린지 인증 취소 조치
+	@PostMapping("/challenge/verify/cancelVerify")
+	@ResponseBody
+	public Map<String,Object> cancelChallengeVerify(@RequestParam long chal_ver_num,HttpSession session,
+			@RequestParam long chal_joi_num){
+		Map<String,Object> mapJson = new HashMap<>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		long db_chal_joi_num = challengeService.selectChallengeVerify(chal_ver_num).getChal_joi_num();
+		
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else if(db_chal_joi_num != chal_joi_num) {
+			mapJson.put("result", "wrongAccess");
+		}else {
+			challengeService.updateVerifyStatus(chal_ver_num);
+			mapJson.put("result", "success");
+		}
+		return mapJson;
+	}
+	
 	/*==========================
 	 *  챌린지 결제
 	 *==========================*/

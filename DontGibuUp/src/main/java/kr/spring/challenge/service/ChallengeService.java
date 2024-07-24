@@ -53,7 +53,8 @@ public interface ChallengeService {
     public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
     public void deleteChallengeVerify(Long chal_ver_num);
-    int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
+    public int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
+    public void updateVerifyStatus(Long chal_ver_num);
     
 	//*챌린지 후기*//
     public void insertChallengeReview(ChallengeReviewVO chalReviewVO);

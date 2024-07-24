@@ -273,4 +273,9 @@ public class ChallengeServiceImpl implements ChallengeService{
         challengeMapper.deleteFav(fav);
     }
 
+	@Override
+	public void updateVerifyStatus(Long chal_ver_num) {
+		challengeMapper.updateVerifyStatus(chal_ver_num);		
+	}
+
 }
