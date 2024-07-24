@@ -13,7 +13,6 @@
 					<c:if test="${report.report_type == 2}">폭력/위협</c:if>
 					<c:if test="${report.report_type == 3}">혐오발언/차별</c:if>
 					<c:if test="${report.report_type == 4}">음란물/부적절한 콘텐츠</c:if>
-					<c:if test="${report.report_type == 5}">챌린지 인증</c:if>
 				</span>
 				<span>신고 등록일</span> <span id="reportDateText">${report.report_date}</span>
 			</div>
