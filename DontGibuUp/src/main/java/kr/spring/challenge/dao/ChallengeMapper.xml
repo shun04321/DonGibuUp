@@ -150,12 +150,13 @@
 	<select id="selectChallengeJoinList" parameterType="map" resultType="challengeJoinVO">
 	    SELECT * FROM(
 			SELECT a.*,rownum rnum FROM(
-				SELECT cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_freq, c.chal_fee, dc.dcate_charity
+				SELECT 
+					cj.*, c.chal_title, c.chal_sdate, c.chal_edate, c.chal_freq, c.chal_fee, dc.dcate_charity					
 	    		FROM chal_join cj
 	    		JOIN challenge c ON cj.chal_num = c.chal_num
 	    		JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
 	    		WHERE cj.mem_num = #{mem_num}
-					<include refid="sortEnrolledChallenge"></include>
+				<include refid="sortEnrolledChallenge"></include>
 	    		ORDER BY cj.chal_joi_date DESC
 			)a
 		)

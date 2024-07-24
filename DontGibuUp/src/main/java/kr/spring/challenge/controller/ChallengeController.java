@@ -320,6 +320,10 @@ public class ChallengeController {
 			reviewCheckMap.put("mem_num", member.getMem_num());
 			ChallengeReviewVO review = challengeService.selectChallengeReviewByMemberAndChallenge(reviewCheckMap);
 			boolean hasReview = review != null;
+			
+			//챌린지 참여 인원
+			long chal_num = challengeJoin.getChal_num();
+			int total_count = challengeService.countCurrentParticipants(chal_num);
 
 			// 챌린지 데이터 추가
 			challengeData.put("challengeJoin", challengeJoin);
@@ -328,6 +332,7 @@ public class ChallengeController {
 			challengeData.put("donaAmount", numberFormat.format(donaAmount));
 			challengeData.put("formattedFee", numberFormat.format(chal_fee));
 			challengeData.put("hasReview", hasReview);
+			challengeData.put("total_count", total_count);
 
 			return challengeData;
 		}).collect(Collectors.toList());

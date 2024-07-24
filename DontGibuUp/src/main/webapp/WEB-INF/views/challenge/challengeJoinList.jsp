@@ -17,7 +17,7 @@
 			<c:forEach var="entry" items="${challengesByMonth}">
 				<c:forEach var="challengeData" items="${entry.value}">
 					<c:set var="challengeJoin" value="${challengeData.challengeJoin}" />
-					<div class="challenge-card">
+					<div class="challenge-card">						
 						<div class="card-header">
 							<h3>${challengeJoin.chal_title}</h3>
 							<c:if test="${challengeData.achieveRate >= 90}">
@@ -39,8 +39,10 @@
 									</c:when>
 									<c:when test="${status == 'on'}">
 										<a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
-										<a href="#" class="chal_talk" data-chal-num="${challengeJoin.chal_num}"
+										<c:if test="${challengeData.total_count > 1}">
+											<a href="#" class="chal_talk" data-chal-num="${challengeJoin.chal_num}"
 											data-chal-joi-num="${challengeJoin.chal_joi_num}" data-status="${status}">단체톡방</a>
+										</c:if>										
 									</c:when>
 									<c:when test="${status == 'post'}">
 										<a href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
