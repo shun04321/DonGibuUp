@@ -22,7 +22,9 @@
                             <dt>
                                 <a href="${pageContext.request.contextPath}/subscription/subscriptionDetail?sub_num=${subscription.sub_num}">
                                     <img src="${pageContext.request.contextPath}/upload/${subscription.donationCategory.dcate_icon}" alt="기부처 아이콘">
-                                    ${subscription.donationCategory.dcate_name} / ${subscription.donationCategory.dcate_charity}
+                                   <span>${subscription.donationCategory.dcate_charity}<br>
+                                   <span class="real-small">(${subscription.donationCategory.dcate_name})</span>
+                                   </span>
                                 </a>
                             </dt>
                             <dd>
