@@ -10,78 +10,9 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/subscriptionMain.css"
 	type="text/css">
-    <style>
-        .carousel-item img {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        #icon {
-            width: 180px;
-            height: 200px;
-        }
-
-        .accordion-section {
-            max-width: 800px;
-            margin: 20px;
-        }
-
-        .accordion-item {
-            border-radius: 5px;
-            margin-bottom: 10px;
-            background-color: #grey;
-        }
-
-        .accordion-header {
-            padding: 15px;
-            padding-left : 0px;
-            cursor: pointer;
-            font-size: 1.5em; /* 제목 글자 크기 조정 */
-            color: #000;
-            background-color: #grey; 배경색 설정 */
-            color: white; /* 글자색 설정 */
-            transition: background-color 0.3s ease;
-        }
-
-        .accordion-header:hover {
-            background-color: #grey; /* 마우스 오버 시 색상 변화 */
-        }
-
-        .accordion-body {
-            padding: 15px;
-            display: none;
-            background-color: #ffffff; /* 본문 배경색 */
-            border-top: 1px solid #ddd;
-        }
-
-        .accordion-body.open {
-            display: block;
-        }
-
-        /* 추가적인 스타일 조정 */
-        .align-right {
-            float: right;
-            font-size: 1.2em; /* 화살표 크기 조정 */
-            line-height: 1em; /* 줄 높이 조정 */
-        }
-        .header-hr{
-	       border: none; /* 기본 테두리 제거 */
-	       height: 3px; /* 선의 두께 설정 */
-	       background-color: black; /* 선의 색상 설정 */
-	       margin: 20px 0; /* 상하 여백 설정 (선의 위와 아래 여백) */
-	       width:100%;
-        }
-        
-        .item-hr{
-	        width:100%;
-	        border: none; /* 기본 테두리 제거 */
-	        height: 1px; /* 선의 두께 설정 */
-	        background-color: black; /* 선의 색상 설정 */
-	        margin: 20px 20px; /* 상하 여백 설정 (선의 위와 아래 여백) */
-        }
-    </style>
-<div class="container">
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/js/subscription/subscriptionMain.js"></script>
+<div class="container1">
 	<!-- 캐러셀 시작 -->
 	<div id="carouselExample2" class="carousel slide carousel-fade"
 		data-bs-ride="carousel">
@@ -149,7 +80,7 @@
 			</c:forEach>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" style="padding-top:50px;">
 		<h2>
 			<a href="/cs/faqlist?category=0">자주 묻는 질문</a>
 		</h2>
@@ -173,37 +104,6 @@
         </section>
     </div>
 	</div>
-	<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const headers = document.querySelectorAll('.accordion-header');
-
-        headers.forEach(header => {
-            header.addEventListener('click', function() {
-                // Toggle the active class
-                const body = this.nextElementSibling;
-                
-                // Slide up all other accordion bodies
-                document.querySelectorAll('.accordion-body').forEach(b => {
-                    if (b !== body) {
-                        b.classList.remove('open');
-                        b.style.maxHeight = null;
-                    }
-                });
-
-                // Slide down the clicked accordion body
-                if (body.classList.contains('open')) {
-                    body.classList.remove('open');
-                    body.style.maxHeight = null;
-                    this.querySelector('.align-right').innerText = '▼';
-                } else {
-                    body.classList.add('open');
-                    body.style.maxHeight = body.scrollHeight + 'px';
-                    this.querySelector('.align-right').innerText = '▲';
-                }
-            });
-        });
-    });
-</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
