@@ -1,5 +1,6 @@
 package kr.spring.goods.service;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class PurchaseServiceImpl implements PurchaseService {
 
-	
     @Autowired
     private PurchaseMapper purchaseMapper;
     
@@ -26,22 +26,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public void insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartList) {
-        log.debug("Inserting purchase: " + purchaseVO);
-        log.debug("memNum: " + purchaseVO.getMemNum());
-        log.debug("impUid: " + purchaseVO.getImp_uid());
-        log.debug("amount: " + purchaseVO.getAmount());
-        log.debug("status: " + purchaseVO.getStatus());
+    @Transactional
+    public void insertPurchaseWithCartItems(PurchaseVO purchaseVO) {
+        // 1. purchase 테이블에 데이터 삽입
+        purchaseMapper.insertPurchaseWithCartItems(purchaseVO);
 
-        purchaseMapper.insertPurchaseForCart(purchaseVO);
+        // 2. 최신 purchase_num 가져오기
+        Long purchaseNum = purchaseMapper.getLatestPurchaseNum(purchaseVO.getMemNum());
 
-        for (CartVO cart : cartList) {
-            cart.setPurchase_num(purchaseVO.getPurchaseNum());
-            log.debug("Inserting purchase item: " + cart);
-            purchaseMapper.insertPurchaseItem(cart);
+        // 3. 각 CartVO에 purchaseNum 설정 및 purchase_item 테이블에 삽입
+        for (CartVO cartItem : purchaseVO.getCart_items()) {
+            cartItem.setPurchase_num(purchaseNum);
+            purchaseMapper.insertPurchaseItem(cartItem);
         }
     }
-
     @Override
     public List<CartVO> getPurchaseItems(long purchase_num) {
         return purchaseMapper.getPurchaseItems(purchase_num);
@@ -71,4 +69,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void updateRefundStatus(String impUid, int status) {
         purchaseMapper.updateRefundStatus(impUid, status);
     }
+
+	@Override
+	public Long insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartItems) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

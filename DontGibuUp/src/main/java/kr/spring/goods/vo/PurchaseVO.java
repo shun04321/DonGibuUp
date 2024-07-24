@@ -14,20 +14,20 @@ import lombok.ToString;
 @ToString
 public class PurchaseVO {
     private Long purchaseNum;
-    private long memNum;
+    private long mem_num;
     private long item_num;
     private String item_name;
     private String imp_uid;
     private String Merchant_uid;
     private int amount;
-    private String status;
+    private int pay_price;
     private String buyer_name;
     private String buyer_email;
     private String item_photo;
     private Date payDate;
-    private int payStatus;
-    private String deliveryStatus;  // 배송 상태 필드 추가
-
+    private int pay_status;
+    private String deliveryStatus;
+    
     
     private List<CartVO> cart_items = new ArrayList<>();
     
@@ -38,10 +38,10 @@ public class PurchaseVO {
         this.cart_items = cart_items;
     }
     public long getMemNum() {
-        return memNum;
+        return mem_num;
     }
 
     public void setMemNum(long memNum) {
-        this.memNum = memNum;
+        this.mem_num = memNum;
     }
 }

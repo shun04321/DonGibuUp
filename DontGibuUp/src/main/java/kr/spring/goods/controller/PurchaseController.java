@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -129,12 +130,10 @@ public class PurchaseController {
                 PurchaseVO purchaseVO = new PurchaseVO();
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
-                purchaseVO.setAmount(amount);
-                purchaseVO.setStatus(status);
+                purchaseVO.setPay_price(amount);
+                purchaseVO.setPay_status(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_num(itemNum);
-                purchaseVO.setItem_name(itemName);
-                purchaseVO.setBuyer_name(buyerName);
-                purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
+                purchaseVO.setMem_num(member.getMem_num()); // mem_num 설정
 
                 try {
                     purchaseService.insertPurchase(purchaseVO);
@@ -157,6 +156,7 @@ public class PurchaseController {
 
         return mapJson;
     }
+
 
 
     /*===================================
@@ -257,7 +257,7 @@ public class PurchaseController {
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
                 purchaseVO.setAmount(amount);
-                purchaseVO.setStatus(status);
+                purchaseVO.setPay_status(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_name(itemName);
                 purchaseVO.setBuyer_name(buyerName);
                 purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
@@ -269,11 +269,12 @@ public class PurchaseController {
                         cartItem.setItem_num(((Number) item.get("item_num")).longValue());
                         cartItem.setCart_quantity(((Number) item.get("cart_quantity")).longValue());
                         cartItem.setPrice(((Number) item.get("price")).intValue());
-                        cartItem.setPurchase_num(purchaseVO.getPurchaseNum()); // purchase_num 설정
+                        // purchase_num은 insertPurchaseWithCartItems 메서드에서 설정됩니다.
                         cartItemList.add(cartItem);
                     }
-                    purchaseService.insertPurchaseWithCartItems(purchaseVO, cartItemList);
+                    Long purchaseNum = purchaseService.insertPurchaseWithCartItems(purchaseVO, cartItemList);
                     mapJson.put("result", "success");
+                    mapJson.put("purchaseNum", purchaseNum.toString());
                 } catch (Exception e) {
                     log.error("결제 정보 저장 중 오류 발생", e);
                     mapJson.put("result", "error");
@@ -292,8 +293,6 @@ public class PurchaseController {
 
         return mapJson;
     }
-
-    
     @GetMapping("/purchaseHistory")
     public String getPurchaseHistory(HttpSession session, Model model) {
         MemberVO member = (MemberVO) session.getAttribute("user");
