@@ -243,14 +243,22 @@ $(function() {
 
 	/*----------------------
 	 * 전송할 이미지 미리보기
-	 *----------------------*/
-	function previewImage(event) {
-		var reader = new FileReader();
-		reader.onload = function() {
-			var output = document.getElementById('imagePreview');
-			output.src = reader.result;
-			output.style.display = 'block';
-		};
-		reader.readAsDataURL(event.target.files[0]);
-	}
+	 *----------------------*/	
+	$('#fileUpload').on('change', function(event) {
+      let file = event.target.files[0];
+      
+      if (file && file.type.startsWith('image/')) {
+        let reader = new FileReader();
+        
+        reader.onload = function(e) {
+          $('#previewChatImage').attr('src', e.target.result);
+          $('.previewChatImage').show();
+        };
+        
+        reader.readAsDataURL(file);
+      } else {
+        $('.previewChatImage').hide();
+      }
+    });
+    
 });

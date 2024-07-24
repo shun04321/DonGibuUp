@@ -29,8 +29,8 @@
 		<span onclick="신고하기 모달창" class="chatReport">🚨</span>	
 	</div>
 	<div id="chatting_message"></div>
-	<div class="previewImage" style="display: none;">
-		<img id="previewChatImage" width="100" height="100">
+	<div class="previewChatImage" style="display: none;">
+		<img id="previewChatImage" src="">
 	</div>
 	<form id="chat_writeForm" enctype="multipart/form-data">
 		<label for="fileUpload">

@@ -91,9 +91,9 @@ div.chatInfo {
 	margin-left:auto;
 }
 #chatting_message {
-	border-radius: 10px;
 	background-color: white;
-	width: 660px;
+	border-radius: 0 0 10px 10px;
+	width: 670px;
 	height: 500px;
 	margin: 0 auto;
 	padding: 10px;
@@ -197,7 +197,17 @@ form#chat_writeForm {
 input#fileUpload {
 	display: none;
 }
-
+div.previewChatImage{
+	margin: 5px auto;
+	padding: 10px;
+	width:670px;
+	background-color:gray;
+}
+img#previewChatImage{
+	max-width:660px;
+	display:block;
+	margin: 10px auto;
+}
 span.upload_button {
 	display: inline-block;
 	width: 60px;
