@@ -34,7 +34,7 @@ public interface MemberMapper {
 	public MemberVO selectMemberDetail(Long mem_num);
 
 	//회원 이메일로 회원정보 가져오기(중복 이메일 체크)
-	@Select("SELECT a.*, b.mem_photo mem_photo FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_email}")
+	@Select("SELECT a.*, b.mem_photo mem_photo, b.mem_point mem_point FROM member a LEFT OUTER JOIN member_detail b ON(a.mem_num = b.mem_num) WHERE mem_email=#{mem_email}")
 	public MemberVO selectMemberByEmail(String mem_email);
 	
 	//추천코드로 회원정보 가져오기
