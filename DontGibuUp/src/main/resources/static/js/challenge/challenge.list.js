@@ -103,6 +103,10 @@ $(function() {
                     }
                     output += '<div class="custom-block">';
                     output += '<div class="custom-block-body">';
+                    // 참가 인원수 표시
+                    output += '<p class="mb-0">참가 인원: ' + currentParticipants + '명</p>';
+                    output += '<br>';
+                    
                     output += '<h5 class="mb-3">' + challenge.chal_title + '</h5>';
                     output += '<p>';
                     if (challenge.mem_photo) {
@@ -141,9 +145,6 @@ $(function() {
                     }
                     output += '</p>';
                     output += '</div>';
-
-                    // 참가 인원수 표시
-                    output += '<p class="mb-0">참가 인원: ' + currentParticipants + '명</p>';
 
                     output += '</div>';
                     output += '<a href="detail?chal_num=' + challenge.chal_num + '" class="custom-btn btn">Challenge now</a>';
