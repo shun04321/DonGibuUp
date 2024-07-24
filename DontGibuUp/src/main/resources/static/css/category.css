@@ -349,8 +349,8 @@ ul#delivery_info li span{
 
 #paybutton {
     position: fixed;
-    bottom: 20px; /* 화면 하단에서 20px 위 */
-    width: 600px;          
+    bottom: 100px; /* 화면 하단에서 20px 위 */
+    width: 700px;          
     left: 50%; /* 화면 가로 중앙 정렬을 위한 시작점 */
     transform: translateX(-50%);
     z-index: 1000; /* 다른 요소들보다 앞에 오도록 설정 */
@@ -360,7 +360,7 @@ ul#delivery_info li span{
     font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif; /* 둥근 글씨체 설정 */
     font-weight: bold; /* 글자 두껍게 설정 */
     padding: 15px; /* 버튼 내 패딩 추가 */
-    font-size: 16px; /* 텍스트 크기 설정 */
+    font-size: 23px; /* 텍스트 크기 설정 */
     border-radius: 5px; /* 둥근 모서리 */
     cursor: pointer; /* 마우스 커서를 포인터로 변경 */
     text-align: center; /* 텍스트 중앙 정렬 */
