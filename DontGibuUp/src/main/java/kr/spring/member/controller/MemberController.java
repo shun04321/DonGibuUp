@@ -522,18 +522,17 @@ public class MemberController {
 				return "memberFindPassword";
 			}
 			
-
-			//임시 비밀번호 설정
-			String tempPassword = memberService.SetTempPassword(memberVO);
+			//인증번호 발급
+			String veryficationCode = memberService.getPasswordVerificationCode();
 
 			// JSP 템플릿 로드
 			String htmlContent;
 			try {
-				htmlContent = loadHtmlTemplate("/WEB-INF/views/member/password-email.html", tempPassword);
+				htmlContent = loadHtmlTemplate("/WEB-INF/views/member/password-email.html", veryficationCode);
 				//메일 전송
 				EmailMessageVO emailMessage = new EmailMessageVO();
 				emailMessage.setTo(mem_email);
-				emailMessage.setSubject("[Don Gibu Up] 임시 비밀번호 발급");
+				emailMessage.setSubject("[Don Gibu Up] 비밀번호 변경 인증번호 발급");
 				emailMessage.setMessage(htmlContent);
 				log.debug("<<email>> : " + emailMessage);
 				emailService.sendMail(emailMessage, "password");
@@ -546,21 +545,16 @@ public class MemberController {
 			return "memberFindPassword";
 		}
 
-		model.addAttribute("accessTitle", "임시비밀번호 발급 완료");
-		model.addAttribute("accessMsg", "가입한 이메일로 임시비밀번호가 전송되었습니다.");
-		model.addAttribute("accessBtn", "로그인");
-		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
-
-		return "passwordResultPage";
+		return "passwordChangePage";
 	}
 
-	private String loadHtmlTemplate(String path, String tempPassword) throws IOException {
+	private String loadHtmlTemplate(String path, String verificationCode) throws IOException {
 		InputStream inputStream = servletContext.getResourceAsStream(path);
 		if (inputStream == null) {
 			throw new IOException("HTML 템플릿을 찾을 수 없습니다: " + path);
 		}
 		String htmlTemplate = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-		return htmlTemplate.replace("${tempPassword}", tempPassword);
+		return htmlTemplate.replace("${verificationCode}", verificationCode);
 	}
 
 	/*===================================

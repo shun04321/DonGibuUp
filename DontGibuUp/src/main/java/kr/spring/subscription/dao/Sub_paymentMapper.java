@@ -26,4 +26,8 @@ public interface Sub_paymentMapper {
 
 	public int getSub_paymentCountByMem_num(Map<String,Object> map);
 	public List<Sub_paymentVO> getSub_paymentByMem_num(Map<String,Object> map);
+	
+	//sub_num에 해당하는 기부 목록만 가져오기
+	@Select("SELECT * FROM sub_payment WHERE sub_num=#{sub_num} ORDER BY sub_pay_date DESC")
+	public List<Sub_paymentVO> getSub_paymentBySub_num(long sub_num);
 }

@@ -11,7 +11,6 @@ import javax.validation.constraints.Pattern;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.spring.category.vo.DonationCategoryVO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

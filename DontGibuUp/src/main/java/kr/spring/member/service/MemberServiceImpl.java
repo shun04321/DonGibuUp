@@ -205,24 +205,17 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updatePassword(memberVO);
 	}
 
-	//임시 비밀번호 설정
+	//인증번호 발급
 	@Override
-	public String SetTempPassword(MemberVO memberVO) {
+	public String getPasswordVerificationCode() {
 		//임시 비밀번호 생성
-		String tempPassword = createCode();
-		memberVO.setMem_pw(tempPassword);
+		String verificationCode = createCode();
 		
-		//비밀번호 해싱
-		String encpassword = pwEncoder.encode(memberVO.getMem_pw());
-		memberVO.setMem_pw(encpassword);
-		
-		memberMapper.updatePassword(memberVO);
-		
-		return tempPassword;
+		return verificationCode;
 	}
 	
 
-    //임시 비밀번호 생성 메서드
+    //인증번호 생성 메서드
     private String createCode() {
         Random random = new Random();
         StringBuffer key = new StringBuffer();

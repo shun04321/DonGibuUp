@@ -37,7 +37,10 @@ import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
+import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.service.PointService;
+import kr.spring.point.vo.PointVO;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +51,10 @@ public class DboxAjaxController {
 	private DboxService dboxService;
 	@Autowired
 	private CategoryService categoryService;
-
+	@Autowired
+	private PointService pointService;
+	@Autowired
+	private MemberService memberService;
 	/*========================================
 	 * 	목록
 	 *========================================*/
@@ -149,7 +155,7 @@ public class DboxAjaxController {
 		long dbox_num=Long.parseLong((String) data.get("dbox_num"));
 		//long pay_price=(Long)data.get("pay_price");
 		long price=Long.parseLong((String) data.get("price"));
-		long point=Long.parseLong((String) data.get("point"));
+		int point=Integer.parseInt((String) data.get("point"));
 		String imp_uid=(String)data.get("dbox_imp_uid");
 		String comment=(String)data.get("comment");
 		int status=(Integer)data.get("pay_status");
@@ -175,6 +181,16 @@ public class DboxAjaxController {
 				dboxService.insertDboxDonation(dboxDonationVO);
 				mapJson.put("result", "success");
 				log.debug("<<<<<<<<<<<<<<<<결제 성공>>>>>>>>>>>>>>>>>>>");
+				//포인트 사용
+				PointVO point_revent1 = new PointVO(21, -point, member.getMem_num()); //(포인트 타입, 포인트 양(음수면 -), 포인트 받을 회원 번호)
+				
+				//포인트 로그 추가
+				pointService.insertPointLog(point_revent1);
+				
+				//member_detail 업데이트
+				memberService.updateMemPoint(point_revent1);
+				log.debug("<<회원 사용 포인트>> : " + point);
+				log.debug("<<회원 보유 포인트>> : " + member.getMem_point());
 			}catch(Exception e) {
 				log.error("기부박스 결제 오류 발생",e);
 			}

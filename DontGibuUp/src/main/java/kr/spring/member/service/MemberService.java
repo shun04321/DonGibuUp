@@ -40,8 +40,8 @@ public interface MemberService {
 	//비밀번호 수정
 	public void updatePassword(MemberVO memberVO);
 	
-	//임시 비밀번호 설정
-	public String SetTempPassword(MemberVO memberVO);
+	//비밀번호 변경 인증코드 발급
+	public String getPasswordVerificationCode();
 	
 	//회원 포인트 업데이트
 	public void updateMemPoint(PointVO pointVO);

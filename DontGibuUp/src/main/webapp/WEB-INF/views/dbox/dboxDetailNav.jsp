@@ -53,6 +53,7 @@
 						<div class="mb-3">
 						  <label for="dbox_do_point" class="form-label">포인트 입력</label>
 						  <input type="text" class="form-control caculate" id="dbox_do_point" placeholder="사용할 포인트를 입력해주세요.">
+						  <span>(보유 포인트 : ${member.mem_point})</span>
 						</div>
 						<div class="text-end mb-3">
 							결제금액 : <strong id="pay_sum" style="color:red;">0</strong>원<small>(기부금액 - 포인트)</small><br><br>

@@ -10,7 +10,8 @@
 		<div class="result-display">신고 내역이 없습니다.</div>
 		</c:if>
 		<c:if test="${!empty list}">
-	            <table class="table table-clean">
+			<div class="table-responsive">
+				<table class="table table-clean">
 	                <thead>
 	                    <tr>
 	                        <th>분류</th>
@@ -31,8 +32,8 @@
 								<c:if test="${report.report_type == 4}">음란물/부적절한 콘텐츠</c:if>
 								<c:if test="${report.report_type == 5}">챌린지 인증</c:if>
 			               		</td>
-						        <td class="clickable d-flex align-items-center" onclick="location.href='report/detail?report_num=${report.report_num}'">
-								<span class="report-content">${report.report_content}</span> <c:if test="${!empty report.report_filename}"><img src="${pageContext.request.contextPath}/images/attach-file.png" width="15px"></c:if>
+						        <td class="clickable d-flex align-items-center" onclick="location.href='report/detail?report_num=${report.report_num}'" >
+								<span class="report-content" style="word-break: break-word;">${report.report_content}</span> <c:if test="${!empty report.report_filename}"><img src="${pageContext.request.contextPath}/images/attach-file.png" width="15px"></c:if>
 								</td>
 								<td>${report.report_date}</td>
 								<td>
@@ -49,6 +50,7 @@
 	                    </c:forEach>
 	                </tbody>
 	            </table>
+			</div>
 		</c:if>
 	</div>
 </div>

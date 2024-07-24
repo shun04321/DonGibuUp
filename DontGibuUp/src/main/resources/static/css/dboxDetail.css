@@ -1,12 +1,14 @@
 @charset "UTF-8";
-
+#side-height{
+	margin:0 auto;
+}
 #page_body_d{
-	width:65%;
+	width:55%;
 	float:left;
 }
 #page_nav_d{
 	float:left;
-	width:35%;
+	width:30%;
 }
 #main_footer{
 	clear:both;
