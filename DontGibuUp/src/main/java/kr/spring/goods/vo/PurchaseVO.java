@@ -27,7 +27,8 @@ public class PurchaseVO {
     private Date payDate;
     private int payStatus;
     private String deliveryStatus;
-    
+    // 추가된 부분
+    private int totalAmount;
     
     private List<CartVO> cart_items;
     

@@ -30,7 +30,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void insertPurchaseWithCartItems(PurchaseVO purchaseVO) {
         // 1. purchase 테이블에 데이터 삽입
         purchaseMapper.insertPurchaseWithCartItems(purchaseVO);
-
+     // 2. 각 CartVO에 purchaseNum 설정 및 purchase_item 테이블에 삽입
+        for (CartVO cartItem : purchaseVO.getCart_items()) {
+            cartItem.setPurchase_num(purchaseVO.getPurchaseNum());
+            purchaseMapper.insertPurchaseItems(cartItem);
+        }
    
     }
     @Override
@@ -43,9 +47,17 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseMapper.insertRefund(refundVO);
     }
 
-    @Override
     public List<PurchaseVO> getPurchaseListByMember(long memNum) {
-        return purchaseMapper.getPurchaseListByMember(memNum);
+        List<PurchaseVO> purchaseList = purchaseMapper.getPurchaseListByMember(memNum);
+        for (PurchaseVO purchase : purchaseList) {
+            if (purchase.getPurchaseNum() != null) {
+                List<CartVO> cartItems = purchaseMapper.getPurchaseItems(purchase.getPurchaseNum());
+                purchase.setCart_items(cartItems);
+            } else {
+                log.error("purchaseNum is null for purchase: " + purchase);
+            }
+        }
+        return purchaseList;
     }
 
     @Override
@@ -63,15 +75,16 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseMapper.updateRefundStatus(impUid, status);
     }
 
-	@Override
-	public void insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartItems) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public long getSeq() {
 		return purchaseMapper.getSeq();
+	}
+
+	@Override
+	public void insertPurchaseItems(CartVO cartItem) {
+		purchaseMapper.insertPurchaseItems(cartItem);
+		
 	}
 
 	

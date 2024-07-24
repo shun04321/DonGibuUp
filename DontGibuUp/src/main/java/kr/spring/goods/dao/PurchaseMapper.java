@@ -20,9 +20,9 @@ public interface PurchaseMapper {
 	    Long getNextPurchaseNum();
 	    List<CartVO> getPurchaseItems(long purchaseNum);
 	    
-	    void insertPurchaseItem(CartVO cartVO);
+	    
 	    void insertPurchaseWithCartItems(PurchaseVO purchaseVO);
-
+	    void insertPurchaseItems(CartVO cartItem);
 	    Long getLatestPurchaseNum(long memNum);
 	    @Select("SELECT purchase_seq.nextval FROM dual")
 	    long getSeq();
