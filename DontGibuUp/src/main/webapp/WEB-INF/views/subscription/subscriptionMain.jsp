@@ -50,62 +50,18 @@
 			<div class="col-lg-10 col-12 text-center mx-auto">
 				<h2 class="mb-5">마음이 움직이는 주제를 선택하세요.</h2>
 			</div>
-
+	<c:forEach var="category" items="${list}" varStatus="loop">
 			<div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
 				<div
 					class="featured-block d-flex justify-content-center align-items-center">
-					<a href="#" class="d-block"> <img
-						src="${pageContext.request.contextPath}/t1/images/icons/hands.png"
-						class="featured-block-image img-fluid" alt="">
-
+					<a href="#" class="d-block"> <img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}" class="featured-block-image img-fluid" alt="Slide ${loop.index + 1}">
 						<p class="featured-block-text">
-							Become a <strong>volunteer</strong>
+							<span class="dcate_name">${category.dcate_name}</span>
 						</p>
 					</a>
 				</div>
 			</div>
-
-			<div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mb-md-4">
-				<div
-					class="featured-block d-flex justify-content-center align-items-center">
-					<a href="#" class="d-block"> <img
-						src="${pageContext.request.contextPath}/t1/images/icons/heart.png"
-						class="featured-block-image img-fluid" alt="">
-
-						<p class="featured-block-text">
-							<strong>Caring</strong> Earth
-						</p>
-					</a>
-				</div>
-			</div>
-
-			<div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 mb-md-4">
-				<div
-					class="featured-block d-flex justify-content-center align-items-center">
-					<a href="#" class="d-block"> <img
-						src="${pageContext.request.contextPath}/t1/images/icons/receive.png"
-						class="featured-block-image img-fluid" alt="">
-
-						<p class="featured-block-text">
-							Make a <strong>Donation</strong>
-						</p>
-					</a>
-				</div>
-			</div>
-
-			<div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
-				<div
-					class="featured-block d-flex justify-content-center align-items-center">
-					<a href="#" class="d-block"> <img
-						src="${pageContext.request.contextPath}/t1/images/icons/scholarship.png"
-						class="featured-block-image img-fluid" alt="">
-
-						<p class="featured-block-text">
-							<strong>Scholarship</strong> Program
-						</p>
-					</a>
-				</div>
-			</div>
+	</c:forEach>
 		</div>
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
