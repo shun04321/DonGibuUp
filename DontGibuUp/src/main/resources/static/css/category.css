@@ -415,5 +415,7 @@ ul#delivery_info li span{
 .carousel-control.next-button {
     right: 10px; /* 오른쪽 버튼 위치 조정 */
 }
-
+.real-small{
+	font-size:5px;
+}
 

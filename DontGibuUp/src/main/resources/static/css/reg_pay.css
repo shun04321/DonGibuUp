@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+.page-main{
+	width:1024px;
+	margin:0 auto;
+	font-family:"맑은 고딕";
+}
+
 .payment-methods, .easypay_methods {
 	display: flex;
 	gap: 10px;
