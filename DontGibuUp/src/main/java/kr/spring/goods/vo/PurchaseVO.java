@@ -29,7 +29,7 @@ public class PurchaseVO {
     private String deliveryStatus;
     
     
-    private List<CartVO> cart_items = new ArrayList<>();
+    private List<CartVO> cart_items;
     
     public List<CartVO> getCart_items() {
         return cart_items;
