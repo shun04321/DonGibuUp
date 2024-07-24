@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.spring.challenge.vo.ChallengeChatVO;
+import kr.spring.challenge.vo.ChallengeFavVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -66,5 +67,9 @@ public interface ChallengeService {
     //챌린지 종료시 채팅기록 삭제
     public void deleteChallengeChat(Long chal_num);
 	
-	//챌린지...
+    //*챌린지 좋아요*//
+    public ChallengeFavVO selectFav(ChallengeFavVO fav);
+    public Integer selectFavCount(Long chal_num);
+    public void insertFav(ChallengeFavVO fav);
+    public void deleteFav(ChallengeFavVO fav);
 }

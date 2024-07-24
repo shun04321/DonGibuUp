@@ -16,6 +16,62 @@
     <meta charset="UTF-8">
     <title>챌린지 상세</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
+    <script>
+    $(function(){
+        // 좋아요 상태 조회
+        function selectFav(chal_num){
+            $.ajax({
+                url: '${pageContext.request.contextPath}/challenge/getFav',
+                type: 'get',
+                data: {chal_num: chal_num},
+                dataType: 'json',
+                success: function(param){
+                    displayFav(param);
+                },
+                error: function(){
+                    alert('네트워크 오류 발생');
+                }
+            });
+        }
+
+        // 좋아요 버튼 클릭 이벤트
+        $('#likeBtn').click(function(){
+            $.ajax({
+                url: '${pageContext.request.contextPath}/challenge/writeFav',
+                type: 'post',
+                data: {chal_num: $('#likeBtn').attr('data-num')},
+                dataType: 'json',
+                success: function(param){
+                    if(param.result == 'logout'){
+                        alert('로그인 후 좋아요를 눌러주세요');
+                    } else if(param.result == 'success'){
+                        displayFav(param);
+                    } else {
+                        alert('좋아요 등록/삭제 오류 발생');
+                    }
+                },
+                error: function(){
+                    alert('네트워크 오류 발생');
+                }
+            });
+        });
+
+        // 좋아요 상태 표시
+        function displayFav(param){
+            if(param.status == 'yesFav') {
+                $('#likeBtn').text('♥');
+            } else if(param.status == 'noFav') {
+                $('#likeBtn').text('♡');
+            } else {
+                alert('좋아요 표시 오류 발생');
+            }
+            $('#output_fcount').text(param.count);
+        }
+
+        // 초기 좋아요 상태 조회
+        selectFav($('#likeBtn').attr('data-num'));
+    });
+    </script>
 </head>
 <body>
 <h2>챌린지 상세</h2>
@@ -29,6 +85,8 @@
         	<img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진">
         </c:if>
         <h2 class="align-left">${challenge.chal_title}</h2>
+        <button id="likeBtn" data-num="${challenge.chal_num}">♡</button>
+        <span id="output_fcount"></span>
     </div>
     <div class="challenge-info2">
         <div class="author-info">

@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import kr.spring.challenge.vo.ChallengeChatVO;
+import kr.spring.challenge.vo.ChallengeFavVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -89,4 +90,14 @@ public interface ChallengeMapper {
     public void deleteChatRead(Map<String,Object> map);
     //챌린지 종료시 채팅기록 삭제
     public void deleteChallengeChat(Long chal_num);
+    
+    //*챌린지 좋아요*//
+    @Select("SELECT * FROM chal_fav WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
+    public ChallengeFavVO selectFav(ChallengeFavVO fav);
+    @Select("SELECT COUNT(*) FROM chal_fav WHERE chal_num=#{chal_num}")
+    public Integer selectFavCount(Long chal_num);
+    @Insert("INSERT INTO chal_fav (chal_num, mem_num) VALUES (#{chal_num}, #{mem_num})")
+    public void insertFav(ChallengeFavVO fav);
+    @Delete("DELETE FROM chal_fav WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
+    public void deleteFav(ChallengeFavVO fav);
 }

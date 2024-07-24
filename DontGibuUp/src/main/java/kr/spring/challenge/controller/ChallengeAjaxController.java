@@ -34,6 +34,7 @@ import kr.spring.category.service.CategoryService;
 import kr.spring.challenge.service.ChallengeService;
 import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.challenge.vo.ChallengeChatVO;
+import kr.spring.challenge.vo.ChallengeFavVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
@@ -138,6 +139,86 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 
+	/*==========================
+	 *  챌린지 참가
+	 *==========================*/
+	//챌린지 참가 회원 목록
+	@GetMapping("/challenge/verify/joinMemberList")
+	@ResponseBody
+	public Map<String,Object> joinMemberList(@RequestParam(defaultValue="1") int pageNum,
+			long chal_num,long chal_joi_num,int rowCount){
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_num", chal_num);
+		map.put("chal_joi_num", chal_joi_num);
+
+		//총 챌린지 참가 멤버수 불러오기
+		int memberCount = challengeService.selectJoinMemberRowCount(map);
+
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum,memberCount,rowCount);
+
+		int start = page.getStartRow();
+		int end = page.getEndRow();
+		map.put("start", start);
+		map.put("end", end);
+
+		log.debug("<<start>> : "+start);
+		log.debug("<<end>> : "+end);
+
+		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(map);
+
+		Map<String,Object> mapJson = new HashMap<>();
+		mapJson.put("list", joinList);
+		mapJson.put("count", memberCount);
+
+		return mapJson;
+	}
+
+	/*==========================
+	 *  챌린지 인증
+	 *==========================*/
+	//챌린지 인증 현황 불러오기
+	@GetMapping("/challenge/verify/verifyMemberList")
+	@ResponseBody
+	public Map<String,Object> verifyMemberList(@RequestParam(defaultValue="1") int pageNum,
+			long chal_joi_num,int rowCount,HttpSession session){
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_joi_num", chal_joi_num);
+
+		//총 챌린지 인증 개수
+		int count = challengeService.selectChallengeVerifyListRowCount(map);
+
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
+
+		int start = page.getStartRow();
+		int end = page.getEndRow();
+		map.put("start", start);
+		map.put("end", end);
+
+		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
+
+		Map<String,Object> mapJson = new HashMap<>();
+
+		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
+		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
+		MemberVO user = (MemberVO) session.getAttribute("user"); 
+		long mem_num = user.getMem_num();		
+		if(challengeJoin.getMem_num() == mem_num) { 
+			mapJson.put("isUser", true);
+		}else { 
+			mapJson.put("isUser", false);
+			//회원 프로필 사진,닉네임
+			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
+			mapJson.put("member", userInfo);
+		}
+
+		mapJson.put("list", verifyList);
+		mapJson.put("count", count);
+
+		return mapJson;
+	}
+	
 	/*==========================
 	 *  챌린지 결제
 	 *==========================*/
@@ -395,105 +476,64 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 	
-
 	/*==========================
-	 *  챌린지 인증 상세
+	 *  챌린지 좋아요
 	 *==========================*/
-	//쿼리스트링 제거
-	/*
-	@PostMapping("/challenge/join/list")
-	@ResponseBody
-	public Map<String,Object> joinChallenge(@RequestBody Map<String,Object> data,HttpSession session) {	
-		Map<String,Object> mapJson = new HashMap<>();
-		MemberVO user = (MemberVO) session.getAttribute("user");
-		if(user == null) {
-			mapJson.put("result","logout");
-		}else {
-			log.debug("data : "+data);
-			Long chal_num = ((Number) data.get("chal_num")).longValue();
-			Long chal_joi_num = ((Number) data.get("chal_joi_num")).longValue();
-			String status = (String) data.get("status");
-
-			//세션에 데이터 저장
-			session.setAttribute("chal_num", chal_num);
-			session.setAttribute("chal_joi_num", chal_joi_num);
-			session.setAttribute("status", status);
-			mapJson.put("result", "success");
-		}			
-		return mapJson;
-	}*/
-
-	//챌린지 참가 회원 목록
-	@GetMapping("/challenge/verify/joinMemberList")
-	@ResponseBody
-	public Map<String,Object> joinMemberList(@RequestParam(defaultValue="1") int pageNum,
-			long chal_num,long chal_joi_num,int rowCount){
-		Map<String,Object> map = new HashMap<>();
-		map.put("chal_num", chal_num);
-		map.put("chal_joi_num", chal_joi_num);
-
-		//총 챌린지 참가 멤버수 불러오기
-		int memberCount = challengeService.selectJoinMemberRowCount(map);
-
-		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum,memberCount,rowCount);
-
-		int start = page.getStartRow();
-		int end = page.getEndRow();
-		map.put("start", start);
-		map.put("end", end);
-
-		log.debug("<<start>> : "+start);
-		log.debug("<<end>> : "+end);
-
-		List<ChallengeJoinVO> joinList = challengeService.selectJoinMemberList(map);
-
-		Map<String,Object> mapJson = new HashMap<>();
-		mapJson.put("list", joinList);
-		mapJson.put("count", memberCount);
-
-		return mapJson;
-	}
-
-	//챌린지 인증 현황 불러오기
-	@GetMapping("/challenge/verify/verifyMemberList")
-	@ResponseBody
-	public Map<String,Object> verifyMemberList(@RequestParam(defaultValue="1") int pageNum,
-			long chal_joi_num,int rowCount,HttpSession session){
-		Map<String,Object> map = new HashMap<>();
-		map.put("chal_joi_num", chal_joi_num);
-
-		//총 챌린지 인증 개수
-		int count = challengeService.selectChallengeVerifyListRowCount(map);
-
-		//페이지 처리
-		PagingUtil page = new PagingUtil(pageNum,count,rowCount);
-
-		int start = page.getStartRow();
-		int end = page.getEndRow();
-		map.put("start", start);
-		map.put("end", end);
-
-		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
-
-		Map<String,Object> mapJson = new HashMap<>();
-
-		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
-		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
-		MemberVO user = (MemberVO) session.getAttribute("user"); 
-		long mem_num = user.getMem_num();		
-		if(challengeJoin.getMem_num() == mem_num) { 
-			mapJson.put("isUser", true);
-		}else { 
-			mapJson.put("isUser", false);
-			//회원 프로필 사진,닉네임
-			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
-			mapJson.put("member", userInfo);
-		}
-
-		mapJson.put("list", verifyList);
-		mapJson.put("count", count);
-
-		return mapJson;
-	}
+	//챌린지 좋아요 읽기
+    @GetMapping("/challenge/getFav")
+    @ResponseBody
+    public Map<String,Object> getFav(ChallengeFavVO fav, HttpSession session){
+        log.debug("<<챌린지 좋아요 - ChallengeFavVO>> : " + fav);
+        
+        Map<String,Object> mapJson = new HashMap<>();
+        
+        MemberVO user = (MemberVO)session.getAttribute("user");
+        if(user == null) {
+            mapJson.put("status", "noFav");
+        }else {
+            // 로그인된 회원번호 셋팅
+            fav.setMem_num(user.getMem_num());
+            ChallengeFavVO challengeFav = challengeService.selectFav(fav);
+            
+            if(challengeFav != null) {
+                mapJson.put("status", "yesFav");
+            }else {
+                mapJson.put("status", "noFav");
+            }
+        }
+        mapJson.put("count", challengeService.selectFavCount(fav.getChal_num()));
+        
+        return mapJson;
+    }
+    
+    //챌린지 좋아요 등록/삭제
+    @PostMapping("/challenge/writeFav")
+    @ResponseBody
+    public Map<String,Object> writeFav(ChallengeFavVO fav, HttpSession session){
+        log.debug("<<챌린지 좋아요 - 등록/삭제>> : " + fav);
+        
+        Map<String,Object> mapJson = new HashMap<>();
+        
+        MemberVO user = (MemberVO)session.getAttribute("user");
+        if(user == null) {
+            mapJson.put("result", "logout");
+        }else {
+            // 로그인된 회원번호 셋팅
+            fav.setMem_num(user.getMem_num());
+            ChallengeFavVO challengeFav = challengeService.selectFav(fav);
+            if(challengeFav != null) {
+                // 등록 -> 삭제
+                challengeService.deleteFav(fav);
+                mapJson.put("status", "noFav");
+            }else {
+                // 등록
+                challengeService.insertFav(fav);
+                mapJson.put("status", "yesFav");
+            }
+            mapJson.put("result", "success");
+            mapJson.put("count", challengeService.selectFavCount(fav.getChal_num()));
+        }
+        
+        return mapJson;
+    }
 }

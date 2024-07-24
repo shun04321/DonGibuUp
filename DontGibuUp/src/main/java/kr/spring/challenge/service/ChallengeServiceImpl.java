@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeChatVO;
+import kr.spring.challenge.vo.ChallengeFavVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
@@ -241,5 +242,25 @@ public class ChallengeServiceImpl implements ChallengeService{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	//*챌린지 좋아요*//
+    @Override
+    public ChallengeFavVO selectFav(ChallengeFavVO fav) {
+        return challengeMapper.selectFav(fav);
+    }
 
+    @Override
+    public Integer selectFavCount(Long chal_num) {
+        return challengeMapper.selectFavCount(chal_num);
+    }
+
+    @Override
+    public void insertFav(ChallengeFavVO fav) {
+        challengeMapper.insertFav(fav);
+    }
+
+    @Override
+    public void deleteFav(ChallengeFavVO fav) {
+        challengeMapper.deleteFav(fav);
+    }
 }
