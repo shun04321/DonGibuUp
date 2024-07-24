@@ -27,24 +27,22 @@
 			</div>
 			</c:if>
 			
-			<div class="contact-image-wrap d-flex flex-wrap mb-2">
-				<div class="d-flex flex-column justify-content-center ms-3">
+			<div class="contact-image-wrap d-flex flex-wrap mb-2 pb-0">
+				<div class="d-flex flex-column justify-content-center">
 					<p>${inquiry.inquiry_content}</p>
+					<p class="mb-1 inquiry-date">${inquiry.inquiry_date}</p>
 				</div>
 			</div>
-			<p class="d-flex mb-2 justify-content-end">
-				${inquiry.inquiry_date}
-			</p>
 
 			<div class="d-flex">
 				<div class="d-flex flex-column justify-content-center">
-					<div id="inquiryResponse">
+					<div class="mt-2 mb-3">
 						<c:if test="${empty inquiry.inquiry_reply}">
 						<p>아직 답변이 등록되지 않았습니다.</p>
 						</c:if>
 						<c:if test="${!empty inquiry.inquiry_reply}">
 						<p>${inquiry.inquiry_reply}</p>
-						<div><span>답변일</span> <span id="inquiryRDateText">${inquiry.inquiry_rdate}</span></div>
+						<div><p class="inquiry-date">답변일 <span id="inquiryRDateText">${inquiry.inquiry_rdate}</span></p></div>
 						</c:if>
 					</div>
 				</div>

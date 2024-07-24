@@ -27,6 +27,7 @@ import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
+import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -53,6 +54,7 @@ public class CSController {
 		map.put("category", category);
 
 		log.debug("<<사용자 faq 목록 - category>> : " + category);
+		
 
 		List<FaqVO> list = csService.selectFaqList(map);
 
@@ -71,6 +73,10 @@ public class CSController {
 		log.debug("<<관리자 faq 목록 - category>> : " + category);
 
 		List<FaqVO> list = csService.selectFaqList(map);
+		
+		for (FaqVO faq : list) {
+			faq.setFaq_answer(StringUtil.useBrNoHTML(faq.getFaq_answer()));
+		}
 
 		model.addAttribute("list", list);
 
@@ -236,6 +242,9 @@ public class CSController {
 
 		log.debug("<<문의 상세 - inquiry_num>> : " + inquiry_num);
 		log.debug("<<문의 상세>> : " + inquiry);
+		
+		inquiry.setInquiry_content(StringUtil.useBrNoHTML(inquiry.getInquiry_content()));
+		inquiry.setInquiry_reply(StringUtil.useBrNoHTML(inquiry.getInquiry_reply()));
 
 		model.addAttribute("inquiry", inquiry);
 
@@ -309,6 +318,9 @@ public class CSController {
 
 		log.debug("<<신고 상세 - report_num>> : " + report_num);
 		log.debug("<<신고 상세>> : " + report);
+		
+		report.setReport_content(StringUtil.useBrNoHTML(report.getReport_content()));
+		report.setReport_reply(StringUtil.useBrNoHTML(report.getReport_reply()));
 
 		model.addAttribute("report", report);
 		return "adminReportReply";

@@ -33,6 +33,7 @@ import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
+import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -251,6 +252,9 @@ public class MyPageController {
 		
 		log.debug("<<문의 상세 - inquiry_num>> : " +inquiry_num);
 		log.debug("<<문의 상세>> : " +inquiry);
+		
+		inquiry.setInquiry_content(StringUtil.useBrNoHTML(inquiry.getInquiry_content()));
+		inquiry.setInquiry_reply(StringUtil.useBrNoHTML(inquiry.getInquiry_reply()));
 		
 		model.addAttribute("inquiry", inquiry);
 		
