@@ -212,14 +212,6 @@ public class ChallengeAjaxController {
 			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
 			mapJson.put("member", userInfo);
 		}
-		
-		//회원이 챌린지 리더인지 확인
-		long mem_joi_num = challengeService.selectLeaderJoiNum(challengeJoin.getChal_num());
-		if(mem_joi_num == challengeJoin.getChal_joi_num()) {
-			mapJson.put("isLeader", true);
-		}else {
-			mapJson.put("isLeader", false);
-		}
 
 		mapJson.put("list", verifyList);
 		mapJson.put("count", count);

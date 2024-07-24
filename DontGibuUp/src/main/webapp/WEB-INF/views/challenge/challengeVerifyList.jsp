@@ -11,6 +11,7 @@
 	let rowCount = 3;
 	let pageSize = 10;
 	var currentPage;
+	let isLeader = ${isLeader};
 </script>
 <div class="challenge-summary">
 	<div class="challenge-header2">

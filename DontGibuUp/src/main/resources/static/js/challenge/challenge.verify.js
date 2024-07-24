@@ -89,7 +89,7 @@
 			success:function(param){
 				let output = '';
 				output += '<div class="memberList">';
-				$(param.list).each(function(index,item){
+				$(param.list).each(function(index,item){					
 					output += '<div class="joinMem_container">';
 					if (item.mem_photo) {
 						output += '<img class="joinMem responsive-image" src="' + contextPath + '/upload/' + item.mem_photo + '" width="40" height="40">'; //회원 프로필
@@ -141,6 +141,7 @@
 					output += '<div>표시할 정보가 없습니다.</div>';
 				}else{					
 					$(param.list).each(function(index,item){
+						console.log('isLeader >> '+isLeader);						
 						let reg_date = new Date(item.chal_reg_date);
 						reg_date.setHours(0,0,0,0);						
 						output += '<div class="challenge-verify-card">';
@@ -161,7 +162,11 @@
 						output += '</div>';
 						output += '</div>';
 						if(!param.isUser){
-							output += '<button type="button">제보</button>';
+							if(isLeader && item.chal_ver_status == 0){
+								output += '<button type="button">실패</button>';
+							}else if(item.chal_ver_status == 0){
+								output += '<button type="button">제보</button>';
+							}							
 						}else{
 							//수정 폼
 							output += '<div id="edit-form-'+item.chal_ver_num+'" class="edit-form" style="display: none;">';
