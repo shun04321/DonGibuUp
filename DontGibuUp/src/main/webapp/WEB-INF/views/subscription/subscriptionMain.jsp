@@ -13,7 +13,7 @@
 <style>
 .carousel-item img {
 	width: 100%; /* 이미지의 너비를 100%로 설정하여 컨테이너에 맞추기 */
-	height: 200px; /* 이미지의 높이를 일정하게 설정 */
+	height: 300px; /* 이미지의 높이를 일정하게 설정 */
 	object-fit: cover;
 } /* 이미지 비율을 유지하면서 컨테이너를 채우도록 조정 */
 </style>
