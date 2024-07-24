@@ -7,16 +7,16 @@
 <section class="section-padding">
 	<div class="container">
 		<div class="row">
+			<%-- 기부박스 제안하기 버튼 --%>
+			<div class="text-end mt-2 mb-2">
+				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='${pageContext.request.contextPath}/dbox/propose'">기부박스 제안하기</button>
+			</div>
 			<%-- 카테고리 --%>
 			<div id="category_output" class="text-center"></div>
-			<%-- 기부박스 제안하기 버튼 --%>
-			<div class="text-end mt-5 mb-5">
-				<button type="button" class="btn btn-success" onclick="location.href='${pageContext.request.contextPath}/dbox/propose'">기부박스 제안하기</button>
-			</div>
 			<%-- 검색 --%>
 			<form action="list" id="search_form" method="get">
 				<input type="hidden" name="category" value="${param.category}">
-					<div class="row justify-content-center mb-5">
+					<div class="row justify-content-center mb-2 mt-2">
 						<!-- keyfield -->
 						<div class="col-md-2">
 							<select name="keyfield" id="keyfield" class="form-select">

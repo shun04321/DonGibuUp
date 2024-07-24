@@ -58,8 +58,11 @@ public class DboxController {
      * 		기부박스 상세페이지 - content
      *==================================*/
     @GetMapping("/dbox/{dboxNum}/content")
-    public String detailContent(@PathVariable long dboxNum,Model model) {
+    public String detailContent(@PathVariable long dboxNum,Model model,HttpSession session) {
     	log.debug("<<상세 페이지(content)>> : " + dboxNum);
+    	//멤버정보
+    	MemberVO member = (MemberVO) session.getAttribute("user");
+    	log.debug("<<상세 페이지(content) - member : >>" + member);
     	
     	//기부박스 및 모금계획 불러오기
     	DboxVO dbox = dboxService.selectDbox(dboxNum);
@@ -68,6 +71,7 @@ public class DboxController {
     	log.debug("<<상세 페이지(content) - DboxBudget : >>" + dboxBudget);
    
     	//뷰에 전달
+    	model.addAttribute("member",member);
     	model.addAttribute("dbox",dbox);
     	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
     	model.addAttribute("dboxBudget",dboxBudget);
@@ -77,8 +81,12 @@ public class DboxController {
      * 		기부박스 상세페이지 - donators
      *==================================*/
     @GetMapping("/dbox/{dboxNum}/donators")
-    public String detailDonators(@PathVariable long dboxNum,Model model) {
+    public String detailDonators(@PathVariable long dboxNum,Model model,HttpSession session) {
     	log.debug("<<상세 페이지 접속(donators)>> : " + dboxNum);
+    	//멤버정보
+    	MemberVO member = (MemberVO) session.getAttribute("user");
+    	log.debug("<<상세 페이지(donators) - member : >>" + member);
+
     	
     	//기부박스 및 모금계획 불러오기
     	DboxVO dbox = dboxService.selectDbox(dboxNum);
@@ -99,6 +107,7 @@ public class DboxController {
     	log.debug("<<상세 페이지(donators) - DboxDonations : >>" + dboxDonations);
     	
     	//뷰에 전달
+    	model.addAttribute("member",member);
     	model.addAttribute("dboxDonations",dboxDonations);
     	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
     	model.addAttribute("dbox",dbox);
@@ -109,8 +118,11 @@ public class DboxController {
      * 		기부박스 상세페이지 - news
      *==================================*/
     @GetMapping("/dbox/{dboxNum}/news")
-    public String detailNews(@PathVariable long dboxNum,Model model) {
+    public String detailNews(@PathVariable long dboxNum,Model model,HttpSession session) {
     	log.debug("<<상세 페이지 접속(news)>> : " + dboxNum);
+    	//멤버정보
+    	MemberVO member = (MemberVO) session.getAttribute("user");
+    	log.debug("<<상세 페이지(news) - member : >>" + member);
     	
     	//기부박스 및 모금계획 불러오기
     	DboxVO dbox = dboxService.selectDbox(dboxNum);
@@ -123,6 +135,7 @@ public class DboxController {
     	log.debug("<<상세 페이지(news) - DboxResult : >>" + dboxResult);
     	
     	//뷰에 전달
+    	model.addAttribute("member",member);
     	model.addAttribute("dboxNews",dboxResult);
     	model.addAttribute("dbox",dbox);
     	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));

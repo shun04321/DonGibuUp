@@ -14,7 +14,7 @@ public class DboxDonationVO {
 	private long dbox_num;
 	private long mem_num;
 	private long dbox_do_price;//기부액
-	private long dbox_do_point;//사용포인트(기본:0)
+	private int dbox_do_point;//사용포인트(기본:0)
 	private String dbox_imp_uid;//포트원 결제id
 	private String dbox_do_comment;//기부시 남길 코멘트(기본:'기부합니다.')
 	private int dbox_do_status;//결제상태(0:결제완료,1:결제취소)
