@@ -2,7 +2,9 @@ package kr.spring.dbox.controller;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import kr.spring.category.service.CategoryService;
-import kr.spring.category.vo.ChallengeCategoryVO;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxBudgetVO;
@@ -30,6 +31,8 @@ import kr.spring.dbox.vo.DboxVO;
 import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,6 +43,8 @@ public class DboxController {
 	private DboxService dboxService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private NotifyService notifyService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -148,8 +153,8 @@ public class DboxController {
     @PostMapping("/dbox/{dboxNum}/donation")
     public String donation(@PathVariable long dboxNum,Model model) {
     	log.debug("<<기부완료>> : " + dboxNum);
-
-    	model.addAttribute("dbox_num",dboxNum);
+    	DboxVO dbox = dboxService.selectDbox(dboxNum);
+    	model.addAttribute("dbox",dbox);
     	return "dboxDonation";
     }
 	
@@ -281,6 +286,9 @@ public class DboxController {
 		if(user==null) {
 			//로그인 안한 경우
 			return "redirect:/member/login";
+		}else if(dbox==null) {
+			//잘못된 접근
+			return "redirect:/dbox/list";
 		}
 		return "dboxProposeStep3";
 	}
@@ -322,8 +330,7 @@ public class DboxController {
 		log.debug("<<기부박스 제안 Step3 - dbox번호>> : " + current_dbox_num);
 		//제안완료 페이지로 dbox_num 전달
 		session.setAttribute("dbox_num",current_dbox_num);
-		//세션에서 제거
-		session.removeAttribute("dbox");
+		
 		
 		//다음페이지로 이동
 		return "redirect:/dbox/propose/end";
@@ -333,20 +340,42 @@ public class DboxController {
 	 *==================================*/
 	@GetMapping("/dbox/propose/end")
 	public String proposeEnd(HttpSession session ,Model model) {
-		long dbox_num = (long)session.getAttribute("dbox_num");
-		
-		log.debug("<<기부박스 제안하기 - end>> : " + dbox_num);
-		//뷰에 dbox_num 전달
-		model.addAttribute("dbox_num");
-		
-		return "dboxProposeEnd";
+		DboxVO dboxCheck = (DboxVO) session.getAttribute("dbox");
+		if(dboxCheck != null) {
+			long dbox_num = (long)session.getAttribute("dbox_num");		
+			log.debug("<<기부박스 제안하기 - end>> : " + dbox_num);
+			DboxVO dbox = dboxService.selectDbox(dbox_num);
+			
+			//NotifyVO 객체 정의
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(dbox.getMem_num()); //알림 받을 회원 번호
+			notifyVO.setNotify_type(6);//알림 타입(아래 알림 타입 토글 참조)
+			notifyVO.setNot_url("/dbox/example?DonationBox=" + dbox_num); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
+			
+			//동적 데이터 매핑
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			//value로 전달하는 값은 String이어야 함. String이 아닐 시에는 형변환하고 넣을 것(String.valueOf() 메서드 이용)
+			//동적 데이터가 여러개일 경우 여러개 매핑
+			dynamicValues.put("dboxTitle", dbox.getDbox_title()); //알림 템플릿 참조
+			
+			//NotifyService 호출
+			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
+			
+			//뷰에 전달
+			model.addAttribute("dbox",dbox);
+			//세션에서 제거
+			session.removeAttribute("dbox");
+			return "dboxProposeEnd";			
+		}else {
+			return "redirect:/dbox/list";
+		}
 	}
 	
 	/*===================================
 	 * 		기부박스 제안하기 : 예시
 	 *==================================*/
-	@GetMapping("/dbox/example")
-	public String proposeExample() {
+	@GetMapping("/dbox/{dboxNum}/example")
+	public String proposeExample(@PathVariable long dboxNum,Model model,HttpSession session) {
 		log.debug("<<기부박스 제안하기 - example>> : ");
 		
 		return "dboxExample";

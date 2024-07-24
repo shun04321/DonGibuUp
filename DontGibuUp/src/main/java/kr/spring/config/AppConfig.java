@@ -52,6 +52,8 @@ public class AppConfig implements WebMvcConfigurer,WebSocketConfigurer{
 		        .addPathPatterns("/board/write")
 		        .addPathPatterns("/board/update")
 		        .addPathPatterns("/board/delete")
+		        .addPathPatterns("/dbox/propose/end")
+		        .addPathPatterns("/dbox/example")
 		        .addPathPatterns("/category/insertCategory")
 		        .addPathPatterns("/category/deleteCategory")
 		        .addPathPatterns("/category/updateCategory")

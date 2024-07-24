@@ -39,6 +39,8 @@ import kr.spring.dbox.vo.DboxValidationGroup_2;
 import kr.spring.dbox.vo.DboxValidationGroup_3;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.PagingUtil;
@@ -55,6 +57,9 @@ public class DboxAjaxController {
 	private PointService pointService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private NotifyService notifyService;
+	
 	/*========================================
 	 * 	목록
 	 *========================================*/
@@ -176,6 +181,23 @@ public class DboxAjaxController {
 			dboxDonationVO.setDbox_do_comment(comment);
 			dboxDonationVO.setDbox_do_status(status);
 			dboxDonationVO.setDbox_do_annony(annony);
+			
+			//NotifyVO 객체 정의
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(member.getMem_num()); //알림 받을 회원 번호
+			notifyVO.setNotify_type(22);//알림 타입(아래 알림 타입 토글 참조)
+			notifyVO.setNot_url("/dbox/" + dbox_num + "/content"); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
+			
+			//동적 데이터 매핑
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			//value로 전달하는 값은 String이어야 함. String이 아닐 시에는 형변환하고 넣을 것(String.valueOf() 메서드 이용)
+			//동적 데이터가 여러개일 경우 여러개 매핑
+			DboxVO dbox = dboxService.selectDbox(dbox_num);
+			dynamicValues.put("pointAmount", String.valueOf(point)); //알림 템플릿 참조
+			dynamicValues.put("peventDetail", "기부박스 : " + dbox.getDbox_title()); //알림 템플릿 참조
+			
+			//NotifyService 호출
+			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
 			
 			try {
 				dboxService.insertDboxDonation(dboxDonationVO);

@@ -1,14 +1,15 @@
 @charset "UTF-8";
-#side-height{
-	margin:0 auto;
+div.side-height{
+	width:85%;
+	margin:auto;
 }
 #page_body_d{
-	width:55%;
+	width:65%;
 	float:left;
 }
 #page_nav_d{
 	float:left;
-	width:30%;
+	width:35%;
 }
 #main_footer{
 	clear:both;
@@ -29,9 +30,6 @@
 	height:3rem;
 	width:3rem;
 }
-figure {
-    display: block;
-    margin: auto; /* 부모의 너비에 맞게 중앙 정렬 */
+figure img{
     max-width: 100%; /* 부모 요소의 너비를 넘지 않도록 */
-    unicode-bidi: isolate;
 }
