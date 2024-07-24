@@ -472,87 +472,83 @@ public class ChallengeController {
 
 	//챌린지 인증 목록
 	@GetMapping("/challenge/verify/list")
-	public ModelAndView verifyList(long chal_joi_num,long chal_num,
-			@RequestParam(value = "status", defaultValue = "pre") String status,
-			@RequestParam(defaultValue="1") int pageNum) {		
-		Map<String, Object> map = new HashMap<>();		
-		map.put("chal_joi_num", chal_joi_num);
+	public ModelAndView verifyList(long chal_joi_num, long chal_num,
+	        @RequestParam(value = "status", defaultValue = "pre") String status,
+	        @RequestParam(defaultValue = "1") int pageNum) {
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("chal_joi_num", chal_joi_num);
 
-		//본인의 총 인증 개수 불러오기
-		int count = challengeService.selectChallengeVerifyListRowCount(map);
+	    //본인의 총 인증 개수 불러오기
+	    int count = challengeService.selectChallengeVerifyListRowCount(map);
 
-		PagingUtil page = new PagingUtil(pageNum,count,6,10,"list","&chal_num="+chal_num+"&chal_joi_num="+chal_joi_num+"&status=on");
+	    PagingUtil page = new PagingUtil(pageNum, count, 6, 10, "list", "&chal_num=" + chal_num + "&chal_joi_num=" + chal_joi_num + "&status=on");
 
-		List<ChallengeVerifyVO> verifyList = null;
+	    List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
 
-		ModelAndView mav = new ModelAndView("challengeVerifyList");
+	    ModelAndView mav = new ModelAndView("challengeVerifyList");
+	    mav.addObject("verifyList", verifyList);
+	    mav.addObject("chal_num", chal_num);
+	    mav.addObject("chal_joi_num", chal_joi_num);
+	    mav.addObject("status", status);
+	    mav.addObject("page", page.getPage());
 
+	    //오늘 날짜 추가
+	    LocalDate today = LocalDate.now();
+	    mav.addObject("today", today.toString());
 
-		map.put("start", page.getStartRow());
-		map.put("end", page.getEndRow());
-		verifyList = challengeService.selectChallengeVerifyList(map); 
-		mav.addObject("verifyList", verifyList);
-		mav.addObject("chal_num",chal_num);		
-		mav.addObject("chal_joi_num", chal_joi_num);
-		mav.addObject("status", status);//추가
-		mav.addObject("page",page.getPage());
+	    //챌린지 정보 가져오기
+	    ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+	    ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
+	    int chalFreq = challengeJoin.getChal_freq();
+	    String chal_sdate = challengeJoin.getChal_sdate();
+	    String chal_edate = challengeJoin.getChal_edate();
 
-		//오늘 날짜 추가
-		LocalDate today = LocalDate.now();
-		mav.addObject("today", today.toString());
+	    mav.addObject("challenge", challenge);
+	    mav.addObject("chalFreq", chalFreq);
+	    mav.addObject("chal_sdate", chal_sdate);
+	    mav.addObject("chal_edate", chal_edate);
 
-		//오늘 날짜의 인증이 있는지 확인
-		boolean hasTodayVerify = verifyList.stream()
-				.anyMatch(verify -> {
-					LocalDate regDate = verify.getChal_reg_date().toLocalDate();
-					return regDate.equals(LocalDate.now());
-				});
-		mav.addObject("hasTodayVerify", hasTodayVerify);
+	    //전체 주 수 계산
+	    LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    LocalDate endDate = LocalDate.parse(chal_edate, DateTimeFormatter.ISO_LOCAL_DATE);
+	    long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
 
-		//챌린지 정보 가져오기
-		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
-		ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
-		int chalFreq = challengeJoin.getChal_freq();
-		String chal_sdate = challengeJoin.getChal_sdate();
-		String chal_edate = challengeJoin.getChal_edate();
+	    int totalFailedVerifications = 0;
 
-		mav.addObject("challenge", challenge);
-		mav.addObject("chalFreq", chalFreq);
-		mav.addObject("chal_sdate", chal_sdate);
-		mav.addObject("chal_edate", chal_edate);
+	    for (int weekNumber = 0; weekNumber < totalWeeks; weekNumber++) {
+	        int weeklyVerifications = challengeService.countWeeklyVerify(chal_joi_num, startDate, weekNumber);
+	        int failedInWeek = chalFreq - weeklyVerifications;
 
-		if (chal_sdate == null) {
-			throw new IllegalArgumentException("챌린지 시작 날짜가 설정되지 않았습니다.");
-		}
+	        //주차 종료일이 현재보다 과거인 경우에만 실패 횟수를 누적
+	        LocalDate weekEndDate = startDate.plusDays((weekNumber + 1) * 7 - 1);
+	        if (weekEndDate.isBefore(today) || weekEndDate.equals(today)) {
+	            totalFailedVerifications += Math.max(failedInWeek, 0);
+	        }
+	    }
 
-		//인증 성공 횟수
-		long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
-		mav.addObject("successCount", successCount);
+	    //인증 성공 횟수
+	    long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+	    mav.addObject("successCount", successCount);
 
-		//인증 실패 횟수
-		long failureCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 1).count();
-		mav.addObject("failureCount", failureCount);
+	    //chal_ver_status가 1인 경우 실패 횟수로 간주
+	    long statusFailureCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 1).count();
+	    mav.addObject("failureCount", statusFailureCount);
 
-		//전체 주 수 계산
-		LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
-		LocalDate endDate = LocalDate.parse(chal_edate, DateTimeFormatter.ISO_LOCAL_DATE);
-		long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1; 
+	    //총 실패 횟수 = 자동 실패 횟수 + 수동 인증 실패 횟수
+	    totalFailedVerifications += statusFailureCount;
 
-		//전체 인증 횟수
-		long totalCount = totalWeeks * chalFreq; 
-		mav.addObject("totalCount", totalCount);
+	    //남은 인증 횟수
+	    long totalCount = totalWeeks * chalFreq;
+	    long remainingCount = totalCount - successCount - totalFailedVerifications;
+	    mav.addObject("remainingCount", Math.max(remainingCount, 0));
 
-		//남은 인증 횟수
-		long remainingCount = totalCount - successCount - failureCount;
-		mav.addObject("remainingCount", remainingCount);
+	    //달성률 계산 (정수로 변환)
+	    int achievementRate = (int) ((double) successCount / totalCount * 100);
+	    mav.addObject("achievementRate", achievementRate);
 
-		//달성률 계산 (정수로 변환)
-		int achievementRate = (int) ((double) successCount / totalCount * 100);
-		mav.addObject("achievementRate", achievementRate);
+	    mav.addObject("count", count);
 
-		mav.addObject("count",count);
-
-		return mav;
+	    return mav;
 	}
 
 	//챌린지 인증 상세
