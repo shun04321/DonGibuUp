@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.config.validation.ValidationSequence;
+import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
 import kr.spring.member.service.EmailService;
 import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
@@ -496,7 +498,7 @@ public class MemberController {
 
 	//비밀번호 찾기 결과
 	@GetMapping("/member/findPasswordResult")
-	public String findPassword(@RequestParam("mem_email") String mem_email, Model model, HttpServletRequest request) {
+	public String findPassword(@RequestParam("mem_email") String mem_email, HttpSession session, Model model, HttpServletRequest request) {
 		log.debug("<<비밀번호 찾기>> : " + mem_email);
 		MemberVO memberVO = memberService.selectMemberByEmail(mem_email);
 		log.debug("<<비밀번호 찾기>> : " + memberVO);
@@ -536,6 +538,9 @@ public class MemberController {
 				emailMessage.setMessage(htmlContent);
 				log.debug("<<email>> : " + emailMessage);
 				emailService.sendMail(emailMessage, "password");
+				
+				session.setAttribute("verificationCode", veryficationCode);
+				session.setAttribute("mem_email", mem_email);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -544,9 +549,53 @@ public class MemberController {
 			model.addAttribute("email_msg", "가입된 이메일이 없습니다");
 			return "memberFindPassword";
 		}
-
+		return "redirect:/member/changePassword";
+	}
+	
+	@GetMapping("/member/changePassword")
+	public String changePasswordForm() {
 		return "passwordChangePage";
 	}
+	
+	//비밀번호 찾기 - 비밀번호 수정
+	@PostMapping("/member/changePassword")
+	public String changePassword(@Validated(PatternCheckGroup.class) MemberVO memberVO, BindingResult result,
+	        Model model, HttpServletRequest request, HttpSession session) {
+	    
+	    log.debug("<<비밀번호 수정 요청 도착>> : " + memberVO);
+
+	    if (result.hasErrors()) {
+	        log.debug("<<검증 에러>> : " + result.getAllErrors());
+	        return "passwordChangePage";
+	    }
+	    
+	    String mem_email = (String)session.getAttribute("mem_email");
+	    
+	    if (mem_email == null) {
+	        log.debug("<<세션에 이메일 없음>>");
+	        // 세션에 이메일이 없을 경우 처리 로직 추가
+	        return "redirect:/member/login";
+	    }
+	    
+	    MemberVO user = memberService.selectMemberByEmail(mem_email);
+	    if (user == null) {
+	        log.debug("<<이메일로 사용자를 찾을 수 없음>>");
+	        return "redirect:/member/login";
+	    }
+	    
+	    memberVO.setMem_num(user.getMem_num());
+	    
+	    memberService.updatePassword(memberVO);
+	    
+	    model.addAttribute("accessTitle", "비밀번호 변경 완료");
+	    model.addAttribute("accessMsg", "비밀번호 변경이 완료되었습니다");
+	    model.addAttribute("accessBtn", "로그인하기");
+	    model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
+
+	    return "passwordResultPage";
+	}
+
+	
 
 	private String loadHtmlTemplate(String path, String verificationCode) throws IOException {
 		InputStream inputStream = servletContext.getResourceAsStream(path);
