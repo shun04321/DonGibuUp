@@ -1,32 +1,32 @@
 $(function() {
 	let message_socket;//웹소켓 식별자
-	
-	if($('#chatDetail').length > 0){
-		connectWebSocket();		
+
+	if ($('#chatDetail').length > 0) {
+		connectWebSocket();
 	}
-	
+
 	/*----------------------
 	 * 웹 소켓 연결
 	 *----------------------*/
-	function connectWebSocket(){
+	function connectWebSocket() {
 		message_socket = new WebSocket('ws://localhost:8000/message-ws');
-		message_socket.onopen=function(evt){
-			console.log('채팅메시지 접속 : '+ $('#chatDetail').length);
+		message_socket.onopen = function(evt) {
+			console.log('채팅메시지 접속 : ' + $('#chatDetail').length);
 			//$('#chatkDetail').length = 0이면 접속, 1이면 미접속
-			if($('#chatDetail').length == 1){
+			if ($('#chatDetail').length == 1) {
 				message_socket.send('msg');
 			}
 		};
 		//서버로부터 메시지를 받으면 호출되는 함수 지정
-		message_socket.onmessage=function(evt){
+		message_socket.onmessage = function(evt) {
 			//메시지 읽기
 			let data = evt.data;
 
-			if($('#chatDetail').length==1){
+			if ($('#chatDetail').length == 1) {
 				readChat();
 			}
 		};
-		message_socket.onclose=function(evt){
+		message_socket.onclose = function(evt) {
 			//소켓이 종료된 후 부가적인 작성이 있을 경우 명시
 			console.log('chat close');
 		}
@@ -69,7 +69,7 @@ $(function() {
 					alert('로그인 후 채팅 가능합니다.');
 					message_socket.close();
 					window.close();
-					window.location.href=`${contextPath}/member/login`;
+					window.location.href = `${contextPath}/member/login`;
 				} else if (param.result = 'success') {
 					//폼 초기화
 					$('#chat_content').val('');
@@ -101,7 +101,7 @@ $(function() {
 					alert('로그인 후 채팅 가능합니다.');
 					message_socket.close();
 					window.close();
-					window.location.href=`${contextPath}/member/login`;
+					window.location.href = `${contextPath}/member/login`;
 				} else if (param.result == 'success') {
 					console.log('success');
 					//채팅창 UI 초기화
@@ -119,18 +119,18 @@ $(function() {
 
 						//메시지 표시
 						if (item.chat_content != null && item.chat_filename != null) {//메시지,이미지 모두 있는 경우
-							output += readImageAndMessage(param,item);
+							output += readImageAndMessage(param, item);
 						} else if (item.chat_content != null) {//메시지만 있는 경우
 							output += readContent(param, item);
 						} else {//이미지만 있는 경우
-							output += readImage(param,item);
+							output += readImage(param, item);
 						}
 						//문서 객체에 추가
 						$('#chatting_message').append(output);
 						//스크롤을 하단에 위치시킴
-						requestAnimationFrame(function(){
+						requestAnimationFrame(function() {
 							$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
-						});						
+						});
 					});
 				} else {
 					alert('채팅 오류 발생');
@@ -173,15 +173,15 @@ $(function() {
 			sub_output += `<div class="item2">
 						    <div>${item.chat_readCount}</div>
 						    <div>${item.chat_date.split(' ')[1]}</div>
-						   </div>`;			   
+						   </div>`;
 			sub_output += '</div></div>';
 			sub_output += '</div>';
 		}
 		return sub_output;
 	}
-	
+
 	//채팅시 전송한 이미지 불러오기
-	function readImage(param,item) {
+	function readImage(param, item) {
 		let sub_output = '';
 		if (item.mem_num != param.mem_num) {
 			sub_output += '<div class="to-position">';
@@ -206,12 +206,12 @@ $(function() {
 					   </div>`;
 		sub_output += '</div></div>';
 		sub_output += '</div>';
-		
+
 		return sub_output;
 	}
-	
+
 	//채팅시 이미지,메시지가 모두 존재하는 경우
-	function readImageAndMessage(param,item){
+	function readImageAndMessage(param, item) {
 		let sub_output = '';
 		if (item.mem_num != param.mem_num) {
 			sub_output += '<div class="to-position">';
@@ -237,8 +237,20 @@ $(function() {
 					   </div>`;
 		sub_output += '</div></div>';
 		sub_output += '</div>';
-		
+
 		return sub_output;
 	}
 
+	/*----------------------
+	 * 전송할 이미지 미리보기
+	 *----------------------*/
+	function previewImage(event) {
+		var reader = new FileReader();
+		reader.onload = function() {
+			var output = document.getElementById('imagePreview');
+			output.src = reader.result;
+			output.style.display = 'block';
+		};
+		reader.readAsDataURL(event.target.files[0]);
+	}
 });
