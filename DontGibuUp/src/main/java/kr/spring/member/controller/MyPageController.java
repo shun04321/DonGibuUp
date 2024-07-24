@@ -378,4 +378,17 @@ public class MyPageController {
 		
 		return "memberReportDetail";
 	}
+	
+	//신고 파일 다운로드
+	@GetMapping("/member/myPage/report/file")
+	public String downloadReport(@RequestParam long report_num, HttpServletRequest request, Model model) {
+		
+		ReportVO report = csService.selectReportDetail(report_num);
+		byte[] downloadFile = FileUtil.getBytes(request.getServletContext().getRealPath("/upload") + "/" + report.getReport_filename());
+		
+		model.addAttribute("downloadFile", downloadFile);
+		model.addAttribute("filename", report.getReport_filename());
+		
+		return "downloadView";
+	}
 }

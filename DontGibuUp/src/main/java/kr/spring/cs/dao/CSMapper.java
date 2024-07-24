@@ -59,6 +59,7 @@ public interface CSMapper {
 	//신고 답변/답변 수정
 	public void replyReport(ReportVO reportVO);
 	//신고 삭제(처리중일 때만 가능)
+	@Delete("DELETE FROM report WHERE report_num=#{report_num}")
 	public void deleteReport(long report_num);
 	//신고 목록(사용자)
 	@Select("SELECT * FROM report WHERE mem_num=#{mem_num}")
