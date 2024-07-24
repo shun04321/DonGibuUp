@@ -47,7 +47,7 @@
     INSERT INTO purchase
     (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, item_num, delivery_status)
     VALUES
-    (purchase_seq.nextval, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{pay_status}, #{item_num}, '배송 준비 중')
+    (purchase_seq.nextval, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, #{item_num}, '배송 준비 중')
 </insert>
 
 	<select id="getNextPurchaseNum" resultType="long">
@@ -56,7 +56,7 @@
 
 	 <insert id="insertPurchaseWithCartItems" parameterType="kr.spring.goods.vo.PurchaseVO">
         INSERT INTO purchase (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, delivery_status)
-        VALUES (#{purchase_num}, #{mem_num}, #{imp_uid}, #{pay_price}, SYSDATE, #{pay_status}, '배송 준비 중')
+        VALUES (#{purchaseNum}, #{mem_num}, #{imp_uid}, #{pay_price}, SYSDATE, #{payStatus}, '배송 준비 중')
     </insert>
 
     <select id="getLatestPurchaseNum" parameterType="long" resultType="long">

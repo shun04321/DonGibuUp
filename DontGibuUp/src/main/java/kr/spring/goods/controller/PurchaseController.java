@@ -131,7 +131,7 @@ public class PurchaseController {
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
                 purchaseVO.setPay_price(amount);
-                purchaseVO.setPay_status(0); // 결제 완료 상태로 설정
+                purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_num(itemNum);
                 purchaseVO.setMem_num(member.getMem_num()); // mem_num 설정
 
@@ -236,15 +236,15 @@ public class PurchaseController {
             String status = (String) data.get("status");
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
-            List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
-
+            
+            long setSeq = 0l;
             log.debug("impUid : " + impUid);
             log.debug("merchantUid : " + merchantUid);
             log.debug("amount : " + amount);
             log.debug("status : " + status);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
-            log.debug("cartItems : " + cartItems);
+            
 
             // 세션 데이터 가져오기
             MemberVO member = (MemberVO) session.getAttribute("user");
@@ -252,29 +252,31 @@ public class PurchaseController {
             if (member == null) {
                 mapJson.put("result", "logout");
             } else {
+            	setSeq = purchaseService.getSeq();
                 // 결제 정보 저장
+            	
                 PurchaseVO purchaseVO = new PurchaseVO();
+                purchaseVO.setPurchaseNum(setSeq);
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
                 purchaseVO.setAmount(amount);
-                purchaseVO.setPay_status(0); // 결제 완료 상태로 설정
+                purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_name(itemName);
                 purchaseVO.setBuyer_name(buyerName);
                 purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
 
                 try {
                     List<CartVO> cartItemList = new ArrayList<>();
-                    for (Map<String, Object> item : cartItems) {
-                        CartVO cartItem = new CartVO();
-                        cartItem.setItem_num(((Number) item.get("item_num")).longValue());
-                        cartItem.setCart_quantity(((Number) item.get("cart_quantity")).longValue());
-                        cartItem.setPrice(((Number) item.get("price")).intValue());
-                        // purchase_num은 insertPurchaseWithCartItems 메서드에서 설정됩니다.
-                        cartItemList.add(cartItem);
-                    }
-                    Long purchaseNum = purchaseService.insertPurchaseWithCartItems(purchaseVO, cartItemList);
+					/*
+					 * for (Map<String, Object> item : cartItems) { CartVO cartItem = new CartVO();
+					 * cartItem.setItem_num(((Number) item.get("item_num")).longValue());
+					 * cartItem.setCart_quantity(((Number) item.get("cart_quantity")).longValue());
+					 * cartItem.setPrice(((Number) item.get("price")).intValue()); // purchase_num은
+					 * insertPurchaseWithCartItems 메서드에서 설정됩니다. cartItemList.add(cartItem); }
+					 */
+                    purchaseService.insertPurchaseWithCartItems(purchaseVO);
                     mapJson.put("result", "success");
-                    mapJson.put("purchaseNum", purchaseNum.toString());
+                    
                 } catch (Exception e) {
                     log.error("결제 정보 저장 중 오류 발생", e);
                     mapJson.put("result", "error");

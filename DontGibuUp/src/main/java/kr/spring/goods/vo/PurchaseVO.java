@@ -25,7 +25,7 @@ public class PurchaseVO {
     private String buyer_email;
     private String item_photo;
     private Date payDate;
-    private int pay_status;
+    private int payStatus;
     private String deliveryStatus;
     
     

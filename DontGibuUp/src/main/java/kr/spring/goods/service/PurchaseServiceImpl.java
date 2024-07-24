@@ -31,14 +31,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         // 1. purchase 테이블에 데이터 삽입
         purchaseMapper.insertPurchaseWithCartItems(purchaseVO);
 
-        // 2. 최신 purchase_num 가져오기
-        Long purchaseNum = purchaseMapper.getLatestPurchaseNum(purchaseVO.getMemNum());
-
-        // 3. 각 CartVO에 purchaseNum 설정 및 purchase_item 테이블에 삽입
-        for (CartVO cartItem : purchaseVO.getCart_items()) {
-            cartItem.setPurchase_num(purchaseNum);
-            purchaseMapper.insertPurchaseItem(cartItem);
-        }
+   
     }
     @Override
     public List<CartVO> getPurchaseItems(long purchase_num) {
@@ -71,9 +64,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
 	@Override
-	public Long insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartItems) {
+	public void insertPurchaseWithCartItems(PurchaseVO purchaseVO, List<CartVO> cartItems) {
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	@Override
+	public long getSeq() {
+		return purchaseMapper.getSeq();
 	}
 
 	
