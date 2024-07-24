@@ -41,7 +41,7 @@ public interface DboxMapper {
 	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num);
 	//Dbox_Donation
 	public void insertDboxDonation(DboxDonationVO dboxDonationVO);
-	@Select("SELECT * FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
+	@Select("SELECT * FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num} ORDER BY dbox_do_num DESC")
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
 	@Select("SELECT COUNT(*) FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
 	public Integer selectDboxDonationsCount(long dbox_num);

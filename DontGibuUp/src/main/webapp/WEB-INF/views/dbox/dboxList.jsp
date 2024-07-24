@@ -50,7 +50,7 @@
 				<img src="${pageContext.request.contextPath}/images/loading.gif" width="30" height="30">
 			</div>
 			<div class="paging-button text-center" style="display:none;margin-top:3rem">
-				<button type="button" class="btn btn-success">더보기</button>
+				<button type="button" class="btn btn-success col-4">더보기</button>
 			</div>
 		</div>
 	</div>
