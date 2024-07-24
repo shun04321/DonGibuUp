@@ -51,6 +51,7 @@
                     <div class="review-header2">
                         <span class="nickname">${review.mem_nick}</span>
                         <span class="date">${review.chal_rev_date}</span>
+                        <span>🚨신고</span>
                     </div>
                     	<span class="rating">
                             <c:forEach begin="1" end="5" varStatus="status">
