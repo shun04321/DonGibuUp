@@ -115,6 +115,11 @@ public class ChallengeServiceImpl implements ChallengeService{
         ChallengeVO challenge = challengeMapper.selectChallenge(chal_num);
         return challenge != null && challenge.getMem_num() == mem_num;
     }
+    //리더 chal_joi_num 확인하기
+    @Override
+	public Long selectLeaderJoiNum(Long chal_num) {
+		return challengeMapper.selectLeaderJoiNum(chal_num);
+	}
     
     //후기 작성 여부
     @Override
@@ -241,8 +246,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 	//챌린지 채팅방 삭제
 	@Override
 	public void deleteChallengeChat(Long chal_num) {
-		// TODO Auto-generated method stub
-		
+		//챌린지 채팅 읽기 기록 삭제
+		challengeMapper.deleteChalChatRead(chal_num);
+		//챌린지 채팅 전체 삭제
+		challengeMapper.deleteChallengeChat(chal_num);		
 	}
 	
 	//*챌린지 좋아요*//
@@ -265,4 +272,5 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void deleteFav(ChallengeFavVO fav) {
         challengeMapper.deleteFav(fav);
     }
+
 }

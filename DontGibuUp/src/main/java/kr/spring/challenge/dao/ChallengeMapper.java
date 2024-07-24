@@ -44,6 +44,9 @@ public interface ChallengeMapper {
     public Integer selectJoinMemberRowCount(Map<String,Object> map);
     public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);    
     public void deleteChallengeJoin(Long chal_joi_num);
+    //챌린지 리더 참가 정보 불러오기
+    @Select("SELECT MIN(chal_joi_num) FROM chal_join WHERE chal_num=#{chal_num}")
+    public Long selectLeaderJoiNum(Long chal_num);
     //챌린지 ID로 챌린지 참가 데이터 삭제
     public void deleteChallengeJoinsByChallengeId(Long chal_num);
     //후기 작성 여부
@@ -88,7 +91,11 @@ public interface ChallengeMapper {
     //읽은 채팅 기록 삭제
     @Delete("DELETE FROM chal_chat_read WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
     public void deleteChatRead(Map<String,Object> map);
-    //챌린지 종료시 채팅기록 삭제
+    //챌린지 종료시 채팅기록(chal_chat_read) 삭제
+    @Delete("DELETE FROM chal_chat_read WHERE chal_num=#{chal_num}")
+    public void deleteChalChatRead(Long chal_num);
+    //챌린지 종료시 채팅(chal_chat) 삭제
+    @Delete("DELETE FROM chal_chat WHERE chal_num=#{chal_num}")
     public void deleteChallengeChat(Long chal_num);
     
     //*챌린지 좋아요*//

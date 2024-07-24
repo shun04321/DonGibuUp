@@ -8,7 +8,7 @@
 	let chal_num = ${challenge.chal_num};
 	let chal_joi_num = ${chal_joi_num};
 	let user_joi_num = ${chal_joi_num};
-	let rowCount = 1;
+	let rowCount = 3;
 	let pageSize = 10;
 	var currentPage;
 </script>

@@ -37,6 +37,9 @@ public interface ChallengeService {
 	public void deleteChallengeJoinsByChallengeId(Long chal_num);
     //리더 여부 확인
 	public boolean isChallengeLeader(Long chal_num, Long mem_num);
+	//리더 chal_joi_num 확인하기
+	public Long selectLeaderJoiNum(Long chal_num);
+	
 	//후기 작성 여부
 	public ChallengeReviewVO selectChallengeReviewByMemberAndChallenge(Map<String, Object> map);
 	
