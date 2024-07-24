@@ -13,7 +13,7 @@ import kr.spring.challenge.vo.ChallengeVerifyVO;
 
 public interface ChallengeService {
 	
-	//챌린지 개설
+	//*챌린지 개설*//
 	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO,ChallengeChatVO chatVO);
 	public List<ChallengeVO> selectList(Map<String,Object> map);
 	public Integer selectRowCount(Map<String,Object> map);
@@ -24,7 +24,7 @@ public interface ChallengeService {
 	//참가 인원수 조회
 	public int countCurrentParticipants(long chal_num);
 	
-	//챌린지 참가
+	//*챌린지 참가*//
 	public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO);
 	public Integer selectChallengeJoinListRowCount(Map<String,Object> map);
 	public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
@@ -39,17 +39,10 @@ public interface ChallengeService {
 	//후기 작성 여부
 	public ChallengeReviewVO selectChallengeReviewByMemberAndChallenge(Map<String, Object> map);
 	
-	//챌린지 결제
+	//*챌린지 결제*//
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
-	
-    //채팅 메시지 등록
-    public void insertChallengeChat(ChallengeChatVO chalChatVO);
-    //채팅 메시지 읽기
-    public List<ChallengeChatVO> selectChallengeChat(Map<String,Object> map);
-    //챌린지 종료시 채팅기록 삭제
-    public void deleteChallengeChat(Long chal_num);
     
-	//챌린지 인증
+	//*챌린지 인증*//
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
     public Integer selectChallengeVerifyListRowCount(Map<String,Object> map);
     public List<ChallengeVerifyVO> selectChallengeVerifyList(Map<String, Object> map);    
@@ -58,14 +51,20 @@ public interface ChallengeService {
     public void deleteChallengeVerify(Long chal_ver_num);
     int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
     
-	//챌린지 후기	
+	//*챌린지 후기*//
     public void insertChallengeReview(ChallengeReviewVO chalReviewVO);
     public List<ChallengeReviewVO> selectChallengeReviewList(Long chal_num);     
     public ChallengeReviewVO selectChallengeReview(Long chal_rev_num);
     public void updateChallengeReview(ChallengeReviewVO chalReviewVO);
     public void deleteChallengeReview(Long chal_rev_num);
 
-	//챌린지 채팅
+    //*챌린지 채팅*//
+    //채팅 메시지 등록
+    public void insertChallengeChat(ChallengeChatVO chalChatVO);
+    //채팅 메시지 읽기
+    public List<ChallengeChatVO> selectChallengeChat(Map<String,Object> map);
+    //챌린지 종료시 채팅기록 삭제
+    public void deleteChallengeChat(Long chal_num);
 	
 	//챌린지...
 }

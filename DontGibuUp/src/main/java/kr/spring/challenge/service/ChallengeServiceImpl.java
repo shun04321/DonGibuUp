@@ -24,7 +24,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Autowired
 	ChallengeMapper challengeMapper;
 
-	//챌린지 개설//
+	//*챌린지 개설*//
 	@Override
 	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO,ChallengeChatVO chatVO) {
 		chalVO.setChal_num(challengeMapper.selectChal_num());
@@ -78,7 +78,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	    return challengeMapper.countCurrentParticipants(chal_num);
 	}
 	
-	//챌린지 참가//
+	//*챌린지 참가*//
     @Override
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO) {
     	chalJoinVO.setChal_joi_num(challengeMapper.selectChal_joi_num());
@@ -119,13 +119,13 @@ public class ChallengeServiceImpl implements ChallengeService{
         return challengeMapper.selectChallengeReviewByMemberAndChallenge(map);
     }
     
-    //챌린지 결제//
+    //*챌린지 결제*//
     @Override
     public void insertChallengePayment(ChallengePaymentVO chalPayVO) {
         challengeMapper.insertChallengePayment(chalPayVO);
     }
     
-    //챌린지 인증//
+    //*챌린지 인증*//
     @Override
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO) {
         challengeMapper.insertChallengeVerify(chalVerifyVO);
@@ -176,7 +176,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return challengeMapper.selectJoinMemberRowCount(map);
 	}
 
-	//챌린지 후기//
+	//*챌린지 후기*//
     @Override
     public void insertChallengeReview(ChallengeReviewVO chalReviewVO) {
         chalReviewVO.setChal_rev_num(challengeMapper.selectChal_rev_num());
@@ -208,6 +208,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return challengeMapper.selectChallengeJoinListRowCount(map);
 	}
 	
+	//*챌린지 채팅*//
 	//챌린지 채팅 메시지 넣기
 	@Override
 	public void insertChallengeChat(ChallengeChatVO chatVO) {
@@ -233,6 +234,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		//채팅 내용 불러오기				 
 		return challengeMapper.selectChallengeChat(map);
 	}
+	
 	//챌린지 채팅방 삭제
 	@Override
 	public void deleteChallengeChat(Long chal_num) {
