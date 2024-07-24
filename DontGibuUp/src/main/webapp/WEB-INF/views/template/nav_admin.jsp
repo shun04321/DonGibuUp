@@ -61,6 +61,12 @@
               <span class="menu-title">굿즈샵</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="${pageContext.request.contextPath}/admin/refundRequest">
+              <i class="menu-icon mdi mdi mdi-cancel"></i>
+              <span class="menu-title">환불신청</span>
+            </a>
+          </li>
           <li class="nav-item nav-category">HELP</li>
           <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
