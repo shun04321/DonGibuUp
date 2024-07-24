@@ -5,7 +5,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.findpassword.js"></script>
 <div class="page-main">
-<h4>비밀번호 재발급</h4>
+<h4>비밀번호 찾기</h4>
 <form action="findPasswordResult" method="get" id="member_password">
     <ul>
         <li>
@@ -15,7 +15,7 @@
         </li>
     </ul>
     <div class="align-center">
-        <button type="submit" id="findpw_btn" class="default-btn">비밀번호 재발급</button>
+        <button type="submit" id="findpw_btn" class="default-btn">비밀번호 찾기</button>
     </div>
 </form>
 </div>

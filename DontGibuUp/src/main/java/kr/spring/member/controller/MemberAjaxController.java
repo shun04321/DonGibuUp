@@ -84,6 +84,29 @@ public class MemberAjaxController {
 		log.debug("<<닉네임 중복체크>> : " + mapAjax.toString());
 		return mapAjax;
 	}
+	
+	/*===============================
+			비밀번호 인증번호 검증
+	================================*/
+	//비밀번호 인증번호 검증
+	@GetMapping("/member/findPasswordResult/verify")
+	@ResponseBody
+	public Map<String, Object> verifyVCode(String vcode, HttpSession session) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+		
+		String verificationCode = (String) session.getAttribute("verificationCode");
+		
+		log.debug("<<세션 vcode>> : " + verificationCode);
+		log.debug("<<사용자 vcode>> : " + vcode);
+		if (verificationCode.equals(vcode)) {
+			mapAjax.put("result", "isVerified");
+		} else {
+			mapAjax.put("result", "isNotVerified");
+		}
+		
+		return mapAjax;
+	}
+	
 	/*===================================
 	 * 				회원 알림
 	 *==================================*/
