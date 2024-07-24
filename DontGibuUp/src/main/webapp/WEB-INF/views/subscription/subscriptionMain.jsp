@@ -16,6 +16,11 @@
 	height: 300px; /* 이미지의 높이를 일정하게 설정 */
 	object-fit: cover;
 } /* 이미지 비율을 유지하면서 컨테이너를 채우도록 조정 */
+
+#icon{
+	width:180px;
+	height :200px;
+}
 </style>
 <div class="container">
 	<!-- 캐러셀 시작 -->
@@ -74,7 +79,7 @@
 						<a
 							href="../category/categoryDetail?dcate_num=${category.dcate_num}">
 							<img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
-							class="featured-block-image img-fluid"
+							class="featured-block-image img-fluid" id="icon"
 							alt="Slide ${loop.index + 1}">
 							<p class="featured-block-text">
 								<span class="dcate_name">${category.dcate_name}</span>
