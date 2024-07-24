@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.InquiryVO;
+import kr.spring.cs.vo.ReportVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.point.service.PointService;
@@ -233,7 +234,7 @@ public class MyPageController {
 		return "memberPoint";
 	}
 	
-	//문의 페이지
+	//문의내역 페이지
 	@GetMapping("/member/myPage/inquiry")
 	public String memberInquiry(Model model, HttpSession session) {
 		MemberVO user = (MemberVO)session.getAttribute("user");
@@ -245,7 +246,6 @@ public class MyPageController {
 	}
 	
 	//문의 상세
-	//TODO 같은 글쓴이의 글인지 체크하기
 	@GetMapping("/member/myPage/inquiry/detail")
 	public String memberInquiryDetail(@RequestParam long inquiry_num, Model model) {
 		InquiryVO inquiry = csService.selectInquiryDetail(inquiry_num);
@@ -350,5 +350,32 @@ public class MyPageController {
 		csService.deleteInquiry(inquiry_num);
 		
 		return "redirect:/member/myPage/inquiry";
+	}
+	
+	//신고내역 페이지
+	@GetMapping("/member/myPage/report")
+	public String memberReport(Model model, HttpSession session) {
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		List<ReportVO> list = csService.selectReportListByMemNum(user.getMem_num());
+		
+		model.addAttribute("list", list);
+		
+		return "memberReport";
+	}
+	
+	//신고 상세
+	@GetMapping("/member/myPage/report/detail")
+	public String memberReportDetail(@RequestParam long report_num, Model model) {
+		ReportVO report = csService.selectReportDetail(report_num);
+		
+		log.debug("<<신고 상세 - report_num>> : " +report_num);
+		log.debug("<<신고 상세>> : " +report);
+		
+		report.setReport_content(StringUtil.useBrNoHTML(report.getReport_content()));
+		report.setReport_reply(StringUtil.useBrNoHTML(report.getReport_reply()));
+		
+		model.addAttribute("report", report);
+		
+		return "memberReportDetail";
 	}
 }

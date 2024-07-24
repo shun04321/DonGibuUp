@@ -32,7 +32,7 @@
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">고객센터</h5>
 		<a href="${pageContext.request.contextPath}/member/myPage/inquiry" class="category-block-link"> 1:1 문의</a>
-		<a href="#" class="category-block-link"> 신고</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/report" class="category-block-link"> 신고</a>
 	</div>
 </c:if>
 <c:if test="${!empty user && user.mem_status == 9}"><!-- 관리자 -->

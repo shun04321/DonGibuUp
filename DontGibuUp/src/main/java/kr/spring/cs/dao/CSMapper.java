@@ -55,11 +55,12 @@ public interface CSMapper {
 	//신고 목록
 	public List<ReportVO> selectReportList(Map<String, Object> map);
 	//신고 상세
-	public ReportVO selectReport(long report_num);
+	public ReportVO selectReportDetail(long report_num);
 	//신고 답변/답변 수정
 	public void replyReport(ReportVO reportVO);
 	//신고 삭제(처리중일 때만 가능)
 	public void deleteReport(long report_num);
 	//신고 목록(사용자)
-	public List<ReportVO> selectReportListByMemNum(Map<String, Object> map);
+	@Select("SELECT * FROM report WHERE mem_num=#{mem_num}")
+	public List<ReportVO> selectReportListByMemNum(long mem_num);
 }

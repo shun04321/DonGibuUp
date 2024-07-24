@@ -314,7 +314,7 @@ public class CSController {
 	//관리자 신고 답변 (신고 상세보기)
 	@GetMapping("admin/cs/report/reply")
 	public String replyReportForm(@RequestParam long report_num, Model model) {
-		ReportVO report = csService.selectReport(report_num);
+		ReportVO report = csService.selectReportDetail(report_num);
 
 		log.debug("<<신고 상세 - report_num>> : " + report_num);
 		log.debug("<<신고 상세>> : " + report);
@@ -344,7 +344,7 @@ public class CSController {
 
 	@GetMapping("/admin/cs/report/modifyForm")
 	public String modifyReportFormAjax(@RequestParam long report_num, Model model) {
-		ReportVO report = csService.selectReport(report_num);
+		ReportVO report = csService.selectReportDetail(report_num);
 
 		model.addAttribute("report", report);
 

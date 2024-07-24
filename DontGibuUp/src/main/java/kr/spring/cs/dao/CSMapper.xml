@@ -119,8 +119,8 @@
 		]]>
 	</select>
 	
-	<!-- 관리자 신고 상세 -->
-	<select id="selectReport" parameterType="long" resultType="reportVO">
+	<!-- 신고 상세 -->
+	<select id="selectReportDetail" parameterType="long" resultType="reportVO">
 		SELECT
 			r.*, a.mem_nick mem_nick, b.mem_nick reported_mem_nick, b.mem_status reported_mem_status 
 		FROM report r
@@ -131,6 +131,7 @@
 		WHERE report_num=#{report_num}
 	</select>
 	
+	<!-- 관리자 신고 답변 -->
 	<update id="replyReport" parameterType="map">
         UPDATE report 
         SET report_reply=#{report_reply}, 

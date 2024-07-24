@@ -116,8 +116,8 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Override
-	public ReportVO selectReport(long report_num) {
-		return csMapper.selectReport(report_num);
+	public ReportVO selectReportDetail(long report_num) {
+		return csMapper.selectReportDetail(report_num);
 	}
 
 	//관리자 신고 답변
@@ -143,8 +143,8 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Override
-	public List<ReportVO> selectReportListByMemNum(Map<String, Object> map) {
-		return csMapper.selectReportListByMemNum(map);
+	public List<ReportVO> selectReportListByMemNum(long mem_num) {
+		return csMapper.selectReportListByMemNum(mem_num);
 	}
 
 }

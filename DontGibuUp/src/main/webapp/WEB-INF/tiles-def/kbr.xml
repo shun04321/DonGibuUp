@@ -83,6 +83,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/mypage/memberInquiryModify.jsp"/>
 	</definition>
+	<definition name="memberReport" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 신고" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberReport.jsp"/>
+	</definition>
 	<!-- 고객센터 -->
 	<definition name="faqlist" extends="main">
 		<put-attribute name="title" value="자주하는 질문(FAQ)" />
