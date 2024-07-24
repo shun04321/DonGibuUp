@@ -7,6 +7,7 @@
     var contextPath = "${pageContext.request.contextPath}";
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/password.js"></script>
+<section class="section-padding">
 <div class="container mt-4 nanum">
 	<h4 class="mb-4">비밀번호 수정</h4>
 	<div class="row justify-content-left main-content-container">
@@ -48,3 +49,4 @@
 		</div>
 	</div>
 </div>
+</section>
