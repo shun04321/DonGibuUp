@@ -391,7 +391,7 @@ public class SubscriptionController {
 			
 
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd/HH:mm");
+            SimpleDateFormat outputFormat = new SimpleDateFormat("yy년 MM월 dd일/HH:mm");
 
             for (Sub_paymentVO payment : paylist) {
                 try {
@@ -426,9 +426,21 @@ public class SubscriptionController {
 		if(subscription.getCancel_date()!=null) {
 			cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
 		}
-		System.out.println("subpaydate : " + subPayDate);
+		
+		List<Sub_paymentVO> list = sub_paymentService.getSub_paymentBySub_num(sub_num);
+		
+		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yy년 MM월 dd일/HH:mm");
 
-		// 모델에 날짜 문자열 추가
+        for (Sub_paymentVO payment : list) {
+            try {
+                Date date = inputFormat.parse(payment.getSub_pay_date());
+                payment.setSub_pay_date(outputFormat.format(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }		
+		model.addAttribute("list", list);
 		model.addAttribute("cancel_date",cancelDate);
 		model.addAttribute("reg_date", regDate);
 		model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식

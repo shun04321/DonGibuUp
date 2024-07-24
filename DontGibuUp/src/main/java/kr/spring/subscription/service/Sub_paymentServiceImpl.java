@@ -46,4 +46,9 @@ public class Sub_paymentServiceImpl implements Sub_paymentService{
 		return Sub_paymentMapper.getSub_paymentCountByMem_num(map);
 	}
 
+	@Override
+	public List<Sub_paymentVO> getSub_paymentBySub_num(long sub_num) {
+		return Sub_paymentMapper.getSub_paymentBySub_num(sub_num);
+	}
+
 }
