@@ -150,7 +150,9 @@
 			mem_num,
 			dbox_do_price,
 			dbox_do_point,
+			<if test="dbox_imp_uid != null and dbox_imp_uid != ''">
 			dbox_imp_uid,
+			</if>
 			dbox_do_comment,
 			dbox_do_status,
 			dbox_do_annony)
@@ -160,7 +162,9 @@
 			#{mem_num},
 			#{dbox_do_price},
 			#{dbox_do_point},
+			<if test="dbox_imp_uid != null and dbox_imp_uid != ''">
 			#{dbox_imp_uid},
+			</if>
 			#{dbox_do_comment},
 			#{dbox_do_status},
 			#{dbox_do_annony})

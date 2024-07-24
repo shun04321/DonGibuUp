@@ -190,7 +190,9 @@ public class DboxAjaxController {
 				//member_detail 업데이트
 				memberService.updateMemPoint(point_revent1);
 				log.debug("<<회원 사용 포인트>> : " + point);
-				log.debug("<<회원 보유 포인트>> : " + member.getMem_point());
+				log.debug("<<회원 보유 포인트(전)>> : " + member.getMem_point());
+				member.setMem_point(member.getMem_point()-point);
+				log.debug("<<회원 보유 포인트(후)>> : " + member.getMem_point());
 			}catch(Exception e) {
 				log.error("기부박스 결제 오류 발생",e);
 			}
