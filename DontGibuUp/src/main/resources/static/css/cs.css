@@ -23,7 +23,19 @@ ul {
 	margin: 5px 0;
 }
 
+#inquiry_form textarea {
+	resize: none;
+}
+
 /*faq*/
+.user-faq-item {
+	list-style: none;
+}
+	
+#faq_list {
+	padding: 0;
+}
+
 .faq-item {
 	border: 1px solid #000000;
 	border-radius: 6px;
@@ -45,18 +57,23 @@ ul {
 }
 
 .faq-category-text {
-	color: blue;
+	color:#597081;
+	font-size: 0.8rem;
 }
 
 .user-faq-item {
-	background-color: #f2f2f2;
-	border-bottom: 1px solid #000000;
-	margin: 0;
-	padding: 8px 0;
+	border-bottom: 1px solid #cfcfcf;
+	margin: 0.5rem 0;
+	padding: 0.6rem 0.8rem;
 }
 
-.user-faq-item .faq-question-text {
+.user-faq-item {
 	cursor: pointer;
+}
+
+.faq-question-text {
+	font-size: 1.2rem;
+	font-weight: 600;
 }
 
 /*신고*/

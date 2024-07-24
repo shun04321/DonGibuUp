@@ -2,6 +2,7 @@ package kr.spring.member.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ProcessBuilder.Redirect;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
@@ -95,8 +96,8 @@ public class MemberController {
 
 	//일반 회원가입
 	@PostMapping("/member/signup")
-	public String signup(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result, Model model,
-			HttpServletRequest request, HttpSession session) {
+	public String signup(@Validated(ValidationSequence.class) MemberVO memberVO, BindingResult result,
+			RedirectAttributes redirectAttributes, HttpServletRequest request, HttpSession session) {
 		log.debug("<<회원가입>> : " + memberVO);
 
 		if (result.hasErrors()) {
@@ -132,13 +133,25 @@ public class MemberController {
 
 		//회원가입
 		memberService.insertMember(memberVO);
-		session.invalidate(); //추천인코드 초기화
+		session.removeAttribute("rcode"); //추천인코드 초기화
 
-		model.addAttribute("accessTitle", "회원가입 완료");
-		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
-		model.addAttribute("accessBtn", "로그인하기");
-		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
+		// 세션에 속성 설정
+		session.setAttribute("accessTitle", "회원가입 완료");
+		session.setAttribute("accessMsg", "회원가입이 완료되었습니다");
+		session.setAttribute("accessBtn", "로그인하기");
+		session.setAttribute("accessUrl", request.getContextPath() + "/member/login");
 
+		return "redirect:/member/signup/result";
+	}
+
+	//회원가입 완료 페이지
+	@GetMapping("/member/signup/result")
+	public String signupResult(Model model, HttpSession session) {
+		// 세션에서 속성 가져와서 모델에 추가
+		model.addAttribute("accessTitle", session.getAttribute("accessTitle"));
+		model.addAttribute("accessMsg", session.getAttribute("accessMsg"));
+		model.addAttribute("accessBtn", session.getAttribute("accessBtn"));
+		model.addAttribute("accessUrl", session.getAttribute("accessUrl"));
 		return "signupResultPage";
 	}
 
@@ -271,15 +284,15 @@ public class MemberController {
 
 		// 회원가입 처리
 		memberService.insertMember(memberVO);
-		session.invalidate(); //추천인코드 초기화
+		session.removeAttribute("rcode"); //추천인코드 초기화
 
-		// 메인으로 redirect
-		model.addAttribute("accessTitle", "회원가입 완료");
-		model.addAttribute("accessMsg", "회원가입이 완료되었습니다");
-		model.addAttribute("accessBtn", "로그인하기");
-		model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
+		// 세션에 속성 설정
+		session.setAttribute("accessTitle", "회원가입 완료");
+		session.setAttribute("accessMsg", "회원가입이 완료되었습니다");
+		session.setAttribute("accessBtn", "로그인하기");
+		session.setAttribute("accessUrl", request.getContextPath() + "/member/login");
 
-		return "signupResultPage";
+		return "redirect:/member/signup/result";
 	}
 
 	//네이버 로그인/회원가입 api
@@ -498,7 +511,8 @@ public class MemberController {
 
 	//비밀번호 찾기 결과
 	@GetMapping("/member/findPasswordResult")
-	public String findPassword(@RequestParam("mem_email") String mem_email, HttpSession session, Model model, HttpServletRequest request) {
+	public String findPassword(@RequestParam("mem_email") String mem_email, HttpSession session, Model model,
+			HttpServletRequest request) {
 		log.debug("<<비밀번호 찾기>> : " + mem_email);
 		MemberVO memberVO = memberService.selectMemberByEmail(mem_email);
 		log.debug("<<비밀번호 찾기>> : " + memberVO);
@@ -513,7 +527,7 @@ public class MemberController {
 				model.addAttribute("email_msg", "정지회원입니다");
 				return "memberFindPassword";
 			}
-			
+
 			if (memberVO.getMem_reg_type() == 2) {
 				//네이버 로그인
 				model.addAttribute("email_msg", "네이버로 소셜로그인된 계정입니다");
@@ -523,7 +537,7 @@ public class MemberController {
 				model.addAttribute("email_msg", "카카오로 소셜로그인된 계정입니다");
 				return "memberFindPassword";
 			}
-			
+
 			//인증번호 발급
 			String veryficationCode = memberService.getPasswordVerificationCode();
 
@@ -538,7 +552,7 @@ public class MemberController {
 				emailMessage.setMessage(htmlContent);
 				log.debug("<<email>> : " + emailMessage);
 				emailService.sendMail(emailMessage, "password");
-				
+
 				session.setAttribute("verificationCode", veryficationCode);
 				session.setAttribute("mem_email", mem_email);
 			} catch (IOException e) {
@@ -551,51 +565,61 @@ public class MemberController {
 		}
 		return "redirect:/member/changePassword";
 	}
-	
+
 	@GetMapping("/member/changePassword")
 	public String changePasswordForm() {
 		return "passwordChangePage";
 	}
-	
+
 	//비밀번호 찾기 - 비밀번호 수정
 	@PostMapping("/member/changePassword")
 	public String changePassword(@Validated(PatternCheckGroup.class) MemberVO memberVO, BindingResult result,
-	        Model model, HttpServletRequest request, HttpSession session) {
-	    
-	    log.debug("<<비밀번호 수정 요청 도착>> : " + memberVO);
+			Model model, HttpServletRequest request, HttpSession session) {
 
-	    if (result.hasErrors()) {
-	        log.debug("<<검증 에러>> : " + result.getAllErrors());
-	        return "passwordChangePage";
-	    }
-	    
-	    String mem_email = (String)session.getAttribute("mem_email");
-	    
-	    if (mem_email == null) {
-	        log.debug("<<세션에 이메일 없음>>");
-	        // 세션에 이메일이 없을 경우 처리 로직 추가
-	        return "redirect:/member/login";
-	    }
-	    
-	    MemberVO user = memberService.selectMemberByEmail(mem_email);
-	    if (user == null) {
-	        log.debug("<<이메일로 사용자를 찾을 수 없음>>");
-	        return "redirect:/member/login";
-	    }
-	    
-	    memberVO.setMem_num(user.getMem_num());
-	    
-	    memberService.updatePassword(memberVO);
-	    
-	    model.addAttribute("accessTitle", "비밀번호 변경 완료");
-	    model.addAttribute("accessMsg", "비밀번호 변경이 완료되었습니다");
-	    model.addAttribute("accessBtn", "로그인하기");
-	    model.addAttribute("accessUrl", request.getContextPath() + "/member/login");
+		log.debug("<<비밀번호 수정 요청 도착>> : " + memberVO);
 
-	    return "passwordResultPage";
+		if (result.hasErrors()) {
+			log.debug("<<검증 에러>> : " + result.getAllErrors());
+			return "passwordChangePage";
+		}
+
+		String mem_email = (String) session.getAttribute("mem_email");
+
+		if (mem_email == null) {
+			log.debug("<<세션에 이메일 없음>>");
+			// 세션에 이메일이 없을 경우 처리 로직 추가
+			return "redirect:/member/login";
+		}
+
+		MemberVO user = memberService.selectMemberByEmail(mem_email);
+		if (user == null) {
+			log.debug("<<이메일로 사용자를 찾을 수 없음>>");
+			return "redirect:/member/login";
+		}
+
+		memberVO.setMem_num(user.getMem_num());
+
+		memberService.updatePassword(memberVO);
+
+		session.setAttribute("accessTitle", "비밀번호 변경 완료");
+		session.setAttribute("accessMsg", "비밀번호 변경이 완료되었습니다");
+		session.setAttribute("accessBtn", "로그인하기");
+		session.setAttribute("accessUrl", request.getContextPath() + "/member/login");
+
+		return "redirect:/member/changePassword/result";
 	}
 
-	
+	//비밀번호 변경 완료 페이지
+	@GetMapping("/member/changePassword/result")
+	public String changePasswordResult(Model model, HttpSession session) {
+		// 세션에서 속성 가져와서 모델에 추가
+		model.addAttribute("accessTitle", session.getAttribute("accessTitle"));
+		model.addAttribute("accessMsg", session.getAttribute("accessMsg"));
+		model.addAttribute("accessBtn", session.getAttribute("accessBtn"));
+		model.addAttribute("accessUrl", session.getAttribute("accessUrl"));
+		
+		return "passwordResultPage";
+	}
 
 	private String loadHtmlTemplate(String path, String verificationCode) throws IOException {
 		InputStream inputStream = servletContext.getResourceAsStream(path);
@@ -612,8 +636,7 @@ public class MemberController {
 	//회원 목록
 	@GetMapping("/admin/manageMember")
 	private String adminMemberList(@RequestParam(defaultValue = "1") int pageNum,
-								   @RequestParam(defaultValue = "1") int order,
-								   String keyfield, String keyword, Model model) {
+			@RequestParam(defaultValue = "1") int order, String keyfield, String keyword, Model model) {
 
 		log.debug("<<회원 목록 - order>> : " + order);
 
@@ -621,7 +644,7 @@ public class MemberController {
 		if (keyword != null && keyword.equals("")) {
 			keyword = null;
 		}
-		
+
 		map.put("keyfield", keyfield);
 		map.put("keyword", keyword);
 
@@ -643,15 +666,14 @@ public class MemberController {
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
 		model.addAttribute("page", page.getPage());
-		
+
 		return "adminManageMember";
 	}
-	
+
 	//회원 포인트 관리 페이지
 	@GetMapping("/admin/managePoint")
 	private String adminMemberPoint(@RequestParam(defaultValue = "1") int pageNum,
-								   @RequestParam(defaultValue = "1") int order,
-								   String keyfield, String keyword, Model model) {
+			@RequestParam(defaultValue = "1") int order, String keyfield, String keyword, Model model) {
 
 		log.debug("<<회원 포인트 - order>> : " + order);
 
@@ -659,7 +681,7 @@ public class MemberController {
 		if (keyword != null && keyword.equals("")) {
 			keyword = null;
 		}
-		
+
 		map.put("keyfield", keyfield);
 		map.put("keyword", keyword);
 
@@ -681,7 +703,7 @@ public class MemberController {
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
 		model.addAttribute("page", page.getPage());
-		
+
 		return "adminManagePoint";
 	}
 }
