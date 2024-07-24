@@ -638,7 +638,7 @@ CREATE TABLE DBOX_DONATION (
 	mem_num				number								NOT NULL,
 	dbox_do_price		number(15)							NOT NULL,
 	dbox_do_point		number(9)		DEFAULT 0			NOT NULL,
-	dbox_imp_uid		varchar2(45)						NOT NULL,
+	dbox_imp_uid		varchar2(45)						NULL,
 	dbox_do_comment		varchar2(300)	DEFAULT '기부합니다.'	NULL,
 	dbox_do_status		number(1)							NOT NULL,
 	dbox_do_annony		number(1)							NOT NULL,
