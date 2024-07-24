@@ -28,8 +28,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.config.validation.ValidationSequence;
+import kr.spring.cs.vo.InquiryVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.payuid.service.PayuidService;
 import kr.spring.payuid.vo.PayuidVO;
 import kr.spring.subscription.service.Sub_paymentService;
@@ -62,6 +65,8 @@ public class SubscriptionController {
 	private MemberService memberService;
 	@Autowired
 	private Sub_paymentService sub_paymentService;
+	@Autowired
+	NotifyService notifyService;
 
 	/*--------------------
 	 * 정기 기부 메인창 이동
@@ -143,6 +148,17 @@ public class SubscriptionController {
 		}
 		payuid = payuidService.getPayuidByMethod(payuid);
 		subscriptionService.insertSubscription(subscriptionVO);
+		//정기기부 등록 성공 알림
+		NotifyVO notifyVO = new NotifyVO();
+		notifyVO.setMem_num(user.getMem_num());
+		notifyVO.setNotify_type(12);
+		notifyVO.setNot_url("/subscription/subscriptionDetail?sub_num="+subscriptionVO.getSub_num());
+		Map<String, String> dynamicValues = new HashMap<String, String>();
+		DonationCategoryVO category = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
+		dynamicValues.put("dcateName", category.getDcate_charity());
+		notifyService.insertNotifyLog(notifyVO, dynamicValues);
+		//알림
+		
 		redirectAttributes.addFlashAttribute("subscriptionVO",subscriptionVO);
 		redirectAttributes.addFlashAttribute("user", member_db);
 		redirectAttributes.addFlashAttribute("payuidVO", payuid);
@@ -189,6 +205,25 @@ public class SubscriptionController {
 	@PostMapping("/subscription/paymentReservation")
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> signUp(String pay_uid, long sub_num) {
+		
+		SubscriptionVO subscription = subscriptionService.getSubscription(sub_num); 
+		int notify_type = 0;
+		Map<String, String> dynamicValues = new HashMap<String, String>();
+		
+		if(subscription.getSub_method().equals("card")) {
+			notify_type= 26;
+			dynamicValues.put("cardNickname", subscription.getCard_nickname());
+		}else {
+			notify_type= 27;
+			dynamicValues.put("easypay_method", subscription.getEasypay_method());
+		}
+		
+		NotifyVO notifyVO = new NotifyVO();
+		notifyVO.setMem_num(subscription.getMem_num());
+		notifyVO.setNotify_type(notify_type);
+		notifyVO.setNot_url("/member/myPage/memberInfo");
+		notifyService.insertNotifyLog(notifyVO, dynamicValues);
+		
 		// 결제 처리 로직
 		String paymentResult = insertSub_Payment(pay_uid, sub_num);
 
@@ -232,12 +267,20 @@ public class SubscriptionController {
 	@ResponseBody
 	public Map<String,String> deletePayuid(String pay_uid, long sub_num, HttpSession session) throws Exception {
 		Map<String,String> mapJson = new HashMap<String,String>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
 		log.debug("빌링키 발급 실패(중단)된 pay_uid : " + pay_uid);
 		try {
 			//정기기부도 삭제
 			subscriptionService.deleteSubscription(sub_num);
 			//빌링키 발급 실패한 payuid 삭제
 			payuidService.deletePayuid(pay_uid);
+			//알림 처리
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setNotify_type(28);
+			notifyVO.setNot_url("/cs/faqlist");
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
 			mapJson.put("result", "success");
 		}catch(Exception e) {
 			mapJson.put("result", "fail");
@@ -301,10 +344,27 @@ public class SubscriptionController {
 		if (response.getStatusCode() == HttpStatus.OK) {	        	
 			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
 			if (code == 0) {
+				//결제 성공 알림
+				NotifyVO notifyVO = new NotifyVO();
+				notifyVO.setMem_num(user.getMem_num());
+				notifyVO.setNotify_type(14);
+				notifyVO.setNot_url("/subscription/subscriptionDetail?sub_num="+sub_num);
+				Map<String, String> dynamicValues = new HashMap<String, String>();
+				dynamicValues.put("dcateName", categoryVO.getDcate_charity());
+				notifyService.insertNotifyLog(notifyVO, dynamicValues);
+				
 				// 결제 성공
 				sub_paymentService.insertSub_payment(sub_paymentVO);
 				return "payment success";
 			} else {
+				//결제 실패 알림
+				NotifyVO notifyVO = new NotifyVO();
+				notifyVO.setMem_num(user.getMem_num());
+				notifyVO.setNotify_type(29);
+				notifyVO.setNot_url("/subscription/subscriptionDetail?sub_num="+sub_num);
+				Map<String, String> dynamicValues = new HashMap<String, String>();
+				dynamicValues.put("dcateName", categoryVO.getDcate_name());
+				notifyService.insertNotifyLog(notifyVO, dynamicValues);				
 				// 결제 실패시 정기기부 중단
 				subscriptionService.updateSub_status(sub_num);
 				// 결제 실패 구독 정보 로그
@@ -463,6 +523,14 @@ public class SubscriptionController {
 		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
 		if(subscriptionVO.getSub_status()==0) {
 			subscriptionService.updateSub_status(sub_num);
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setNotify_type(15);
+			notifyVO.setNot_url("/subscription/subscriptionDetail?sub_num="+sub_num);
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			DonationCategoryVO category = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
+			dynamicValues.put("dcateName", category.getDcate_charity());
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
 			mapJson.put("result", "success");
 		}else {
 			mapJson.put("result", "fail");
@@ -476,6 +544,9 @@ public class SubscriptionController {
 		
 		return "refundRequest";
 	}
+	
+	
+
 }
 
 
