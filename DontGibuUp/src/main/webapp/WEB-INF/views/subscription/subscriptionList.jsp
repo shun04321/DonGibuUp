@@ -39,7 +39,7 @@
                             </dl>
                             <dl class="info-item">
                                 <dt>결제일</dt>
-                                <dd>${subscription.sub_ndate}일</dd>
+                                <dd>매월 ${subscription.sub_ndate}일</dd>
                             </dl>
                             <dl class="info-item">
                                 <dt>결제방법</dt>

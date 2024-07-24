@@ -10,18 +10,77 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/subscriptionMain.css"
 	type="text/css">
-<style>
-.carousel-item img {
-	width: 100%; /* 이미지의 너비를 100%로 설정하여 컨테이너에 맞추기 */
-	height: 300px; /* 이미지의 높이를 일정하게 설정 */
-	object-fit: cover;
-} /* 이미지 비율을 유지하면서 컨테이너를 채우도록 조정 */
+    <style>
+        .carousel-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
 
-#icon{
-	width:180px;
-	height :200px;
-}
-</style>
+        #icon {
+            width: 180px;
+            height: 200px;
+        }
+
+        .accordion-section {
+            max-width: 800px;
+            margin: 20px;
+        }
+
+        .accordion-item {
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background-color: #grey;
+        }
+
+        .accordion-header {
+            padding: 15px;
+            padding-left : 0px;
+            cursor: pointer;
+            font-size: 1.5em; /* 제목 글자 크기 조정 */
+            color: #000;
+            background-color: #grey; 배경색 설정 */
+            color: white; /* 글자색 설정 */
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background-color: #grey; /* 마우스 오버 시 색상 변화 */
+        }
+
+        .accordion-body {
+            padding: 15px;
+            display: none;
+            background-color: #ffffff; /* 본문 배경색 */
+            border-top: 1px solid #ddd;
+        }
+
+        .accordion-body.open {
+            display: block;
+        }
+
+        /* 추가적인 스타일 조정 */
+        .align-right {
+            float: right;
+            font-size: 1.2em; /* 화살표 크기 조정 */
+            line-height: 1em; /* 줄 높이 조정 */
+        }
+        .header-hr{
+	       border: none; /* 기본 테두리 제거 */
+	       height: 3px; /* 선의 두께 설정 */
+	       background-color: black; /* 선의 색상 설정 */
+	       margin: 20px 0; /* 상하 여백 설정 (선의 위와 아래 여백) */
+	       width:100%;
+        }
+        
+        .item-hr{
+	        width:100%;
+	        border: none; /* 기본 테두리 제거 */
+	        height: 1px; /* 선의 두께 설정 */
+	        background-color: black; /* 선의 색상 설정 */
+	        margin: 20px 20px; /* 상하 여백 설정 (선의 위와 아래 여백) */
+        }
+    </style>
 <div class="container">
 	<!-- 캐러셀 시작 -->
 	<div id="carouselExample2" class="carousel slide carousel-fade"
@@ -94,37 +153,57 @@
 		<h2>
 			<a href="/cs/faqlist?category=0">자주 묻는 질문</a>
 		</h2>
-		<div class="accordion" id="accordionExample">
-			<div class="accordion-item">
-				<h2 class="accordion-header" id="headingOne">
-					<button class="accordion-button" type="button"
-						data-bs-toggle="collapse" data-bs-target='#collapseOne'>매달
-						기부를 중단하고 싶어요</button>
-				</h2>
-				<div id="collapseOne" class="accordion-collapse collapse"
-					data-bs-parent="#accordionExample">
-					<div class="accordion-body">마이페이지 내 매달기부 메뉴를 선택하여 중단하고 싶은 주제를
-						선택하신 뒤, 해지하기를 진행해주세요. 해지하기 선택 시 다음 달 결제부터 기부금 결제가 중단됩니다.</div>
-				</div>
-
-				<!--end of item  -->
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingTwo">
-						<button class="accordion-button collapsed" type="button"
-							data-bs-toggle="collapse" data-bs-target='#collapseTwo'>기부하고
-							싶은 주제가 없어요</button>
-					</h2>
-					<div id="collapseTwo" class="accordion-collapse collapse"
-						data-bs-parent="#accordionExample">
-						<div class="accordion-body">매달기부에서는 기부자님들의 관심과 공감대를 바탕으로 다양한
-							상품을 지속적으로 발굴하려고 노력 중이에요. 돈기부업 채널을 추가하면 상품 추가 소식을 제일 먼저 알려드릴게요.
-						</div>
-					</div>
-					<!--end of item  -->
-				</div>
-			</div>
-		</div>
+		<hr class="header-hr">
+		 <div class="container">
+        <section class="accordion-section">
+            <div class="accordion-item">
+                <div class="accordion-header">정기 기부를 중단하고 싶어요<div class="align-right">▼</div></div>
+                <div class="accordion-body">마이페이지 내 매달기부 메뉴를 선택하여 중단하고 싶은 주제를 선택하신 뒤, 해지하기를 진행해주세요.<br>해지하기 선택 시 다음 달 결제부터 기부금 결제가 중단됩니다.</div>
+            </div>
+            <hr class="item-hr">
+            <div class="accordion-item">
+                <div class="accordion-header">기부하고 싶은 주제가 없어요<div class="align-right">▼</div></div>
+                <div class="accordion-body">매달기부에서는 기부자님들의 관심과 공감대를 바탕으로 다양한 상품을 지속적으로 발굴하려고 <br> 노력 중이에요.  돈기부업 채널을 추가하면 상품 추가 소식을 제일 먼저 알려드릴게요.</div>
+            </div>
+            <hr class="item-hr">
+            <div class="accordion-item">
+                <div class="accordion-header">기부하기 싫은데요?<div class="align-right">▼</div></div>
+                <div class="accordion-body">진짜 어쩌라고</div>
+            </div>
+        </section>
+    </div>
 	</div>
+	<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const headers = document.querySelectorAll('.accordion-header');
+
+        headers.forEach(header => {
+            header.addEventListener('click', function() {
+                // Toggle the active class
+                const body = this.nextElementSibling;
+                
+                // Slide up all other accordion bodies
+                document.querySelectorAll('.accordion-body').forEach(b => {
+                    if (b !== body) {
+                        b.classList.remove('open');
+                        b.style.maxHeight = null;
+                    }
+                });
+
+                // Slide down the clicked accordion body
+                if (body.classList.contains('open')) {
+                    body.classList.remove('open');
+                    body.style.maxHeight = null;
+                    this.querySelector('.align-right').innerText = '▼';
+                } else {
+                    body.classList.add('open');
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    this.querySelector('.align-right').innerText = '▲';
+                }
+            });
+        });
+    });
+</script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
