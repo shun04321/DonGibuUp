@@ -1,5 +1,5 @@
 $(function(){
-	let rowCount=6;
+	let rowCount=8;
 	let currentPage;
 	let count;
 	let category='';
@@ -107,7 +107,7 @@ $(function(){
 				}
 				
 				$(param.list).each(function(index,item){
-					let output = '<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">';
+					let output = '<div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4 mb-lg-0">';
 					output += '		<div class="custom-block-wrap">';
 					output += '		<img src="../upload/dbox/'+item.dbox_photo+'" class="custom-block-image img-fluid" style="height:14rem;">';
 					//console.log('dbox_photo' + item.dbox_photo);

@@ -33,8 +33,14 @@ $(function(){
 	const onClickPay = async () =>{
         const dbox_num = document.getElementById('dbox_num').value;
         const price = document.getElementById('dbox_do_price').value;
-        const point = document.getElementById('dbox_do_point').value;
         const comment = document.getElementById('dbox_do_comment').value;
+       	
+        let point = document.getElementById('dbox_do_point').value;
+       	//포인트 미입력시 0으로 설정
+       	if (point==null || point==''){
+			point='0';
+		}
+       	
        	let annony = 0;
        	if($('.annony:checked').length==1){
 			annony = 1;
@@ -107,3 +113,4 @@ $(function(){
 	
 	button.addEventListener("click", onClickPay);
 });
+ 
