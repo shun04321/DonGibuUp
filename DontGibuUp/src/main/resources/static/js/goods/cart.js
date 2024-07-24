@@ -26,7 +26,7 @@ function purchaseSelectedCarts(pageContextPath) {
         selectedCarts.push({ item_num: parseInt(cartNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
     });
 
-    if (selectedCarts.length === 0) {
+    if (selectedCarts.length == 0) {
         alert('구매할 항목을 선택해주세요.');
         return;
     }

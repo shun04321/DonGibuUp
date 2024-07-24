@@ -56,19 +56,11 @@
 
 	 <insert id="insertPurchaseWithCartItems" parameterType="kr.spring.goods.vo.PurchaseVO">
         INSERT INTO purchase (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, delivery_status)
-        VALUES (#{purchaseNum}, #{mem_num}, #{imp_uid}, #{pay_price}, SYSDATE, #{payStatus}, '배송 준비 중')
+        VALUES (#{purchaseNum}, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, '배송 준비 중')
     </insert>
+	
+	<!-- <select>
+		SELECT item_num FROM cart
+	</select> -->
 
-    <select id="getLatestPurchaseNum" parameterType="long" resultType="long">
-        SELECT purchase_num
-        FROM purchase
-        WHERE mem_num = #{mem_num}
-        ORDER BY purchase_num DESC
-        FETCH FIRST 1 ROWS ONLY
-    </select>
-
-    <insert id="insertPurchaseItem" parameterType="kr.spring.cart.vo.CartVO">
-        INSERT INTO purchase_item (purchase_num, item_num, cart_quantity, item_price)
-        VALUES (#{purchase_num}, #{item_num}, #{cart_quantity}, #{item_price})
-    </insert>
 </mapper>

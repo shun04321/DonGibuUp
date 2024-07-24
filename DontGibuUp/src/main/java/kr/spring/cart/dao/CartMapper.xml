@@ -29,12 +29,14 @@
 	cart_num,
 	item_num,
 	cart_quantity,
-	mem_num)
+	mem_num,
+	item_price)
 	VALUES(
 	cart_seq.nextval,
 	#{item_num},
 	#{cart_quantity},
-	#{mem_num}
+	#{mem_num},
+	#{item_price}
 	)
 	</insert>
 	<!-- 장바구니 상품 수 -->
@@ -52,13 +54,13 @@
 		<![CDATA[
 		REPLACE(REPLACE(item_name,'<','&lt;'),'>','&gt;')item_name,
 		]]>
-		cart_quantity,
-		cart_num,
-		item_price,
-		item_stock,
-		item_photo
-		FROM cart 
-		JOIN item USING(item_num)   	
+		c.cart_quantity,
+		c.cart_num,
+		c.item_price,
+		i.item_stock,
+		i.item_photo
+		FROM cart c
+		JOIN item i USING(item_num)   	
 		ORDER BY cart_num DESC)a)
         <![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}

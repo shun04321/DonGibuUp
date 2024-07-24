@@ -21,7 +21,7 @@
     <h2>${goods.item_name}</h2>
     <ul class="detail-info">
         <li><img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2"></li>
-        <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: ${goods.item_price}<br> 수량: <input type="number" id="cart_quantity" name="cart_quantity" value="1" min="1" max="${goods.item_stock}"></li>
+        <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: ${goods.item_price}<br> 수량: <input type="number" id="quantity" name="quantity" value="1" min="1" max="${goods.item_stock}"></li>
     </ul>
     <div class="detail-content">${goods.item_detail}</div>
     <div>ㅁ

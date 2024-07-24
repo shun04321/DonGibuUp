@@ -12,6 +12,11 @@ function formatNumber(num) {
 }
 
 function buyNow() {
+	
+	 let quantity = parseInt(document.getElementById('quantity').value); // 수량 가져오기
+     let totalPrice = itemPrice * quantity; // 총 가격 계산
+     
+     
     IMP.init("imp63281573"); // 여기에 실제 IMP 코드 입력
     IMP.request_pay(
         {
@@ -19,7 +24,7 @@ function buyNow() {
             merchant_uid: "merchant_" + new Date().getTime(),
             name: itemName,
             pay_method: "card",
-            amount: itemPrice,
+            amount: totalPrice,
             buyer_name: buyerName,
             currency: "KRW",
         },
