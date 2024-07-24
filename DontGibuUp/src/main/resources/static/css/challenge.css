@@ -1078,9 +1078,15 @@ textarea:focus {
 	right: 0;
 }
 
-.review-rating, .review-content2 {
+.review-rating {
 	display: flex;
 	align-items: center;
+}
+
+.review-content2 {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .review-rating .stars {
