@@ -36,4 +36,6 @@ public interface SubscriptionService {
     public int getSubscriptionCount(long mem_num);
     //정기기부 결제수단 변경
     public void modifyPayMethod(SubscriptionVO subscriptionVO);
+    //내일 결제일인 정기기부 목록
+    public List<SubscriptionVO> getSubscriptionByD1(int tomorrow);
 }

@@ -213,17 +213,26 @@ public class SubscriptionController {
 				//존재하는 payuid와 대조할 payuidVO 생성후 데이터 셋팅
 				PayuidVO payuid = new PayuidVO();
 				payuid.setMem_num(subscriptionVO.getMem_num());
-				
+				DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
 				if(!subscriptionVO.getCard_nickname().equals("")) { //결제수단 카드 선택(카드 이름 셋팅)
 					payuid.setCard_nickname(subscriptionVO.getCard_nickname());
 				} else{// 결제수단 이지페이 선택 (플랫폼 셋팅) 
 					payuid.setEasypay_method(subscriptionVO.getEasypay_method());	       
 				}
 				log.debug("결제수단에 따른 payuidVO 셋팅 : " + payuid);
-
+				
 				if (payuidService.getPayuidByMethod(payuid) == null) { //선택한 결제수단의 payuid가 없는 경우, payuid 생성 후 빌링키 발급 페이지로 이동
 					mapJson.put("result", "noPayuid");
-				}else {//이미 등록된 결제수단인 경우					
+				}else {//이미 등록된 결제수단인 경우
+					//결제수단 변경 알림
+					NotifyVO notifyVO = new NotifyVO();
+					
+					Map<String, String> dynamicValues = new HashMap<String, String>();
+					dynamicValues.put("dcateName",categoryVO.getDcate_charity());
+					notifyVO.setMem_num(subscriptionVO.getMem_num());
+					notifyVO.setNotify_type(29);
+					notifyVO.setNot_url("/subscription/subscriptionDetail?sub_num="+subscriptionVO.getSub_num());
+					notifyService.insertNotifyLog(notifyVO, dynamicValues);
 					subscriptionService.modifyPayMethod(subscriptionVO);
 					mapJson.put("result", "success");
 				}
@@ -410,7 +419,7 @@ public class SubscriptionController {
 
 
 	@Scheduled(cron = "0 0 * * * ?")
-	public void performDailyTask() {
+	public void SubscriptionPayment() {
 		int today = subscriptionService.getTodayDate();
 
 		List<SubscriptionVO> list = new ArrayList<SubscriptionVO>();
@@ -419,7 +428,7 @@ public class SubscriptionController {
 		for(SubscriptionVO subscription : list) {
 			PayuidVO payuid = new PayuidVO();
 			payuid.setMem_num(subscription.getMem_num());
-
+					
 			// Check for easypay_method and cardNickname
 			if (subscription.getEasypay_method() != null) {
 				payuid.setEasypay_method(subscription.getEasypay_method());
@@ -428,10 +437,49 @@ public class SubscriptionController {
 			}
 			payuid = payuidService.getPayuidByMethod(payuid);
 			String response = insertSub_Payment(payuid.getPay_uid(), subscription.getSub_num());
-			System.out.println("금일 정기기부 목록 결제요청 완료 : " + response);
-
+			System.out.println("금일 정기기부 목록 결제요청 완료 : " + response);						
 		}
 	}
+	
+	@Scheduled(cron = "0 0 * * * ?")
+	public void performDailyTask() {
+		  // 오늘 날짜를 LocalDate 객체로 생성
+        LocalDate today = LocalDate.now(); // 현재 날짜
+        
+        // 다음 날의 일(day)을 두 자리 int 형식으로 구하기
+        int tomorrow = getNextDayOfMonthAsInt(today);
+
+		List<SubscriptionVO> list = new ArrayList<SubscriptionVO>();
+		list = subscriptionService.getSubscriptionByD1(tomorrow);
+
+		for(SubscriptionVO subscription : list) {
+
+			DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscription.getDcate_num());
+					
+			//결제 하루 전 도래시 알림
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(subscription.getMem_num());
+			notifyVO.setNotify_type(13);
+			notifyVO.setNot_url("/subscription/subscriptionDetail?sub_num="+subscription.getSub_num());
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("dcateName", categoryVO.getDcate_name());
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);	
+			System.out.println("결제 하루 전 도래한 정기기부 알림 완료");						
+		}		
+	}
+	
+	// 다음 날의 일(day)을 두 자리 int로 반환
+    public static int getNextDayOfMonthAsInt(LocalDate today) {
+        // 다음 날 계산
+        LocalDate nextDay = today.plusDays(1);
+        
+        // 다음 날의 일(day)을 가져오고 두 자리 형식으로 포맷팅
+        int dayOfMonth = nextDay.getDayOfMonth();
+        
+        // 두 자리 형식으로 포맷팅된 문자열을 int로 변환하여 반환
+        return Integer.parseInt(String.format("%02d", dayOfMonth));
+    }
+	
 	//정기기부 현황 및 정기결제 내역
 	@GetMapping("/subscription/subscriptionList")
 	public String subscriptionList(HttpSession session, Model model,

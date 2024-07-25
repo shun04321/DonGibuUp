@@ -123,4 +123,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public void modifyPayMethod(SubscriptionVO subscriptionVO) {
 		subscriptionMapper.modifyPayMethod(subscriptionVO);
 	}
+
+	@Override
+	public List<SubscriptionVO> getSubscriptionByD1(int tomorrow) {
+		return subscriptionMapper.getSubscriptionByD1(tomorrow);
+	}
 }

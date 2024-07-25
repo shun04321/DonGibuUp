@@ -45,5 +45,6 @@ public interface SubscriptionMapper {
 	@Select("SELECT * FROM subscription WHERE sub_ndate = #{today} AND sub_status = 0")
 	public List<SubscriptionVO> getSubscriptionByDay(int today);
 	
-	
+	@Select("SELECT * FROM subscription WHERE sub_ndate = #{tomorrow} AND sub_status = 0")
+	public List<SubscriptionVO> getSubscriptionByD1(int tomorrow);
 }
