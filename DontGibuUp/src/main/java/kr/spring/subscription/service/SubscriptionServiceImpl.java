@@ -73,8 +73,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public SubscriptionVO getSubscription(long sub_num) {
-    	SubscriptionVO subscription = subscriptionMapper.getSubscription(sub_num);
+    public SubscriptionVO getSubscriptionBySub_num(long sub_num) {
+    	SubscriptionVO subscription = subscriptionMapper.getSubscriptionBySub_num(sub_num);
     	  if (subscription != null) {
 			  String regDate = subscription.getReg_date(); // reg_date는 문자열로 가정
 			  subscription.setReg_date(regDate); // 변환된 Date 객체를 설정
@@ -115,8 +115,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	    }
 
 	@Override
-	public int getSubscriptionCount(long mem_num) {
-		return subscriptionMapper.getSubscriptionCount(mem_num);
+	public int getSubscriptionCountbyMem_num(long mem_num) {
+		return subscriptionMapper.getSubscriptionCountbyMem_num(mem_num);
 	}
 
 	@Override
@@ -127,5 +127,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	@Override
 	public List<SubscriptionVO> getSubscriptionByD1(int tomorrow) {
 		return subscriptionMapper.getSubscriptionByD1(tomorrow);
+	}
+
+	@Override
+	public int getSubscriptionCount(Map<String, Object> map) {
+		return subscriptionMapper.getSubscriptionCount(map);
+	}
+
+	@Override
+	public List<SubscriptionVO> getSubscription(Map<String, Object> map) {
+		return subscriptionMapper.getSubscription(map);
 	}
 }

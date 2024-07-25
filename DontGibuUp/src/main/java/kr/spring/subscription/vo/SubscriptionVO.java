@@ -27,7 +27,8 @@ public class SubscriptionVO {
 	private String card_nickname;
 	private String reg_date;
 	private String cancel_date;
-	
+	private String dcate_charity;
+	private String dcate_name;
 	private DonationCategoryVO donationCategory;
 
 }

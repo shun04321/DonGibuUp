@@ -10,9 +10,6 @@
     LEFT JOIN dona_category dc ON s.dcate_num = dc.dcate_num
     <where>
         AND sp.mem_num = #{mem_num}
-        <if test="category != null and category != ''">
-            AND s.category = #{category}
-        </if>
         <if test="keyword != null and keyword != ''">
             <if test="keyfield == 1">
                 AND dc.dcate_charity LIKE '%' ||#{keyword}|| '%'

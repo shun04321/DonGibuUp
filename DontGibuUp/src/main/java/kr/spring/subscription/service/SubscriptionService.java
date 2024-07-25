@@ -1,6 +1,7 @@
 package kr.spring.subscription.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.spring.subscription.vo.SubscriptionVO;
 
@@ -15,7 +16,7 @@ public interface SubscriptionService {
     public void endSubscription(long sub_num);
 
     // 정기기부 조회
-    public SubscriptionVO getSubscription(long sub_num);
+    public SubscriptionVO getSubscriptionBySub_num(long sub_num);
 
     // 정기기부 삭제
     public void deleteSubscription(long sub_num);
@@ -33,9 +34,14 @@ public interface SubscriptionService {
     //정기기부 목록
     public List<SubscriptionVO> getSubscriptionByMem_numWithCategories(long mem_num);
     
-    public int getSubscriptionCount(long mem_num);
+    public int getSubscriptionCountbyMem_num(long mem_num);
     //정기기부 결제수단 변경
     public void modifyPayMethod(SubscriptionVO subscriptionVO);
     //내일 결제일인 정기기부 목록
     public List<SubscriptionVO> getSubscriptionByD1(int tomorrow);
+    
+  //모든 사용자의 정기기부 개수
+  	public int getSubscriptionCount(Map<String,Object> map);
+  	//모든 사용자의 정기기부 현황 확인
+  	public List<SubscriptionVO> getSubscription(Map<String,Object> map);
 }

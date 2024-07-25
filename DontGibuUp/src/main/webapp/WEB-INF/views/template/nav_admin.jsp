@@ -44,7 +44,7 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="#">정기기부</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/AdminSubscription">정기기부</a></li>
               	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/dboxAdmin">기부박스</a></li>
               </ul>
             </div>

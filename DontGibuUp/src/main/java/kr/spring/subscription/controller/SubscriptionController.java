@@ -246,7 +246,7 @@ public class SubscriptionController {
 	@ResponseBody
 	public ResponseEntity<Map<String, String>> signUp(String pay_uid, long sub_num) {
 		
-		SubscriptionVO subscription = subscriptionService.getSubscription(sub_num); 
+		SubscriptionVO subscription = subscriptionService.getSubscriptionBySub_num(sub_num); 
 		int notify_type = 0;
 		Map<String, String> dynamicValues = new HashMap<String, String>();
 		
@@ -334,7 +334,7 @@ public class SubscriptionController {
 	 * 결제
 		 ------------------------*/
 	public String insertSub_Payment(String payuid, long sub_num) {
-		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+		SubscriptionVO subscriptionVO = subscriptionService.getSubscriptionBySub_num(sub_num);
 		log.debug("sub_num" + sub_num);
 		DonationCategoryVO categoryVO = categoryService.selectDonationCategory(subscriptionVO.getDcate_num());
 		MemberVO user = memberService.selectMemberDetail(subscriptionVO.getMem_num());
@@ -491,7 +491,7 @@ public class SubscriptionController {
 
 		
 		//페이지 처리
-		int count = subscriptionService.getSubscriptionCount(user.getMem_num());
+		int count = subscriptionService.getSubscriptionCountbyMem_num(user.getMem_num());
 		List<SubscriptionVO> list = null;
 		if(count > 0) {
 			list = subscriptionService.getSubscriptionByMem_numWithCategories(user.getMem_num());
@@ -554,7 +554,7 @@ public class SubscriptionController {
 	//정기기부 상세
 	@GetMapping("/subscription/subscriptionDetail")
 	public ModelAndView subscriptionDetail(long sub_num, Model model) throws ParseException {
-	    SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
+	    SubscriptionVO subscription = subscriptionService.getSubscriptionBySub_num(sub_num);
 	    DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
 	    Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
 	    String cancelDate = "";
@@ -606,7 +606,7 @@ public class SubscriptionController {
 			mapJson.put("result", "logout");
 		}
 
-		SubscriptionVO subscriptionVO = subscriptionService.getSubscription(sub_num);
+		SubscriptionVO subscriptionVO = subscriptionService.getSubscriptionBySub_num(sub_num);
 		if(subscriptionVO.getSub_status()==0) {
 			subscriptionService.updateSub_status(sub_num);
 			NotifyVO notifyVO = new NotifyVO();
@@ -631,8 +631,36 @@ public class SubscriptionController {
 		return "refundRequest";
 	}
 	
-	
+	@GetMapping("/admin/AdminSubscription")
+	public String getSubscriptionList(HttpSession session, Model model,
+			@RequestParam(defaultValue="1") int pageNum,
+			String keyfield,String keyword){
+		
+		MemberVO user = (MemberVO)session.getAttribute("user");
 
+		Map<String,Object> map = 
+				new HashMap<String,Object>();
+		map.put("keyfield", keyfield);
+		map.put("keyword", keyword);
+		map.put("mem_num", user.getMem_num());
+		
+		
+		int count = subscriptionService.getSubscriptionCount(map);
+		//결제내역 페이징
+		 PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 10, 10, "AdminSubscription");
+		
+		List<SubscriptionVO> list = null;
+		if(count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = subscriptionService.getSubscription(map);
+		}
+		model.addAttribute("page", page.getPage());
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		
+		return "AdminSubscription";
+	}
 }
 
 

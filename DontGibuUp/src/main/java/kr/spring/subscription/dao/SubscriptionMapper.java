@@ -1,6 +1,7 @@
 package kr.spring.subscription.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,7 +19,7 @@ public interface SubscriptionMapper {
 	public void insertSubscription(SubscriptionVO subscriptionVO);
 	//등록된 정기기부 정보 가져오기
 	@Select("SELECT * FROM subscription WHERE sub_num=#{sub_num}")
-	public SubscriptionVO getSubscription(long sub_num);
+	public SubscriptionVO getSubscriptionBySub_num(long sub_num);
 	//정기기부 종료
 	public void endSubscription(long sub_num);
 	//결제수단 변경
@@ -29,12 +30,17 @@ public interface SubscriptionMapper {
 	public void updateSub_status(long sub_num);
 	
 	
-	//자신이 정기기부 개수
+	//자신의 정기기부 개수
 	@Select("SELECT COUNT(*) FROM subscription WHERE mem_num=#{mem_num}")
-	public int getSubscriptionCount(long mem_num);
+	public int getSubscriptionCountbyMem_num(long mem_num);
 	//자신의 정기기부 현황 확인
 	public List<SubscriptionVO> getSubscriptionByMem_num(long mem_num);
-	//모든 ,사용자의 정기기부 현황 확인
+	
+	//모든 사용자의 정기기부 개수
+	public int getSubscriptionCount(Map<String,Object> map);
+	//모든 사용자의 정기기부 현황 확인
+	public List<SubscriptionVO> getSubscription(Map<String,Object> map);
+	
 	
 	//정기기부 삭제 (결제수단 등록 실패시)
 	@Delete("DELETE FROM subscription WHERE sub_num=#{sub_num}")

@@ -50,6 +50,13 @@
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/refundRequest.jsp"/>
 	</definition>	
+	
+	<definition name="AdminSubscription" extends="adminInquiry">
+		<put-attribute name="title" value="회원 정기기부 관리" />
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminSubscription.jsp"/>
+	</definition>
+	
 </tiles-definitions>
 
 

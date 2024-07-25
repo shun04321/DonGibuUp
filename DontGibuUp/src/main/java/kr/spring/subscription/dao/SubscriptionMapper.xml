@@ -64,8 +64,46 @@
             card_nickname = NULL
         </if>
     WHERE sub_num = #{sub_num}
-</update>
- </mapper>
+	</update>
+	
+	<select id="getSubscriptionCount" parameterType="map" resultType="int">
+		SELECT COUNT(*)
+	    FROM subscription s
+	    LEFT JOIN dona_category dc ON s.dcate_num = dc.dcate_num
+        <if test="keyword != null and keyword != ''">
+            <if test="keyfield == 1">
+                AND (dc.dcate_charity LIKE '%' || #{keyword} || '%' OR dc.dcate_name LIKE '%' || #{keyword} || '%')
+            </if>
+            <if test="keyfield == 2">
+                AND (s.mem_num LIKE '%' || #{keyword} || '%')
+            </if>
+        </if>
+	</select>
+	
+	<select id="getSubscription" parameterType="map" resultType="subscriptionVO">
+    SELECT *
+    FROM (
+        SELECT 
+            s.*, 
+            dc.dcate_charity, 
+            dc.dcate_name,
+            ROW_NUMBER() OVER (ORDER BY s.sub_ndate DESC) AS rnum
+        FROM subscription s
+        LEFT JOIN dona_category dc ON s.dcate_num = dc.dcate_num
+        WHERE 1=1
+        <if test="keyword != null and keyword != ''">
+            <if test="keyfield == 1">
+                AND (dc.dcate_charity LIKE '%' || #{keyword} || '%' OR dc.dcate_name LIKE '%' || #{keyword} || '%')
+            </if>
+            <if test="keyfield == 2">
+                AND (s.mem_num LIKE '%' || #{keyword} || '%')
+            </if>
+        </if>
+    ) sub<![CDATA[
+    WHERE sub.rnum >= #{start} AND sub.rnum <= #{end} ]]>
+</select>
+
+</mapper>
 
 
 
