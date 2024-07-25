@@ -85,16 +85,16 @@ $(function(){
 
 				$('#category_output').empty();
 				if(category=='' || category==null){
-					$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success active" onclick="location.href=\'list\'">전체</button>');										
+					$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list\'">전체</button>');										
 				}else{
-					$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success" onclick="location.href=\'list\'">전체</button>');					
+					$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success mb-2" onclick="location.href=\'list\'">전체</button>');					
 				}
 				let category_output = '';
 				$(param.category_list).each(function(index,item){
 					if(item.dcate_num == category){
-						category_output += ' <button type="button" class="btn btn-sm btn-outline-success active" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
+						category_output += ' <button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
 					}else{
-						category_output += ' <button type="button" class="btn btn-sm btn-outline-success" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
+						category_output += ' <button type="button" class="btn btn-sm btn-outline-success mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
 					}
 				});
 				$('#category_output').append(category_output);

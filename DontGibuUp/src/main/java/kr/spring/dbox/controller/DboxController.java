@@ -350,7 +350,7 @@ public class DboxController {
 			NotifyVO notifyVO = new NotifyVO();
 			notifyVO.setMem_num(dbox.getMem_num()); //알림 받을 회원 번호
 			notifyVO.setNotify_type(6);//알림 타입(아래 알림 타입 토글 참조)
-			notifyVO.setNot_url("/dbox/example?DonationBox=" + dbox_num); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
+			notifyVO.setNot_url("/dbox/"+dbox_num+"/example"); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
 			
 			//동적 데이터 매핑
 			Map<String, String> dynamicValues = new HashMap<String, String>();
@@ -376,8 +376,22 @@ public class DboxController {
 	 *==================================*/
 	@GetMapping("/dbox/{dboxNum}/example")
 	public String proposeExample(@PathVariable long dboxNum,Model model,HttpSession session) {
-		log.debug("<<기부박스 제안하기 - example>> : ");
-		
+		log.debug("<<기부박스 예시 - dbox_num>> : "+ dboxNum);
+    	//멤버정보
+    	MemberVO member = (MemberVO) session.getAttribute("user");
+    	log.debug("<<기부박스 예시 - member : >>" + member);
+    	
+    	//기부박스 및 모금계획 불러오기
+    	DboxVO dbox = dboxService.selectDbox(dboxNum);
+    	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
+    	log.debug("<<기부박스 예시 - Dbox : >>" + dbox);
+    	log.debug("<<기부박스 예시 - DboxBudget : >>" + dboxBudget);
+   
+    	//뷰에 전달
+    	model.addAttribute("member",member);
+    	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
+    	model.addAttribute("dboxBudget",dboxBudget);
 		return "dboxExample";
 	}
 

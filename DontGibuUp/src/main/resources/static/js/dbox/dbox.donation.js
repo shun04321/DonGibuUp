@@ -3,7 +3,7 @@ $(function(){
 
 	$('#donation-btn').click(function() {
 		// mem_num의 값을 가져옴
-		var mem_num = $('#member').val();
+		var mem_num = $('#mem_num').val();
 		// 만약 mem_num이 비어있으면(로그인되어 있지 않으면)
 		if (!mem_num) {
 			// 로그인 페이지로 리다이렉트
@@ -61,6 +61,9 @@ $(function(){
         const dbox_num = document.getElementById('dbox_num').value;
         const price = document.getElementById('dbox_do_price').value;
         const comment = document.getElementById('dbox_do_comment').value;
+        const mem_nick = document.getElementById('mem_nick').value;
+        const mem_email = document.getElementById('mem_email').value;
+
        	//포인트는 값보정이 필요하므로 let 사용
         let point = document.getElementById('dbox_do_point').value;
        	//포인트 미입력시 0으로 설정
@@ -81,6 +84,8 @@ $(function(){
 		console.log("point : " + point);
 		console.log("comment : " + comment);
 		console.log("annony : " + annony);
+		console.log("mem_nick : " + mem_nick);
+		console.log("mem_email : " + mem_email);
 		
 		/*==========결제 실행 - 1.전액 포인트,2.결제금액1~99원,3.결제금액100원이상 ==========*/
 		
@@ -125,14 +130,19 @@ $(function(){
 				pg:"tosspayments.iamporttest_3",
 				pay_method:"card",
 				amount:pay_price,
-				name:"기부하기",
+				name:"기부하기"+dbox_num,
 				merchant_uid:"merchant_" + new Date().getTime(),
+				buyer_name: mem_nick,
+           		buyer_email: mem_email,
 				currency:"KRW"
 			}, function(response){
 				if(!response.error_code){
 					$.ajax({//결제 검증
 						url:'/dbox/payment/' + response.imp_uid,
 						method: 'POST',
+						data:JSON.stringify({pay_price:pay_price}),
+						dataType:'json',
+						contentType:'application/json; charset=utf-8',
 					}).done(function(data){
 						if(data.response.status=='paid'){
 							$.ajax({//결제 구현 ajax

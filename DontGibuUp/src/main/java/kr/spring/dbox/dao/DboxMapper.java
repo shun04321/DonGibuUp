@@ -12,7 +12,7 @@ import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
 
-@Mapper
+@Mapper 
 public interface DboxMapper {
 	//Dbox 번호 생성
 	@Select("SELECT dbox_seq.nextval FROM dual")

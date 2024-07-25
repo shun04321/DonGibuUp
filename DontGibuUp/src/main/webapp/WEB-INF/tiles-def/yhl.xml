@@ -33,6 +33,7 @@
 	<!-- 기부박스 예시 -->
 	<definition name="dboxExample" extends="dboxDetailContent">
 		<put-attribute name="title" value="기부박스 제안하기 : 예시 보기"/>
+		<put-attribute name="nav" value="/WEB-INF/views/dbox/dboxExampleNav.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxExample.jsp"/>
 	</definition>
 	<!-- 기부박스 결제완료 -->
@@ -73,5 +74,14 @@
 		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeEnd.jsp"/>
 	</definition>
-
+	<!-- 마이페이지 -->
+	<definition name="dboxMyPropose" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 제안한 기부박스" />
+		<put-attribute name="body" value="/WEB-INF/views/mypage/dboxMyPropose.jsp"/>
+	</definition>
+	<definition name="dboxMyDonation" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 기부박스 기부내역" />
+		<put-attribute name="body" value="/WEB-INF/views/mypage/dboxMyDonation.jsp"/>
+	</definition>
+	<!-- 관리자 -->
 </tiles-definitions>

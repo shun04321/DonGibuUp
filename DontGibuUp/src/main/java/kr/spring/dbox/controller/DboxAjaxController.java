@@ -128,23 +128,23 @@ public class DboxAjaxController {
 	//결제 검증
 	@PostMapping("/dbox/payment/{imp_uid}")
 	@ResponseBody	
-	public IamportResponse<Payment> validateIamportWrite(@PathVariable String imp_uid, HttpSession session, HttpServletRequest request)
+	public IamportResponse<Payment> validateIamportWrite(@PathVariable String imp_uid,@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
 			throws IamportResponseException, IOException {
-
+		long pay_price=Long.parseLong((String) data.get("pay_price"));
 		log.debug("<<결제 검증>> - imp_uid: " +imp_uid);
-//		log.debug("<<결제 검증>> - amount: " + amount);
+		log.debug("<<결제 검증>> - pay_price: " + pay_price);
 		IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
 		// 로그인 여부 확인하기
 		MemberVO member = (MemberVO) session.getAttribute("user");
 		
 		// PG결제 금액 가져오기
-		long realPay = payment.getResponse().getAmount().longValue();
-		log.debug("<<결제 검증>> - amount: " + realPay);
+		long PGPay = payment.getResponse().getAmount().longValue();
+		log.debug("<<결제 검증>> - PGPay: " + PGPay);
 		
-//		if(payAmount != realPay || member==null) {
-//			CancelData cancelData = new CancelData(imp_uid, true);
-//			impClient.cancelPaymentByImpUid(cancelData);
-//		}
+		if(pay_price != PGPay || member==null) {
+			CancelData cancelData = new CancelData(imp_uid, true);
+			impClient.cancelPaymentByImpUid(cancelData);
+		}
 		
 		log.debug("<<결제 검증>> - payment: " + payment);
 
@@ -181,36 +181,41 @@ public class DboxAjaxController {
 			dboxDonationVO.setDbox_do_comment(comment);
 			dboxDonationVO.setDbox_do_status(status);
 			dboxDonationVO.setDbox_do_annony(annony);
-			
-			//NotifyVO 객체 정의
-			NotifyVO notifyVO = new NotifyVO();
-			notifyVO.setMem_num(member.getMem_num()); //알림 받을 회원 번호
-			notifyVO.setNotify_type(22);//알림 타입(아래 알림 타입 토글 참조)
-			notifyVO.setNot_url("/dbox/" + dbox_num + "/content"); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
-			
-			//동적 데이터 매핑
-			Map<String, String> dynamicValues = new HashMap<String, String>();
-			//value로 전달하는 값은 String이어야 함. String이 아닐 시에는 형변환하고 넣을 것(String.valueOf() 메서드 이용)
-			//동적 데이터가 여러개일 경우 여러개 매핑
-			DboxVO dbox = dboxService.selectDbox(dbox_num);
-			dynamicValues.put("pointAmount", String.valueOf(point)); //알림 템플릿 참조
-			dynamicValues.put("peventDetail", "기부박스 : " + dbox.getDbox_title()); //알림 템플릿 참조
-			
-			//NotifyService 호출
-			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
+			//포인트 사용한 경우에만 알림 구동
+			if(point > 0) {
+				//NotifyVO 객체 정의
+				NotifyVO notifyVO = new NotifyVO();
+				notifyVO.setMem_num(member.getMem_num()); //알림 받을 회원 번호
+				notifyVO.setNotify_type(22);//알림 타입(아래 알림 타입 토글 참조)
+				notifyVO.setNot_url("/dbox/" + dbox_num + "/content"); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
+				
+				//동적 데이터 매핑
+				Map<String, String> dynamicValues = new HashMap<String, String>();
+				//value로 전달하는 값은 String이어야 함. String이 아닐 시에는 형변환하고 넣을 것(String.valueOf() 메서드 이용)
+				//동적 데이터가 여러개일 경우 여러개 매핑
+				DboxVO dbox = dboxService.selectDbox(dbox_num);
+				dynamicValues.put("pointAmount", String.valueOf(point)); //알림 템플릿 참조
+				dynamicValues.put("peventDetail", "기부박스 : " + dbox.getDbox_title()); //알림 템플릿 참조
+				
+				//NotifyService 호출
+				notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기				
+			}
 			
 			try {
 				dboxService.insertDboxDonation(dboxDonationVO);
 				mapJson.put("result", "success");
 				log.debug("<<<<<<<<<<<<<<<<결제 성공>>>>>>>>>>>>>>>>>>>");
-				//포인트 사용
-				PointVO point_revent1 = new PointVO(21, -point, member.getMem_num()); //(포인트 타입, 포인트 양(음수면 -), 포인트 받을 회원 번호)
-				
-				//포인트 로그 추가
-				pointService.insertPointLog(point_revent1);
-				
-				//member_detail 업데이트
-				memberService.updateMemPoint(point_revent1);
+				//포인트 사용한 경우에만 포인트 로그
+				if(point >0) {
+					//포인트 사용
+					PointVO point_revent1 = new PointVO(23, -point, member.getMem_num()); //(포인트 타입, 포인트 양(음수면 -), 포인트 받을 회원 번호)
+					
+					//포인트 로그 추가
+					pointService.insertPointLog(point_revent1);
+					
+					//member_detail 업데이트
+					memberService.updateMemPoint(point_revent1);					
+				}
 				log.debug("<<회원 사용 포인트>> : " + point);
 				log.debug("<<회원 보유 포인트(전)>> : " + member.getMem_point());
 				member.setMem_point(member.getMem_point()-point);
