@@ -63,38 +63,57 @@
 	<c:if test="${count > 0}">
 	<div>총 ${count} 건의 레코드</div>
 	<table class="striped-table">
+		<!-- 목록 제목 -->
 		<tr>
-			<th>회원번호</th>
-			<th>이메일</th>
-			<th>닉네임</th>
-			<th>가입일</th>
-			<th>계정상태</th>
-			<th>관리</th>
+			<th class="align-center">기부박스 번호</th>
+			<th class="align-center">회원 번호</th>
+			<th class="align-left">기부박스 제목</th>
+			<th class="align-left">팀명(기관/단체)</th>
+			<th class="align-left">카테고리</th>
+			<th class="align-center">등록일</th>
+			<th class="align-center">진행 상태</th>
 		</tr>
-		<c:forEach var="member" items="${list}">
+		<!-- 목록 내용 -->
+		<c:forEach var="dbox" items="${list}">
 		<tr class="mem-item">
-			<td class="align-center">${member.mem_num}</td>
-			<td class="align-left"><a href="detail?mem_num=${member.mem_num}">${member.mem_email}</a></td>
-			<td class="align-center">${member.mem_nick}</td>
-			<td class="align-center">${member.mem_date}</td>
-			<td class="align-center" class="mem-'dstatus">
-			<c:if test="${member.mem_status == 0}">
-			탈퇴
-			</c:if>
-			<c:if test="${member.mem_status == 1}">
-			정지
-			</c:if>
-			<c:if test="${member.mem_status == 2}">
-			일반
-			</c:if>
-			<c:if test="${member.mem_status == 9}">
-			관리자
-			</c:if>
+			<td class="align-center">${dbox.dbox_num}</td>			
+			<td class="align-center">${dbox.mem_num}</td>
+			<td class="align-left"><a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/content">${dbox.dbox_title}</a></td>
+			<td class="align-left">
+				<span class="badge">
+				<c:if test="${dbox.dbox_team_type == 1}">
+				기관
+				</c:if>
+				<c:if test="${dbox.dbox_team_type == 2}">
+				개인/단체
+				</c:if>
+				</span>
+				<br>				
+				${dbox.dbox_team_name}
 			</td>
-			<td class="align-center">
-			<button class="expelBtn" data-nick="${member.mem_nick}" data-num="${member.mem_num}"  <c:if test="${member.mem_status == 9}">disabled</c:if>>제명</button> 
-			<button class="suspendBtn" data-nick="${member.mem_nick}" data-num="${member.mem_num}" <c:if test="${member.mem_status != 2}">disabled</c:if>>정지</button> 
-			<button class="activateBtn" data-nick="${member.mem_nick}" data-num="${member.mem_num}" <c:if test="${member.mem_status != 1}">disabled</c:if>>활성화</button>
+			<td class="align-left">
+				<img src="${pageContext.request.contextPath}/upload/${dbox.dcate_icon}" style="height:1rem;">${dbox.dcate_name}
+			</td>
+			<td class="align-center">${dbox.dbox_rdate}
+			<td class="align-center" class="dbox_status">
+			<c:if test="${dbox.dbox_status == 0}">
+			신청완료
+			</c:if>
+			<c:if test="${dbox.dbox_status == 1}">
+			심사완료
+			</c:if>
+			<c:if test="${dbox.dbox_status == 2}">
+			신청반려
+			</c:if>
+			<c:if test="${dbox.dbox_status == 3}">
+			진행중
+			</c:if>
+			<c:if test="${dbox.dbox_status == 4}">
+			진행완료
+			</c:if>
+			<c:if test="${dbox.dbox_status == 5}">
+			진행중단
+			</c:if>
 			</td>
 		</tr>
 		</c:forEach>

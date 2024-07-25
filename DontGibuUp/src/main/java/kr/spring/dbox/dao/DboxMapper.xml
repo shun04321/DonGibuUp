@@ -85,13 +85,13 @@
 					dbox_title LIKE '%' || #{keyword} || '%'
 				</if>	
 				<if test="keyfield == 3">
-					dbox_mem_num LIKE '%' || #{keyword} || '%'
+					mem_num LIKE '%' || #{keyword} || '%'
 				</if>
 				<if test="keyfield == 4">
 					dbox_team_name LIKE '%' || #{keyword} || '%'
 				</if>
-				<if test="keyfield == 4">
-					dbox_cate_name LIKE '%' || #{keyword} || '%'
+				<if test="keyfield == 5">
+					dcate_name LIKE '%' || #{keyword} || '%'
 				</if>
 			</if>
 		</where>

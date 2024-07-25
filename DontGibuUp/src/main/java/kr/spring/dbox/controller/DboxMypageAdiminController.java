@@ -56,22 +56,43 @@ public class DboxMypageAdiminController {
      * 		기부박스 관리
      *==================================*/
     @GetMapping("/admin/dboxAdmin")
-    public String dboxAdmin(/*@RequestParam(defaultValue = "1" ) int pageNum,
-							@RequestParam(defaultValue = "1") int rowCount,
+    public String dboxAdmin(@RequestParam(defaultValue = "1") int pageNum,
 							@RequestParam(defaultValue = "1") int order,
-							//@RequestParam(defaultValue = "") String dbox_status,
-							String keyfield, String keyword,HttpSession session,Model model*/) {
-    	log.debug("<<관리자 페이지 - 기부박스 관리>> : ");
+							@RequestParam(defaultValue = "") List<Integer> status,
+							@RequestParam(required = false) String keyfield,
+							@RequestParam(required = false) String keyword,
+							HttpSession session,Model model) {
+    	log.debug("<<관리자 페이지 - 기부박스 관리 진입>>");
 
-		/*Map<String, Object> map = new HashMap<String, Object>();
+		log.debug("<<관리자 목록 - pageNum : >>" + pageNum);
+		log.debug("<<관리자 목록 - order : >>" + order);
+		log.debug("<<관리자 목록 - status : >>" + status);
+		log.debug("<<관리자 목록 - keyfield : >>" + keyfield);
+		log.debug("<<관리자 목록 - keyword : >>" + keyword);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
 		if (keyword != null && keyword.equals("")) {
 			keyword = null;
 		}
+		// StringBuilder를 사용하여 문자열을 구성
+        StringBuilder sb = new StringBuilder();
 
+        for (int i = 0; i < status.size(); i++) {
+            sb.append(status.get(i));
+            if (i < status.size() - 1) {
+                sb.append(",");
+            }
+        }
+
+        // StringBuilder의 내용을 String으로 변환
+        String statusValue = sb.toString();
+        log.debug("<<관리자 목록 - statusValue : >>" + statusValue);
+		
 		map.put("keyfield", keyfield);
 		map.put("keyword", keyword);
 		map.put("order", order);
-
+		map.put("statusValue", statusValue);
+		
 		//전체, 검색 레코드수
 		int count = dboxService.selectAdminListCount(map);
 
@@ -88,7 +109,7 @@ public class DboxMypageAdiminController {
 
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
-		model.addAttribute("page", page.getPage());*/
+		model.addAttribute("page", page.getPage());
     	
         return "dboxAdmin";
     }	
