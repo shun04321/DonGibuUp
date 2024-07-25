@@ -9,9 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-public class DboxMypageController {
+public class DboxMypageAdiminController {
 	@Autowired
 	private DboxService dboxService;
+	
+	/*===================================
+	 * 		MyPage
+	 *==================================*/
 	
 	/*===================================
 	 * 		제안한 기부박스
@@ -31,5 +35,19 @@ public class DboxMypageController {
     	log.debug("<<MyPage - 기부박스 기부내역>> : ");
     	
     	return "dboxMyDonation";
+    }	
+    
+	/*===================================
+	 * 		Admin
+	 *==================================*/
+    
+    /*===================================
+     * 		기부박스 관리
+     *==================================*/
+    @GetMapping("/admin/dboxAdmin")
+    public String dboxAdmin() {
+    	log.debug("<<관리자 페이지 - 기부박스 관리>> : ");
+    	
+        return "dboxAdmin";
     }	
 }

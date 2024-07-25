@@ -84,4 +84,8 @@
 		<put-attribute name="body" value="/WEB-INF/views/mypage/dboxMyDonation.jsp"/>
 	</definition>
 	<!-- 관리자 -->
+	<definition name="dboxAdmin" extends="adminInquiry">
+		<put-attribute name="title" value="기부박스 관리" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/dbox/dboxAdmin.jsp"/>
+	</definition>
 </tiles-definitions>

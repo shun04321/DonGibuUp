@@ -31,7 +31,7 @@
           </li>
           <li class="nav-item nav-category">PAGES</li>
           <li class="nav-item">
-            <a class="nav-link" href="${pageContext.request.contextPath}/category/categoryList">
+            <a class="nav-link" href="${pageContext.request.contextPath}/admin/categoryList">
               <i class="menu-icon mdi mdi-lan"></i>
               <span class="menu-title">카테고리</span>
             </a>
@@ -45,7 +45,7 @@
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="#">정기기부</a></li>
-              	<li class="nav-item"> <a class="nav-link" href="#">기부박스</a></li>
+              	<li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/dboxAdmin">기부박스</a></li>
               </ul>
             </div>
           </li>
