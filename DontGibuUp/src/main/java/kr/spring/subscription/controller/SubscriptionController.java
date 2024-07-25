@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.category.service.CategoryService;
@@ -198,6 +199,36 @@ public class SubscriptionController {
 		model.addAttribute("subscriptionVO",subscriptionVO);
 		model.addAttribute("payuidVO", payuidVO);
 		return "/subscription/getpayuid";
+	}
+	
+	//결제수단 변경폼 제출
+	@PostMapping("/subscription/modifyPayMethod")
+	@ResponseBody
+	public Map getNewpayuid(
+			SubscriptionVO subscriptionVO,
+			Model model,
+			HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
+			Map<String,String> mapJson = new HashMap<String,String>();					
+				//존재하는 payuid와 대조할 payuidVO 생성후 데이터 셋팅
+				PayuidVO payuid = new PayuidVO();
+				payuid.setMem_num(subscriptionVO.getMem_num());
+				
+				if(!subscriptionVO.getCard_nickname().equals("")) { //결제수단 카드 선택(카드 이름 셋팅)
+					payuid.setCard_nickname(subscriptionVO.getCard_nickname());
+				} else{// 결제수단 이지페이 선택 (플랫폼 셋팅) 
+					payuid.setEasypay_method(subscriptionVO.getEasypay_method());	       
+				}
+				log.debug("결제수단에 따른 payuidVO 셋팅 : " + payuid);
+
+				if (payuidService.getPayuidByMethod(payuid) == null) { //선택한 결제수단의 payuid가 없는 경우, payuid 생성 후 빌링키 발급 페이지로 이동
+					mapJson.put("result", "noPayuid");
+				}else {//이미 등록된 결제수단인 경우					
+					subscriptionService.modifyPayMethod(subscriptionVO);
+					mapJson.put("result", "success");
+				}
+				
+		return mapJson;
 	}
 	/*--------------------
 	 * 결제수단 등록 성공시 결제 메소드 호출, 
@@ -474,41 +505,48 @@ public class SubscriptionController {
 
 	//정기기부 상세
 	@GetMapping("/subscription/subscriptionDetail")
-	public String subscriptionDetail(long sub_num, Model model) throws ParseException {
-		SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
-		DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
-		Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
-		String cancelDate = "";
-		// 날짜 문자열을 Date 객체로 변환
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
-		String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
-		if(subscription.getCancel_date()!=null) {
-			cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
-		}
-		
-		List<Sub_paymentVO> list = sub_paymentService.getSub_paymentBySub_num(sub_num);
-		
-		SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("yy년 MM월 dd일/HH:mm");
+	public ModelAndView subscriptionDetail(long sub_num, Model model) throws ParseException {
+	    SubscriptionVO subscription = subscriptionService.getSubscription(sub_num);
+	    DonationCategoryVO category = categoryService.selectDonationCategory(subscription.getDcate_num());
+	    Sub_paymentVO subpayment = sub_paymentService.getSub_paymentByDate(subscription.getMem_num());
+	    String cancelDate = "";
 
-        for (Sub_paymentVO payment : list) {
-            try {
-                Date date = inputFormat.parse(payment.getSub_pay_date());
-                payment.setSub_pay_date(outputFormat.format(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }		
-		model.addAttribute("list", list);
-		model.addAttribute("cancel_date",cancelDate);
-		model.addAttribute("reg_date", regDate);
-		model.addAttribute("sub_paydate", subPayDate); // yyyy-MM-dd 형식
-		model.addAttribute("category", category);
-		model.addAttribute("subscription", subscription);
-		model.addAttribute("subpayment", subpayment);
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    String regDate = sdf.format(sdf.parse(subscription.getReg_date()));
+	    String subPayDate = sdf.format(sdf.parse(subpayment.getSub_pay_date()));
+	    if (subscription.getCancel_date() != null) {
+	        cancelDate = sdf.format(sdf.parse(subscription.getCancel_date()));
+	    }
 
-		return "subscriptionDetail";
+	    ModelAndView modelAndView = new ModelAndView("subscriptionDetail");
+
+	    List<PayuidVO> paylist = payuidService.getPayUId(subscription.getMem_num());
+
+	    List<Sub_paymentVO> list = sub_paymentService.getSub_paymentBySub_num(sub_num);
+
+	    SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    SimpleDateFormat outputFormat = new SimpleDateFormat("yy년 MM월 dd일/HH:mm");
+
+	    for (Sub_paymentVO payment : list) {
+	        try {
+	            Date date = inputFormat.parse(payment.getSub_pay_date());
+	            payment.setSub_pay_date(outputFormat.format(date));
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    modelAndView.addObject("paylist", paylist);
+	    modelAndView.addObject("list", list);
+	    modelAndView.addObject("cancel_date", cancelDate);
+	    modelAndView.addObject("reg_date", regDate);
+	    modelAndView.addObject("sub_paydate", subPayDate);
+	    modelAndView.addObject("category", category);
+	    modelAndView.addObject("subscription", subscription);
+	    modelAndView.addObject("subpayment", subpayment);
+	    modelAndView.addObject("subscriptionVO", new SubscriptionVO()); // Add PayuidVO object
+
+	    return modelAndView;
 	}
 
 	@PostMapping("/subscription/updateSub_status")

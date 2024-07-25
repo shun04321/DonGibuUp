@@ -49,7 +49,22 @@
 	                  *
 	                FROM subscription 				<!-- 알리아스 -->
 	                )a) WHERE mem_num=#{mem_num} ORDER BY sub_num DESC
-	</select>       
+	</select>
+	
+	<update id="modifyPayMethod">
+    UPDATE subscription 
+    SET 
+        sub_method = #{sub_method},
+        <if test="card_nickname != null and card_nickname != ''">
+            card_nickname = #{card_nickname},
+            easypay_method = NULL
+        </if>
+        <if test="easypay_method != null">
+            easypay_method = #{easypay_method},
+            card_nickname = NULL
+        </if>
+    WHERE sub_num = #{sub_num}
+</update>
  </mapper>
 
 

@@ -349,7 +349,7 @@ ul#delivery_info li span{
 
 #paybutton {
     position: fixed;
-    bottom: 100px; /* 화면 하단에서 20px 위 */
+    bottom: 170px; /* 화면 하단에서 20px 위 */
     width: 700px;          
     left: 50%; /* 화면 가로 중앙 정렬을 위한 시작점 */
     transform: translateX(-50%);
@@ -418,4 +418,3 @@ ul#delivery_info li span{
 .real-small{
 	font-size:5px;
 }
-

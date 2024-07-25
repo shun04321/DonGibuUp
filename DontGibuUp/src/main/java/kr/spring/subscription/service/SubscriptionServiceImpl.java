@@ -118,4 +118,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public int getSubscriptionCount(long mem_num) {
 		return subscriptionMapper.getSubscriptionCount(mem_num);
 	}
+
+	@Override
+	public void modifyPayMethod(SubscriptionVO subscriptionVO) {
+		subscriptionMapper.modifyPayMethod(subscriptionVO);
+	}
 }
