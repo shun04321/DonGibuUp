@@ -6,11 +6,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	let chalFeeElement = document.getElementById('chal_fee');
 	let chalFee90Element = document.querySelectorAll('.chal_fee_90');
 	let chalFee10Element = document.querySelectorAll('.chal_fee_10');
+	let chalFee5Element = document.querySelectorAll('.chal_fee_5');
 
 	if (chalFeeElement) {
 		var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
 		var chalFee90 = (chalFee * 0.9).toFixed(0);
-		var chalFee10 = chalFee - chalFee90;
+		var chalFee10 = (chalFee * 0.1).toFixed(0);
+		var chalFee5 = (chalFee * 0.05).toFixed(0);
 
 		chalFeeElement.innerText = formatNumber(chalFee);
 
@@ -19,6 +21,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 		chalFee10Element.forEach(function(e) {
 			e.innerText = formatNumber(chalFee10);
+		});
+		chalFee5Element.forEach(function(e) {
+			e.innerText = formatNumber(chalFee5);
 		});
 	}
 	

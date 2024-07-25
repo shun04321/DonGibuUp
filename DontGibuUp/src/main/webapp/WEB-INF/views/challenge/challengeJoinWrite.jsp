@@ -59,7 +59,7 @@
             </li>
             <br>
             <li class="result-details">
-        		<p><span class="left">100% 성공</span> <span class="right"><span class="chal_fee_90"></span>원 + 추가 ( )p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
+        		<p><span class="left">100% 성공</span> <span class="right"><span class="chal_fee_90"></span>원 + 추가 <span class="chal_fee_5"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
         		<p><span class="left">90% 이상 성공</span> <span class="right"><span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</span></p>
         		<p><span class="left">90% 미만 성공</span> <span class="right">성공률만큼 환급, 나머지 기부</span></p>
     		</li>

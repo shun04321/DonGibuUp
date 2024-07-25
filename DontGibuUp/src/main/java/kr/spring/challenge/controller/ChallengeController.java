@@ -308,8 +308,17 @@ public class ChallengeController {
 
 			// 참여금 관련 계산
 			Long chal_fee = challengeJoin.getChal_fee();
-			int returnPoint = (int) (achieveRate / 100.0 * chal_fee);
-			int donaAmount = (int) (chal_fee - returnPoint);
+			int returnPoint;
+			int donaAmount;
+
+			if (achieveRate == 100) {
+				// 달성률이 100%인 경우
+				returnPoint = (int) (chal_fee * 0.95);
+				donaAmount = (int) (chal_fee * 0.10);
+			} else {
+				returnPoint = (int) (achieveRate / 100.0 * chal_fee);
+				donaAmount = (int) (chal_fee - returnPoint);
+			}
 
 			// 숫자를 포맷팅
 			NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
