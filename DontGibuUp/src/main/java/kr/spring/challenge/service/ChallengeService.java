@@ -56,7 +56,7 @@ public interface ChallengeService {
     public void deleteChallengeVerify(Long chal_ver_num);
     public int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
     //리더의 챌린지 인증 취소
-    public void updateVerifyStatus(Long chal_ver_num);
+    public void updateVerifyStatus(Map<String,Long> map);
     //회원의 챌린지 인증 제보
     public void insertVerifyReport(ChallengeVerifyRptVO chalVerifyRptVO);
     

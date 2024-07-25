@@ -147,7 +147,7 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/verify/joinMemberList")
 	@ResponseBody
 	public Map<String,Object> joinMemberList(@RequestParam(defaultValue="1") int pageNum,
-			long chal_num,long chal_joi_num,int rowCount,HttpSession session){
+			long chal_num,long chal_joi_num,int rowCount){
 		Map<String,Object> map = new HashMap<>();
 		map.put("chal_num", chal_num);
 		map.put("chal_joi_num", chal_joi_num);
@@ -170,20 +170,7 @@ public class ChallengeAjaxController {
 
 		Map<String,Object> mapJson = new HashMap<>();
 		mapJson.put("list", joinList);
-		mapJson.put("count", memberCount);
-
-		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
-		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
-		MemberVO user = (MemberVO) session.getAttribute("user"); 
-		long mem_num = user.getMem_num();		
-		if(challengeJoin.getMem_num() == mem_num) { 
-			mapJson.put("isUser", true);
-		}else { 
-			mapJson.put("isUser", false);
-			//회원 프로필 사진,닉네임
-			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
-			mapJson.put("member", userInfo);
-		}
+		mapJson.put("count", memberCount);				
 
 		return mapJson;
 	}
@@ -285,7 +272,38 @@ public class ChallengeAjaxController {
 		}else if(leader_joi_num != chal_joi_num) {
 			mapJson.put("result", "wrongAccess");
 		}else {
-			challengeService.updateVerifyStatus(chal_ver_num);
+			Map<String,Long> map = new HashMap<>();
+			map.put("chal_ver_num", chal_ver_num);
+			map.put("chal_ver_status", (long) 1);
+			challengeService.updateVerifyStatus(map);
+			mapJson.put("result", "success");
+		}
+		return mapJson;
+	}
+
+	//리더의 챌린지 인증 취소 조치 복구
+	@PostMapping("/challenge/verify/recoverVerify")
+	@ResponseBody
+	public Map<String,Object> recoverChallengeVerify(@RequestBody Map<String, Long> requestData,HttpSession session){
+		Long chal_ver_num = requestData.get("chal_ver_num");
+		Long chal_joi_num = requestData.get("chal_joi_num");
+		Long chal_num = requestData.get("chal_num");
+		log.debug("chal_ver_num >> "+chal_ver_num);
+		log.debug("chal_joi_num >> "+chal_joi_num);
+		Map<String,Object> mapJson = new HashMap<>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		long leader_joi_num = challengeService.selectLeaderJoiNum(chal_num);
+
+
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else if(leader_joi_num != chal_joi_num) {
+			mapJson.put("result", "wrongAccess");
+		}else {
+			Map<String,Long> map = new HashMap<>();
+			map.put("chal_ver_num", chal_ver_num);
+			map.put("chal_ver_status", (long) 0);
+			challengeService.updateVerifyStatus(map);
 			mapJson.put("result", "success");
 		}
 		return mapJson;

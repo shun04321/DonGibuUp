@@ -305,8 +305,8 @@ public class ChallengeServiceImpl implements ChallengeService{
     }
 
 	@Override
-	public void updateVerifyStatus(Long chal_ver_num) {
-		challengeMapper.updateVerifyStatus(chal_ver_num);		
+	public void updateVerifyStatus(Map<String,Long> map) {
+		challengeMapper.updateVerifyStatus(map);		
 	}
 
 	@Override

@@ -71,12 +71,9 @@ public interface ChallengeMapper {
     public void deleteChallengeVerify(Long chal_ver_num);    
     //주별 인증 횟수 확인
     public int countWeeklyVerify(Map<String, Object> params);
-    //챌린지 인증 상태 변경(성공 -> 실패)
-    @Update("UPDATE chal_verify SET chal_ver_status=1 WHERE chal_ver_num=#{chal_ver_num}")
-    public void updateVerifyStatus(Long chal_ver_num);
-    //챌린지 인증 상태 변경(실패 -> 성공)
-    @Update("UPDATE chal_verify SET chal_ver_status=0 WHERE chal_ver_num=#{chal_ver_num}")
-    public void recoverVerifyStatus(Long chal_ver_num);
+    //챌린지 인증 상태 변경
+    @Update("UPDATE chal_verify SET chal_ver_status=#{chal_ver_status} WHERE chal_ver_num=#{chal_ver_num}")
+    public void updateVerifyStatus(Map<String,Long> map);
     
     //*챌린지 인증 제보*//
     //챌린지 인증 제보

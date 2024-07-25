@@ -81,67 +81,99 @@ $(function() {
 
 	//리더의 인증 취소 조치
 	$(document).on('click', '.cancelVerify', function() {
+		let choice = confirm('인증을 취소하시겠습니까?');
+		if (choice) {
+			let $this = $(this);
+			let chal_ver_num = $this.data('ver-num');
+			$.ajax({
+				url: 'cancelVerify',
+				type: 'post',
+				data: JSON.stringify({
+					chal_ver_num: chal_ver_num,
+					chal_joi_num: user_joi_num,
+					chal_num: chal_num
+				}),
+				contentType: 'application/json',
+				dataType: 'json',
+				success: function(param) {
+					if (param.result == 'logout') {
+						alert('로그인 후 이용하세요.');
+					} else if (param.result == 'wrongAccess') {
+						alert('접근 권한이 없습니다.')
+					} else if (param.result == 'success') {
+						$this.text('인증 성공');
+						$this.attr('class', 'recoverVerify');
+						$('.status.success').text('실패');
+						$('.status.success').attr('class', 'status failure');
+					}
+				},
+				error: function() {
+					alert('네트워크 오류');
+				}
+			});
+		}
+	});
+
+	//리더의 인증 취소 복구 조치
+	$(document).on('click', '.recoverVerify', function() {
 		let $this = $(this);
 		let chal_ver_num = $this.data('ver-num');
 		$.ajax({
-			url:'cancelVerify',
-			type:'post',
-			data:JSON.stringify({
-				chal_ver_num:chal_ver_num,
-				chal_joi_num:user_joi_num,
-				chal_num:chal_num
+			url: 'recoverVerify',
+			type: 'post',
+			data: JSON.stringify({
+				chal_ver_num: chal_ver_num,
+				chal_joi_num: user_joi_num,
+				chal_num: chal_num
 			}),
 			contentType: 'application/json',
-			dataType:'json',
-			success:function(param){
-				if(param.result == 'logout'){
+			dataType: 'json',
+			success: function(param) {
+				if (param.result == 'logout') {
 					alert('로그인 후 이용하세요.');
-				}else if(param.result == 'wrongAccess'){
+				} else if (param.result == 'wrongAccess') {
 					alert('접근 권한이 없습니다.')
-				}else if(param.result == 'success'){
-					$this.hide();
-					//$this.text('취소');
-					//$this.attr('class','recoverVerify');
-					$('.status.success').text('실패');
-					$('.status.success').attr('class','status failure');
+				} else if (param.result == 'success') {
+					$this.text('인증 취소');
+					$this.attr('class', 'cancelVerify');
+					$('.status.failure').text('성공');
+					$('.status.failure').attr('class', 'status success');
 				}
 			},
-			error:function(){
+			error: function() {
 				alert('네트워크 오류');
 			}
 		});
 	});
-	
+
 	//회원의 인증 제보
-	$(document).on('click','.reportVerify',function(){
+	$(document).on('click', '.reportVerify', function() {
 		let button = $(this);
 		let chal_ver_num = $(this).data('ver-num');
 		let rpt_joi_num = $(this).data('joi-num');
 		$.ajax({
-			url:'reportVerify',
-			type:'post',
-			data:JSON.stringify({
-				chal_ver_num:chal_ver_num,
-				reported_joi_num:rpt_joi_num
+			url: 'reportVerify',
+			type: 'post',
+			data: JSON.stringify({
+				chal_ver_num: chal_ver_num,
+				reported_joi_num: rpt_joi_num
 			}),
 			contentType: 'application/json',
-			dataType:'json',
-			success:function(param){
-				if(param.result == 'logout'){
+			dataType: 'json',
+			success: function(param) {
+				if (param.result == 'logout') {
 					alert('로그인 후 이용해주세요.');
-				}else if(param.result == 'success'){
+				} else if (param.result == 'success') {
 					alert('인증을 제보하셨습니다.');
 					button.hide();
-					//인증별 제보된 숫자 증가시키기
-					
-				}								
+				}
 			},
-			error:function(){
+			error: function() {
 				alert('네트워크 오류');
 			}
 		});
 	});
-	
+
 	//참가자 목록을 불러오는 메서드
 	function getItems(currentPage) {
 		$.ajax({
@@ -153,7 +185,7 @@ $(function() {
 				let output = '';
 				output += '<div class="memberList">';
 				$(param.list).each(function(index, item) {
-					console.log('item.reported_num >>'+item.reported_num);
+					console.log('item.reported_num >>' + item.reported_num);
 					output += '<div class="joinMem_container">';
 					if (item.mem_photo) {
 						output += '<img class="joinMem responsive-image" src="' + contextPath + '/upload/' + item.mem_photo + '" width="40" height="40">'; //회원 프로필
@@ -163,9 +195,9 @@ $(function() {
 					output += '<span class="joinMem">';
 					output += item.mem_nick;
 					output += '</span>';
-					if(item.reported_num > 0){
+					if (isLeader && item.reported_num > 0) {
 						output += `<span class="status report">⛔ (${item.reported_num})</span>`;
-					}					
+					}
 					output += '<span class="joinMem arrow">';
 					output += '<a href="verifyMemberList?chal_joi_num=' + item.chal_joi_num + '" class="each_verify_list"> > </a>';
 					output += '</span>';
@@ -186,7 +218,7 @@ $(function() {
 		$.ajax({
 			url: 'verifyMemberList',
 			type: 'get',
-			data: { chal_num:chal_num, chal_joi_num: chal_joi_num, pageNum: currentPage, rowCount: rowCount },
+			data: { chal_num: chal_num, chal_joi_num: chal_joi_num, pageNum: currentPage, rowCount: rowCount },
 			dataType: 'json',
 			success: function(param) {
 				let output = '';
@@ -221,20 +253,25 @@ $(function() {
 						} else if (item.chal_ver_status == 1) {
 							output += `<span class="status failure">실패</span>`;
 						}
+						if (isLeader && item.chal_ver_report == 1) {
+							output += `<span class="status report">⛔ (${item.reported_num})</span>`;
+						}
 						if (item.chal_content) {
 							output += '<div id="content-' + item.chal_ver_num + '" class="comment">' + item.chal_content + '</div>';
 						} else {
 							output += '<div id="content-' + item.chal_ver_num + '" class="comment"></div>';
 						}
 						output += '</div>';
-						output += '</div>';						
+						output += '</div>';
 						if (!param.isUser && chal_edate.getTime() >= now.getTime()) {
 							if (isLeader && item.chal_ver_status == 0) {
 								output += `<button type="button" class="cancelVerify" data-ver-num="${item.chal_ver_num}">인증 취소</button>`;
 							} else if (item.chal_ver_status == 0) {
 								output += `<button type="button" class="reportVerify" data-ver-num="${item.chal_ver_num}" data-joi-num="${item.chal_joi_num}">제보</button>`;
+							}else if(isLeader && item.chal_ver_status == 1){
+								output += `<button type="button" class="recoverVerify" data-ver-num="${item.chal_ver_num}">인증 성공</button>`;
 							}
-						} else if(param.isUser) {
+						} else if (param.isUser) {
 							//수정 폼
 							output += '<div id="edit-form-' + item.chal_ver_num + '" class="edit-form" style="display: none;">';
 							output += '<textarea id="textarea-' + item.chal_ver_num + '">' + item.chal_content + '</textarea>';
