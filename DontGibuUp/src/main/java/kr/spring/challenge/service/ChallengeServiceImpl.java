@@ -1,6 +1,8 @@
 package kr.spring.challenge.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,9 @@ import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
+import kr.spring.member.service.MemberService;
+import kr.spring.point.service.PointService;
+import kr.spring.point.vo.PointVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,6 +32,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 	
 	@Autowired
 	ChallengeMapper challengeMapper;
+	@Autowired
+	PointService pointService;
+	@Autowired
+	MemberService memberService;
 
 	//*챌린지 개설*//
 	@Override
@@ -192,6 +201,9 @@ public class ChallengeServiceImpl implements ChallengeService{
     public void insertChallengeReview(ChallengeReviewVO chalReviewVO) {
         chalReviewVO.setChal_rev_num(challengeMapper.selectChal_rev_num());
         challengeMapper.insertChallengeReview(chalReviewVO);
+        
+        // 포인트 지급
+        givePointsForReview(chalReviewVO);
     }
     
     @Override
@@ -217,6 +229,22 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public Integer selectChallengeJoinListRowCount(Map<String, Object> map) {
 		return challengeMapper.selectChallengeJoinListRowCount(map);
+	}
+	
+	//후기 작성 시 포인트 지급
+	public void givePointsForReview(ChallengeReviewVO review) {
+	    int pointAmount = 500;//지급할 포인트 양
+	    long memNum = review.getMem_num();
+	    long chalNum = review.getChal_num();
+	    
+	    //포인트 로그 추가
+	    PointVO pointVO = new PointVO(13, pointAmount, memNum); //(이벤트 타입, 포인트 양, 회원 번호)
+	    pointService.insertPointLog(pointVO);
+	    
+	    //회원 포인트 업데이트
+	    memberService.updateMemPoint(pointVO);
+	    
+	    log.info("회원 ID {}에게 챌린지 ID {}에 대한 후기 작성으로 {} 포인트를 지급했습니다.", memNum, chalNum, pointAmount);
 	}
 	
 	//*챌린지 채팅*//
@@ -311,11 +339,14 @@ public class ChallengeServiceImpl implements ChallengeService{
     private void processChallenge(ChallengeVO challenge) {
         try {
             //각 챌린지에 대한 종료 작업
+        	long chal_num = challenge.getChal_num();
+        	
             //1. 참가자에게 환급 포인트 지급
+        	 refundPointsToUsers(chal_num);
+        	 
             //2. 챌린지 상태 업데이트
 
             //3. 단체 채팅방 삭제
-        	long chal_num = challenge.getChal_num();
             challengeMapper.deleteChalChatRead(chal_num);
             challengeMapper.deleteChallengeChat(chal_num);
 
@@ -323,5 +354,47 @@ public class ChallengeServiceImpl implements ChallengeService{
         } catch (Exception e) {
             log.error("챌린지 ID {} 처리 중 예외 발생: {}", challenge.getChal_num(), e.getMessage(), e);
         }
+    }
+    
+    //챌린지 종료시 환급 포인트 지급
+    @Override
+    public void refundPointsToUsers(Long chal_num) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("chal_num", chal_num);
+        List<ChallengeJoinVO> joinList = challengeMapper.selectJoinMemberList(map);
+
+        for (ChallengeJoinVO join : joinList) {
+            int returnPoint = calculateReturnPoint(join);
+            challengeMapper.insertUserPoints(join.getMem_num(), 14, returnPoint); //이벤트 타입 (챌린지 환급)
+        }
+    }
+
+    private int calculateReturnPoint(ChallengeJoinVO challengeJoin) {
+        Long chal_fee = challengeJoin.getChal_fee();
+        int achieveRate = calculateAchieveRate(challengeJoin);
+        
+        if (achieveRate == 100) {
+            return (int) (chal_fee * 0.95);
+        } else {
+            return (int) (achieveRate / 100.0 * chal_fee);
+        }
+    }
+
+    private int calculateAchieveRate(ChallengeJoinVO challengeJoin) {
+        Long chal_joi_num = challengeJoin.getChal_joi_num();
+        int chal_freq = challengeJoin.getChal_freq();
+
+        Map<String, Object> verifyMap = new HashMap<>();
+        verifyMap.put("chal_joi_num", chal_joi_num);
+        List<ChallengeVerifyVO> verifyList = challengeMapper.selectChallengeVerifyList(verifyMap);
+
+        long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+
+        LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+
+        long totalCount = totalWeeks * chal_freq;
+        return totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
     }
 }

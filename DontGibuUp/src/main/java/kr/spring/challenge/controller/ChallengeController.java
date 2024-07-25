@@ -668,5 +668,16 @@ public class ChallengeController {
 
 		return "challengeReviewList";
 	}
+	
+	//챌린지 종료시 환급 포인트 지급
+	@GetMapping("/challenge/refundPoints")
+	public ResponseEntity<String> refundPointsToUsers(@RequestParam("chal_num") Long chal_num) {
+	    try {
+	        challengeService.refundPointsToUsers(chal_num);
+	        return new ResponseEntity<>("포인트 환급이 완료되었습니다.", HttpStatus.OK);
+	    } catch (Exception e) {
+	        return new ResponseEntity<>("포인트 환급 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 
 }

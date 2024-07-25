@@ -16,7 +16,8 @@ public class ChallengeScheduler {
     private ChallengeService challengeService;
 
     //매일 23:59:59에 당일 종료된 챌린지를 처리하는 스케줄러
-    @Scheduled(cron = "59 59 23 * * *")
+    //@Scheduled(cron = "59 59 23 * * *")
+    @Scheduled(cron = "0 25 17 * * *")
     public void processTodayExpiredChallenges() {
         try {
             challengeService.processTodayExpiredChallenges();

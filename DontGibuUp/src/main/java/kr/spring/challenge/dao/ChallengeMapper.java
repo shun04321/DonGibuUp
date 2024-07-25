@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -135,4 +136,7 @@ public interface ChallengeMapper {
     //오늘 종료된 챌린지 조회
     @Select("SELECT * FROM challenge WHERE chal_edate = #{today}")
     public List<ChallengeVO> getTodayExpiredChallenges(LocalDate today);
+    //챌린지 종료시 환급 포인트 지급
+    @Insert("INSERT INTO user_points (mem_num, pevent_type, pevent_amount, point_date) VALUES (#{mem_num}, #{pevent_type}, #{pevent_amount}, SYSDATE)")
+    public void insertUserPoints(@Param("mem_num") Long mem_num, @Param("pevent_type") int pevent_type, @Param("pevent_amount") int pevent_amount);
 }
