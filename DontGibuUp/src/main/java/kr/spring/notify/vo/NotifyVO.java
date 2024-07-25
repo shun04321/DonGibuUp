@@ -15,6 +15,6 @@ public class NotifyVO {
 	private int notify_type;
 	private String not_message;
 	private String	not_url;
-	private Date not_datetime;
+	private String not_datetime;
 	private Date not_read_datetime;
 }

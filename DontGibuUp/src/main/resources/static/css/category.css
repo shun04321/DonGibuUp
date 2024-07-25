@@ -418,3 +418,6 @@ ul#delivery_info li span{
 .real-small{
 	font-size:5px;
 }
+figure img {
+    max-width: 100%;
+}

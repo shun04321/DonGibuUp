@@ -19,30 +19,6 @@
 	var subPayDate = "${sub_paydate}".trim();
 	var cancelDate = "${cancel_date}".trim();
 </script>
-<style>
-dd .align-right {
-	margin-top: 13px;
-	padding-top: 0px;
-}
-
-.update-payment-btn {
-	background-color: #white; /* 원하는 배경색으로 변경 */
-	color: black; /* 텍스트 색상 */
-	border: none; /* 테두리 제거 */
-	margin-top: 0px;
-	padding: 5px 10px; /* 패딩 */
-	text-align: center; /* 텍스트 정렬 */
-	text-decoration: none; /* 텍스트 데코레이션 제거 */
-	display: inline-block; /* 인라인 블록 */
-	font-size: 16px; /* 폰트 크기 */
-	cursor: pointer; /* 커서 모양 */
-	border-radius: 4px; /* 테두리 반경 */
-}
-
-.update-payment-btn:hover {
-	background-color: #45a049; /* 마우스를 올렸을 때 배경색 */
-}
-</style>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/subscription/subscriptionDetail.js"></script>
 <div class="tabs">
@@ -210,7 +186,8 @@ dd .align-right {
 		</c:if>
 		<div class="paymentHistory">
 			<h3>정기기부 결제내역</h3>
-			<span class="notice">(결제일로부터 21일이 지나면 환불이 불가능합니다.)</span>
+			<span class="small">총 기부 횟수 : ${count}</span>
+			<span class="notice"> (결제일로부터 21일이 지나면 환불이 불가능합니다.)</span>
 			<form id="refund_form" method="post" action="paymentRefund">
 				<c:forEach var="payment" items="${list}">
 					<div class="payment">

@@ -10,15 +10,14 @@
 							mem_num,
 							notify_type,
 							not_message,
-							not_url,
-							not_datetime)
+							not_url)
 					VALUES(
 							not_seq.nextval,
 							#{mem_num},
 							#{notify_type},
 							#{not_message},
-							#{not_url, jdbcType=VARCHAR},
-							SYSDATE)
+							#{not_url, jdbcType=VARCHAR}
+							)
 	</insert>
 	
 	<!-- 알림 목록(안 읽은 것, 최근 2주) -->

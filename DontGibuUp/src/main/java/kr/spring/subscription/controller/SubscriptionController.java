@@ -583,7 +583,7 @@ public class SubscriptionController {
 	            e.printStackTrace();
 	        }
 	    }
-
+	    modelAndView.addObject("count",list.size());
 	    modelAndView.addObject("paylist", paylist);
 	    modelAndView.addObject("list", list);
 	    modelAndView.addObject("cancel_date", cancelDate);
