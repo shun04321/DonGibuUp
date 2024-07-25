@@ -30,6 +30,11 @@
 		<put-attribute name="title" value="소식"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxDetailNews.jsp"/>
 	</definition>
+	<!-- 기부박스 예시 -->
+	<definition name="dboxExample" extends="dboxDetailContent">
+		<put-attribute name="title" value="기부박스 제안하기 : 예시 보기"/>
+		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxExample.jsp"/>
+	</definition>
 	<!-- 기부박스 결제완료 -->
 	<definition name="dboxDonation" template="/WEB-INF/views/template/layout_bootstrap.jsp">
 		<put-attribute name="title" value="기부박스"/>
@@ -68,8 +73,5 @@
 		<put-attribute name="nav" value="/WEB-INF/views/dbox/nav_dbox.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeEnd.jsp"/>
 	</definition>
-	<definition name="dboxExample" extends="dboxPropose">
-		<put-attribute name="title" value="기부박스 제안하기 : 예시 보기"/>
-		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxExample.jsp"/>
-	</definition>
+
 </tiles-definitions>

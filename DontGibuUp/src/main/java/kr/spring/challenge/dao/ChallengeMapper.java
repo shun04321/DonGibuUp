@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeFavVO;
@@ -44,6 +45,9 @@ public interface ChallengeMapper {
     public Integer selectJoinMemberRowCount(Map<String,Object> map);
     public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);    
     public void deleteChallengeJoin(Long chal_joi_num);
+    //챌린지 리더 참가 정보 불러오기
+    @Select("SELECT MIN(chal_joi_num) FROM chal_join WHERE chal_num=#{chal_num}")
+    public Long selectLeaderJoiNum(Long chal_num);
     //챌린지 ID로 챌린지 참가 데이터 삭제
     public void deleteChallengeJoinsByChallengeId(Long chal_num);
     //후기 작성 여부
@@ -64,6 +68,9 @@ public interface ChallengeMapper {
     public void deleteChallengeVerify(Long chal_ver_num);    
     //주별 인증 횟수 확인
     public int countWeeklyVerify(Map<String, Object> params);
+    //챌린지 인증 상태 변경
+    @Update("UPDATE SET chal_ver_status=1 WHERE chal_ver_num=#{chal_ver_num}")
+    public void updateVerifyStatus(Long chal_ver_num);
     
     //*챌린지 후기*//
     @Select("SELECT chal_review_seq.nextval FROM dual")
@@ -88,7 +95,11 @@ public interface ChallengeMapper {
     //읽은 채팅 기록 삭제
     @Delete("DELETE FROM chal_chat_read WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
     public void deleteChatRead(Map<String,Object> map);
-    //챌린지 종료시 채팅기록 삭제
+    //챌린지 종료시 채팅기록(chal_chat_read) 삭제
+    @Delete("DELETE FROM chal_chat_read WHERE chal_num=#{chal_num}")
+    public void deleteChalChatRead(Long chal_num);
+    //챌린지 종료시 채팅(chal_chat) 삭제
+    @Delete("DELETE FROM chal_chat WHERE chal_num=#{chal_num}")
     public void deleteChallengeChat(Long chal_num);
     
     //*챌린지 좋아요*//

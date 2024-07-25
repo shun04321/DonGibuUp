@@ -21,12 +21,12 @@
 					<c:if test="${!empty member.mem_photo}">
 						<img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" width="20" height="20">
 					</c:if>
-					${member.mem_nick}					
+					${member.mem_nick}
+					<span onclick="신고하기 모달창" class="chatReport">🚨</span>					
 				</li>
 			</c:forEach>
 			</ul>
-		</div>
-		<span onclick="신고하기 모달창" class="chatReport">🚨</span>	
+		</div>			
 	</div>
 	<div id="chatting_message"></div>
 	<div class="previewChatImage" style="display: none;">

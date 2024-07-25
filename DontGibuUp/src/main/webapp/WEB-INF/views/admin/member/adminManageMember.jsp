@@ -57,7 +57,7 @@
 		<c:forEach var="member" items="${list}">
 		<tr class="mem-item">
 			<td class="align-center">${member.mem_num}</td>
-			<td class="align-left"><a href="detail?mem_num=$member.mem_num}">${member.mem_email}</a></td>
+			<td class="align-left"><a href="detail?mem_num=${member.mem_num}">${member.mem_email}</a></td>
 			<td class="align-center">${member.mem_nick}</td>
 			<td class="align-center">${member.mem_date}</td>
 			<td class="align-center" class="mem-'dstatus">

@@ -1,6 +1,18 @@
 $(function(){
-	
-	
+	//기부하기 버튼 클릭시 비로그인이면 로그인 페이지로
+
+	$('#donation-btn').click(function() {
+		// mem_num의 값을 가져옴
+		var mem_num = $('#member').val();
+		// 만약 mem_num이 비어있으면(로그인되어 있지 않으면)
+		if (!mem_num) {
+			// 로그인 페이지로 리다이렉트
+			window.location.href = '/member/login'; // 로그인 페이지의 URL로 수정 필요
+		} else {
+			// mem_num이 존재하면 정상적으로 기부 시작하기 로직 실행
+			$('#staticBackdrop').modal('show'); // 모달 창 열기 등
+		}
+	});
 	const button = document.getElementById('imp_donation');
 	const form = document.getElementById('dbox_donation');
 

@@ -3,13 +3,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript">
+
+<!-- <script type="text/javascript">
 	$(document).ready(function() {
 		$('.user-faq-item').on('click', function() {
-			$(this).find('.faq-answer-text').toggle(); // 클릭된 질문의 다음 형제 요소인 faq-answer-text를 토글
+			var $this = $(this);
+			var $answer = $this.find('.faq-answer-text');
+
+			// 슬라이드 다운으로 나타나지 않은 경우만 슬라이드 다운
+			if ($answer.is(':visible')) {
+				$answer.hide(); // 이미 보이는 경우 즉시 숨김
+			} else {
+				// 모든 다른 답변을 숨기기
+				$('.faq-answer-text').not($answer).hide();
+				// 클릭된 답변을 슬라이드 다운으로 부드럽게 나타나게 함
+				$answer.slideDown();
+			}
 		});
 	});
-</script>
+</script> -->
+
 <section class="news-detail-header-section text-center nanum">
 	<div class="section-overlay"></div>
 
@@ -39,8 +52,8 @@
 		<c:if test="${!empty list}">
 			<ul id="faq_list">
 				<c:forEach var="faq" items="${list}">
-					<li class="user-faq-item d-flex">
-						<div class="mt-1 me-3"><img src="${pageContext.request.contextPath}/images/letter-q.png" width="40rem"></div>
+					<li class="user-faq-item d-flex mt-0">
+						<div class="me-3"><img src="${pageContext.request.contextPath}/images/letter-q.png" width="40rem"></div>
 						<div>
 							<div class="faq-category-text mb-1">
 							<c:if test="${faq.faq_category == 0}">

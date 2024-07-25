@@ -22,8 +22,26 @@
         <tbody>
             <c:forEach var="purchase" items="${purchaseList}">
                 <tr>
-                    <td>${purchase.item_name}</td>
-                    <td><img src="${pageContext.request.contextPath}${purchase.item_photo}" alt="${purchase.item_name}" width="100" height="100"></td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${not empty purchase.item_name}">
+                                ${purchase.item_name}
+                            </c:when>
+                            <c:otherwise>
+                                장바구니 구매
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${not empty purchase.item_photo}">
+                                <img src="${pageContext.request.contextPath}${purchase.item_photo}" alt="${purchase.item_name}" width="100" height="100">
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${pageContext.request.contextPath}/images/cart.png" alt="장바구니 구매" width="100" height="100">
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
                     <td>${purchase.amount}</td>
                     <td class="align-center"><fmt:formatDate value="${purchase.payDate}" pattern="yyyy-MM-dd" /></td>
                     <td>
@@ -46,7 +64,7 @@
                     <tr>
                         <td>${item.item_name}</td>
                         <td><img src="${pageContext.request.contextPath}${item.item_photo}" alt="${item.item_name}" width="50" height="50"></td>
-                        <td>${item.price}</td>
+                        <td>${item.price * item.cart_quantity}</td>
                         <td>${item.cart_quantity}</td>
                     </tr>
                 </c:forEach>

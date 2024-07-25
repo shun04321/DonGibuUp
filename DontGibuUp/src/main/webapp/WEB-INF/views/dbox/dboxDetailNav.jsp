@@ -24,15 +24,16 @@
 		</p>
 	</div>
 	<!-- 달성률 바 -->
-	<div class="progress" role="progressbar" aria-label="" aria-valuenow="${Math.floor(dboxTotal / dbox.dbox_goal*100)}" aria-valuemin="0" aria-valuemax="100">
-			<div class="progress-bar progress-bar-striped bg-success" style="width:${Math.floor(dboxTotal / dbox.dbox_goal*100)}%"></div>
+	<div class="progress" role="progressbar" aria-label="" aria-valuenow="${Math.round(dboxTotal / dbox.dbox_goal*100)}" aria-valuemin="0" aria-valuemax="100">
+			<div class="progress-bar progress-bar-striped bg-success" style="width:${Math.round(dboxTotal / dbox.dbox_goal*100)}%"></div>
 	</div>
 	<p class="text-end">
-			<strong>달성률 : </strong>${Math.floor(dboxTotal / dbox.dbox_goal*100)}%
-		</p>
+		<strong>달성률 : </strong>${Math.round(dboxTotal / dbox.dbox_goal*100)}%
+	</p>
 	<!-- 기부하기 버튼 -->
 	<div class="text-center mt-5">
-		<button type="button" class="btn btn-success col-12" data-bs-toggle="modal" data-bs-target="#staticBackdrop">기부하기</button>
+		<input type="hidden" name="member" id="member" value="${member.mem_num}">
+		<button type="button" class="btn btn-success col-12" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="donation-btn">기부하기</button>
 	</div>
 </div>
 	<!-- Modal 창 -->

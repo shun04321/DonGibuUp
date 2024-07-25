@@ -552,6 +552,14 @@ public class ChallengeController {
 	    mav.addObject("achievementRate", achievementRate);
 
 	    mav.addObject("count", count);
+	    
+	    //회원이 챌린지 리더인지 확인
+		long mem_joi_num = challengeService.selectLeaderJoiNum(chal_num);
+		if(mem_joi_num == chal_joi_num) {
+			mav.addObject("isLeader", true);
+		}else {
+			mav.addObject("isLeader", false);
+		}
 
 	    return mav;
 	}
