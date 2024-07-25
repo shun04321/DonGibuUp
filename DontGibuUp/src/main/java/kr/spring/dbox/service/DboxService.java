@@ -9,21 +9,28 @@ import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
 
 public interface DboxService {
-	//Dbox 입력
-	public Long insertDbox(DboxVO dbox);
-	//Dbox 목록
-	public List<DboxVO> selectList(Map<String, Object> map);
-	//Dbox 개수
-	public Integer selectListCount(Map<String, Object> map);
-	//Dbox 선택
-	public DboxVO selectDbox(long dbox_num);
-	//Dbox 기부계획 선택
-	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num);
-	//Dbox_Donation
-	public void insertDboxDonation(DboxDonationVO dboxDonationVO);
-	public List<DboxDonationVO> selectDboxDonations(long dbox_num);
-	public Integer selectDboxDonationsCount(long dbox_num);
-	public Long selecDoantionTotal(long dbox_num);
-	//Dbox_Result
-	public DboxResultVO selectDboxResult(long dbox_num);
+	//Dbox 등록
+	public Long insertDbox(DboxVO dbox);//Dbox 등록
+	
+	//Dbox 수정
+	public void updateDboxStatus(long dbox_num,int dbox_status);//Dbox Status 수정
+	
+	//Dbox 데이터 가져오기
+	public Integer selectListCount(Map<String, Object> map);//Dbox 개수
+	public List<DboxVO> selectList(Map<String, Object> map);//Dbox 목록
+	public Integer selectAdminListCount(Map<String, Object> map);//Dbox 관리자개수
+	public List<DboxVO> selectAdminList(Map<String, Object> map);//Dbox 관리자목록
+	public DboxVO selectDbox(long dbox_num);//Dbox 개별 데이터
+	
+	//Dbox 기부계획
+	public List<DboxBudgetVO> selectDboxBudgets(long dbox_num);//기부계획 목록 불러오기
+	
+	//Dbox 기부하기
+	public void insertDboxDonation(DboxDonationVO dboxDonationVO);//기부하기 등록
+	public List<DboxDonationVO> selectDboxDonations(long dbox_num);//기부하기 목록 
+	public Integer selectDboxDonationsCount(long dbox_num);//기부하기 개수
+	public Long selecDoantionTotal(long dbox_num);//기부 총액 데이터
+	
+	//Dbox 결과보고
+	public DboxResultVO selectDboxResult(long dbox_num);//기부 결과 개별 데이터
 }

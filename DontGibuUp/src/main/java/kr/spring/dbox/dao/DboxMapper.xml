@@ -74,6 +74,28 @@
 			</if>
 		</where>
 	</sql>
+	<!-- 관리자 검색 -->
+	<sql id="dboxAdminSearch">
+		<where>
+			<if test="keyword !=null and keyword != ''">
+				<if test="keyfield == 1">
+					dbox_num LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 2">
+					dbox_title LIKE '%' || #{keyword} || '%'
+				</if>	
+				<if test="keyfield == 3">
+					dbox_mem_num LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 4">
+					dbox_team_name LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 4">
+					dbox_cate_name LIKE '%' || #{keyword} || '%'
+				</if>
+			</if>
+		</where>
+	</sql>
 	<sql id="dboxStatus">
 		<if test="dbox_status == 0">
 			WHERE dbox_status=0
@@ -94,6 +116,7 @@
 			WHERE dbox_status=5
 		</if>
 	</sql>
+	<!-- 정렬 -->
 	<sql id="dboxOrder">
 		<if test="order == 1">
 			ORDER BY dbox_num DESC
@@ -119,21 +142,71 @@
 				rownum rnum
 			  FROM (SELECT
 			  		  dbox_num,
-			  		  dbox_photo,
+			  		  mem_num,
+			  		  dcate_num,
+			  		  dbox_team_type,
 			  		  <![CDATA[
-			  		  REPLACE(REPLACE(dbox_title,'<','&lt;'),'>','&gt;') dbox_title,
 			  		  REPLACE(REPLACE(dbox_team_name,'<','&lt;'),'>','&gt;') dbox_team_name,
+			  		  REPLACE(REPLACE(dbox_title,'<','&lt;'),'>','&gt;') dbox_title,
 			  		  ]]>
 			  		  dbox_team_photo,
+			  		  dbox_business_rnum,
+			  		  dbox_photo,
 			  		  dcate_name,
 			  		  dcate_icon,
+			  		  dbox_goal,
 			  		  dbox_sdate,
 			  		  dbox_edate,
 			  		  dbox_rdate,
-			  		  dbox_goal
+			  		  dbox_status
 			  		FROM dbox 
                     JOIN dona_category USING(dcate_num)
 			  		<include refid="dboxSearch"></include>
+			  		<include refid="dboxStatus"></include>
+			  		<include refid="dboxOrder"></include>
+			  		)a)
+		LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total FROM dbox_donation group by dbox_num ) USING(dbox_num) 	  		
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
+	<!-- 관리자 기부박스 총레코드수/검색 레코드 수 -->
+	<select id="selectAdminListCount" parameterType="map" resultType="integer">
+		SELECT
+		  COUNT(*)
+		FROM dbox 
+		<include refid="dboxAdminSearch"></include>
+		<include refid="dboxStatus"></include>
+	</select>
+	<!-- 관리자 기부박스 전체 목록/검색 목록 -->
+	<select id="selectAdminList" parameterType="map" resultType="dboxVO">
+		SELECT
+		  *
+		FROM (SELECT 
+				a.*,
+				rownum rnum
+			  FROM (SELECT
+			  		  dbox_num,
+			  		  mem_num,
+			  		  dcate_num,
+			  		  dbox_team_type,
+			  		  <![CDATA[
+			  		  REPLACE(REPLACE(dbox_team_name,'<','&lt;'),'>','&gt;') dbox_team_name,
+			  		  REPLACE(REPLACE(dbox_title,'<','&lt;'),'>','&gt;') dbox_title,
+			  		  ]]>
+			  		  dbox_team_photo,
+			  		  dbox_business_rnum,
+			  		  dbox_photo,
+			  		  dcate_name,
+			  		  dcate_icon,
+			  		  dbox_goal,
+			  		  dbox_sdate,
+			  		  dbox_edate,
+			  		  dbox_rdate,
+			  		  dbox_status
+			  		FROM dbox 
+                    JOIN dona_category USING(dcate_num)
+			  		<include refid="dboxAdminSearch"></include>
 			  		<include refid="dboxStatus"></include>
 			  		<include refid="dboxOrder"></include>
 			  		)a)
