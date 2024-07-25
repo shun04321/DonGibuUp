@@ -40,4 +40,5 @@ public class ChallengeJoinVO {
     private int chal_freq;
     private String mem_nick;			//회원 닉네임
     private String mem_photo;           //회원 프로필
+    private int reported_num;			//회원별 제보된 인증 수
 }

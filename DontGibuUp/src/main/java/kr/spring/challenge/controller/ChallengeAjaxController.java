@@ -38,6 +38,7 @@ import kr.spring.challenge.vo.ChallengeFavVO;
 import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
@@ -146,7 +147,7 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/verify/joinMemberList")
 	@ResponseBody
 	public Map<String,Object> joinMemberList(@RequestParam(defaultValue="1") int pageNum,
-			long chal_num,long chal_joi_num,int rowCount){
+			long chal_num,long chal_joi_num,int rowCount,HttpSession session){
 		Map<String,Object> map = new HashMap<>();
 		map.put("chal_num", chal_num);
 		map.put("chal_joi_num", chal_joi_num);
@@ -170,6 +171,19 @@ public class ChallengeAjaxController {
 		Map<String,Object> mapJson = new HashMap<>();
 		mapJson.put("list", joinList);
 		mapJson.put("count", memberCount);
+
+		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
+		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
+		MemberVO user = (MemberVO) session.getAttribute("user"); 
+		long mem_num = user.getMem_num();		
+		if(challengeJoin.getMem_num() == mem_num) { 
+			mapJson.put("isUser", true);
+		}else { 
+			mapJson.put("isUser", false);
+			//회원 프로필 사진,닉네임
+			MemberVO userInfo = memberService.selectMemberDetail(challengeJoin.getMem_num());
+			mapJson.put("member", userInfo);
+		}
 
 		return mapJson;
 	}
@@ -199,7 +213,7 @@ public class ChallengeAjaxController {
 		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
 
 		Map<String,Object> mapJson = new HashMap<>();
-		
+
 		//챌린지 종료 날짜 정보
 		ChallengeVO challenge = challengeService.selectChallenge(chal_num);
 		mapJson.put("chal_edate", challenge.getChal_edate());
@@ -222,7 +236,7 @@ public class ChallengeAjaxController {
 
 		return mapJson;
 	}
-	
+
 	//회원의 챌린지 인증 제보
 	@PostMapping("challenge/verify/reportVerify")
 	@ResponseBody
@@ -230,22 +244,28 @@ public class ChallengeAjaxController {
 		Long chal_ver_num = requestData.get("chal_ver_num");
 		Long reported_joi_num = requestData.get("reported_joi_num");
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		
+
 		Map<String,Object> mapJson = new HashMap<>();
-		
+
 		if(user == null) {
 			mapJson.put("result", "logout");
 		}else {
 			long report_mem_num = user.getMem_num();
-			
+			ChallengeVerifyRptVO verifyRptVO = new ChallengeVerifyRptVO();
+
+			verifyRptVO.setChal_ver_num(chal_ver_num);
+			verifyRptVO.setReported_joi_num(reported_joi_num);
+			verifyRptVO.setReport_mem_num(report_mem_num);
+
 			//챌린지 제보에 데이터 insert
-			
+			challengeService.insertVerifyReport(verifyRptVO);
+
 			mapJson.put("result", "success");
 		}
-				
+
 		return mapJson;
 	}
-	
+
 	//리더의 챌린지 인증 취소 조치
 	@PostMapping("/challenge/verify/cancelVerify")
 	@ResponseBody
@@ -258,8 +278,8 @@ public class ChallengeAjaxController {
 		Map<String,Object> mapJson = new HashMap<>();
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		long leader_joi_num = challengeService.selectLeaderJoiNum(chal_num);
-		
-		
+
+
 		if(user == null) {
 			mapJson.put("result", "logout");
 		}else if(leader_joi_num != chal_joi_num) {
@@ -270,7 +290,7 @@ public class ChallengeAjaxController {
 		}
 		return mapJson;
 	}
-	
+
 	/*==========================
 	 *  챌린지 결제
 	 *==========================*/
@@ -503,15 +523,15 @@ public class ChallengeAjaxController {
 		}
 		return mapJson;
 	}
-	
+
 	//채팅 메시지 읽어오기
 	@GetMapping("/challenge/join/chalReadChat")
 	@ResponseBody
 	public Map<String,Object> readChallengeChat(long chal_num,HttpSession session){
 		Map<String,Object> mapJson = new HashMap<>();
-		
+
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		
+
 		if(user == null) {
 			mapJson.put("result", "logout");
 		}else {
@@ -519,73 +539,73 @@ public class ChallengeAjaxController {
 			map.put("chal_num", chal_num);
 			map.put("mem_num", user.getMem_num());
 			List<ChallengeChatVO> chatList = challengeService.selectChallengeChat(map);
-			
+
 			mapJson.put("result", "success");
 			mapJson.put("chatList", chatList);
 			mapJson.put("mem_num", user.getMem_num());
 		}
-				
+
 		return mapJson;
 	}
-	
+
 	/*==========================
 	 *  챌린지 좋아요
 	 *==========================*/
 	//챌린지 좋아요 읽기
-    @GetMapping("/challenge/getFav")
-    @ResponseBody
-    public Map<String,Object> getFav(ChallengeFavVO fav, HttpSession session){
-        log.debug("<<챌린지 좋아요 - ChallengeFavVO>> : " + fav);
-        
-        Map<String,Object> mapJson = new HashMap<>();
-        
-        MemberVO user = (MemberVO)session.getAttribute("user");
-        if(user == null) {
-            mapJson.put("status", "noFav");
-        }else {
-            // 로그인된 회원번호 셋팅
-            fav.setMem_num(user.getMem_num());
-            ChallengeFavVO challengeFav = challengeService.selectFav(fav);
-            
-            if(challengeFav != null) {
-                mapJson.put("status", "yesFav");
-            }else {
-                mapJson.put("status", "noFav");
-            }
-        }
-        mapJson.put("count", challengeService.selectFavCount(fav.getChal_num()));
-        
-        return mapJson;
-    }
-    
-    //챌린지 좋아요 등록/삭제
-    @PostMapping("/challenge/writeFav")
-    @ResponseBody
-    public Map<String,Object> writeFav(ChallengeFavVO fav, HttpSession session){
-        log.debug("<<챌린지 좋아요 - 등록/삭제>> : " + fav);
-        
-        Map<String,Object> mapJson = new HashMap<>();
-        
-        MemberVO user = (MemberVO)session.getAttribute("user");
-        if(user == null) {
-            mapJson.put("result", "logout");
-        }else {
-            // 로그인된 회원번호 셋팅
-            fav.setMem_num(user.getMem_num());
-            ChallengeFavVO challengeFav = challengeService.selectFav(fav);
-            if(challengeFav != null) {
-                // 등록 -> 삭제
-                challengeService.deleteFav(fav);
-                mapJson.put("status", "noFav");
-            }else {
-                // 등록
-                challengeService.insertFav(fav);
-                mapJson.put("status", "yesFav");
-            }
-            mapJson.put("result", "success");
-            mapJson.put("count", challengeService.selectFavCount(fav.getChal_num()));
-        }
-        
-        return mapJson;
-    }
+	@GetMapping("/challenge/getFav")
+	@ResponseBody
+	public Map<String,Object> getFav(ChallengeFavVO fav, HttpSession session){
+		log.debug("<<챌린지 좋아요 - ChallengeFavVO>> : " + fav);
+
+		Map<String,Object> mapJson = new HashMap<>();
+
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("status", "noFav");
+		}else {
+			// 로그인된 회원번호 셋팅
+			fav.setMem_num(user.getMem_num());
+			ChallengeFavVO challengeFav = challengeService.selectFav(fav);
+
+			if(challengeFav != null) {
+				mapJson.put("status", "yesFav");
+			}else {
+				mapJson.put("status", "noFav");
+			}
+		}
+		mapJson.put("count", challengeService.selectFavCount(fav.getChal_num()));
+
+		return mapJson;
+	}
+
+	//챌린지 좋아요 등록/삭제
+	@PostMapping("/challenge/writeFav")
+	@ResponseBody
+	public Map<String,Object> writeFav(ChallengeFavVO fav, HttpSession session){
+		log.debug("<<챌린지 좋아요 - 등록/삭제>> : " + fav);
+
+		Map<String,Object> mapJson = new HashMap<>();
+
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else {
+			// 로그인된 회원번호 셋팅
+			fav.setMem_num(user.getMem_num());
+			ChallengeFavVO challengeFav = challengeService.selectFav(fav);
+			if(challengeFav != null) {
+				// 등록 -> 삭제
+				challengeService.deleteFav(fav);
+				mapJson.put("status", "noFav");
+			}else {
+				// 등록
+				challengeService.insertFav(fav);
+				mapJson.put("status", "yesFav");
+			}
+			mapJson.put("result", "success");
+			mapJson.put("count", challengeService.selectFavCount(fav.getChal_num()));
+		}
+
+		return mapJson;
+	}
 }

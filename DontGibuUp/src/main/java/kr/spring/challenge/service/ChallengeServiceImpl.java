@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.spring.challenge.controller.ChallengeController;
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeFavVO;
@@ -17,6 +16,7 @@ import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 import lombok.extern.slf4j.Slf4j;
 
@@ -279,6 +279,12 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public void updateVerifyStatus(Long chal_ver_num) {
 		challengeMapper.updateVerifyStatus(chal_ver_num);		
+	}
+
+	@Override
+	public void insertVerifyReport(ChallengeVerifyRptVO chalVerifyRptVO) {
+		challengeMapper.insertVerifyReport(chalVerifyRptVO);
+		challengeMapper.updateReportStatus(chalVerifyRptVO.getChal_ver_num());
 	}
 	
 	//*챌린지 스케줄러*//

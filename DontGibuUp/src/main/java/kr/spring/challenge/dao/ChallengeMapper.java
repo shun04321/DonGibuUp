@@ -16,6 +16,7 @@ import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 
 @Mapper
@@ -69,9 +70,26 @@ public interface ChallengeMapper {
     public void deleteChallengeVerify(Long chal_ver_num);    
     //주별 인증 횟수 확인
     public int countWeeklyVerify(Map<String, Object> params);
-    //챌린지 인증 상태 변경
+    //챌린지 인증 상태 변경(성공 -> 실패)
     @Update("UPDATE chal_verify SET chal_ver_status=1 WHERE chal_ver_num=#{chal_ver_num}")
     public void updateVerifyStatus(Long chal_ver_num);
+    //챌린지 인증 상태 변경(실패 -> 성공)
+    @Update("UPDATE chal_verify SET chal_ver_status=0 WHERE chal_ver_num=#{chal_ver_num}")
+    public void recoverVerifyStatus(Long chal_ver_num);
+    
+    //*챌린지 인증 제보*//
+    //챌린지 인증 제보
+    @Select("INSERT INTO chal_verify_rpt (report_mem_num,chal_ver_num,reported_joi_num) VALUES (#{report_mem_num},#{chal_ver_num},#{reported_joi_num})")
+    public void insertVerifyReport(ChallengeVerifyRptVO chalVerifyRptVO);
+    //챌린지 인증 제보상태 변경
+    @Update("UPDATE chal_verify SET chal_ver_report=1 WHERE chal_ver_num=#{chal_ver_num}")
+    public void updateReportStatus(Long chal_ver_num);
+    //각 챌린지의 인증별 제보된 개수
+    @Select("SELECT COUNT(*) FROM chal_verify_rpt WHERE chal_ver_num=#{chal_ver_num}")
+    public Integer selectReportedVerifyCount(Long chal_ver_num);
+    //각 챌린지의 회원별 제보된 총 인증 개수
+    @Select("SELECT COUNT(DISTINCT chal_ver_num) FROM chal_verify_rpt WHERE reported_joi_num=#{reported_joi_num}")
+    public Integer selectReportedMemberCount(Long chal_joi_num);
     
     //*챌린지 후기*//
     @Select("SELECT chal_review_seq.nextval FROM dual")

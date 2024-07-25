@@ -193,11 +193,14 @@
 		SELECT * FROM(
 			SELECT a.*,rownum rnum FROM(
 				SELECT 
-					cj.*,m.mem_nick,md.mem_photo
+					cj.*,m.mem_nick,md.mem_photo,
+					(SELECT 
+						COUNT(DISTINCT cvr.chal_ver_num)
+     				 FROM chal_verify_rpt cvr
+     				 WHERE cvr.reported_joi_num = cj.chal_joi_num) reported_num
 				FROM chal_join cj
 				JOIN member m ON cj.mem_num = m.mem_num
 				LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num 
-				<!-- 제보(신고) 조인 -->
 				WHERE chal_num=#{chal_num}
 				<if test="chal_joi_num != null">
 				AND NOT cj.chal_joi_num=#{chal_joi_num}
@@ -299,7 +302,13 @@
 	<select id="selectChallengeVerifyList" parameterType="map" resultType="challengeVerifyVO">
 		SELECT * FROM(
 			SELECT a.*,rownum rnum FROM(
-				SELECT * FROM CHAL_VERIFY
+				SELECT 
+					cv.*,
+					(SELECT 
+						COUNT(*)
+     				 FROM chal_verify_rpt cvr
+     				 WHERE cvr.reported_joi_num = cv.chal_joi_num) reported_num 
+				FROM CHAL_VERIFY cv
 				WHERE chal_joi_num = #{chal_joi_num}
 				ORDER BY chal_reg_date DESC
 			)a

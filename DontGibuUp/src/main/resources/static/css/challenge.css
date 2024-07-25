@@ -239,6 +239,15 @@ span.upload_button {
 	color: white;
 	cursor: pointer;
 }
+/*챌린지 제보*/
+.status.report{
+	background-color:#FF8F1F;
+	padding: 2px 5px;
+	border-radius: 3px;
+	color: white;
+	font-size: 12px;
+}
+
 /* SY */
 /* 챌린지 상세 */
 .challenge-detail {

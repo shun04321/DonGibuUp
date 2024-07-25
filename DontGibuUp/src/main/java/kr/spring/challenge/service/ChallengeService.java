@@ -10,6 +10,7 @@ import kr.spring.challenge.vo.ChallengeJoinVO;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 
 public interface ChallengeService {
@@ -54,7 +55,10 @@ public interface ChallengeService {
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
     public void deleteChallengeVerify(Long chal_ver_num);
     public int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
+    //리더의 챌린지 인증 취소
     public void updateVerifyStatus(Long chal_ver_num);
+    //회원의 챌린지 인증 제보
+    public void insertVerifyReport(ChallengeVerifyRptVO chalVerifyRptVO);
     
 	//*챌린지 후기*//
     public void insertChallengeReview(ChallengeReviewVO chalReviewVO);

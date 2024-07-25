@@ -100,6 +100,8 @@ $(function() {
 					alert('접근 권한이 없습니다.')
 				}else if(param.result == 'success'){
 					$this.hide();
+					//$this.text('취소');
+					//$this.attr('class','recoverVerify');
 					$('.status.success').text('실패');
 					$('.status.success').attr('class','status failure');
 				}
@@ -112,6 +114,7 @@ $(function() {
 	
 	//회원의 인증 제보
 	$(document).on('click','.reportVerify',function(){
+		let button = $(this);
 		let chal_ver_num = $(this).data('ver-num');
 		let rpt_joi_num = $(this).data('joi-num');
 		$.ajax({
@@ -124,7 +127,14 @@ $(function() {
 			contentType: 'application/json',
 			dataType:'json',
 			success:function(param){
-				alert('success');
+				if(param.result == 'logout'){
+					alert('로그인 후 이용해주세요.');
+				}else if(param.result == 'success'){
+					alert('인증을 제보하셨습니다.');
+					button.hide();
+					//인증별 제보된 숫자 증가시키기
+					
+				}								
 			},
 			error:function(){
 				alert('네트워크 오류');
@@ -143,6 +153,7 @@ $(function() {
 				let output = '';
 				output += '<div class="memberList">';
 				$(param.list).each(function(index, item) {
+					console.log('item.reported_num >>'+item.reported_num);
 					output += '<div class="joinMem_container">';
 					if (item.mem_photo) {
 						output += '<img class="joinMem responsive-image" src="' + contextPath + '/upload/' + item.mem_photo + '" width="40" height="40">'; //회원 프로필
@@ -152,6 +163,9 @@ $(function() {
 					output += '<span class="joinMem">';
 					output += item.mem_nick;
 					output += '</span>';
+					if(item.reported_num > 0){
+						output += `<span class="status report">⛔ (${item.reported_num})</span>`;
+					}					
 					output += '<span class="joinMem arrow">';
 					output += '<a href="verifyMemberList?chal_joi_num=' + item.chal_joi_num + '" class="each_verify_list"> > </a>';
 					output += '</span>';
@@ -179,7 +193,6 @@ $(function() {
 				let now = new Date();
 				now.setHours(0, 0, 0, 0);
 				let chal_edate = new Date(param.chal_edate);
-				console.log('chal_edate >> '+chal_edate.getTime());
 				if (!param.isUser) {
 					output += `<div class="memberInfo">`;
 					if (param.member.mem_photo) {
@@ -188,8 +201,8 @@ $(function() {
 						output += '<img class="joinMem responsive-image" src="' + contextPath + '/images/basicProfile.png" width="40" height="40">'; //회원 프로필 기본 이미지
 					}
 					output += `<span class="joinMem">${param.member.mem_nick}</span>
-										 <a href="joinMemberList" class="others_verify_list"> > </a>
-										 </div>
+							   <a href="joinMemberList" class="others_verify_list"> > </a>
+							   </div>
 					`;
 				}
 				if (param.count == 0) {

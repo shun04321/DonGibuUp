@@ -31,5 +31,6 @@ public class ChallengeVerifyVO {
     
     //추가 멤버 필드
     private long chal_num;
+    private int reported_num;           //인증의 제보된 수
 
 }
