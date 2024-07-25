@@ -8,6 +8,32 @@
 	cursor: pointer;
 }
 
+/*마이페이지 - 회원 총기부 요약*/
+#member_total_item {
+	padding: 2rem;
+	background-color: #faf7f7;
+	border-radius: 10px;
+	color: #4f4f4f;
+	font-weight: 600;
+	margin-bottom: 5rem;
+}
+
+.total-menu {
+	padding: 1rem 0 2rem 0;
+}
+
+.total-label {
+	font-size: 0.875rem;
+}
+
+.border-right {
+	border-right: 1px solid #c2c2c2;
+}
+
+.border-right-last-none {
+	border-right: none;
+}
+
 /*마이페이지 - 회원정보*/
 .my-photo {
 	border-radius: 50%;

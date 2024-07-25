@@ -22,7 +22,7 @@
 				<tr>
 					<th>문의번호</th>
 					<th>분류</th>
-					<th>제목</th>
+					<th class="col-6">제목</th>
 					<th>회원</th>
 					<th>일자</th>
 					<th>답변</th>
