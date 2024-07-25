@@ -4,7 +4,7 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 
-<!-- <script type="text/javascript">
+<script type="text/javascript">
 	$(document).ready(function() {
 		$('.user-faq-item').on('click', function() {
 			var $this = $(this);
@@ -21,7 +21,7 @@
 			}
 		});
 	});
-</script> -->
+</script>
 
 <section class="news-detail-header-section text-center nanum">
 	<div class="section-overlay"></div>

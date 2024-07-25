@@ -66,17 +66,23 @@ $(function() {
 					} else if (faq_category == 4) {
 						faq_category_text = '기타';
 					}
+					
+					// 입력된 faq_answer의 줄바꿈을 <br>로 변환
+		            let formatted_faq_answer = faq_answer.replace(/\n/g, '<br>');
 
-					let output = '';
-					output += '<li class="faq-item">';
-					output += `<div class="faq-category-text">${faq_category_text}</div>`;
-					output += `<h4 class="faq-question-text">Q. ${faq_question}</h4>`;
-					output += `<div class="faq-answer-text">A. ${faq_answer}</div>`;
-					output += '<div class="align-right">';
-					output += `<button class="modifyBtn" data-num="${faq_num}">수정</button>`;
-					output += ` <button class="deleteBtn" data-num="${faq_num}">삭제</button>`;
-					output += '</div>';
-					output += '</li>';
+					let output = 
+					`<div class="me-3"><img src="${contextPath}/images/letter-q.png" width="40rem"></div>
+						<div class="faq-content-div">
+							<div class="faq-category-text mb-1">${faq_category_text}</div>
+							<div class="faq-question-text">${faq_question}</div>
+							<div class="mt-3">
+								<div class="faq-answer-text">${formatted_faq_answer}</div>
+								<div class="button-container">
+									<input type="button" class="modifyBtn" data-num="${faq_num}" value="수정"/>
+									<input type="button" class="deleteBtn" data-num="${faq_num}" value="삭제"/>				
+								</div>
+							</div>
+						</div>`;
 
 					$('#faq_list').append(output);
 
@@ -111,33 +117,32 @@ $(function() {
 		currentItem = faqItem;
 
 		let faq_category = faqItem.find('.faq-category-text').text();
-		let faq_question = faqItem.find('.faq-question-text').text().substring(2);
-		let faq_answer = faqItem.find('.faq-answer-text').text().substring(2);
+		let faq_question = faqItem.find('.faq-question-text').text();
+		let faq_answer = faqItem.find('.faq-answer-text').html().replace(/<br\s*\/?>/gm, "\n");
 		let faq_num = $(this).data('num');
 
 		modifyingFaqNum = faq_num;
 
-		let modifyUI = `
-				        <ul>
-				            <li class="faq-category-text">
-								${faq_category}
-				            </li>
-				            <li>
-				            	<input type="hidden" id="mfaq_num" value="${faq_num}"> 
-				            </li>
-				            <li>
-				                <input id="mfaq_question" type="text" placeholder="질문" value="${faq_question}">
-				                <span id="mquestion_check_msg"></span>    
-				            </li>
-				            <li>
-				                <textarea id="mfaq_answer" rows="5" cols="60" placeholder="내용">${faq_answer}</textarea>
+		let modifyUI =     
+				   `<li class="d-flex col-lg-12 mt-0">
+						<div class="me-3"><img src="${contextPath}/images/letter-q.png" width="40rem"></div>
+						<div class="faq-content-div">
+							<div class="faq-category-text mb-1">${faq_category}</div>
+							<input type="hidden" id="mfaq_num" value="${faq_num}">
+							<div class="faq-question-text col-12">
+				                <input id="mfaq_question" type="text" class="form-control col-12" placeholder="질문" value="${faq_question}">
+				                <span id="mquestion_check_msg"></span>
+							</div>
+							<div class="faq-answer-text mt-3">
+				                <textarea id="mfaq_answer" class="form-control col-12" placeholder="내용">${faq_answer}</textarea>
 				                <span id="manswer_check_msg"></span>
-				            </li>
-				            <li class="align-right">
-				                <input class="processModifyBtn" type="button" value="수정">    
-				                <button id="cancel_${faq_num}" class="cancelBtn">취소</button>
-				            </li>
-				        </ul>`;
+								<div class="button-container mt-3">
+					                <input class="processModifyBtn" type="button" value="수정">    
+				                	<input type="button" id="cancel_${faq_num}" class="cancelBtn" value="취소"/>
+								</div>
+							</div>
+						</div>
+					</li>`;
 
 		faqItem.html(modifyUI);
 
@@ -181,14 +186,22 @@ $(function() {
 					location.href = contextPath + '/member/login';
 				} else if (param.result == 'success') {
 
-					let output = '';
-					output += `<div class="faq-category-text">${faq_category}</div>`;
-					output += `<h4 class="faq-question-text">Q. ${faq_question}</h4>`;
-					output += `<div class="faq-answer-text">A. ${faq_answer}</div>`;
-					output += '<div class="align-right">';
-					output += `<button class="modifyBtn" data-num="${faq_num}">수정</button>`;
-					output += ` <button class="deleteBtn" data-num="${faq_num}">삭제</button>`;
-					output += '</div>';
+					// 입력된 faq_answer의 줄바꿈을 <br>로 변환
+		            let formatted_faq_answer = faq_answer.replace(/\n/g, '<br>');
+
+					let output = 
+						`<div class="me-3"><img src="${contextPath}/images/letter-q.png" width="40rem"></div>
+						<div class="faq-content-div">
+							<div class="faq-category-text mb-1">${faq_category}</div>
+							<div class="faq-question-text">${faq_question}</div>
+							<div class="mt-3">
+								<div class="faq-answer-text">${formatted_faq_answer}</div>
+								<div class="button-container">
+									<input type="button" class="modifyBtn" data-num="${faq_num}" value="수정"/>
+									<input type="button" class="deleteBtn" data-num="${faq_num}" value="삭제"/>				
+								</div>
+							</div>
+						</div>`;
 
 
 					// 현재 수정 중인 요소를 초기화
@@ -223,29 +236,32 @@ $(function() {
 		let $deleteButton = $(this); // 클릭된 버튼을 변수에 저장
 		let faq_num = $deleteButton.data('num');
 
-		$.ajax({
-			url: 'deleteFaq',
-			type: 'post',
-			data: { faq_num: faq_num },
-			dataType: 'json',
-			success: function(param) {
-				if (param.result == 'logout') {
-					alert('로그인 후 이용해주세요');
-					location.href = contextPath + '/member/login';
-				} else if (param.result == 'success') {
-					// 저장한 변수 사용
-					$deleteButton.closest('.faq-item').remove(); // .faq-item 요소를 삭제
-				} else if (param.result == 'noAuthority') {
-					alert('관리자 권한이 없습니다');
-					location.reload();
-				} else {
-					alert('질문 삭제 오류 발생');
-				}
-			},
-			error: function() {
-				alert('네트워크 오류 발생');
-			}
-		});
+	    // 삭제 확인 메시지
+	    if (confirm('삭제하시겠습니까?')) {
+	        $.ajax({
+	            url: 'deleteFaq',
+	            type: 'post',
+	            data: { faq_num: faq_num },
+	            dataType: 'json',
+	            success: function(param) {
+	                if (param.result == 'logout') {
+	                    alert('로그인 후 이용해주세요');
+	                    location.href = contextPath + '/member/login';
+	                } else if (param.result == 'success') {
+	                    // 저장한 변수 사용
+	                    $deleteButton.closest('.faq-item').remove(); // .faq-item 요소를 삭제
+	                } else if (param.result == 'noAuthority') {
+	                    alert('관리자 권한이 없습니다');
+	                    location.reload();
+	                } else {
+	                    alert('질문 삭제 오류 발생');
+	                }
+	            },
+	            error: function() {
+	                alert('네트워크 오류 발생');
+	            }
+	        });
+	    }
 	});
 	
 	
@@ -268,10 +284,10 @@ function updateRadioButtons(category) {
         } else if (input.val() == category) {
             // 카테고리 값이 특정 값일 때 해당 라디오 버튼을 선택
             input.prop('checked', true);
-            $(this).show(); // 선택된 버튼은 표시
+            $(this).show().removeClass('col').addClass('col-2');
         } else {
             // 카테고리 값이 다른 값일 때 해당 라디오 버튼을 숨김
-            $(this).hide(); 
+            $(this).hide();
         }
     });
 }
