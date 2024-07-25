@@ -54,10 +54,12 @@
         </ul>
         <ul>
         	<li>참여금 <span id="chal_fee">${challenge.chal_fee}</span>원</li>
-        	<li>보유 포인트 <span>포인트 표시할 예정</span></li>
-        	<li>사용할 포인트 <input type="number"></li>
+        	<li>보유 포인트 <span class="mem-point">${mem_point}</span>p</li>
+        	<li>사용할 포인트 
+        		<input type="text" class="used-point">p
+        	</li>
         	<hr width="100%" size="1" noshade="noshade">
-        	<li>결제금액 <span>최종 금액 표시할 예정</span></li>
+        	<li>결제금액 <span class="">최종 금액 표시할 예정</span></li>
         </ul>
         <div class="align-center">
             결제 조건 및 서비스 약관에 동의합니다

@@ -198,7 +198,11 @@ public class ChallengeController {
 
 		ChallengeVO vo = (ChallengeVO) session.getAttribute("challengeVO");
 		model.addAttribute("challenge", vo);
-
+		
+		//회원의 포인트 정보
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		model.addAttribute("mem_point",member.getMem_point());
+		
 		return "leaderJoinForm";
 	}    
 	//챌린지 참가 및 결제
