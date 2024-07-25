@@ -21,9 +21,8 @@ public interface SubscriptionMapper {
 	public SubscriptionVO getSubscription(long sub_num);
 	//정기기부 종료
 	public void endSubscription(long sub_num);
-	//정기기부 수정 (결제일, 기부금)
-	
-	//정기기부 수정 (결제 수단)
+	//결제수단 변경
+	public void modifyPayMethod(SubscriptionVO subscriptionVO);
 	
 	//정기기부 중단
 	@Update("UPDATE subscription SET sub_status=1, cancel_date=SYSDATE WHERE sub_num=#{sub_num}")

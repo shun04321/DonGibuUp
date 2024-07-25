@@ -13,9 +13,7 @@
 <script src="${pageContext.request.contextPath}/js/videoAdapter.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/category.css"
-	type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/category.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reg_pay.css" type="text/css">
 <title>Subscription Form</title>
 <link
@@ -27,7 +25,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-	crossorigin="anonymous"></script>	
+	crossorigin="anonymous"></script>
 </head>
 	<img
 		src="${pageContext.request.contextPath}/upload/${category.dcate_banner}"
@@ -68,7 +66,7 @@
 				data-bs-target="#staticBackdrop">정기기부 신청</button>
 		</div>
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static">
-			<div class="modal-dialog">
+			 <div class="modal-dialog modal-lg-custom">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">
@@ -161,11 +159,12 @@
 
 							<!-- 이미 등록된 카드 목록, 새 카드 등록 -->
 							<div id="card-options"  style="display: none;">
+							<label>내가 보유한 카드</label>
 								<c:forEach var="card" items="${list}">
 									<c:if test="${!empty card.card_nickname}">
 										<div>
 											<input type="radio" class="oldCard"
-												name="selectedCard" value="${card.card_nickname}"><label
+												name="selectedCard" value="${card.card_nickname}"> <label
 												for="card_${card.card_nickname}"> ${card.card_nickname}</label>
 										</div>
 									</c:if>

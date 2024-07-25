@@ -31,33 +31,20 @@ ul {
 .user-faq-item {
 	list-style: none;
 }
-	
+
 #faq_list {
 	padding: 0;
 }
 
-.faq-item {
+/* #insert_faq {
+	width: 75%;
 	border: 1px solid #000000;
 	border-radius: 6px;
 	padding: 5px 10px;
-	margin: 10px 0;
-}
-
-#insert_faq {
-	width: 97%;
-	border: 1px solid #000000;
-	border-radius: 6px;
-	padding: 5px 10px;
-	margin: 10px 0;
-}
-
-.radio-option {
-	display: flex;
-	width: 120px;
-}
-
+	margin: 4rem 0 2rem 3.2rem;
+} */
 .faq-category-text {
-	color:#597081;
+	color: #597081;
 	font-size: 0.8rem;
 }
 
@@ -65,15 +52,59 @@ ul {
 	border-bottom: 1px solid #cfcfcf;
 	margin: 0.5rem 0;
 	padding: 0.6rem 0.8rem;
+	cursor: pointer;
 }
 
-.user-faq-item {
-	cursor: pointer;
+.faq-content-div {
+	width: 75%;
 }
 
 .faq-question-text {
 	font-size: 1.2rem;
 	font-weight: 600;
+}
+
+.tag-blocks-admin .tags-block-link {
+	border: 1px solid #a19f9f !important;
+}
+
+.tag-blocks-admin .tags-block-link:hover {
+	border: 1px solid #292929 !important;
+}
+
+.button-container {
+	text-align: right; /* Aligns the content to the right */
+}
+
+.button-container .modifyBtn, .button-container .deleteBtn {
+	margin-left: 5px; /* Adds some space between the buttons */
+}
+
+.form-div {
+	margin: 4rem 0 2rem 3.2rem;
+}
+
+.form-control {
+	height: 3rem !important;
+}
+
+#faq_answer, #mfaq_answer {
+	height: 26rem !important;
+	resize: none;
+}
+
+.custom-form-label {
+	font-size: 1.2rem;
+}
+
+.custom-form-check-label {
+	margin: -0.3rem 0 0 0 !important;
+	color: #6b6b6b;
+	font-size: 0.9rem !important;
+}
+
+.form-check-radio {
+	display: flex;
 }
 
 /*신고*/

@@ -34,4 +34,6 @@ public interface SubscriptionService {
     public List<SubscriptionVO> getSubscriptionByMem_numWithCategories(long mem_num);
     
     public int getSubscriptionCount(long mem_num);
+    //정기기부 결제수단 변경
+    public void modifyPayMethod(SubscriptionVO subscriptionVO);
 }

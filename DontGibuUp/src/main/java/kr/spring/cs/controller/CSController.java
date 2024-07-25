@@ -57,6 +57,10 @@ public class CSController {
 		
 
 		List<FaqVO> list = csService.selectFaqList(map);
+		
+		for (FaqVO faq : list) {
+			faq.setFaq_answer(StringUtil.useBrNoHTML(faq.getFaq_answer()));
+		}
 
 		model.addAttribute("list", list);
 
