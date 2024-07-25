@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.spring.challenge.controller.ChallengeController;
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeFavVO;
@@ -17,7 +18,9 @@ import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 public class ChallengeServiceImpl implements ChallengeService{
@@ -277,5 +280,42 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public void updateVerifyStatus(Long chal_ver_num) {
 		challengeMapper.updateVerifyStatus(chal_ver_num);		
 	}
+	
+	//*챌린지 스케줄러*//
+    @Override
+    public void processTodayExpiredChallenges() {
+        try {
+            LocalDate today = LocalDate.now();
+            List<ChallengeVO> todayExpiredChallenges = challengeMapper.getTodayExpiredChallenges(today);
 
+            for (ChallengeVO challenge : todayExpiredChallenges) {
+                try {
+                    processChallenge(challenge);
+                } catch (Exception e) {
+                    // 개별 챌린지 처리 중 예외가 발생한 경우
+                    log.error("챌린지 ID {} 처리 중 오류 발생: {}", challenge.getChal_num(), e.getMessage(), e);
+                }
+            }
+        } catch (Exception e) {
+            // 메서드 전체에서 예외가 발생한 경우
+            log.error("오늘 종료된 챌린지 처리 중 오류 발생: {}", e.getMessage(), e);
+        }
+    }
+
+    private void processChallenge(ChallengeVO challenge) {
+        try {
+            //각 챌린지에 대한 종료 작업
+            //1. 참가자에게 환급 포인트 지급
+            //2. 챌린지 상태 업데이트
+
+            //3. 단체 채팅방 삭제
+        	long chal_num = challenge.getChal_num();
+            challengeMapper.deleteChalChatRead(chal_num);
+            challengeMapper.deleteChallengeChat(chal_num);
+
+            log.info("챌린지 ID {}의 채팅방 및 채팅 기록 삭제 완료", chal_num);
+        } catch (Exception e) {
+            log.error("챌린지 ID {} 처리 중 예외 발생: {}", challenge.getChal_num(), e.getMessage(), e);
+        }
+    }
 }

@@ -76,4 +76,7 @@ public interface ChallengeService {
     public Integer selectFavCount(Long chal_num);
     public void insertFav(ChallengeFavVO fav);
     public void deleteFav(ChallengeFavVO fav);
+    
+    //*챌린지 스케줄러*//
+    public void processTodayExpiredChallenges();
 }

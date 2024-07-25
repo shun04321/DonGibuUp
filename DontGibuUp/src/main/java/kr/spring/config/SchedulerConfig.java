@@ -7,7 +7,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @Configuration
 @EnableScheduling
-@ComponentScan(basePackages = "kr.spring.scheduler") //스케줄러가 있는 패키지 경로
+@ComponentScan(basePackages = "kr.spring.challenge.scheduler") //스케줄러가 있는 패키지 경로
 public class SchedulerConfig {
 
     //스레드 풀을 가진 스케줄러를 정의

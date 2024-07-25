@@ -15,10 +15,14 @@ public class ChallengeScheduler {
     @Autowired
     private ChallengeService challengeService;
 
-    //매일 자정에 챌린지 상태를 업데이트하는 스케줄러
-    @Scheduled(cron = "0 0 0 * * *")
-    public void updateChallengeStatus() {
-        logger.info("챌린지 상태 업데이트 스케줄러 실행");
-        //challengeService.checkAndProcessExpiredChallenges();
+    //매일 23:59:59에 당일 종료된 챌린지를 처리하는 스케줄러
+    @Scheduled(cron = "59 59 23 * * *")
+    public void processTodayExpiredChallenges() {
+        try {
+            challengeService.processTodayExpiredChallenges();
+            logger.info("오늘 종료된 챌린지를 성공적으로 처리했습니다.");
+        } catch (Exception e) {
+            logger.error("오늘 종료된 챌린지 처리 중 오류 발생: {}", e.getMessage(), e);
+        }
     }
 }

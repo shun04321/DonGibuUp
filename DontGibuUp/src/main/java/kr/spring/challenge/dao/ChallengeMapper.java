@@ -1,5 +1,6 @@
 package kr.spring.challenge.dao;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -111,4 +112,9 @@ public interface ChallengeMapper {
     public void insertFav(ChallengeFavVO fav);
     @Delete("DELETE FROM chal_fav WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
     public void deleteFav(ChallengeFavVO fav);
+    
+    //*챌린지 스케줄러*//
+    //오늘 종료된 챌린지 조회
+    @Select("SELECT * FROM challenge WHERE chal_edate = #{today}")
+    public List<ChallengeVO> getTodayExpiredChallenges(LocalDate today);
 }
