@@ -25,8 +25,8 @@ public class adminController {
     }
 
     @PostMapping("/admin/updateDeliveryStatus")
-    public String updateDeliveryStatus(@RequestParam("purchaseNum") int purchaseNum, @RequestParam("deliveryStatus") String deliveryStatus) {
-        purchaseService.updateDeliveryStatus(purchaseNum, deliveryStatus);
+    public String updateDeliveryStatus(@RequestParam("imp_uid") String impUid, @RequestParam("deliveryStatus") String deliveryStatus) {
+        purchaseService.updateDeliveryStatusByImpUid(impUid, deliveryStatus);
         return "redirect:/admin/purchaseList";
-}
+    }
 }

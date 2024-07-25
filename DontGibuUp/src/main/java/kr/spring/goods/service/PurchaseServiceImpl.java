@@ -28,14 +28,18 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     @Transactional
     public void insertPurchaseWithCartItems(PurchaseVO purchaseVO) {
+    	 Long purchaseNum = purchaseMapper.getSeq();
+         purchaseVO.setPurchaseNum(purchaseNum);
         // 1. purchase 테이블에 데이터 삽입
         purchaseMapper.insertPurchaseWithCartItems(purchaseVO);
+        log.debug("Inserted purchase: " + purchaseVO);
+        
      // 2. 각 CartVO에 purchaseNum 설정 및 purchase_item 테이블에 삽입
         for (CartVO cartItem : purchaseVO.getCart_items()) {
             cartItem.setPurchase_num(purchaseVO.getPurchaseNum());
             purchaseMapper.insertPurchaseItems(cartItem);
+            log.debug("Inserted purchase item: " + cartItem);
         }
-   
     }
     @Override
     public List<CartVO> getPurchaseItems(long purchase_num) {
@@ -69,7 +73,12 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void updateDeliveryStatus(int purchaseNum, String deliveryStatus) {
         purchaseMapper.updateDeliveryStatus(purchaseNum, deliveryStatus);
     }
-
+    
+    @Override
+    public void updateDeliveryStatusByImpUid(String impUid, String deliveryStatus) {
+        purchaseMapper.updateDeliveryStatusByImpUid(impUid, deliveryStatus);
+    }
+    
     @Override
     public void updateRefundStatus(String impUid, int status) {
         purchaseMapper.updateRefundStatus(impUid, status);
@@ -77,7 +86,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 
 	@Override
-	public long getSeq() {
+	public Long getSeq() {
 		return purchaseMapper.getSeq();
 	}
 

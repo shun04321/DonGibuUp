@@ -30,6 +30,13 @@ public class PurchaseVO {
     // 추가된 부분
     private int totalAmount;
     
+    private Long cartItemNum;
+    private String cartItemPrice;
+    private int cartQuantity;
+    private String cartItemName;
+    private String cartItemPhoto;
+    
+    
     private List<CartVO> cart_items;
     
     public List<CartVO> getCart_items() {

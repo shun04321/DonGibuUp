@@ -4,9 +4,26 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!-- 게시판 글쓰기 시작 -->
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<!-- include ckeditor js -->
 <script src="${pageContext.request.contextPath}/js/ckeditor.js"></script>
 <script src="${pageContext.request.contextPath}/js/uploadAdapter.js"></script>
+<!-- CSS FILES -->
+    <link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+     <section class="cta-section section-padding section-bg">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-5 col-12 ms-auto">
+                <h2 class="mb-0">
+                    Make an impact. <br> Save lives.
+                </h2>
+            </div>
+            <div class="col-lg-5 col-12">
+                <a href="#" class="me-4">Make a donation</a> <a href="#section_4" class="custom-btn btn smoothscroll">Become a volunteer</a>
+            </div>
+        </div>
+    </div>
+</section>
 <div class="page-main">
 	<h2>글쓰기</h2>
 	<form:form action="write" id="goods_register"

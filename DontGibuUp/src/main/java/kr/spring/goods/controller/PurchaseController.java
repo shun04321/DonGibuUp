@@ -240,7 +240,7 @@ public class PurchaseController {
             String buyerName = (String) data.get("buyer_name");
             
             
-            long setSeq = 0l;
+            Long setSeq = 0L;
             log.debug("impUid : " + impUid);
             log.debug("merchantUid : " + merchantUid);
             log.debug("amount : " + amount);
@@ -251,12 +251,12 @@ public class PurchaseController {
 
             // 세션 데이터 가져오기
             MemberVO member = (MemberVO) session.getAttribute("user");
-
+            
             if (member == null) {
                 mapJson.put("result", "logout");
             } else {
-            	setSeq = purchaseService.getSeq();
-                // 결제 정보 저장
+            	 setSeq = purchaseService.getSeq();
+                log.debug("Generated Sequence: " + setSeq);
             	
                 PurchaseVO purchaseVO = new PurchaseVO();
                 purchaseVO.setPurchaseNum(setSeq);
@@ -269,25 +269,12 @@ public class PurchaseController {
                 purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
                 //
                 
-             // cart_items 리스트 처리
+                // cart_items 리스트 처리
                 List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
                 try {
                 List<CartVO> cartItemList = new ArrayList<>();
 
-                for (Map<String, Object> item : cartItems) {
-                    CartVO cartVO = new CartVO();
-                    cartVO.setItem_num((Long) item.get("item_num"));
-                    cartVO.setCart_quantity((Integer) item.get("cart_quantity"));
-                    cartVO.setPrice((Integer) item.get("price"));
-
-                    cartItemList.add(cartVO);
-                }
-
-                purchaseVO.setCart_items(cartItemList); // purchaseVO에 cart_items 설정
-                
-                
-                //
-                              
+                purchaseVO.setCart_items(cartItemList); // purchaseVO에 cart_items 설정         
 
                     purchaseService.insertPurchaseWithCartItems(purchaseVO);
                     mapJson.put("result", "success");

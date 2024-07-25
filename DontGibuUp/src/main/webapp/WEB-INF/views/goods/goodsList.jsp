@@ -22,7 +22,10 @@
 		</div>
 	</div>
 </section>
-
+<!-- CSS FILES -->
+    <link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
 <div class="page-main">
 	<h2>상품 목록</h2>
 	<div>

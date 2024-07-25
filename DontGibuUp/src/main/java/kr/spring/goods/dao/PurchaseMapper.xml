@@ -40,16 +40,48 @@
     VALUES (#{purchase_num}, #{item_num}, #{cart_quantity}, #{price})
 </insert>
 	
-    <update id="updateDeliveryStatus" parameterType="map">
+    <update id="updateDeliveryStatus">
         UPDATE purchase
         SET delivery_status = #{deliveryStatus}
         WHERE purchase_num = #{purchaseNum}
     </update>
 
-    <select id="getAllPurchases" resultType="kr.spring.goods.vo.PurchaseVO">
-        SELECT p.purchase_num, p.mem_num, p.item_num, i.item_name, i.item_photo, p.imp_uid, p.pay_price AS amount, p.pay_date AS payDate, p.pay_status AS payStatus, p.delivery_status AS deliveryStatus
+    <update id="updateDeliveryStatusByImpUid">
+        UPDATE purchase
+        SET delivery_status = #{deliveryStatus}
+        WHERE imp_uid = #{impUid}
+    </update>
+
+<!-- ResultMap to map purchase and cart items -->
+    <resultMap id="purchaseResultMap" type="kr.spring.goods.vo.PurchaseVO">
+        <id property="purchaseNum" column="purchase_num"/>
+        <result property="memNum" column="mem_num"/>
+        <result property="item_num" column="item_num"/>
+        <result property="item_name" column="item_name"/>
+        <result property="item_photo" column="item_photo"/>
+        <result property="imp_uid" column="imp_uid"/>
+        <result property="amount" column="amount"/>
+        <result property="payDate" column="payDate"/>
+        <result property="payStatus" column="payStatus"/>
+        <result property="deliveryStatus" column="deliveryStatus"/>
+        <collection property="cart_items" column="purchase_num" select="getPurchaseItems"/>
+    </resultMap>
+
+
+    <select id="getAllPurchases" resultMap="purchaseResultMap">
+        SELECT p.purchase_num, 
+               p.mem_num, 
+               p.item_num, 
+               i.item_name, 
+               i.item_photo, 
+               p.imp_uid, 
+               p.pay_price AS amount, 
+               p.pay_date AS payDate, 
+               p.pay_status AS payStatus, 
+               p.delivery_status AS deliveryStatus
         FROM purchase p
-        JOIN item i ON p.item_num = i.item_num
+        LEFT JOIN item i ON p.item_num = i.item_num
+        ORDER BY p.pay_date DESC
     </select>
     
    <insert id="insertPurchaseForCart" parameterType="kr.spring.goods.vo.PurchaseVO">

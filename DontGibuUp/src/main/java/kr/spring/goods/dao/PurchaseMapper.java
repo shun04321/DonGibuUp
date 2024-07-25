@@ -3,6 +3,7 @@ package kr.spring.goods.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import kr.spring.cart.vo.CartVO;
@@ -16,17 +17,15 @@ public interface PurchaseMapper {
 	    void updateRefundStatus(String impUid, int status);
 	    List<PurchaseVO> getAllPurchases();
 	    void updateDeliveryStatus(int purchaseNum, String deliveryStatus);
-	    void insertPurchaseForCart(PurchaseVO purchaseVO);
+	    Long insertPurchaseForCart(PurchaseVO purchaseVO);
 	    Long getNextPurchaseNum();
 	    List<CartVO> getPurchaseItems(long purchaseNum);
-	    
-	    
 	    void insertPurchaseWithCartItems(PurchaseVO purchaseVO);
 	    void insertPurchaseItems(CartVO cartItem);
 	    Long getLatestPurchaseNum(long memNum);
 	    @Select("SELECT purchase_seq.nextval FROM dual")
-	    long getSeq();
-
+	    Long getSeq();
+	    void updateDeliveryStatusByImpUid(@Param("impUid") String impUid, @Param("deliveryStatus") String deliveryStatus);
 	   
 
 }

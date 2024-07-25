@@ -24,13 +24,13 @@
         <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: ${goods.item_price}<br> 수량: <input type="number" id="quantity" name="quantity" value="1" min="1" max="${goods.item_stock}"></li>
     </ul>
     <div class="detail-content">${goods.item_detail}</div>
-    <div>ㅁ
+    <div>
         <input type="button" value="목록" onclick="location.href='list'">
 
         <form id="purchaseForm" method="post">
             <input type="hidden" name="merchantUid" value="${goods.item_num}_${System.currentTimeMillis()}">
-            <input type="hidden" name="amount" value="${goods.item_price}">
-            <input type="button" value="구매하기" onclick="buyNow()">
+            <input type="hidden" id="goods_do_price" name="amount" value="${goods.item_price}">
+            <input type="button" value="구매하기" id="buy_now_button">
         </form>
 
         <form id="cartForm" action="${pageContext.request.contextPath}/cart/insert" method="post">
@@ -45,4 +45,37 @@
     </div>
     <hr size="1" width="100%">
 </div>
+
+<!-- 모달 창 -->
+<div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">구매 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 포인트 입력 필드 -->
+                <div class="mb-3">
+                    <label for="goods_do_point" class="form-label">사용할 포인트</label>
+                    <input type="number" class="form-control calculate" id="goods_do_point" placeholder="사용할 포인트 입력">
+                </div>
+                <!-- 결제 금액 출력 필드 -->
+                <div class="mb-3">
+                    <label class="form-label">결제 금액</label>
+                    <span id="pay_sum"></span>
+                </div>
+                <!-- 보유 포인트 -->
+                <input type="hidden" id="mem_point" value="${sessionScope.user.mem_point}">
+                <!-- 결제 금액 메시지 -->
+                <div id="no"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="confirm_purchase_button">결제</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="${pageContext.request.contextPath}/js/goods/purchase.js"></script>

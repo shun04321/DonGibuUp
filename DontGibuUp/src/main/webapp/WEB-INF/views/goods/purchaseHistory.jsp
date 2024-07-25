@@ -2,6 +2,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+ <section class="cta-section section-padding section-bg">
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-5 col-12 ms-auto">
+                <h2 class="mb-0">
+                    Make an impact. <br> Save lives.
+                </h2>
+            </div>
+            <div class="col-lg-5 col-12">
+                <a href="#" class="me-4">Make a donation</a> <a href="#section_4" class="custom-btn btn smoothscroll">Become a volunteer</a>
+            </div>
+        </div>
+    </div>
+</section>
 <h2>구매내역</h2>
 <div>
     <input type="button" value="상품 목록" onclick="location.href='${pageContext.request.contextPath}/goods/list'">
