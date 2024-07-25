@@ -251,7 +251,7 @@ public class PurchaseController {
 
             // 세션 데이터 가져오기
             MemberVO member = (MemberVO) session.getAttribute("user");
-            
+            log.debug("<<장바구니 결제>> - member : " + member);
             if (member == null) {
                 mapJson.put("result", "logout");
             } else {
