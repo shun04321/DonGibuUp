@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 회원 관리 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
@@ -42,8 +43,8 @@
 			<td class="align-center">${subscription.sub_num}</td>
 			<td class="align-center"><a href="detail?mem_num=${subscription.mem_num}">${subscription.mem_num} / ${subscription.sub_name}</a></td>
 			<td class="align-center">${subscription.dcate_name} / ${subscription.dcate_charity}</td>
-			<td class="align-center">${subscription.sub_price}</td>
-			<td class="align-center">${subscription.sub_ndate}</td>
+			<td class="align-center"><fmt:formatNumber value="${subscription.sub_price}" type="number" pattern="#,##0"/>원</td>
+			<td class="align-center">매월 ${subscription.sub_ndate}일</td>
 			<td class="align-center" class="mem-'dstatus">
 				<c:choose>
                     <c:when test="${subscription.sub_method == 'card'}">
