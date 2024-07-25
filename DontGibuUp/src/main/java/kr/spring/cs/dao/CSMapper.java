@@ -18,7 +18,7 @@ public interface CSMapper {
 	//문의 작성
 	public void insertInquiry(InquiryVO inquiryVO);
 	//문의 상세
-	@Select("SELECT * FROM inquiry WHERE inquiry_num=#{inquiry_num}")
+	@Select("SELECT a.*, b.mem_nick FROM inquiry a JOIN member b ON a.mem_num=b.mem_num WHERE a.inquiry_num=#{inquiry_num}")
 	public InquiryVO selectInquiryDetail(long inquiry_num);
 	//문의 목록(관리자)
 	public List<InquiryVO> selectInquiryList(Map<String, Object> map);
