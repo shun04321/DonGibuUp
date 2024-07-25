@@ -689,7 +689,7 @@ public class MemberController {
 		int count = memberService.selectMemberCount(map);
 
 		//페이지 처리
-		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 10, 10, "managePoint", "&order=" + order);
+		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "managePoint", "&order=" + order);
 
 		List<MemberVO> list = null;
 		if (count > 0) {

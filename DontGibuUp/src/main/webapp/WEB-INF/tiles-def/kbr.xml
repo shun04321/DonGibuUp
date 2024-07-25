@@ -117,7 +117,7 @@
 	<definition name="adminInquiry" template="/WEB-INF/views/template/layout_admin.jsp">
 		<put-attribute name="title" value="1:1 문의 목록" />
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
-		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
 		<put-attribute name="nav" value="/WEB-INF/views/template/nav_admin.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminInquiry.jsp"/>
 		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
@@ -134,15 +134,17 @@
 	</definition>
 	<definition name="adminManageMember" extends="adminInquiry">
 		<put-attribute name="title" value="회원 관리" />
+		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/member/adminManageMember.jsp"/>
 	</definition>
 	<definition name="adminManagePoint" extends="adminInquiry">
 		<put-attribute name="title" value="포인트 관리" />
+		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/point/adminManagePoint.jsp"/>
 	</definition>
 	<definition name="adminReport" extends="adminInquiry">
 		<put-attribute name="title" value="신고 관리" />
-		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminReport.jsp"/>
 	</definition>
 	<definition name="adminReportReply" extends="adminInquiry">
