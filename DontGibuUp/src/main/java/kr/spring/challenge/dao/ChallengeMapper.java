@@ -69,7 +69,7 @@ public interface ChallengeMapper {
     //주별 인증 횟수 확인
     public int countWeeklyVerify(Map<String, Object> params);
     //챌린지 인증 상태 변경
-    @Update("UPDATE SET chal_ver_status=1 WHERE chal_ver_num=#{chal_ver_num}")
+    @Update("UPDATE chal_verify SET chal_ver_status=1 WHERE chal_ver_num=#{chal_ver_num}")
     public void updateVerifyStatus(Long chal_ver_num);
     
     //*챌린지 후기*//

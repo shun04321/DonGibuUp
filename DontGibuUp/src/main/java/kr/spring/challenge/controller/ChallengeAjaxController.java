@@ -181,9 +181,9 @@ public class ChallengeAjaxController {
 	@GetMapping("/challenge/verify/verifyMemberList")
 	@ResponseBody
 	public Map<String,Object> verifyMemberList(@RequestParam(defaultValue="1") int pageNum,
-			long chal_joi_num,int rowCount,HttpSession session){
+			long chal_joi_num,long chal_num,int rowCount,HttpSession session){
 		Map<String,Object> map = new HashMap<>();
-		map.put("chal_joi_num", chal_joi_num);
+		map.put("chal_joi_num", chal_joi_num);				
 
 		//총 챌린지 인증 개수
 		int count = challengeService.selectChallengeVerifyListRowCount(map);
@@ -199,6 +199,10 @@ public class ChallengeAjaxController {
 		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
 
 		Map<String,Object> mapJson = new HashMap<>();
+		
+		//챌린지 종료 날짜 정보
+		ChallengeVO challenge = challengeService.selectChallenge(chal_num);
+		mapJson.put("chal_edate", challenge.getChal_edate());
 
 		//회원의 참가 번호가 로그인한 사람의 참가 번호와 같은지 확인		
 		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num); 
@@ -219,18 +223,46 @@ public class ChallengeAjaxController {
 		return mapJson;
 	}
 	
-	//리더의 챌린지 인증 취소 조치
-	@PostMapping("/challenge/verify/cancelVerify")
+	//회원의 챌린지 인증 제보
+	@PostMapping("challenge/verify/reportVerify")
 	@ResponseBody
-	public Map<String,Object> cancelChallengeVerify(@RequestParam long chal_ver_num,HttpSession session,
-			@RequestParam long chal_joi_num){
-		Map<String,Object> mapJson = new HashMap<>();
+	public Map<String,Object> reportChallengeVerify(@RequestBody Map<String, Long> requestData,HttpSession session){
+		Long chal_ver_num = requestData.get("chal_ver_num");
+		Long reported_joi_num = requestData.get("reported_joi_num");
 		MemberVO user = (MemberVO) session.getAttribute("user");
-		long db_chal_joi_num = challengeService.selectChallengeVerify(chal_ver_num).getChal_joi_num();
+		
+		Map<String,Object> mapJson = new HashMap<>();
 		
 		if(user == null) {
 			mapJson.put("result", "logout");
-		}else if(db_chal_joi_num != chal_joi_num) {
+		}else {
+			long report_mem_num = user.getMem_num();
+			
+			//챌린지 제보에 데이터 insert
+			
+			mapJson.put("result", "success");
+		}
+				
+		return mapJson;
+	}
+	
+	//리더의 챌린지 인증 취소 조치
+	@PostMapping("/challenge/verify/cancelVerify")
+	@ResponseBody
+	public Map<String,Object> cancelChallengeVerify(@RequestBody Map<String, Long> requestData,HttpSession session){
+		Long chal_ver_num = requestData.get("chal_ver_num");
+		Long chal_joi_num = requestData.get("chal_joi_num");
+		Long chal_num = requestData.get("chal_num");
+		log.debug("chal_ver_num >> "+chal_ver_num);
+		log.debug("chal_joi_num >> "+chal_joi_num);
+		Map<String,Object> mapJson = new HashMap<>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		long leader_joi_num = challengeService.selectLeaderJoiNum(chal_num);
+		
+		
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else if(leader_joi_num != chal_joi_num) {
 			mapJson.put("result", "wrongAccess");
 		}else {
 			challengeService.updateVerifyStatus(chal_ver_num);

@@ -88,3 +88,12 @@ create table chal_chat_read(
   constraint read_fk2 foreign key (chat_id) references chal_chat (chat_id),
   constraint read_fk3 foreign key (mem_num) references member (mem_num)
 );
+
+CREATE TABLE chal_verify_rpt(
+    report_mem_num   number NOT NULL,
+    chal_ver_num     number NOT NULL,
+    reported_joi_num number NOT NULL,
+    CONSTRAINT chal_rpt1 FOREIGN KEY (report_mem_num) REFERENCES member (mem_num),
+    CONSTRAINT chal_rpt2 FOREIGN KEY (chal_ver_num) REFERENCES chal_verify (chal_ver_num),
+    CONSTRAINT chal_rpt3 FOREIGN KEY (reported_joi_num) REFERENCES chal_join (chal_joi_num)
+);

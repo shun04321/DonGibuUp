@@ -80,14 +80,16 @@ $(function() {
 	});
 
 	//리더의 인증 취소 조치
-	$(document).on('click', '.cancelVerify', function(e) {
-		e.preventDefault();
+	$(document).on('click', '.cancelVerify', function() {
+		let $this = $(this);
+		let chal_ver_num = $this.data('ver-num');
 		$.ajax({
 			url:'cancelVerify',
 			type:'post',
 			data:JSON.stringify({
-				chal_ver_num:$(this).data('ver-num'),
-				chal_joi_num:user_joi_num
+				chal_ver_num:chal_ver_num,
+				chal_joi_num:user_joi_num,
+				chal_num:chal_num
 			}),
 			contentType: 'application/json',
 			dataType:'json',
@@ -97,7 +99,7 @@ $(function() {
 				}else if(param.result == 'wrongAccess'){
 					alert('접근 권한이 없습니다.')
 				}else if(param.result == 'success'){
-					$(this).hide();
+					$this.hide();
 					$('.status.success').text('실패');
 					$('.status.success').attr('class','status failure');
 				}
@@ -107,7 +109,29 @@ $(function() {
 			}
 		});
 	});
-
+	
+	//회원의 인증 제보
+	$(document).on('click','.reportVerify',function(){
+		let chal_ver_num = $(this).data('ver-num');
+		let rpt_joi_num = $(this).data('joi-num');
+		$.ajax({
+			url:'reportVerify',
+			type:'post',
+			data:JSON.stringify({
+				chal_ver_num:chal_ver_num,
+				reported_joi_num:rpt_joi_num
+			}),
+			contentType: 'application/json',
+			dataType:'json',
+			success:function(param){
+				alert('success');
+			},
+			error:function(){
+				alert('네트워크 오류');
+			}
+		});
+	});
+	
 	//참가자 목록을 불러오는 메서드
 	function getItems(currentPage) {
 		$.ajax({
@@ -148,12 +172,14 @@ $(function() {
 		$.ajax({
 			url: 'verifyMemberList',
 			type: 'get',
-			data: { chal_joi_num: chal_joi_num, pageNum: currentPage, rowCount: rowCount },
+			data: { chal_num:chal_num, chal_joi_num: chal_joi_num, pageNum: currentPage, rowCount: rowCount },
 			dataType: 'json',
 			success: function(param) {
 				let output = '';
 				let now = new Date();
 				now.setHours(0, 0, 0, 0);
+				let chal_edate = new Date(param.chal_edate);
+				console.log('chal_edate >> '+chal_edate.getTime());
 				if (!param.isUser) {
 					output += `<div class="memberInfo">`;
 					if (param.member.mem_photo) {
@@ -188,14 +214,14 @@ $(function() {
 							output += '<div id="content-' + item.chal_ver_num + '" class="comment"></div>';
 						}
 						output += '</div>';
-						output += '</div>';
-						if (!param.isUser) {
+						output += '</div>';						
+						if (!param.isUser && chal_edate.getTime() >= now.getTime()) {
 							if (isLeader && item.chal_ver_status == 0) {
 								output += `<button type="button" class="cancelVerify" data-ver-num="${item.chal_ver_num}">인증 취소</button>`;
 							} else if (item.chal_ver_status == 0) {
-								output += `<button type="button" class="reportVerify" data-ver-num="${item.chal_ver_num}">제보</button>`;
+								output += `<button type="button" class="reportVerify" data-ver-num="${item.chal_ver_num}" data-joi-num="${item.chal_joi_num}">제보</button>`;
 							}
-						} else {
+						} else if(param.isUser) {
 							//수정 폼
 							output += '<div id="edit-form-' + item.chal_ver_num + '" class="edit-form" style="display: none;">';
 							output += '<textarea id="textarea-' + item.chal_ver_num + '">' + item.chal_content + '</textarea>';
