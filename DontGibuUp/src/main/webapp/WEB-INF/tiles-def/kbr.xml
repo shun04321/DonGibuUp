@@ -118,9 +118,14 @@
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/cs/inquiryForm.jsp"/>
 	</definition>
-		<definition name="inquiryResultPage" extends="signupResultPage">
+	<definition name="inquiryResultPage" extends="signupResultPage">
 		<put-attribute name="title" value="문의 전송 완료"/>
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+	</definition>
+	<definition name="reportForm" extends="main">
+		<put-attribute name="title" value="신고" />
+		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/cs/reportForm.jsp"/>
 	</definition>
 	<!-- 관리자 -->
 	<definition name="adminInquiry" template="/WEB-INF/views/template/layout_admin.jsp">

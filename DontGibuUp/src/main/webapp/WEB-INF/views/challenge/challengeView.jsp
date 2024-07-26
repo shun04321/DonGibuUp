@@ -151,7 +151,7 @@
         <h3>이렇게 인증해주세요</h3>
         <p class="align-center">${challenge.chal_verify}</p>
     </div>
-    <div class="align-right">
+    <div class="align-right" onclick="location.href='/cs/report'" style="cursor:pointer">
     	🚨신고하기
     </div>
 </div>

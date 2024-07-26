@@ -2,6 +2,8 @@ package kr.spring.cs.vo;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,4 +31,6 @@ public class ReportVO {
 	private long chal_rev_num;
 	private long chal_ver_num;
 	private long dbox_re_num;
+	
+	private MultipartFile upload;
 }

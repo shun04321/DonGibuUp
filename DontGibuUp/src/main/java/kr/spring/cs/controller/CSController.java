@@ -354,4 +354,59 @@ public class CSController {
 
 		return "admin/cs/reportModifyForm";
 	}
+	
+	//신고 폼
+	@GetMapping("/cs/report")
+	public String formReport(Model model) {
+		Map<String, String> report_type = new HashMap<String, String>();
+		report_type.put("", "신고 사유 선택");
+		report_type.put("1", "스팸/광고");
+		report_type.put("2", "폭력/위협");
+		report_type.put("3", "혐오발언/차별");
+		report_type.put("4", "음란물/부적절한 콘텐츠");
+		report_type.put("5", "챌린지 인증");
+		
+		model.addAttribute("report_type", report_type);
+
+		return "reportForm";
+	}
+
+	//1:1문의 작성
+	@PostMapping("/cs/report")
+	public String report(@Valid ReportVO reportVO, BindingResult result, HttpServletRequest request,
+			HttpSession session, Model model) throws IllegalStateException, IOException {
+		
+		if (result.hasErrors()) {
+			Map<String, String> report_type = new HashMap<String, String>();
+			report_type.put("", "신고 사유 선택");
+			report_type.put("1", "스팸/광고");
+			report_type.put("2", "폭력/위협");
+			report_type.put("3", "혐오발언/차별");
+			report_type.put("4", "음란물/부적절한 콘텐츠");
+			report_type.put("5", "챌린지 인증");
+
+			model.addAttribute("report_type", report_type);
+			return "reportForm";
+		}
+
+		//회원번호 세팅
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		reportVO.setMem_num(user.getMem_num());
+
+		//파일 업로드
+		reportVO.setReport_filename(FileUtil.createFile(request, reportVO.getUpload()));
+
+		log.debug("<<신고>> : " + reportVO);
+
+		//문의작성
+		//csService.insertReport(reportVO);
+
+		model.addAttribute("accessTitle", "신고 접수 완료");
+		model.addAttribute("accessMsg", "신고가 접수되었습니다");
+		model.addAttribute("accessBtn", "마이페이지에서 확인하기");
+		model.addAttribute("accessUrl", request.getContextPath() + "/member/myPage/report");
+
+		return "reportResultPage";
+	}
 }
