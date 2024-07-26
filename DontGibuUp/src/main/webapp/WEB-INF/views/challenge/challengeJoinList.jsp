@@ -17,7 +17,7 @@
 			<c:forEach var="entry" items="${challengesByMonth}">
 				<c:forEach var="challengeData" items="${entry.value}">
 					<c:set var="challengeJoin" value="${challengeData.challengeJoin}" />
-					<div class="challenge-card">						
+					<div class="challenge-card ${challengeData.isHost ? 'host-card' : 'participant-card'}">					
 						<div class="card-header">
 							<h3>${challengeJoin.chal_title}</h3>
 							<c:if test="${challengeData.achieveRate >= 90}">

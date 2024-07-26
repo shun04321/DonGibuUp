@@ -616,6 +616,10 @@ h2 {
 	font-weight: bold;
 }
 
+.host-card {
+	background-color: #e0f7fa; /* 개설자를 위한 특별한 색상 */
+}
+
 /* 챌린지 인증 */
 .verify-container {
 	max-width: 600px;
