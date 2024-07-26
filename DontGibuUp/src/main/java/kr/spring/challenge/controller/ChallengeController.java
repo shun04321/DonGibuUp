@@ -208,7 +208,7 @@ public class ChallengeController {
 		return "leaderJoinForm";
 	}    
 	//챌린지 참가 및 결제
-	@PostMapping("/challenge/join/write")
+	/*@PostMapping("/challenge/join/write")
 	public String join(@Valid @ModelAttribute("challengeJoinVO") ChallengeJoinVO challengeJoinVO, BindingResult result,
 			HttpServletRequest request, HttpSession session, Model model) throws IllegalStateException, IOException {
 		log.debug("<<챌린지 신청 확인>> : " + challengeJoinVO);
@@ -251,7 +251,7 @@ public class ChallengeController {
 		model.addAttribute("url", request.getContextPath() + "/challenge/list");
 
 		return "common/resultAlert";
-	}
+	}*/
 
 
 	//챌린지 참가 목록

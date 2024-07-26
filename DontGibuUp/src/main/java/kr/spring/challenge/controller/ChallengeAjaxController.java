@@ -411,16 +411,16 @@ public class ChallengeAjaxController {
 
 		//세션에 저장된 결제 금액 가져오기
 		ChallengeVO challengeVO = (ChallengeVO) session.getAttribute("challengeVO");
-		long expectedAmount = challengeVO.getChal_fee();
+		int expectedAmount = challengeVO.getChal_fee();
 
 		//실 결제 금액
-		long paidAmount = payment.getResponse().getAmount().longValue();
+		int paidAmount = payment.getResponse().getAmount().intValue();
 		//사용 포인트
 		String usedPointsJSON = payment.getResponse().getCustomData();
-		long usedPoints = 0;
+		int usedPoints = 0;
 		
 		JSONObject usedPointsObject = new JSONObject(usedPointsJSON);
-		usedPoints = usedPointsObject.getLong("usedPoints");
+		usedPoints = usedPointsObject.getInt("usedPoints");
 		
 		log.debug("usedPoints >> "+usedPoints);
 
@@ -441,12 +441,11 @@ public class ChallengeAjaxController {
 	@ResponseBody
 	public Map<String,String> saveChallengeInfo(@RequestBody Map<String, Object> data, 
 			HttpSession session, HttpServletRequest request) throws IllegalStateException, IOException{
-		String odImpUid = (String) data.get("od_imp_uid");
-		int chalPayPrice = (Integer) data.get("chal_pay_price");
+		int chalPayPrice = (Integer) data.get("chal_pay_price");					
 		int chalPoint = (Integer) data.get("chal_point");
 		int chalPayStatus = (Integer) data.get("chal_pay_status");
-		int dcateNum = Integer.parseInt((String) data.get("dcate_num"));
-		log.debug("odImpUid : "+odImpUid);
+		int dcateNum = (Integer) data.get("dcate_num");	
+		
 		log.debug("chalPayPrice : "+chalPayPrice);
 		log.debug("chalPoint : "+chalPoint);
 		log.debug("chalPayStatus : "+chalPayStatus);
@@ -472,8 +471,12 @@ public class ChallengeAjaxController {
 			challengePaymentVO.setMem_num(member.getMem_num());
 			challengePaymentVO.setChal_pay_price(chalPayPrice);
 			challengePaymentVO.setChal_point(chalPoint);
-			challengePaymentVO.setOd_imp_uid(odImpUid);
-
+			if(chalPayPrice > 0) {
+				String odImpUid = (String) data.get("od_imp_uid");
+				challengePaymentVO.setOd_imp_uid(odImpUid);
+				log.debug("odImpUid : "+odImpUid);
+			}
+			
 			//챌린지 시작 채팅 메시지 설정
 			ChallengeChatVO chatVO = new ChallengeChatVO();
 			chatVO.setChat_content("챌린지가 시작되었습니다! @{common}");

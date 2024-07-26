@@ -28,11 +28,11 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	}
 
-	//chal_num 변수를 설정
+/*	//chal_num 변수를 설정
 	var chalNumElement = document.getElementById('chal_num');
 	if (chalNumElement) {
 		var chalNum = parseInt(chalNumElement.value, 10); // String을 숫자로 변환
-	}
+	}*/
 });
 
 $(function() {
@@ -66,6 +66,7 @@ $(function() {
 		if (inputPoint > totalPoint) {
 			$(this).val(totalPoint);
 		}
+		//포인트에 결제금액 이상 입력시 최대 결제금액으로 변경
 		if (inputPoint > chalFee) {
 			$(this).val(chalFee);
 		}
@@ -89,13 +90,17 @@ $(function() {
 			$('.error-color').show();
 			return;
 		}
-		$(window).off('beforeunload');
+		$(window).off('beforeunload');		
 		payAndEnroll();
 	});
 });
 
 function formatNumber(num) {
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function convertToNumber(str) {
+    return parseInt(str.replace(/,/g, ''));
 }
 
 function totalPayment(point, originalFee) {
@@ -180,8 +185,13 @@ function payAndEnroll2() {
 }
 
 function payAndEnroll() {
-	let finalFee = $('.final_fee').text();
-	let usedPoints = $('.used-point').val();
+	let finalFeeStr = $('.final_fee').text();
+	let usedPointsStr = $('.used-point').val();
+	
+	let finalFee = convertToNumber(finalFeeStr);
+	let usedPoints = convertToNumber(usedPointsStr);
+	console.log('finalFee >> '+finalFee);
+	console.log('usedPoints >> '+usedPoints);
 
 	if (finalFee == 0) {//전액 포인트 결제
 		if (confirm('전액 포인트로 결제하시겠습니까?')) {
@@ -223,7 +233,7 @@ function payAndEnroll() {
 				locale: "ko"
 			},
 			(rsp) => {
-				console.log(rsp.error_code);
+				//console.log(rsp.error_code);
 				if (!rsp.error_code) {
 					//결제 로직(리더): 결제 요청 -> 결제 검증 -> 결제 처리 및 완료 (REST API 이용)
 					//결제 로직(회원): 사전 검증 -> 결제 요청 -> 사후 검증 -> 결제 처리 및 완료
@@ -238,8 +248,13 @@ function payAndEnroll() {
 							console.log('검증 success');
 
 							//결제 정보에 넣을 데이터 가공하기
-							let dcate_num = $('input[type="radio"]').val();
-
+							let dcate_numStr = $('input[type="radio"]:checked').val();
+							let dcate_num = parseInt(dcate_numStr);
+							console.log('dcate_num >> '+dcate_num);
+							console.log(typeof dcate_num);
+							console.log(typeof data.response.amount);
+							console.log(typeof usedPoints);
+							
 							//결제 정보 처리 및 완료하기
 							$.ajax({
 								url: '/challenge/payAndEnroll',
@@ -260,8 +275,9 @@ function payAndEnroll() {
 										let sdate = new Date(param.sdate);
 										let now = new Date();
 										now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
-										sdate.setHours(0, 0, 0, 0);
+										sdate.setHours(0, 0, 0, 0);										
 										alert('챌린지 개설이 완료되었습니다!');
+										$(window).off('beforeunload');
 										if (sdate.getTime() == now.getTime()) {
 											window.location.href = pageContextPath + '/challenge/join/list?status=on';
 										} else if (sdate > now) {

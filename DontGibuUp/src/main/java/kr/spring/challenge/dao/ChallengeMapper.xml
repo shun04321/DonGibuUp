@@ -221,7 +221,7 @@
 		(chal_pay_num, chal_joi_num, mem_num, od_imp_uid, chal_pay_price, chal_point,
 		chal_pay_date, chal_pay_status)
 		VALUES
-		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, 0,
+		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, #{chal_point},
 		SYSDATE, #{chal_pay_status})
 	</insert>
 	
