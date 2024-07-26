@@ -9,11 +9,20 @@
             <div class="col-lg-6 col-12 mx-auto">
                 <form:form action="report" id="report_form" class="custom-form donate-form" enctype="multipart/form-data" modelAttribute="reportVO">
                     <h5 class="mb-3">신고</h5>
-                    <form:hidden path="mem_num" value="${user.mem_num}" />
-                    
+                    <form:hidden path="mem_num"/>
+                    <form:hidden path="reported_mem_num"/>
+                    <form:hidden path="report_source"/>
+                    <c:if test="${report_source == 1}">
+	                    <form:hidden path="chal_num"/>                
+                    </c:if>
+                    <c:if test="${report_source == 2}">
+	                    <form:hidden path="chal_rev_num"/>                
+                    </c:if>
+                    <c:if test="${report_source == 4}">
+	                    <form:hidden path="dbox_re_num"/>                
+                    </c:if>
                     <div class="form-group mb-3 d-flex align-items-center">
                         <label class="form-label col-2">피신고자</label>
-                        <form:hidden path="reported_mem_num" id="reported_mem_num"/>
                         <input type="text" value="${reported_mem_nick}" disabled class="form-control"/>
                     </div>
                     
