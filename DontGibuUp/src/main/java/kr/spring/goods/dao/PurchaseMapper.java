@@ -8,11 +8,12 @@ import org.apache.ibatis.annotations.Select;
 
 import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.vo.PurchaseVO;
-import kr.spring.goods.vo.RefundVO;
+
 @Mapper
 public interface PurchaseMapper {
 	 void insertPurchase(PurchaseVO purchaseVO);
-	    void insertRefund(RefundVO refundVO);
+
+		/* void insertRefund(RefundVO refundVO); */
 	    List<PurchaseVO> getPurchaseListByMember(long memNum);
 	    void updateRefundStatus(String impUid, int status);
 	    List<PurchaseVO> getAllPurchases();
