@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+.main-section {
+	height: 20rem;
+	border: 1px solid #000;
+	margin: 2rem 0;
+}
+
+.left-section {
+	margin-right: 2rem;
+}
+
+.right-section {
+}
