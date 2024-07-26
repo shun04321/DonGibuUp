@@ -20,7 +20,11 @@ import kr.spring.challenge.vo.ChallengeReviewVO;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
+import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.service.MemberService;
+import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import lombok.extern.slf4j.Slf4j;
@@ -33,26 +37,50 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Autowired
 	ChallengeMapper challengeMapper;
 	@Autowired
+	MemberMapper memberMapper;
+	@Autowired
 	PointService pointService;
 	@Autowired
 	MemberService memberService;
+    @Autowired
+    NotifyService notifyService;
 
 	//*챌린지 개설*//
 	@Override
 	public void insertChallenge(ChallengeVO chalVO,ChallengeJoinVO joinVO,ChallengePaymentVO payVO,ChallengeChatVO chatVO) {
+		//1. 챌린지 기본 정보 삽입
 		chalVO.setChal_num(challengeMapper.selectChal_num());
 		challengeMapper.insertChallenge(chalVO);
+		
+		//2. 챌린지 참가 정보 삽입
 		joinVO.setChal_num(chalVO.getChal_num());
 		joinVO.setChal_joi_num(challengeMapper.selectChal_joi_num());
 		challengeMapper.insertChallengeJoin(joinVO);
+		
+		//3. 챌린지 결제 정보 삽입
 		payVO.setChal_joi_num(joinVO.getChal_joi_num());
 		challengeMapper.insertChallengePayment(payVO);
+		
+		//4. 챌린지 채팅방 정보 삽입 (공개 챌린지일 경우만)
 		if(chalVO.getChal_public() == 0) {
 			chatVO.setChal_num(chalVO.getChal_num());	
 			long chat_id = challengeMapper.selectChat_id();
 			chatVO.setChat_id(chat_id);
 			challengeMapper.insertChallengeChat(chatVO);
-		}				
+		}
+		
+		//5. 챌린지 개설 알림
+        NotifyVO notifyVO = new NotifyVO();
+        notifyVO.setMem_num(chalVO.getMem_num()); //챌린지 개설자에게 알림
+        notifyVO.setNotify_type(3); //알림 타입: 챌린지 개설 알림
+        notifyVO.setNot_url("/challenge/detail?chal_num=" + chalVO.getChal_num()); //알림 클릭 시 이동할 URL
+
+        //동적 데이터 매핑
+        Map<String, String> dynamicValues = new HashMap<>();
+        dynamicValues.put("chalTitle", chalVO.getChal_title()); //알림 템플릿에서 사용할 동적 데이터
+
+        //알림 서비스 호출
+        notifyService.insertNotifyLog(notifyVO, dynamicValues);
 	}	
 
 	@Override
@@ -96,10 +124,34 @@ public class ChallengeServiceImpl implements ChallengeService{
 	//*챌린지 참가*//
     @Override
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO, ChallengePaymentVO chalPayVO) {
+    	//챌린지 참가 정보 저장
     	chalJoinVO.setChal_joi_num(challengeMapper.selectChal_joi_num());
         challengeMapper.insertChallengeJoin(chalJoinVO);
         chalPayVO.setChal_joi_num(chalJoinVO.getChal_joi_num());
         challengeMapper.insertChallengePayment(chalPayVO);
+        
+        //참가한 회원 정보 가져오기
+        MemberVO participant = memberMapper.selectMemberDetail(chalJoinVO.getMem_num());
+        String memNick = participant.getMem_nick();
+        
+        //챌린지 개설자 정보 가져오기
+        ChallengeVO challenge = challengeMapper.selectChallenge(chalJoinVO.getChal_num());
+        long creatorMemNum = challenge.getMem_num();
+        String chalTitle = challenge.getChal_title();
+        
+        //개설자에게 알림 보내기
+        NotifyVO notifyVO = new NotifyVO();
+        notifyVO.setMem_num(creatorMemNum); //알림 받을 개설자 회원 번호
+        notifyVO.setNotify_type(4); //알림 타입 (챌린지 참가)
+        notifyVO.setNot_url("/challenge/detail?chal_num=" + chalJoinVO.getChal_num()); //알림을 누르면 반환할 URL
+
+        //동적 데이터 매핑
+        Map<String, String> dynamicValues = new HashMap<>();
+        dynamicValues.put("memNick", memNick);
+        dynamicValues.put("chalTitle", chalTitle);
+
+        //알림 로그 찍기
+        notifyService.insertNotifyLog(notifyVO, dynamicValues);
     }
 
     @Override
@@ -202,8 +254,47 @@ public class ChallengeServiceImpl implements ChallengeService{
         chalReviewVO.setChal_rev_num(challengeMapper.selectChal_rev_num());
         challengeMapper.insertChallengeReview(chalReviewVO);
         
-        // 포인트 지급
+        //포인트 지급
         givePointsForReview(chalReviewVO);
+        
+        //1. 챌린지 개설자에게 참가 알림 전송
+        //참가자 정보 가져오기
+        MemberVO participant = memberMapper.selectMemberDetail(chalReviewVO.getMem_num());
+
+        //챌린지 개설자 정보 가져오기
+        ChallengeVO challenge = challengeMapper.selectChallenge(chalReviewVO.getChal_num());
+        long creatorMemNum = challenge.getMem_num();
+        String chalTitle = challenge.getChal_title();
+
+        //개설자에게 알림 보내기
+        NotifyVO notifyToCreator = new NotifyVO();
+        notifyToCreator.setMem_num(creatorMemNum); //알림 받을 개설자 회원 번호
+        notifyToCreator.setNotify_type(5); //알림 타입 (챌린지 후기 등록)
+        notifyToCreator.setNot_url("/challenge/detail?chal_num=" + chalReviewVO.getChal_num()); //알림을 누르면 반환할 URL
+
+        //동적 데이터 매핑
+        Map<String, String> dynamicValuesForCreator = new HashMap<>();
+        dynamicValuesForCreator.put("chalTitle", chalTitle);
+
+        //알림 로그 찍기
+        notifyService.insertNotifyLog(notifyToCreator, dynamicValuesForCreator);
+
+        //2. 챌린지 참가자에게 포인트 알림 전송
+        //포인트 적립 알림
+        NotifyVO notifyToParticipant = new NotifyVO();
+        notifyToParticipant.setMem_num(participant.getMem_num()); //알림 받을 회원 번호
+        notifyToParticipant.setNotify_type(22); //알림 타입 (포인트 적립)
+
+        //알림을 누르면 반환할 URL
+        notifyToParticipant.setNot_url("/member/myPage"); //예시: 마이페이지로 이동
+
+        //동적 데이터 매핑
+        Map<String, String> dynamicValuesForParticipant = new HashMap<>();
+        dynamicValuesForParticipant.put("pointAmount", "500"); //포인트 금액
+        dynamicValuesForParticipant.put("peventDetail", "챌린지 후기 작성"); //포인트 적립 이벤트 상세 설명
+
+        //알림 로그 찍기
+        notifyService.insertNotifyLog(notifyToParticipant, dynamicValuesForParticipant);
     }
     
     @Override
@@ -351,7 +442,26 @@ public class ChallengeServiceImpl implements ChallengeService{
             challengeMapper.deleteChalChatRead(chal_num);
             challengeMapper.deleteChallengeChat(chal_num);
 
-            log.info("챌린지 ID {}의 채팅방 및 채팅 기록 삭제 완료", chal_num);
+            //4. 챌린지 종료 알림 전송
+            Map<String, Object> params = new HashMap<>();
+            params.put("chal_num", chal_num);
+            List<ChallengeJoinVO> participants = challengeMapper.selectJoinMemberList(params);
+            
+            for (ChallengeJoinVO participant : participants) {
+                NotifyVO notifyVO = new NotifyVO();
+                notifyVO.setMem_num(participant.getMem_num()); //알림 받을 회원 번호
+                notifyVO.setNotify_type(2); //알림 타입 (챌린지 종료)
+
+                //알림을 누르면 반환할 URL (루트 컨텍스트 다음 부분만)
+                notifyVO.setNot_url("/challenge/detail?chal_num=" + chal_num);
+
+                //동적 데이터 매핑
+                Map<String, String> dynamicValues = new HashMap<>();
+                dynamicValues.put("chalTitle", challenge.getChal_title());
+
+                //알림 로그 찍기
+                notifyService.insertNotifyLog(notifyVO, dynamicValues);
+            }
         } catch (Exception e) {
             log.error("챌린지 ID {} 처리 중 예외 발생: {}", challenge.getChal_num(), e.getMessage(), e);
         }
@@ -374,6 +484,22 @@ public class ChallengeServiceImpl implements ChallengeService{
             int returnPoint = calculateReturnPoint(join);
 
             challengeMapper.insertRefundPoints(join.getMem_num(), 14, returnPoint);//이벤트 타입 (챌린지 환급)
+            
+            //환급 포인트 알림 전송
+            NotifyVO notifyVO = new NotifyVO();
+            notifyVO.setMem_num(join.getMem_num()); //알림 받을 회원 번호
+            notifyVO.setNotify_type(22); //알림 타입 (포인트 적립)
+
+            //알림을 누르면 반환할 URL
+            notifyVO.setNot_url("/member/myPage"); //예시: 마이페이지로 이동
+
+            //동적 데이터 매핑
+            Map<String, String> dynamicValues = new HashMap<>();
+            dynamicValues.put("pointAmount", String.valueOf(returnPoint)); //포인트 금액
+            dynamicValues.put("peventDetail", "챌린지 환급"); //포인트 적립 이벤트 상세 설명
+
+            // 알림 로그 찍기
+            notifyService.insertNotifyLog(notifyVO, dynamicValues);
         }
     }
 
