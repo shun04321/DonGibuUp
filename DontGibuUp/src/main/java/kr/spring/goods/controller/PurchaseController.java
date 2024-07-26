@@ -112,18 +112,22 @@ public class PurchaseController {
             String merchantUid = (String) data.get("merchant_uid");
             int amount = (Integer) data.get("amount");
             String status = (String) data.get("status");
-            int itemNum = (Integer) data.get("item_num");
+            int item_num = (Integer) data.get("item_num");
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
-
+            Integer cart_quantity = (Integer) data.get("cart_quantity"); // 추가된 부분
+            Integer quantity = (Integer) data.get("quantity"); // 추가된 부분
+            
+            
             log.debug("impUid : " + impUid);
             log.debug("merchantUid : " + merchantUid);
             log.debug("amount : " + amount);
             log.debug("status : " + status);
-            log.debug("itemNum : " + itemNum);
+            log.debug("itemNum : " + item_num);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
-
+            log.debug("cart_quantity : " + cart_quantity); // 로그 추가
+            log.debug("quantity : " + quantity); // 로그 추가
            
 
             if (member == null) {
@@ -136,11 +140,16 @@ public class PurchaseController {
                 purchaseVO.setMerchant_uid(merchantUid);
                 purchaseVO.setPay_price(amount);
                 purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
-                purchaseVO.setItem_num(itemNum);
+                purchaseVO.setItem_num(item_num);
                 purchaseVO.setMem_num(member.getMem_num()); // mem_num 설정
-
+                
                 try {
                     purchaseService.insertPurchase(purchaseVO);
+                    
+                    // 재고 업데이트
+                    purchaseService.updateStock(item_num, cart_quantity, quantity);
+                    
+                   
                     mapJson.put("result", "success");
                 } catch (Exception e) {
                     log.error("결제 정보 저장 중 오류 발생", e);

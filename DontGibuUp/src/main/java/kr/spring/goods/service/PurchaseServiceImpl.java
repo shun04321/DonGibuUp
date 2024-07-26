@@ -1,13 +1,16 @@
 package kr.spring.goods.service;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.cart.vo.CartVO;
+import kr.spring.goods.dao.GoodsMapper;
 import kr.spring.goods.dao.PurchaseMapper;
 import kr.spring.goods.vo.PurchaseVO;
 import kr.spring.goods.vo.RefundVO;
@@ -19,6 +22,9 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Autowired
     private PurchaseMapper purchaseMapper;
+    
+    @Autowired
+    private GoodsMapper goodsMapper;
     
     @Override
     public void insertPurchase(PurchaseVO purchaseVO) {
@@ -95,6 +101,20 @@ public class PurchaseServiceImpl implements PurchaseService {
 		purchaseMapper.insertPurchaseItems(cartItem);
 		
 	}
+	
+	 @Override
+	    public void updateStock(int item_num, Integer cart_quantity, Integer quantity) {
+	        Map<String, Object> paramMap = new HashMap<>();
+	        paramMap.put("item_num", item_num);
+	        paramMap.put("cart_quantity", cart_quantity);
+	        paramMap.put("quantity", quantity);
+	        goodsMapper.updateStock(paramMap);
+	    }
+
+	
+
+
+	
 
 	
 }

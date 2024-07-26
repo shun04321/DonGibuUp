@@ -18,4 +18,6 @@ public interface PurchaseService {
     void insertPurchaseItems(CartVO cartVO);
     Long getSeq();
     void updateDeliveryStatusByImpUid(String impUid, String deliveryStatus);
+	
+	void updateStock(int item_num, Integer cart_quantity, Integer quantity);
 }

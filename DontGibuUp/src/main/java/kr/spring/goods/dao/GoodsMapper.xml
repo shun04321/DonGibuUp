@@ -70,6 +70,20 @@
 		]]>
 	</select>
 	 <!-- 새로운 결제 삽입 SQL 매핑 -->
+  <update id="updateStock" parameterType="map">
+    UPDATE item
+    SET item_stock = item_stock - 
+    <choose>
+        <when test="cart_quantity != null">
+            #{cart_quantity}
+        </when>
+        <otherwise>
+            #{quantity}
+        </otherwise>
+    </choose>
+    WHERE item_num = #{item_num}
+</update>
+   
    
 	   <!-- 상품 수정 -->
     <update id="updateGoods" parameterType="goodsVO">

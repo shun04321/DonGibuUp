@@ -100,6 +100,10 @@
         VALUES (#{purchase_num}, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, '배송 준비 중')
     </insert>
 	
-	
-
+	<!-- 구매시 재고 차감 -->
+	<update id="updateStock" parameterType="map">
+    UPDATE item
+    SET stock = stock - #{quantity}
+    WHERE item_num = #{item_num}
+	</update>
 </mapper>

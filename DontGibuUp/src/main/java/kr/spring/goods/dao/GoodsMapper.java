@@ -27,6 +27,7 @@ public interface GoodsMapper {
 	// 자식 레코드 삭제 메서드 추가
 	@Delete("DELETE FROM cart WHERE item_num = #{item_num}")
 	public void deleteCartItems(long item_num);
+	void updateStock(Map<String, Object> paramMap);
 	
 
 }
