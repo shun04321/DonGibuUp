@@ -81,7 +81,7 @@
 					<dd>월 50,000원 지원</dd>
 				</dl>
 			</div>
-		</div>
+	</div>
 		<div class="container">
 			<section class="accordion-section">
 					<div class="accordion-item">
@@ -97,7 +97,10 @@
 								<li>해지 완료후 취소 불가하며, 다시 가입해야 합니다.</li>
 							</ul>
 						</div>
-						<div class="accordion-item">
+					</div>
+			</section>
+			<section class="accordion-section">
+					<div class="accordion-item">
 						<div class="accordion-header">
 							상품안내
 							<div class="align-right">▼</div>
@@ -109,10 +112,9 @@
 							</ul>
 						</div>
 					</div>
-					<hr class="item-hr">
-			</section>
+					</section>
+				</div>
 		</div>
-	</div>
 </div>
 <div class="align-right">
 	<c:if test="${!empty user && user.mem_status==9}">

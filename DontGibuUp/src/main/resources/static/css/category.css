@@ -426,6 +426,8 @@ figure img {
     max-width: 100%;
 }
 
+
+
 /* box-guide의 스타일 설정 */
 .box-guide {
 	display: inline-block; /* inline-block으로 설정하여 가운데 정렬 */
@@ -449,10 +451,57 @@ figure img {
             height: 200px;
         }
 
-        .accordion-section {
-            max-width: 800px;
-            margin: 20px;
-        }
+        /* 컨테이너를 중앙에 위치시킵니다 */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가로 방향 가운데 정렬 */
+    padding: 20px; /* 여백 설정 */
+    max-width: 800px; /* 최대 너비 설정, 필요에 따라 조정 */
+    margin: 0 auto; /* 중앙 정렬 */
+}
+
+/* 아코디언 섹션 스타일 */
+.accordion-section {
+    width: 100%; /* 섹션이 컨테이너의 너비에 맞게 설정 */
+    max-width: 800px; /* 최대 너비 설정 */
+    margin-bottom: 15px; /* 섹션 간 간격 설정 */
+}
+
+/* 아코디언 아이템 스타일 */
+.accordion-item {
+    border: 1px solid #ddd; /* 테두리 설정 */
+    border-radius: 8px; /* 모서리 둥글게 설정 */
+    overflow: hidden; /* 내용이 넘칠 경우 숨김 처리 */
+}
+
+/* 아코디언 헤더 스타일 */
+.accordion-header {
+    background-color: #f8f9fa; /* 배경색 설정 */
+    padding: 15px; /* 여백 설정 */
+    cursor: pointer; /* 클릭 가능한 커서 */
+    display: flex; /* 플렉스 박스 사용 */
+    justify-content: space-between; /* 좌우 간격 분배 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+/* 아코디언 바디 스타일 */
+.accordion-body {
+    padding: 15px; /* 여백 설정 */
+    background-color: #ffffff; /* 배경색 설정 */
+    border-top: 1px solid #ddd; /* 상단 테두리 설정 */
+}
+
+/* 오른쪽 정렬 스타일 */
+.align-right {
+    margin-left: auto; /* 오른쪽 정렬 */
+}
+
+/* 왼쪽 정렬 스타일 */
+.align-left {
+    margin-right: auto; /* 왼쪽 정렬 */
+}
+
 
         .accordion-item {
             border-radius: 5px;
