@@ -14,10 +14,10 @@
 	<c:if test="${count > 0}">
 	<table class="striped-table">
 		<tr>
-			<th>아이콘</th>
-			<th>번호</th>
-			<th>카테고리명</th>
-			<th>기부처</th>
+			<th class="align-center">아이콘</th>
+			<th class="align-center">번호</th>
+			<th class="align-center">카테고리명</th>
+			<th class="align-center">기부처</th>
 		</tr>
 		<c:forEach var="dcate" items="${list}">
 			<tr>
