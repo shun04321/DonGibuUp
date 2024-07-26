@@ -87,7 +87,6 @@ public class AppConfig implements WebMvcConfigurer,WebSocketConfigurer{
 		//XML 설정 파일 경로 지정
 		configurer.setDefinitions(new String[] {
 				"/WEB-INF/tiles-def/main.xml",
-				"/WEB-INF/tiles-def/cyy.xml",
 				"/WEB-INF/tiles-def/jsy.xml",
 				"/WEB-INF/tiles-def/kbr.xml",
 				"/WEB-INF/tiles-def/khc.xml",
