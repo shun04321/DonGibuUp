@@ -341,10 +341,13 @@ public class ChallengeServiceImpl implements ChallengeService{
             //각 챌린지에 대한 종료 작업
         	long chal_num = challenge.getChal_num();
         	
-            //1. 참가자에게 환급 포인트 지급
+        	//1. 참가상태 업데이트
+        	challengeMapper.updateChallengeJoinStatusToCompleted(chal_num);
+        	
+            //2. 참가자에게 환급 포인트 지급
         	refundPointsToUsers(chal_num);
 
-            //2. 단체 채팅방 삭제
+            //3. 단체 채팅방 삭제
             challengeMapper.deleteChalChatRead(chal_num);
             challengeMapper.deleteChallengeChat(chal_num);
 
