@@ -117,6 +117,37 @@ function updateCartQuantity(cart_num) {
     <button type="button" onclick="deleteSelectedCarts()">선택 항목 삭제</button>
     <button type="button" id="purchaseButton">선택 항목 구매</button>
 </div>
+<!-- 모달 창 -->
+<div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">구매 정보</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- 포인트 입력 필드 -->
+                <div class="mb-3">
+                    <label for="goods_do_point" class="form-label">사용할 포인트</label>
+                    <input type="number" class="form-control calculate" id="goods_do_point" placeholder="사용할 포인트 입력">
+                </div>
+                <!-- 결제 금액 출력 필드 -->
+                <div class="mb-3">
+                    <label class="form-label">결제 금액</label>
+                    <span id="pay_sum"></span>
+                </div>
+                <!-- 보유 포인트 -->
+                <input type="hidden" id="mem_point" value="${sessionScope.user.mem_point}">
+                <!-- 결제 금액 메시지 -->
+                <div id="no"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary" id="confirm_purchase_button">결제</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div align="center">${page}</div>
 </c:if>
 </div>

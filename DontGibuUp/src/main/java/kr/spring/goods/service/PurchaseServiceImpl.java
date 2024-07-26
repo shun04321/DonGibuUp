@@ -29,14 +29,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Transactional
     public void insertPurchaseWithCartItems(PurchaseVO purchaseVO) {
     	 Long purchaseNum = purchaseMapper.getSeq();
-         purchaseVO.setPurchaseNum(purchaseNum);
+         purchaseVO.setPurchase_num(purchaseNum);
         // 1. purchase 테이블에 데이터 삽입
         purchaseMapper.insertPurchaseWithCartItems(purchaseVO);
         log.debug("Inserted purchase: " + purchaseVO);
         
      // 2. 각 CartVO에 purchaseNum 설정 및 purchase_item 테이블에 삽입
         for (CartVO cartItem : purchaseVO.getCart_items()) {
-            cartItem.setPurchase_num(purchaseVO.getPurchaseNum());
+            cartItem.setPurchase_num(purchaseVO.getPurchase_num());
             purchaseMapper.insertPurchaseItems(cartItem);
             log.debug("Inserted purchase item: " + cartItem);
         }
@@ -54,8 +54,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     public List<PurchaseVO> getPurchaseListByMember(long memNum) {
         List<PurchaseVO> purchaseList = purchaseMapper.getPurchaseListByMember(memNum);
         for (PurchaseVO purchase : purchaseList) {
-            if (purchase.getPurchaseNum() != null) {
-                List<CartVO> cartItems = purchaseMapper.getPurchaseItems(purchase.getPurchaseNum());
+            if (purchase.getPurchase_num() != null) {
+                List<CartVO> cartItems = purchaseMapper.getPurchaseItems(purchase.getPurchase_num());
                 purchase.setCart_items(cartItems);
             } else {
                 log.error("purchaseNum is null for purchase: " + purchase);

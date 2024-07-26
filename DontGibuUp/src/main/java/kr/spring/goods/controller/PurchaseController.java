@@ -107,6 +107,7 @@ public class PurchaseController {
         
         
         try {
+        	Long purchase_num = (Long)data.get("purchase_num");
             String impUid = (String) data.get("imp_uid");
             String merchantUid = (String) data.get("merchant_uid");
             int amount = (Integer) data.get("amount");
@@ -130,6 +131,7 @@ public class PurchaseController {
             } else {
                 // 결제 정보 저장
                 PurchaseVO purchaseVO = new PurchaseVO();
+                purchaseVO.setPurchase_num(purchase_num);
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
                 purchaseVO.setPay_price(amount);
@@ -261,7 +263,7 @@ public class PurchaseController {
                 log.debug("Generated Sequence: " + setSeq);
             	
                 PurchaseVO purchaseVO = new PurchaseVO();
-                purchaseVO.setPurchaseNum(setSeq);
+                purchaseVO.setPurchase_num(setSeq);
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
                 purchaseVO.setAmount(amount);

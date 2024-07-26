@@ -43,7 +43,7 @@
     <update id="updateDeliveryStatus">
         UPDATE purchase
         SET delivery_status = #{deliveryStatus}
-        WHERE purchase_num = #{purchaseNum}
+        WHERE purchase_num = #{purchase_num}
     </update>
 
     <update id="updateDeliveryStatusByImpUid">
@@ -54,7 +54,7 @@
 
 <!-- ResultMap to map purchase and cart items -->
     <resultMap id="purchaseResultMap" type="kr.spring.goods.vo.PurchaseVO">
-        <id property="purchaseNum" column="purchase_num"/>
+        <id property="purchase_num" column="purchase_num"/>
         <result property="memNum" column="mem_num"/>
         <result property="item_num" column="item_num"/>
         <result property="item_name" column="item_name"/>
@@ -97,7 +97,7 @@
 
 	 <insert id="insertPurchaseWithCartItems" parameterType="kr.spring.goods.vo.PurchaseVO">
         INSERT INTO purchase (purchase_num, mem_num, imp_uid, pay_price, pay_date, pay_status, delivery_status)
-        VALUES (#{purchaseNum}, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, '배송 준비 중')
+        VALUES (#{purchase_num}, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, '배송 준비 중')
     </insert>
 	
 	

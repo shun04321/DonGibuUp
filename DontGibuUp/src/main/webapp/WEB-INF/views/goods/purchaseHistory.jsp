@@ -28,6 +28,7 @@
     <table border="1">
         <thead>
             <tr>
+            	<th>구매 번호</th>
                 <th>상품명</th>
                 <th>사진</th>
                 <th>총액</th>
@@ -39,6 +40,7 @@
         <tbody>
             <c:forEach var="purchase" items="${purchaseList}">
                 <tr>
+                	<td>${purchase.purchase_num}</td>
                     <td>
                         <c:choose>
                             <c:when test="${not empty purchase.item_name}">

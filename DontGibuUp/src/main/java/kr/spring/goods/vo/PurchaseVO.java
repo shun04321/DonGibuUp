@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class PurchaseVO {
-    private Long purchaseNum;
+    private Long purchase_num;
     private long mem_num;
     private long item_num;
     private String item_name;
