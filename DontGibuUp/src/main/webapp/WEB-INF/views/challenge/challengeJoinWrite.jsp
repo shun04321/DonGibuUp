@@ -20,6 +20,7 @@
         var memberNum = "${member.mem_num}";
         var pageContextPath = "${pageContext.request.contextPath}";
         var sdate = "${challengeVO.chal_sdate}"; //챌린지 시작 날짜 가져오기
+        let mem_point = ${mem_point};
     </script>
 </head>
 <body>
@@ -67,7 +68,7 @@
         <ul>
         	<li>참여금 <span class="chal_fee"></span>원</li>
         	<li>보유 포인트 <span class="mem-point">${mem_point}</span>p</li>
-        	<li>사용할 포인트 <input type="text" class="used-point">p</li>
+        	<li>사용할 포인트 <input type="text" class="used-point" value="0">p</li>
         	<hr width="100%" size="1" noshade="noshade">        	
         	<li>결제금액 <span class="final_fee"></span>원</li>
         </ul>

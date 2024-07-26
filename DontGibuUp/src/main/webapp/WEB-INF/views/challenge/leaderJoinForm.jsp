@@ -14,6 +14,7 @@
 	//let memberPhone = "${member.phone}";
 	let pageContextPath = "${pageContext.request.contextPath}";	
 	let chalPhoto = "${challenge.chal_photo}";
+	let mem_point = ${mem_point};
 </script>
 <div class="container">
     <h2>챌린지 참가</h2>
@@ -55,8 +56,8 @@
         </ul>        
         <ul>
         	<li>참여금 <span class="chal_fee"></span>원</li>
-        	<li>보유 포인트 <span class="mem-point">${mem_point}</span>p</li>
-        	<li>사용할 포인트 <input type="text" class="used-point">p</li>
+        	<li>보유 포인트 <span class="mem-point"></span>p</li>
+        	<li>사용할 포인트 <input type="text" class="used-point" value="0">p</li>
         	<hr width="100%" size="1" noshade="noshade">        	
         	<li>결제금액 <span class="final_fee"></span>원</li>
         </ul>
@@ -77,7 +78,7 @@
             
         // 서버에 이미지 삭제 요청을 POST 방식으로 보냅니다.
         navigator.sendBeacon(url, data);	        
-	}); 
+	} 
 	
 	$(window).on('beforeunload', handleBeforeUnload);
 </script>

@@ -12,6 +12,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -315,8 +316,8 @@ public class ChallengeAjaxController {
 	//IamportClient 초기화 하기
 	private IamportClient impClient; 
 
-	private String apiKey = "4015265277142442";
-	private String secretKey = "qK84eiR8BNoTMNqgMzuZHpf2CM87DZLcIHSOufjYMhGEWJTrEh7ydoqtvDRcPI1CEdXKM2H9YiVc0Loa";
+	private String apiKey = "7830478768772156";
+	private String secretKey = "T5qKYEXltMHNhzZaGSBZYQ4iYQ2Woor1VleODHJ2mhXZ4FBma0OA2e0Z4XSj3CNYY4ZPk4XBy4naYmla";
 
 	@PostConstruct
 	public void initImp() {
@@ -412,11 +413,19 @@ public class ChallengeAjaxController {
 		ChallengeVO challengeVO = (ChallengeVO) session.getAttribute("challengeVO");
 		long expectedAmount = challengeVO.getChal_fee();
 
-		//실 결제 금액 가져오기
+		//실 결제 금액
 		long paidAmount = payment.getResponse().getAmount().longValue();
+		//사용 포인트
+		String usedPointsJSON = payment.getResponse().getCustomData();
+		long usedPoints = 0;
+		
+		JSONObject usedPointsObject = new JSONObject(usedPointsJSON);
+		usedPoints = usedPointsObject.getLong("usedPoints");
+		
+		log.debug("usedPoints >> "+usedPoints);
 
 		//예정 결제 금액과 실 결제 금액 비교하기
-		if(expectedAmount != paidAmount || member == null) {
+		if(expectedAmount-usedPoints != paidAmount || member == null) {
 			//결제 취소 요청하기
 			CancelData cancelData = new CancelData(imp_uid, true);
 			impClient.cancelPaymentByImpUid(cancelData);
