@@ -45,11 +45,11 @@
 	<div class="main-content align-center">${category.dcate_content}
 		<div class="box-guide">
 			<div class="header">
-				<div class="align-left">
+				<div class="align-left" style="margin-left:45px;">
 					<strong>${category.dcate_charity}</strong>
 					<p>세상을 바꾸는 정기기부, 같이 시작해요!</p>
 				</div>
-				<div class="align-right">
+				<div class="align-right" style="margin-right:35px;">
 					<img
 						src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
 						width="50px">
