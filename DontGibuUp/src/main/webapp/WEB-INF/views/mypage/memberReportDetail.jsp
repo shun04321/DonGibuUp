@@ -48,16 +48,18 @@
 					</div>
 				</div>
 			</div>
-			<button id="deleteButton">삭제</button>
+			<c:if test="${report.report_status == 0}">
+				<button id="deleteButton">삭제</button>
+				<script>
+					$('#deleteButton').click(function() {
+						if (confirm("삭제 하시겠습니까?")) {
+						    alert("신고가 삭제되었습니다");
+						    location.href='delete?report_num=${report.report_num}'
+						}
+					});
+				</script>
+			</c:if>
 			<button onclick="location.href='../report'">목록</button>
-			<script>
-				$('#deleteButton').click(function() {
-					if (confirm("삭제 하시겠습니까?")) {
-					    alert("문의가 삭제되었습니다");
-					    location.href='delete?inquiry_num=${inquiry.inquiry_num}'
-					}
-				});
-			</script>
 			
 		</div>
 		</div>

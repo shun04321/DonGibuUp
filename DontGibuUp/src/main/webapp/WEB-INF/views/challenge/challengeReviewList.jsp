@@ -51,7 +51,7 @@
                     <div class="review-header2">
                         <span class="nickname">${review.mem_nick}</span>
                         <span class="date">${review.chal_rev_date}</span>
-                        <span>🚨신고</span>
+                        <span onclick="location.href='/cs/report?report_source=2&chal_rev_num=${review.chal_rev_num}&reported_mem_num=${review.mem_num}'" style='cursor:pointer'>🚨신고</span>
                     </div>
                     	<span class="rating">
                             <c:forEach begin="1" end="5" varStatus="status">

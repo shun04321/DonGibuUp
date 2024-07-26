@@ -106,6 +106,11 @@ public class CSServiceImpl implements CSService {
 	}
 
 	@Override
+	public void insertReport(ReportVO reportVO) {
+		csMapper.insertReport(reportVO);
+	}
+	
+	@Override
 	public int selectReportListCount(Map<String, Object> map) {
 		return csMapper.selectReportListCount(map);
 	}
@@ -146,5 +151,6 @@ public class CSServiceImpl implements CSService {
 	public List<ReportVO> selectReportListByMemNum(long mem_num) {
 		return csMapper.selectReportListByMemNum(mem_num);
 	}
+
 
 }

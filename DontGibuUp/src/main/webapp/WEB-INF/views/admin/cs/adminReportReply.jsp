@@ -36,12 +36,12 @@
 						</c:if>
 						<p class="mb-2 mt-4">
 							<img src="${pageContext.request.contextPath}/images/user.png" class="document-image">
-							<span>${report.mem_num}</span> <span>${report.mem_nick}</span>
+							<span>${report.mem_nick}</span> (<span>${report.mem_num}</span>)
 						</p>
 						<p id="reported_mem">
 							<img src="${pageContext.request.contextPath}/images/report.png" class="report-image">
-							<span>${report.reported_mem_num}</span> <span class="me-2">${report.reported_mem_nick}</span>
-							<button class="expelBtn" data-nick="${report.reported_mem_nick}"
+							<span>${report.reported_mem_nick}</span> (<span>${report.reported_mem_num}</span>)
+							<button class="expelBtn ms-2" data-nick="${report.reported_mem_nick}"
 								data-num="${report.reported_mem_num}"
 								<c:if test="${report.reported_mem_status == 9}">disabled</c:if>>제명</button>
 							<button class="suspendBtn"
@@ -52,6 +52,12 @@
 						
 						<div class="contact-image-wrap d-flex flex-wrap mb-2 pb-0">
 							<div class="d-flex flex-column justify-content-center">
+								<c:if test="${report.report_filename.endsWith('.jpg') 
+											or report.report_filename.endsWith('.jpeg') 
+											or report.report_filename.endsWith('.png') 
+											or report.report_filename.endsWith('.gif')}">
+											<p><img class="content-img" src="${pageContext.request.contextPath}/upload/${report.report_filename}"></p>
+								</c:if>
 								<p>${report.report_content}</p>
 								<p class="mb-1 cs-date">${report.report_date}</p>
 							</div>

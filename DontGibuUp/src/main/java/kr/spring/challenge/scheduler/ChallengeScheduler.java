@@ -16,8 +16,8 @@ public class ChallengeScheduler {
     private ChallengeService challengeService;
 
     //매일 23:59:59에 당일 종료된 챌린지를 처리하는 스케줄러
-    @Scheduled(cron = "59 59 23 * * *")
-    //@Scheduled(cron = "0 57 14 * * *") //테스트용
+    //@Scheduled(cron = "59 59 23 * * *")
+    @Scheduled(cron = "0 53 15 * * *") //테스트용
     public void processTodayExpiredChallenges() {
         try {
             challengeService.processTodayExpiredChallenges();
@@ -26,4 +26,14 @@ public class ChallengeScheduler {
             logger.error("오늘 종료된 챌린지 처리 중 오류 발생: {}", e.getMessage(), e);
         }
     }
+    
+    //매일 오전 9시에 인증 요청 알림 실행
+    //@Scheduled(cron = "0 0 9 * * *")
+	/*
+	 * @Scheduled(cron = "0 47 16 * * *") //테스트용 public void
+	 * sendChallengeReminderNotifications() { try {
+	 * challengeService.processTodayVerificationRequest();
+	 * logger.info("오늘 인증 요청을 성공적으로 처리했습니다."); } catch (Exception e) {
+	 * logger.error("오늘 인증 요청 처리 중 오류 발생: {}", e.getMessage(), e); } }
+	 */
 }

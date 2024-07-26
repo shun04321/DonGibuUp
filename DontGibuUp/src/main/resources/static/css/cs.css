@@ -174,3 +174,7 @@ table {
 	text-overflow: ellipsis; /* 넘치는 텍스트를 말줄임(...)으로 표시 */
 	max-width: 300px;
 }
+
+.content-img {
+	max-width: 25rem;
+}

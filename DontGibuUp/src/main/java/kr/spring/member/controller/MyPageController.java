@@ -391,4 +391,13 @@ public class MyPageController {
 		
 		return "downloadView";
 	}
+	
+	//신고 삭제
+	@GetMapping("/member/myPage/report/delete")
+	public String deleteReport(@RequestParam long report_num) {
+		
+		csService.deleteReport(report_num);
+		
+		return "redirect:/member/myPage/report";
+	}
 }

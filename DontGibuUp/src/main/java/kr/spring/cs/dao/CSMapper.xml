@@ -112,12 +112,40 @@
 		    SELECT b.*, rownum rnum 
 		    FROM (SELECT * 
 		    	  FROM report a
-		       	  <include refid="inquirySearch"></include>
+		       	  <include refid="reportSearch"></include>
 		          ORDER BY a.report_date DESC)b)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}	
 		]]>
 	</select>
+	
+	<!-- 신고 작성 -->
+	<insert id="insertReport" parameterType="reportVO">
+		INSERT INTO REPORT(
+						report_num,
+						mem_num,
+						reported_mem_num,
+						report_source,
+						chal_num,
+						chal_rev_num,
+						dbox_re_num,
+						report_type,
+						report_content,
+						report_filename)
+					VALUES(
+						report_seq.nextval,
+						#{mem_num},
+						#{reported_mem_num},
+						#{report_source},
+						#{chal_num, jdbcType=VARCHAR},
+						#{chal_rev_num, jdbcType=VARCHAR},
+						#{dbox_re_num, jdbcType=VARCHAR},
+						#{report_type},
+						#{report_content},
+						#{report_filename, jdbcType=VARCHAR})
+	</insert>
+	
+	
 	
 	<!-- 신고 상세 -->
 	<select id="selectReportDetail" parameterType="long" resultType="reportVO">

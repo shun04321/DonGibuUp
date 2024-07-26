@@ -50,6 +50,8 @@ public interface CSMapper {
 	@Select("SELECT faq_seq.nextval FROM dual")
 	public long selectFaqNum();
 	
+	//신고 작성
+	public void insertReport(ReportVO reportVO);
 	//신고 개수
 	public int selectReportListCount(Map<String, Object> map);
 	//신고 목록

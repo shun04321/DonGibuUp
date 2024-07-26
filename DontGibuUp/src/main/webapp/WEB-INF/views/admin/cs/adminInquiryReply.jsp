@@ -41,6 +41,12 @@
 			
 			<div class="contact-image-wrap d-flex flex-wrap mb-2 pb-0">
 				<div class="d-flex flex-column justify-content-center">
+					<c:if test="${inquiry.inquiry_filename.endsWith('.jpg') 
+								or inquiry.inquiry_filename.endsWith('.jpeg') 
+								or inquiry.inquiry_filename.endsWith('.png') 
+								or inquiry.inquiry_filename.endsWith('.gif')}">
+								<p><img class="content-img" src="${pageContext.request.contextPath}/upload/${inquiry.inquiry_filename}"></p>
+					</c:if>
 					<p id="inquiryContent">${inquiry.inquiry_content}</p>
 					<p id="inquiryDateText" class="mb-1 cs-date">${inquiry.inquiry_date}</p>
 				</div>

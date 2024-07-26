@@ -13,7 +13,6 @@ import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.dao.GoodsMapper;
 import kr.spring.goods.dao.PurchaseMapper;
 import kr.spring.goods.vo.PurchaseVO;
-import kr.spring.goods.vo.RefundVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,11 +51,10 @@ public class PurchaseServiceImpl implements PurchaseService {
         return purchaseMapper.getPurchaseItems(purchase_num);
     }
 
-    @Override
-    public void processRefund(RefundVO refundVO) {
-        purchaseMapper.insertRefund(refundVO);
-    }
-
+	/*
+	 * @Override public void processRefund(RefundVO refundVO) {
+	 * purchaseMapper.insertRefund(refundVO); }
+	 */
     public List<PurchaseVO> getPurchaseListByMember(long memNum) {
         List<PurchaseVO> purchaseList = purchaseMapper.getPurchaseListByMember(memNum);
         for (PurchaseVO purchase : purchaseList) {
