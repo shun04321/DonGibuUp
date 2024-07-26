@@ -19,7 +19,6 @@
         var memberPhone = "${member.phone}";
         var memberNum = "${member.mem_num}";
         var pageContextPath = "${pageContext.request.contextPath}";
-        var chalNum = ${param.chal_num}; //챌린지 번호 가져오기
         var sdate = "${challengeVO.chal_sdate}"; //챌린지 시작 날짜 가져오기
     </script>
 </head>
@@ -46,7 +45,7 @@
     </div>
     <form:form id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
-            <form:hidden path="chal_num" value="${param.chal_num}" />
+            <form:hidden path="chal_num" value="${challengeJoinVO.chal_num}" />
             <li>
                 <form:label path="dcate_num">기부 카테고리</form:label>
                 <span id="charityInfo"></span>
@@ -59,18 +58,18 @@
             </li>
             <br>
             <li class="result-details">
-        		<p><span class="left">100% 성공</span> <span class="right"><span class="chal_fee_90"></span>원 + 추가 <span class="chal_fee_5"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
-        		<p><span class="left">90% 이상 성공</span> <span class="right"><span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</span></p>
-        		<p><span class="left">90% 미만 성공</span> <span class="right">성공률만큼 환급, 나머지 기부</span></p>
+        		<p>100% 성공 <span class="right"><span class="chal_fee_90"></span>p + 추가 <span class="chal_fee_5"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
+        		<p>90% 이상 성공 <span class="right"><span class="chal_fee_90"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
+        		<p>90% 미만 성공 <span class="right">성공률만큼 환급, 나머지 기부</span></p>
     		</li>
         </ul>
         <br>
         <ul>
-        	<li>참여금 <span id="chal_fee">${challengeVO.chal_fee}</span>원</li>
-        	<li>보유 포인트 <span>( )p</span></li>
-        	<li>사용할 포인트 <input type="number"></li>
-        	<hr width="100%" size="1" noshade="noshade">
-        	<li>결제금액 <span>( )원</span></li>
+        	<li>참여금 <span class="chal_fee"></span>원</li>
+        	<li>보유 포인트 <span class="mem-point">${mem_point}</span>p</li>
+        	<li>사용할 포인트 <input type="text" class="used-point">p</li>
+        	<hr width="100%" size="1" noshade="noshade">        	
+        	<li>결제금액 <span class="final_fee"></span>원</li>
         </ul>
         <br>
         <div class="align-center">

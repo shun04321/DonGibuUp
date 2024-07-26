@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt"%>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
@@ -37,7 +38,7 @@
     <form:form action="leaderJoin" id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
         <ul>
             <li>
-                <form:label path="dcate_num">기부 카테고리</form:label>
+                <label for="charityInfo">기부 카테고리</label>
                 <span class="error-color" style="display:none;">기부카테고리를 선택하세요</span>
             	<span id="charityInfo"></span>
             </li>
@@ -47,19 +48,17 @@
                 </c:forEach>
             </li>
             <li class="result-details">
-        		<p>100% 성공 : <span class="chal_fee_90"></span>원 + 추가 (??)원 환급, <span class="chal_fee_10"></span>원 기부</p>
-        		<p>90% 이상 성공 : <span class="chal_fee_90"></span>원 환급, <span class="chal_fee_10"></span>원 기부</p>
-        		<p>90% 미만 성공 : 성공률만큼 환급, 나머지 기부</p>
+        		<p>100% 성공 <span class="right"><span class="chal_fee_90"></span>p + 추가 <span class="chal_fee_5"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
+        		<p>90% 이상 성공 <span class="right"><span class="chal_fee_90"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span></p>
+        		<p>90% 미만 성공 <span class="right">성공률만큼 환급, 나머지 기부</span></p>
             </li>
-        </ul>
+        </ul>        
         <ul>
-        	<li>참여금 <span id="chal_fee">${challenge.chal_fee}</span>원</li>
+        	<li>참여금 <span class="chal_fee"></span>원</li>
         	<li>보유 포인트 <span class="mem-point">${mem_point}</span>p</li>
-        	<li>사용할 포인트 
-        		<input type="text" class="used-point">p
-        	</li>
-        	<hr width="100%" size="1" noshade="noshade">
-        	<li>결제금액 <span class="">최종 금액 표시할 예정</span></li>
+        	<li>사용할 포인트 <input type="text" class="used-point">p</li>
+        	<hr width="100%" size="1" noshade="noshade">        	
+        	<li>결제금액 <span class="final_fee"></span>원</li>
         </ul>
         <div class="align-center">
             결제 조건 및 서비스 약관에 동의합니다

@@ -185,8 +185,10 @@ public class ChallengeController {
 		ChallengeJoinVO challengeJoinVO = new ChallengeJoinVO();
 		challengeJoinVO.setChal_num(chal_num);
 		model.addAttribute("challengeJoinVO", challengeJoinVO);
-
-		session.setAttribute("chal_num", chal_num); // 챌린지 번호를 세션에 저장
+		
+		//회원의 포인트 정보
+		MemberVO member = (MemberVO) session.getAttribute("user");
+		model.addAttribute("mem_point",member.getMem_point());
 
 		return "challengeJoinWrite";
 	}
@@ -198,11 +200,11 @@ public class ChallengeController {
 
 		ChallengeVO vo = (ChallengeVO) session.getAttribute("challengeVO");
 		model.addAttribute("challenge", vo);
-		
+
 		//회원의 포인트 정보
 		MemberVO member = (MemberVO) session.getAttribute("user");
 		model.addAttribute("mem_point",member.getMem_point());
-		
+
 		return "leaderJoinForm";
 	}    
 	//챌린지 참가 및 결제
@@ -333,7 +335,7 @@ public class ChallengeController {
 			reviewCheckMap.put("mem_num", member.getMem_num());
 			ChallengeReviewVO review = challengeService.selectChallengeReviewByMemberAndChallenge(reviewCheckMap);
 			boolean hasReview = review != null;
-			
+
 			//챌린지 참여 인원
 			long chal_num = challengeJoin.getChal_num();
 			int total_count = challengeService.countCurrentParticipants(chal_num);
@@ -491,82 +493,82 @@ public class ChallengeController {
 	//챌린지 인증 목록
 	@GetMapping("/challenge/verify/list")
 	public ModelAndView verifyList(long chal_joi_num, long chal_num,
-	        @RequestParam(value = "status", defaultValue = "pre") String status,
-	        @RequestParam(defaultValue = "1") int pageNum) {
-	    Map<String, Object> map = new HashMap<>();
-	    map.put("chal_joi_num", chal_joi_num);
+			@RequestParam(value = "status", defaultValue = "pre") String status,
+			@RequestParam(defaultValue = "1") int pageNum) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("chal_joi_num", chal_joi_num);
 
-	    //본인의 총 인증 개수 불러오기
-	    int count = challengeService.selectChallengeVerifyListRowCount(map);
+		//본인의 총 인증 개수 불러오기
+		int count = challengeService.selectChallengeVerifyListRowCount(map);
 
-	    PagingUtil page = new PagingUtil(pageNum, count, 6, 10, "list", "&chal_num=" + chal_num + "&chal_joi_num=" + chal_joi_num + "&status=on");
+		PagingUtil page = new PagingUtil(pageNum, count, 6, 10, "list", "&chal_num=" + chal_num + "&chal_joi_num=" + chal_joi_num + "&status=on");
 
-	    List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
+		List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(map);
 
-	    ModelAndView mav = new ModelAndView("challengeVerifyList");
-	    mav.addObject("verifyList", verifyList);
-	    mav.addObject("chal_num", chal_num);
-	    mav.addObject("chal_joi_num", chal_joi_num);
-	    mav.addObject("status", status);
-	    mav.addObject("page", page.getPage());
+		ModelAndView mav = new ModelAndView("challengeVerifyList");
+		mav.addObject("verifyList", verifyList);
+		mav.addObject("chal_num", chal_num);
+		mav.addObject("chal_joi_num", chal_joi_num);
+		mav.addObject("status", status);
+		mav.addObject("page", page.getPage());
 
-	    //오늘 날짜 추가
-	    LocalDate today = LocalDate.now();
-	    mav.addObject("today", today.toString());
+		//오늘 날짜 추가
+		LocalDate today = LocalDate.now();
+		mav.addObject("today", today.toString());
 
-	    //챌린지 정보 가져오기
-	    ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
-	    ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
-	    int chalFreq = challengeJoin.getChal_freq();
-	    String chal_sdate = challengeJoin.getChal_sdate();
-	    String chal_edate = challengeJoin.getChal_edate();
+		//챌린지 정보 가져오기
+		ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+		ChallengeVO challenge = challengeService.selectChallenge(challengeJoin.getChal_num());
+		int chalFreq = challengeJoin.getChal_freq();
+		String chal_sdate = challengeJoin.getChal_sdate();
+		String chal_edate = challengeJoin.getChal_edate();
 
-	    mav.addObject("challenge", challenge);
-	    mav.addObject("chalFreq", chalFreq);
-	    mav.addObject("chal_sdate", chal_sdate);
-	    mav.addObject("chal_edate", chal_edate);
+		mav.addObject("challenge", challenge);
+		mav.addObject("chalFreq", chalFreq);
+		mav.addObject("chal_sdate", chal_sdate);
+		mav.addObject("chal_edate", chal_edate);
 
-	    //전체 주 수 계산
-	    LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
-	    LocalDate endDate = LocalDate.parse(chal_edate, DateTimeFormatter.ISO_LOCAL_DATE);
-	    long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
+		//전체 주 수 계산
+		LocalDate startDate = LocalDate.parse(chal_sdate, DateTimeFormatter.ISO_LOCAL_DATE);
+		LocalDate endDate = LocalDate.parse(chal_edate, DateTimeFormatter.ISO_LOCAL_DATE);
+		long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
 
-	    int totalFailedVerifications = 0;
+		int totalFailedVerifications = 0;
 
-	    for (int weekNumber = 0; weekNumber < totalWeeks; weekNumber++) {
-	        int weeklyVerifications = challengeService.countWeeklyVerify(chal_joi_num, startDate, weekNumber);
-	        int failedInWeek = chalFreq - weeklyVerifications;
+		for (int weekNumber = 0; weekNumber < totalWeeks; weekNumber++) {
+			int weeklyVerifications = challengeService.countWeeklyVerify(chal_joi_num, startDate, weekNumber);
+			int failedInWeek = chalFreq - weeklyVerifications;
 
-	        //주차 종료일이 현재보다 과거인 경우에만 실패 횟수를 누적
-	        LocalDate weekEndDate = startDate.plusDays((weekNumber + 1) * 7 - 1);
-	        if (weekEndDate.isBefore(today) || weekEndDate.equals(today)) {
-	            totalFailedVerifications += Math.max(failedInWeek, 0);
-	        }
-	    }
+			//주차 종료일이 현재보다 과거인 경우에만 실패 횟수를 누적
+			LocalDate weekEndDate = startDate.plusDays((weekNumber + 1) * 7 - 1);
+			if (weekEndDate.isBefore(today) || weekEndDate.equals(today)) {
+				totalFailedVerifications += Math.max(failedInWeek, 0);
+			}
+		}
 
-	    //인증 성공 횟수
-	    long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
-	    mav.addObject("successCount", successCount);
+		//인증 성공 횟수
+		long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
+		mav.addObject("successCount", successCount);
 
-	    //chal_ver_status가 1인 경우 실패 횟수로 간주
-	    long statusFailureCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 1).count();
-	    mav.addObject("failureCount", statusFailureCount);
+		//chal_ver_status가 1인 경우 실패 횟수로 간주
+		long statusFailureCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 1).count();
+		mav.addObject("failureCount", statusFailureCount);
 
-	    //총 실패 횟수 = 자동 실패 횟수 + 수동 인증 실패 횟수
-	    totalFailedVerifications += statusFailureCount;
+		//총 실패 횟수 = 자동 실패 횟수 + 수동 인증 실패 횟수
+		totalFailedVerifications += statusFailureCount;
 
-	    //남은 인증 횟수
-	    long totalCount = totalWeeks * chalFreq;
-	    long remainingCount = totalCount - successCount - totalFailedVerifications;
-	    mav.addObject("remainingCount", Math.max(remainingCount, 0));
+		//남은 인증 횟수
+		long totalCount = totalWeeks * chalFreq;
+		long remainingCount = totalCount - successCount - totalFailedVerifications;
+		mav.addObject("remainingCount", Math.max(remainingCount, 0));
 
-	    //달성률 계산 (정수로 변환)
-	    int achievementRate = (int) ((double) successCount / totalCount * 100);
-	    mav.addObject("achievementRate", achievementRate);
+		//달성률 계산 (정수로 변환)
+		int achievementRate = (int) ((double) successCount / totalCount * 100);
+		mav.addObject("achievementRate", achievementRate);
 
-	    mav.addObject("count", count);
-	    
-	    //회원이 챌린지 리더인지 확인
+		mav.addObject("count", count);
+
+		//회원이 챌린지 리더인지 확인
 		long mem_joi_num = challengeService.selectLeaderJoiNum(chal_num);
 		if(mem_joi_num == chal_joi_num) {
 			mav.addObject("isLeader", true);
@@ -574,7 +576,7 @@ public class ChallengeController {
 			mav.addObject("isLeader", false);
 		}
 
-	    return mav;
+		return mav;
 	}
 
 	//챌린지 인증 상세
@@ -672,16 +674,16 @@ public class ChallengeController {
 
 		return "challengeReviewList";
 	}
-	
+
 	//챌린지 종료시 환급 포인트 지급
 	@GetMapping("/challenge/refundPoints")
 	public ResponseEntity<String> refundPointsToUsers(@RequestParam("chal_num") Long chal_num) {
-	    try {
-	        challengeService.refundPointsToUsers(chal_num);
-	        return new ResponseEntity<>("포인트 환급이 완료되었습니다.", HttpStatus.OK);
-	    } catch (Exception e) {
-	        return new ResponseEntity<>("포인트 환급 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+		try {
+			challengeService.refundPointsToUsers(chal_num);
+			return new ResponseEntity<>("포인트 환급이 완료되었습니다.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("포인트 환급 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }

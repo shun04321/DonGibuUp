@@ -3,18 +3,18 @@ document.addEventListener("DOMContentLoaded", function() {
 	$('input[type="radio"]').prop('checked', false);
 
 	// 참여금 및 환급/기부금 계산
-	let chalFeeElement = document.getElementById('chal_fee');
+	let chalFeeElement = document.querySelector('.chal_fee');
 	let chalFee90Element = document.querySelectorAll('.chal_fee_90');
 	let chalFee10Element = document.querySelectorAll('.chal_fee_10');
 	let chalFee5Element = document.querySelectorAll('.chal_fee_5');
 
-	if (chalFeeElement) {
-		var chalFee = parseInt(chalFeeElement.innerText.replace(/,/g, ''), 10);
+	if (chalFeeElement) {		
 		var chalFee90 = (chalFee * 0.9).toFixed(0);
 		var chalFee10 = (chalFee * 0.1).toFixed(0);
 		var chalFee5 = (chalFee * 0.05).toFixed(0);
 
 		chalFeeElement.innerText = formatNumber(chalFee);
+		document.querySelector('.final_fee').textContent = formatNumber(chalFee);		
 
 		chalFee90Element.forEach(function(e) {
 			e.innerText = formatNumber(chalFee90);
@@ -52,6 +52,8 @@ $(function() {
 		if(inputPoint > totalPoint){
 			$(this).val(totalPoint);
 		}
+		//최종 결제금액
+		totalPayment($(this).val(),chalFee);
 	});
 
 	// 기부 카테고리 유효성 검사 후 결제
@@ -70,12 +72,19 @@ $(function() {
 			$('.error-color').show();
 			return;
 		}
-		$(window).off('beforeunload');//?
+		$(window).off('beforeunload');
 		payAndEnroll();
 	});
 });
+
 function formatNumber(num) {
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+function totalPayment(point,originalFee){
+	var final_fee = parseInt(originalFee) - parseInt(point);
+	if(final_fee <= 0 || isNaN(final_fee)) final_fee = parseInt(originalFee);
+	$('.final_fee').text(formatNumber(final_fee));
 }
 
 function payAndEnroll2() {
@@ -154,28 +163,21 @@ function payAndEnroll2() {
 }
 
 function payAndEnroll() {
+	finalFee = $('.final_fee').val();
+	usedPoints = $('.used-point').val();
+	
 	IMP.init("imp41500674");
-
 	IMP.request_pay(
 		{
-			pg: "tosspayments", // 반드시 "tosspayments"임을 명시해주세요.
+			pg: "tosspayments",
 			merchant_uid: "merchant_" + new Date().getTime(),
 			name: chalTitle,
 			pay_method: "card",
-			escrow: false,
-			amount: chalFee,
+			amount: finalFee,
 			buyer_name: memberNick,
 			buyer_email: memberEmail,
 			currency: "KRW",
-			locale: "ko",
-			custom_data: { usedPoints: 500 },
-			appCard: false,
-			useCardPoint: false,
-			bypass: {
-				tosspayments: {
-					useInternationalCardOnly: false, // 영어 결제창 활성화
-				},
-			},
+			locale: "ko"		
 		},
 		(rsp) => {
 			if (!rsp.error_code) {
@@ -187,12 +189,12 @@ function payAndEnroll() {
 				$.ajax({
 					url: '/challenge/paymentVerify/' + rsp.imp_uid,
 					method: 'POST',
+					data:JSON.stringify({chal_point:usedPoints}),
 				}).done(function(data) {
 					if (data.response.status == 'paid') {
 						console.log('success');
 
 						//결제 정보에 넣을 데이터 가공하기
-						let customData = JSON.parse(data.response.customData);
 						let dcate_num = $('input[type="radio"]').val();
 
 						//결제 정보 처리 및 완료하기
@@ -202,7 +204,7 @@ function payAndEnroll() {
 							data: JSON.stringify({
 								od_imp_uid: rsp.imp_uid,
 								chal_pay_price: data.response.amount,
-								chal_point: customData.usedPoints,
+								chal_point: usedPoints,
 								chal_pay_status: 0,
 								dcate_num: dcate_num
 							}),

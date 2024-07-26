@@ -542,15 +542,10 @@ h2 {
 
 .result-details p {
 	display: flex;
-	justify-content: space-between;
-}
-
-.left {
-	text-align: left;
 }
 
 .right {
-	text-align: right;
+	margin-left:auto;
 }
 
 /* 챌린지 참가 목록 */

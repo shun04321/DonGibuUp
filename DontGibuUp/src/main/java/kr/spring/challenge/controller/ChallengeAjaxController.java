@@ -407,7 +407,6 @@ public class ChallengeAjaxController {
 
 		//로그인 여부 확인하기
 		MemberVO member = (MemberVO) session.getAttribute("user");
-		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");
 
 		//세션에 저장된 결제 금액 가져오기
 		ChallengeVO challengeVO = (ChallengeVO) session.getAttribute("challengeVO");
@@ -422,7 +421,7 @@ public class ChallengeAjaxController {
 			CancelData cancelData = new CancelData(imp_uid, true);
 			impClient.cancelPaymentByImpUid(cancelData);
 			//대표 사진 업로드 및 파일 저장
-			FileUtil.removeFile(request, challenge.getChal_photo());
+			FileUtil.removeFile(request, challengeVO.getChal_photo());
 		}
 		log.debug("payment"+payment);
 		return payment;
