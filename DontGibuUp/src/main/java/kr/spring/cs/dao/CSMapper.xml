@@ -112,7 +112,7 @@
 		    SELECT b.*, rownum rnum 
 		    FROM (SELECT * 
 		    	  FROM report a
-		       	  <include refid="inquirySearch"></include>
+		       	  <include refid="reportSearch"></include>
 		          ORDER BY a.report_date DESC)b)
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}	
