@@ -15,7 +15,7 @@ public class ReportVO {
 	private long report_num;
 	private long mem_num;
 	private long reported_mem_num;
-	private int report_type;
+	private Integer report_type;
 	private String report_content;
 	private String report_filename;
 	private String report_reply;

@@ -11,22 +11,28 @@
                     <h5 class="mb-3">신고</h5>
                     <form:hidden path="mem_num" value="${user.mem_num}" />
                     
+                    <div class="form-group mb-3 d-flex align-items-center">
+                        <label class="form-label col-2">피신고자</label>
+                        <form:hidden path="reported_mem_num" id="reported_mem_num"/>
+                        <input type="text" value="${reported_mem_nick}" disabled class="form-control"/>
+                    </div>
+                    
                     <!-- Category Section -->
-<%--                     <div class="form-group mb-3">
+                     <div class="form-group mb-3">
                         <form:select path="report_type" id="report_type" class="form-select">
-                            <c:forEach var="category" items="${report_type}">
+                            <c:forEach var="type" items="${report_type}">
                                 <c:choose>
-                                    <c:when test="${category.key == ''}">
-                                        <form:option value="${category.key}" selected="selected">${category.value}</form:option>
+                                    <c:when test="${type.key == ''}">
+                                        <form:option value="${type.key}" selected="selected">${type.value}</form:option>
                                     </c:when>
                                     <c:otherwise>
-                                        <form:option value="${category.key}">${category.value}</form:option>
+                                        <form:option value="${type.key}">${type.value}</form:option>
                                     </c:otherwise>
                                 </c:choose>
                             </c:forEach>
                         </form:select>
                         <form:errors path="report_type" cssClass="form-error text-danger"></form:errors>
-                    </div> --%>
+                    </div>
 
 
                     <!-- File Upload Section -->

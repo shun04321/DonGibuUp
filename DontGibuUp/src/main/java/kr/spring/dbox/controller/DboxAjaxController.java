@@ -194,7 +194,7 @@ public class DboxAjaxController {
 				//value로 전달하는 값은 String이어야 함. String이 아닐 시에는 형변환하고 넣을 것(String.valueOf() 메서드 이용)
 				//동적 데이터가 여러개일 경우 여러개 매핑
 				DboxVO dbox = dboxService.selectDbox(dbox_num);
-				dynamicValues.put("pointAmount", String.valueOf(point)); //알림 템플릿 참조
+				dynamicValues.put( "pointAmount", String.valueOf(point)); //알림 템플릿 참조
 				dynamicValues.put("peventDetail", "기부박스 : " + dbox.getDbox_title()); //알림 템플릿 참조
 				
 				//NotifyService 호출
