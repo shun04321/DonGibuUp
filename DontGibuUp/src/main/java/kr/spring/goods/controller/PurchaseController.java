@@ -76,7 +76,7 @@ public class PurchaseController {
     @ResponseBody
     public IamportResponse<Payment> validateIamport(@PathVariable String imp_uid, HttpSession session) throws IamportResponseException, IOException {
         log.debug("결제 검증 요청: imp_uid = " + imp_uid);
-        
+        MemberVO member = (MemberVO) session.getAttribute("user");
         IamportResponse<Payment> payment;
         try {
             payment = impClient.paymentByImpUid(imp_uid);
@@ -102,7 +102,10 @@ public class PurchaseController {
     public Map<String, String> savePurchaseInfo(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
             throws IllegalStateException, IOException {
         Map<String, String> mapJson = new HashMap<>();
-
+        // 세션 데이터 가져오기
+        MemberVO member = (MemberVO) session.getAttribute("user");
+        
+        
         try {
             String impUid = (String) data.get("imp_uid");
             String merchantUid = (String) data.get("merchant_uid");
@@ -120,8 +123,7 @@ public class PurchaseController {
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
 
-            // 세션 데이터 가져오기
-            MemberVO member = (MemberVO) session.getAttribute("user");
+           
 
             if (member == null) {
                 mapJson.put("result", "logout");
