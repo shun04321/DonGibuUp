@@ -359,7 +359,7 @@ public class CSController {
 	@GetMapping("/cs/report")
 	public String formReport(Model model) {
 		Map<String, String> report_type = new HashMap<String, String>();
-		report_type.put("", "신고 사유 선택");
+		report_type.put("", "신고 사유");
 		report_type.put("1", "스팸/광고");
 		report_type.put("2", "폭력/위협");
 		report_type.put("3", "혐오발언/차별");

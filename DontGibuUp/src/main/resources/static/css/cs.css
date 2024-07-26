@@ -142,7 +142,7 @@ ul {
 	height: 3rem !important;
 }
 
-#faq_answer, #mfaq_answer, #inquiry_content {
+#faq_answer, #mfaq_answer, #inquiry_content, #report_content {
 	height: 26rem !important;
 	resize: none;
 }
