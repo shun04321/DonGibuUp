@@ -10,11 +10,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.spring.member.service.MemberService;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -132,6 +134,26 @@ public class MyPageAjaxController {
 			} else {
 				mapAjax.put("result", "notMatched");
 			}
+		}
+		return mapAjax;
+	}
+	
+	/*===============================
+			멤버 토탈 불러오기
+	================================*/
+	@GetMapping("member/myPage/memberTotal")
+	@ResponseBody
+	public Map<String, Object> getMemberTotal(HttpSession session, HttpServletRequest request) {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		
+		if (user == null) {
+			mapAjax.put("result", "logout");
+		} else {
+			MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+			
+			mapAjax.put("result", "success");
+			mapAjax.put("memberTotal", memberTotal);
 		}
 		return mapAjax;
 	}

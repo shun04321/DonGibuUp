@@ -75,11 +75,11 @@
 		<put-attribute name="body" value="/WEB-INF/views/dbox/dboxProposeEnd.jsp"/>
 	</definition>
 	<!-- 마이페이지 -->
-	<definition name="dboxMyPropose" extends="memberInfo">
+	<definition name="dboxMyPropose" extends="mypageLayout">
 		<put-attribute name="title" value="MyPage - 제안한 기부박스" />
 		<put-attribute name="body" value="/WEB-INF/views/mypage/dboxMyPropose.jsp"/>
 	</definition>
-	<definition name="dboxMyDonation" extends="memberInfo">
+	<definition name="dboxMyDonation" extends="mypageLayout">
 		<put-attribute name="title" value="MyPage - 기부박스 기부내역" />
 		<put-attribute name="body" value="/WEB-INF/views/mypage/dboxMyDonation.jsp"/>
 	</definition>
