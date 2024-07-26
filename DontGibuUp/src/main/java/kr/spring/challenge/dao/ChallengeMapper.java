@@ -134,6 +134,6 @@ public interface ChallengeMapper {
     @Select("SELECT * FROM challenge WHERE chal_edate = #{today}")
     public List<ChallengeVO> getTodayExpiredChallenges(LocalDate today);
     //챌린지 종료시 환급 포인트 지급
-    @Insert("INSERT INTO user_points (mem_num, pevent_type, pevent_amount, point_date) VALUES (#{mem_num}, #{pevent_type}, #{pevent_amount}, SYSDATE)")
-    public void insertUserPoints(@Param("mem_num") Long mem_num, @Param("pevent_type") int pevent_type, @Param("pevent_amount") int pevent_amount);
+    @Insert("INSERT INTO point_log (point_num, mem_num, pevent_type, point_amount, point_date) VALUES (point_log_seq.NEXTVAL, #{mem_num}, #{pevent_type}, #{pevent_amount}, SYSDATE)")
+    public void insertRefundPoints(@Param("mem_num") Long mem_num, @Param("pevent_type") int pevent_type, @Param("pevent_amount") int pevent_amount);
 }

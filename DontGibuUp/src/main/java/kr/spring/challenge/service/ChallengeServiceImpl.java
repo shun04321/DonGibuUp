@@ -342,11 +342,9 @@ public class ChallengeServiceImpl implements ChallengeService{
         	long chal_num = challenge.getChal_num();
         	
             //1. 참가자에게 환급 포인트 지급
-        	 refundPointsToUsers(chal_num);
-        	 
-            //2. 챌린지 상태 업데이트
+        	refundPointsToUsers(chal_num);
 
-            //3. 단체 채팅방 삭제
+            //2. 단체 채팅방 삭제
             challengeMapper.deleteChalChatRead(chal_num);
             challengeMapper.deleteChallengeChat(chal_num);
 
@@ -364,15 +362,22 @@ public class ChallengeServiceImpl implements ChallengeService{
         List<ChallengeJoinVO> joinList = challengeMapper.selectJoinMemberList(map);
 
         for (ChallengeJoinVO join : joinList) {
+            ChallengeVO challenge = challengeMapper.selectChallenge(join.getChal_num());
+            join.setChal_sdate(challenge.getChal_sdate());
+            join.setChal_edate(challenge.getChal_edate());
+            join.setChal_fee(challenge.getChal_fee().longValue());
+            join.setChal_freq(challenge.getChal_freq());
+
             int returnPoint = calculateReturnPoint(join);
-            challengeMapper.insertUserPoints(join.getMem_num(), 14, returnPoint); //이벤트 타입 (챌린지 환급)
+
+            challengeMapper.insertRefundPoints(join.getMem_num(), 14, returnPoint);//이벤트 타입 (챌린지 환급)
         }
     }
 
     private int calculateReturnPoint(ChallengeJoinVO challengeJoin) {
         Long chal_fee = challengeJoin.getChal_fee();
         int achieveRate = calculateAchieveRate(challengeJoin);
-        
+
         if (achieveRate == 100) {
             return (int) (chal_fee * 0.95);
         } else {
@@ -390,11 +395,15 @@ public class ChallengeServiceImpl implements ChallengeService{
 
         long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();
 
-        LocalDate startDate = LocalDate.parse(challengeJoin.getChal_sdate(), DateTimeFormatter.ISO_LOCAL_DATE);
-        LocalDate endDate = LocalDate.parse(challengeJoin.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE);
+        String sdate = challengeJoin.getChal_sdate();
+        String edate = challengeJoin.getChal_edate();
+
+        LocalDate startDate = LocalDate.parse(sdate, DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate endDate = LocalDate.parse(edate, DateTimeFormatter.ISO_LOCAL_DATE);
         long totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1;
 
         long totalCount = totalWeeks * chal_freq;
+
         return totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
     }
 }
