@@ -3,6 +3,7 @@ package kr.spring.challenge.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -535,4 +536,75 @@ public class ChallengeServiceImpl implements ChallengeService{
 
         return totalCount > 0 ? (int) ((double) successCount / totalCount * 100) : 0;
     }
+    
+    //인증 요청 알림 실행
+	/*
+	 * @Override public void processTodayVerificationRequest() { Map<String, Object>
+	 * paramMap = new HashMap<>(); paramMap.put("status", "ongoing"); // 진행 중인 챌린지
+	 * 필터 List<ChallengeVO> ongoingChallenges =
+	 * challengeMapper.selectList(paramMap);
+	 * 
+	 * // 현재 진행 중인 챌린지 로그 log.debug("Ongoing Challenges: {}", ongoingChallenges);
+	 * 
+	 * for (ChallengeVO challenge : ongoingChallenges) { Map<String, Object>
+	 * joinMemberMap = new HashMap<>(); joinMemberMap.put("chal_num",
+	 * challenge.getChal_num()); List<ChallengeJoinVO> participants =
+	 * challengeMapper.selectJoinMemberList(joinMemberMap); LocalDate currentDate =
+	 * LocalDate.now();
+	 * 
+	 * // 각 챌린지의 참가자 목록 로그 log.debug("Participants for Challenge {}: {}",
+	 * challenge.getChal_num(), participants);
+	 * 
+	 * for (ChallengeJoinVO participant : participants) { LocalDate
+	 * challengeStartDate = LocalDate.parse(participant.getChal_sdate()); LocalDate
+	 * challengeEndDate = LocalDate.parse(participant.getChal_edate());
+	 * 
+	 * // 챌린지 시작일과 종료일 로그 log.debug("Challenge Start Date: {}, End Date: {}",
+	 * challengeStartDate, challengeEndDate);
+	 * 
+	 * int chalFreq = challenge.getChal_freq(); // 인증 빈도 List<LocalDate> deadlines =
+	 * calculateWeeklyDeadlines(challengeStartDate, challengeEndDate, chalFreq);
+	 * 
+	 * // 마감일 목록 로그 log.debug("Deadlines: {}", deadlines);
+	 * 
+	 * for (LocalDate deadline : deadlines) { if
+	 * (currentDate.equals(deadline.minusDays(1))) { int completedVerifications =
+	 * countWeeklyVerifications(participant.getChal_joi_num(), deadline);
+	 * 
+	 * // 완료된 인증 횟수 로그 log.debug("Completed Verifications: {} for Participant: {}",
+	 * completedVerifications, participant.getChal_joi_num());
+	 * 
+	 * if (completedVerifications < chalFreq) { // 알림 전송 로그
+	 * log.debug("Sending notification for Participant: {} in Challenge: {}",
+	 * participant.getMem_num(), challenge.getChal_num());
+	 * 
+	 * // 알림 전송 NotifyVO notifyVO = new NotifyVO();
+	 * notifyVO.setMem_num(participant.getMem_num()); // 알림 받을 참가자 회원 번호
+	 * notifyVO.setNotify_type(1); // 알림 타입 (챌린지 인증 마감 알림)
+	 * notifyVO.setNot_url("/challenge/detail?chal_num=" + challenge.getChal_num());
+	 * // 알림을 누르면 반환할 URL
+	 * 
+	 * Map<String, String> dynamicValues = new HashMap<>();
+	 * dynamicValues.put("chalTitle", challenge.getChal_title());
+	 * 
+	 * notifyService.insertNotifyLog(notifyVO, dynamicValues); } } } } } }
+	 * 
+	 * private List<LocalDate> calculateWeeklyDeadlines(LocalDate startDate,
+	 * LocalDate endDate, int chalFreq) { List<LocalDate> deadlines = new
+	 * ArrayList<>(); LocalDate current = startDate;
+	 * 
+	 * while (!current.isAfter(endDate)) { for (int i = 0; i < chalFreq; i++) { if
+	 * (!current.isAfter(endDate)) { deadlines.add(current); } current =
+	 * current.plusDays(1); } current = current.plusDays(7 - chalFreq); // 나머지 일수
+	 * 건너뛰기 }
+	 * 
+	 * return deadlines; }
+	 * 
+	 * private int countWeeklyVerifications(long chalJoiNum, LocalDate deadline) {
+	 * Map<String, Object> params = new HashMap<>(); params.put("chal_joi_num",
+	 * chalJoiNum); params.put("week_start", deadline.minusDays(7)); // 해당 주 시작일
+	 * params.put("week_end", deadline); // 해당 주 종료일
+	 * 
+	 * return challengeMapper.countWeeklyVerify(params); }
+	 */
 }

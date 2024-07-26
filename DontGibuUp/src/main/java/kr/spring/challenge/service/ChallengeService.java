@@ -85,4 +85,6 @@ public interface ChallengeService {
     public void processTodayExpiredChallenges();
     //챌린지 종료시 환급 포인트 지급
     public void refundPointsToUsers(Long chal_num);
+    //챌린지 인증 요청 알림 실행
+    //public void processTodayVerificationRequest();
 }
