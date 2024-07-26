@@ -186,7 +186,7 @@
 		</c:if>
 		<div class="paymentHistory">
 			<h3>정기기부 결제내역</h3>
-			<span class="small">총 기부 횟수 : ${count}</span>
+			<span class="small">총 기부 횟수 : ${count}회</span>
 			<span class="notice"> (결제일로부터 21일이 지나면 환불이 불가능합니다.)</span>
 			<form id="refund_form" method="post" action="paymentRefund">
 				<c:forEach var="payment" items="${list}">

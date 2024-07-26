@@ -175,7 +175,8 @@
 								</div>
 								<!-- 새 카드 별명 입력 필드 -->
 								<div id="newCardNickname" style="display: none;">
-									<input type="text" class="form-control" id="newCardname" class="newCard" placeholder="새 카드 별명">
+									<input type="text" class="form-control" id="newCardname" class="newCard" placeholder="새 카드 별명"
+									maxlength="10">
 								</div>
 							</div>
 
