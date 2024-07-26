@@ -33,7 +33,7 @@
 								<c:if test="${report.report_type == 5}">챌린지 인증</c:if>
 			               		</td>
 						        <td class="clickable d-flex align-items-center" onclick="location.href='report/detail?report_num=${report.report_num}'" >
-								<span class="report-content" style="word-break: break-word;">${report.report_content}</span> <c:if test="${!empty report.report_filename}"><img src="${pageContext.request.contextPath}/images/attach-file.png" width="15px"></c:if>
+								<span class="report-content me-1" style="word-break: break-word;">${report.report_content}</span> <c:if test="${!empty report.report_filename}"><img src="${pageContext.request.contextPath}/images/attach-file.png" width="15px"></c:if>
 								</td>
 								<td>${report.report_date}</td>
 								<td>
