@@ -37,7 +37,7 @@ public class CategoryController {
 	private PayuidService payuidService;
 
 	//기부 카테고리 및 기부처 리스트 호출
-	@GetMapping("/category/categoryList")
+	@GetMapping("/admin/categoryList")
 	public String categoryList(Model model) {
 
 		Map<String,Object> map = 

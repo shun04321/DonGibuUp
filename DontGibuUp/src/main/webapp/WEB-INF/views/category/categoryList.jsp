@@ -14,16 +14,16 @@
 	<c:if test="${count > 0}">
 	<table class="striped-table">
 		<tr>
-			<th>아이콘</th>
-			<th>번호</th>
-			<th>카테고리명</th>
-			<th>기부처</th>
+			<th class="align-center">아이콘</th>
+			<th class="align-center">번호</th>
+			<th class="align-center">카테고리명</th>
+			<th class="align-center">기부처</th>
 		</tr>
 		<c:forEach var="dcate" items="${list}">
 			<tr>
 				<td class="align-center"><img src="${pageContext.request.contextPath}/upload/${dcate.dcate_icon}" alt="기부처 아이콘" width="30"></td>
 				<td class="align-center">${dcate.dcate_num}</td>
-				<td class="align-center"><a href="categoryDetail?dcate_num=${dcate.dcate_num}">${dcate.dcate_name}</a></td>
+				<td class="align-center"><a href="${pageContext.request.contextPath}/category/categoryDetail?dcate_num=${dcate.dcate_num}">${dcate.dcate_name}</a></td>
 				<td class="align-center">${dcate.dcate_charity}</td>
 			</tr>
 		</c:forEach>

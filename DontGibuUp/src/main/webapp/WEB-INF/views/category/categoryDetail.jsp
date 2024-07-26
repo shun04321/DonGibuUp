@@ -45,11 +45,11 @@
 	<div class="main-content align-center">${category.dcate_content}
 		<div class="box-guide">
 			<div class="header">
-				<div class="align-left">
+				<div class="align-left" style="margin-left:45px;">
 					<strong>${category.dcate_charity}</strong>
 					<p>세상을 바꾸는 정기기부, 같이 시작해요!</p>
 				</div>
-				<div class="align-right">
+				<div class="align-right" style="margin-right:35px;">
 					<img
 						src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
 						width="50px">
@@ -121,7 +121,9 @@
 		<input type="button" value="수정"
 			onclick="location.href='/category/updateCategory?dcate_num=${category.dcate_num}'">
 		<input type="button" value="삭제" id="delete_btn">
+		<input type="button" value="목록" onclick="location.href='/admin/categoryList'">
 	</c:if>
+	
 	<script>
 					const delete_btn = document.getElementById('delete_btn');
 					delete_btn.onclick = function() {
@@ -136,7 +138,7 @@
 		<button id="paybutton" class="btn btn-info" data-bs-toggle="modal"
 			data-bs-target="#staticBackdrop">정기기부 신청</button>
 	</div>
-	<input type="button" value="목록" onclick="location.href='categoryList'">
+	
 </div>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/subscription/reg_pay.js"></script>
