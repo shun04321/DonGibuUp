@@ -23,6 +23,7 @@ import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.cs.vo.ReportVO;
+import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.util.FileUtil;
@@ -35,6 +36,9 @@ import lombok.extern.slf4j.Slf4j;
 public class CSController {
 	@Autowired
 	CSService csService;
+	
+	@Autowired
+	MemberService memberService;
 
 	//자바빈(VO) 초기화
 	@ModelAttribute
@@ -201,8 +205,8 @@ public class CSController {
 		//문의작성
 		csService.insertInquiry(inquiryVO);
 
-		model.addAttribute("accessTitle", "문의 전송 완료");
-		model.addAttribute("accessMsg", "1:1문의가 전송되었습니다");
+		model.addAttribute("accessTitle", "문의 접수 완료");
+		model.addAttribute("accessMsg", "1:1문의가 접수되었습니다");
 		model.addAttribute("accessBtn", "마이페이지에서 확인하기");
 		model.addAttribute("accessUrl", request.getContextPath() + "/member/myPage/inquiry");
 
@@ -357,21 +361,43 @@ public class CSController {
 	
 	//신고 폼
 	@GetMapping("/cs/report")
-	public String formReport(Model model) {
+	public String formReport(@RequestParam(required = false) Long chal_num,
+							 @RequestParam(required = false) Long chal_rev_num,
+							 @RequestParam(required = false) Long dbox_re_num,
+							 @RequestParam Integer report_source,
+							 @RequestParam long reported_mem_num, 
+							 Model model,
+							 HttpSession session) {
+		
+		
 		Map<String, String> report_type = new HashMap<String, String>();
 		report_type.put("", "신고 사유");
 		report_type.put("1", "스팸/광고");
 		report_type.put("2", "폭력/위협");
 		report_type.put("3", "혐오발언/차별");
 		report_type.put("4", "음란물/부적절한 콘텐츠");
-		report_type.put("5", "챌린지 인증");
 		
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberVO reported_mem = memberService.selectMember(reported_mem_num);
+		
+		ReportVO reportVO = new ReportVO();
+		reportVO.setMem_num(user.getMem_num());
+		reportVO.setChal_num(chal_num);
+		reportVO.setChal_rev_num(chal_rev_num);
+		reportVO.setDbox_re_num(dbox_re_num);
+		reportVO.setReported_mem_num(reported_mem_num);
+		reportVO.setReported_mem_nick(reported_mem.getMem_nick());
+		reportVO.setReport_source(report_source);
+
+		log.debug("<<신고 폼>> : " + reportVO);
+
 		model.addAttribute("report_type", report_type);
+		model.addAttribute("reportVO", reportVO);
 
 		return "reportForm";
 	}
 
-	//1:1문의 작성
+	//신고 작성
 	@PostMapping("/cs/report")
 	public String report(@Valid ReportVO reportVO, BindingResult result, HttpServletRequest request,
 			HttpSession session, Model model) throws IllegalStateException, IOException {
@@ -383,9 +409,12 @@ public class CSController {
 			report_type.put("2", "폭력/위협");
 			report_type.put("3", "혐오발언/차별");
 			report_type.put("4", "음란물/부적절한 콘텐츠");
-			report_type.put("5", "챌린지 인증");
 
 			model.addAttribute("report_type", report_type);
+			model.addAttribute("reportVO", reportVO);
+			
+			log.debug("<<신고 유효성 검사>> : " + reportVO);
+			
 			return "reportForm";
 		}
 
@@ -399,8 +428,8 @@ public class CSController {
 
 		log.debug("<<신고>> : " + reportVO);
 
-		//문의작성
-		//csService.insertReport(reportVO);
+		//신고 작성
+		csService.insertReport(reportVO);
 
 		model.addAttribute("accessTitle", "신고 접수 완료");
 		model.addAttribute("accessMsg", "신고가 접수되었습니다");

@@ -10,6 +10,9 @@
                 <form:form action="report" id="report_form" class="custom-form donate-form" enctype="multipart/form-data" modelAttribute="reportVO">
                     <h5 class="mb-3">신고</h5>
                     <form:hidden path="mem_num"/>
+                    <form:hidden path="chal_num"/>
+                    <form:hidden path="chal_rev_num"/>
+                    <form:hidden path="dbox_re_num"/>
                     <form:hidden path="reported_mem_num"/>
                     <form:hidden path="report_source"/>
                     <c:if test="${report_source == 1}">
@@ -23,7 +26,7 @@
                     </c:if>
                     <div class="form-group mb-3 d-flex align-items-center">
                         <label class="form-label col-2">피신고자</label>
-                        <input type="text" value="${reported_mem_nick}" disabled class="form-control"/>
+                        <form:input path="reported_mem_nick" readonly="${true}" class="form-control"></form:input>
                     </div>
                     
                     <!-- Category Section -->

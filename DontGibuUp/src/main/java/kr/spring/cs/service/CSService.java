@@ -56,6 +56,9 @@ public interface CSService {
 	/*******************
 	 * 신고
 	 ******************/
+	//신고 작성
+	public void insertReport(ReportVO reportVO);
+	
 	//신고 개수
 	public int selectReportListCount(Map<String, Object> map);
 

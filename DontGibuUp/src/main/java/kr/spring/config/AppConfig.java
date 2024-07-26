@@ -72,6 +72,7 @@ public class AppConfig implements WebMvcConfigurer,WebSocketConfigurer{
 		        .addPathPatterns("/challenge/review/write")
 		        .addPathPatterns("/challenge/review/list")
 		        .addPathPatterns("/cs/inquiry")
+		        .addPathPatterns("/cs/report")
 				.addPathPatterns("/admin/**");
 		registry.addInterceptor(memStatusCheck)
 				.addPathPatterns("/member/myPage/**")  

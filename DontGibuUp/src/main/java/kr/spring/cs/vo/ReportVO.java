@@ -2,6 +2,9 @@ package kr.spring.cs.vo;
 
 import java.sql.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -15,7 +18,9 @@ public class ReportVO {
 	private long report_num;
 	private long mem_num;
 	private long reported_mem_num;
+	@NotNull
 	private Integer report_type;
+	@NotBlank
 	private String report_content;
 	private String report_filename;
 	private String report_reply;
@@ -27,11 +32,10 @@ public class ReportVO {
 	private String reported_mem_nick;
 	private int reported_mem_status;
 
-	private long report_source;
-	private long chal_num;
-	private long chal_rev_num;
-	private long chal_ver_num;
-	private long dbox_re_num;
+	private Integer report_source;
+	private Long chal_num;
+	private Long chal_rev_num;
+	private Long dbox_re_num;
 	
 	private MultipartFile upload;
 }

@@ -22,7 +22,9 @@
 						<img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" width="20" height="20">
 					</c:if>
 					${member.mem_nick}
-					<span onclick="신고하기 모달창" class="chatReport">🚨</span>					
+					<c:if test="${member.mem_num != user.mem_num}">
+						<span onclick="location.href='/cs/report?report_source=3&reported_mem_num=${member.mem_num}'" style='cursor:pointer' class="chatReport">🚨</span>					
+					</c:if>
 				</li>
 			</c:forEach>
 			</ul>
