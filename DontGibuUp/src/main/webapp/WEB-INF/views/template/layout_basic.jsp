@@ -14,7 +14,7 @@
 	<div id="main_header">
 		<tiles:insertAttribute name="header"/>
 	</div>
-	<div id="main_body">
+	<div id="main_body"  style="position: relative;">
 		<tiles:insertAttribute name="body"/>
 	</div>
 	<div id="main_footer">
