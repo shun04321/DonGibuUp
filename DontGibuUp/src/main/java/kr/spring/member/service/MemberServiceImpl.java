@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.member.dao.MemberMapper;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
@@ -180,6 +181,12 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateMemPhoto(MemberVO memberVO) {
 		memberMapper.updateMemPhoto(memberVO);
+	}
+	
+
+	@Override
+	public MemberTotalVO selectMemberTotal(long mem_num) {
+		return memberMapper.selectMemberTotal(mem_num);
 	}
 
 	@Override

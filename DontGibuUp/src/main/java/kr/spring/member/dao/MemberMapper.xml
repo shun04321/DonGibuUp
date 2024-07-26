@@ -138,6 +138,61 @@
           AND (not_read_datetime IS NULL OR not_datetime >= SYSDATE - INTERVAL '14' DAY)
         ORDER BY not_datetime DESC
     </select>
+    
+    <!-- 멤버 토탈 -->
+	<select id="selectMemberTotal" parameterType="long" resultType="memberTotalVO">
+		SELECT 
+		    a.mem_point, 
+		    a.mem_num,
+		    COALESCE(sub_counts.total_sub_price, 0) AS sub_total,
+		    COALESCE(donation_counts.total_dbox_price, 0) AS dbox_total,
+		    COALESCE(chal_counts.total_chal_price, 0) AS chal_total,
+		    COALESCE(goods_counts.total_goods_price, 0) AS goods_total,
+		    (COALESCE(sub_counts.count, 0) + COALESCE(donation_counts.count, 0) + COALESCE(chal_counts.count, 0) + COALESCE(goods_counts.count, 0)) AS total_count,
+		    ROUND(COALESCE(sub_counts.total_sub_price, 0) + COALESCE(donation_counts.total_dbox_price, 0) + COALESCE(chal_counts.total_chal_price, 0) + COALESCE(goods_counts.total_goods_price, 0)) AS total_amount
+		FROM member_detail a
+		LEFT OUTER JOIN (
+		    SELECT 
+		        COUNT(*) AS count, 
+		        SUM(b.sub_price) AS total_sub_price, 
+		        b.mem_num 
+		    FROM sub_payment b 
+		    WHERE b.sub_pay_status = 0
+		    GROUP BY b.mem_num
+		) sub_counts
+		ON a.mem_num = sub_counts.mem_num
+		LEFT OUTER JOIN (
+		    SELECT 
+		        COUNT(*) AS count, 
+		        SUM(c.dbox_do_price) AS total_dbox_price, 
+		        c.mem_num 
+		    FROM DBOX_DONATION c 
+		    WHERE c.dbox_do_status = 0
+		    GROUP BY c.mem_num
+		) donation_counts
+		ON a.mem_num = donation_counts.mem_num
+		LEFT OUTER JOIN (
+		    SELECT 
+		        COUNT(*) AS count, 
+		        SUM(d.chal_joi_total) AS total_chal_price, 
+		        d.mem_num 
+		    FROM CHAL_JOIN d
+		    WHERE d.chal_joi_status = 1
+		    GROUP BY d.mem_num
+		) chal_counts
+		ON a.mem_num = chal_counts.mem_num
+		LEFT OUTER JOIN (
+		    SELECT 
+		        COUNT(*) AS count, 
+		        (NVL(SUM(e.pay_price), 0)*0.1) AS total_goods_price, 
+		        e.mem_num 
+		    FROM PURCHASE e
+		    WHERE e.pay_status = 0
+		    GROUP BY e.mem_num
+		) goods_counts
+		ON a.mem_num = goods_counts.mem_num
+		WHERE a.mem_num = #{mem_num}
+    </select>
 </mapper>
 
 

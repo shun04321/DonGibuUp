@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.member.vo.MemberVO;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.vo.PointVO;
 
@@ -58,8 +59,11 @@ public interface MemberMapper {
 	public MemberVO selectMemberByNick(String mem_nick);
 	
 	/*---------------------------------------
-				회원정보 수정
+				마이페이지
 	---------------------------------------*/
+	//멤버 토탈 불러오기
+	public MemberTotalVO selectMemberTotal(long mem_num);
+	
 	//프로필사진 수정
 	@Update("UPDATE member_detail SET mem_photo=#{mem_photo}, mem_mdate=SYSDATE WHERE mem_num=#{mem_num}")
 	public void updateMemPhoto(MemberVO memberVO);

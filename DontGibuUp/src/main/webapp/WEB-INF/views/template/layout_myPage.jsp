@@ -25,7 +25,7 @@
 					<tiles:insertAttribute name="nav" />
 				</div>
 				<div class="col-lg-9 col-12">
-					<tiles:insertAttribute name="total" />
+					<tiles:insertAttribute name="total" ignore="true" />
 					<tiles:insertAttribute name="body" />
 				</div>
 			</div>

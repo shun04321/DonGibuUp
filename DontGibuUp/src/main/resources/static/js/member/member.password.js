@@ -16,7 +16,10 @@ $(function() {
 				const feedbackElement = $('#password_feedback');
 				const inputElement = $('#current_pw');
 				feedbackElement.show();
-				if (param.result == "matched") {
+				if (param.result == "logout") {
+					alert('로그인 후 사용하세요');
+                    location.href = "../login";
+				} else if (param.result == "matched") {
 					cur_pw_checked = 1;
 					feedbackElement.text('비밀번호가 일치합니다.');
 					feedbackElement.css('color', 'green');

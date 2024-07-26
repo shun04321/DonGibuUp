@@ -3,6 +3,7 @@ package kr.spring.member.service;
 import java.util.List;
 import java.util.Map;
 
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.point.vo.PointVO;
 
@@ -30,6 +31,9 @@ public interface MemberService {
 	public boolean checkIfRCodeIsUnique(String rcode);
 	//추천인 코드 대조
 	public Long selectMemNumByRCode(String friend_rcode);
+	
+	//멤버 토탈 불러오기
+	public MemberTotalVO selectMemberTotal(long mem_num);
 	
 	//프로필사진 업데이트
 	public void updateMemPhoto(MemberVO memberVO);
