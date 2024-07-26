@@ -29,6 +29,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.spring.category.service.CategoryService;
 import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.config.validation.ValidationSequence;
+import kr.spring.cs.service.CSService;
+import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
@@ -40,6 +42,7 @@ import kr.spring.subscription.service.Sub_paymentService;
 import kr.spring.subscription.service.SubscriptionService;
 import kr.spring.subscription.vo.SubscriptionVO;
 import kr.spring.util.PagingUtil;
+import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpEntity;
@@ -68,6 +71,8 @@ public class SubscriptionController {
 	private Sub_paymentService sub_paymentService;
 	@Autowired
 	NotifyService notifyService;
+	@Autowired
+	CSService csService;
 
 	/*--------------------
 	 * 정기 기부 메인창 이동
@@ -86,7 +91,17 @@ public class SubscriptionController {
 		if(count > 0) {
 			list = categoryService.selectList();
 		}
+		
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		map2.put("category", 0);
+		
+		List<FaqVO> faqlist = csService.selectFaqList(map2);
+		
+		for (FaqVO faq : faqlist) {
+			faq.setFaq_answer(StringUtil.useBrNoHTML(faq.getFaq_answer()));
+		}
 
+		model.addAttribute("faqlist", faqlist);
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
 

@@ -68,7 +68,8 @@
 						class="featured-block d-flex justify-content-center align-items-center">
 						<a
 							href="../category/categoryDetail?dcate_num=${category.dcate_num}">
-							<img src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
+							<img
+							src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
 							class="featured-block-image img-fluid" id="icon"
 							alt="Slide ${loop.index + 1}">
 							<p class="featured-block-text">
@@ -80,29 +81,27 @@
 			</c:forEach>
 		</div>
 	</div>
-	<div class="container" style="padding-top:50px;">
+	<div class="container" style="padding-top: 50px;">
 		<h2>
 			<a href="/cs/faqlist?category=0">자주 묻는 질문</a>
 		</h2>
 		<hr class="header-hr">
-		 <div class="container">
-        <section class="accordion-section">
-            <div class="accordion-item">
-                <div class="accordion-header">정기 기부를 중단하고 싶어요<div class="align-right">▼</div></div>
-                <div class="accordion-body">마이페이지 내 매달기부 메뉴를 선택하여 중단하고 싶은 주제를 선택하신 뒤, 해지하기를 진행해주세요.<br>해지하기 선택 시 다음 달 결제부터 기부금 결제가 중단됩니다.</div>
-            </div>
-            <hr class="item-hr">
-            <div class="accordion-item">
-                <div class="accordion-header">기부하고 싶은 주제가 없어요<div class="align-right">▼</div></div>
-                <div class="accordion-body">매달기부에서는 기부자님들의 관심과 공감대를 바탕으로 다양한 상품을 지속적으로 발굴하려고 <br> 노력 중이에요.  돈기부업 채널을 추가하면 상품 추가 소식을 제일 먼저 알려드릴게요.</div>
-            </div>
-            <hr class="item-hr">
-            <div class="accordion-item">
-                <div class="accordion-header">기부하기 싫은데요?<div class="align-right">▼</div></div>
-                <div class="accordion-body">진짜 어쩌라고</div>
-            </div>
-        </section>
-    </div>
+		<div class="container">
+			<section class="accordion-section">
+			<c:forEach var="faq" items="${faqlist}">
+				<div class="accordion-item">
+					<div class="accordion-header">
+						${faq.faq_question}
+						<div class="align-right">▼</div>
+					</div>
+					<div class="accordion-body">
+						${faq.faq_answer}
+					</div>
+				</div>
+				<hr class="item-hr">
+			</c:forEach>
+			</section>
+		</div>
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
