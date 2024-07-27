@@ -90,6 +90,7 @@ $(function() {
 			$('.error-color').show();
 			return;
 		}
+		console.log('handleBeforeUnload 해제');
 		$(window).off('beforeunload');		
 		payAndEnroll();
 	});
@@ -156,6 +157,7 @@ function payAndEnroll2() {
 									let now = new Date();
 									now.setHours(0, 0, 0, 0);
 									sdate.setHours(0, 0, 0, 0);
+									$(window).off('beforeunload',handleBeforeUnload);
 									if (sdate.getTime() == now.getTime()) {
 										window.location.href = pageContextPath + '/challenge/join/list?status=on';
 									} else if (sdate > now) {
@@ -184,12 +186,9 @@ function payAndEnroll2() {
 	);
 }
 
-function payAndEnroll() {
-	let finalFeeStr = $('.final_fee').text();
-	let usedPointsStr = $('.used-point').val();
-	
-	let finalFee = convertToNumber(finalFeeStr);
-	let usedPoints = convertToNumber(usedPointsStr);
+function payAndEnroll() {	
+	let finalFee = convertToNumber($('.final_fee').text());
+	let usedPoints = convertToNumber($('.used-point').val());
 	console.log('finalFee >> '+finalFee);
 	console.log('usedPoints >> '+usedPoints);
 
@@ -277,7 +276,7 @@ function payAndEnroll() {
 										now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
 										sdate.setHours(0, 0, 0, 0);										
 										alert('챌린지 개설이 완료되었습니다!');
-										$(window).off('beforeunload');
+										
 										if (sdate.getTime() == now.getTime()) {
 											window.location.href = pageContextPath + '/challenge/join/list?status=on';
 										} else if (sdate > now) {

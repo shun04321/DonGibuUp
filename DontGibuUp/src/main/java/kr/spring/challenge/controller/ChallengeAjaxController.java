@@ -1,7 +1,6 @@
 package kr.spring.challenge.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -43,6 +40,7 @@ import kr.spring.challenge.vo.ChallengeVerifyRptVO;
 import kr.spring.challenge.vo.ChallengeVerifyVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.point.vo.PointVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -481,9 +479,15 @@ public class ChallengeAjaxController {
 			ChallengeChatVO chatVO = new ChallengeChatVO();
 			chatVO.setChat_content("챌린지가 시작되었습니다! @{common}");
 			chatVO.setMem_num(member.getMem_num());
-
+			
 			challengeService.insertChallenge(challenge,challengeJoinVO,challengePaymentVO,chatVO);
 
+			//포인트 사용시 반영
+			if(chalPoint > 0) {
+				//세션 포인트 업데이트
+				member.setMem_point(member.getMem_point()-chalPoint);
+			}
+			
 			String sdate = challenge.getChal_sdate();
 
 			session.removeAttribute("challengeVO");
@@ -500,11 +504,8 @@ public class ChallengeAjaxController {
 	public void deleteImg(HttpSession session, HttpServletRequest request) {		
 		//세션에 저장된 파일 이름 가져오기
 		ChallengeVO challenge = (ChallengeVO) session.getAttribute("challengeVO");		
-
-		if (challenge != null) {
-			//파일 삭제
-			FileUtil.removeFile(request, challenge.getChal_photo());
-		}
+		//파일 삭제
+		FileUtil.removeFile(request, challenge.getChal_photo());
 
 		//챌린지 개설 정보 삭제
 		session.removeAttribute("challengeVO");

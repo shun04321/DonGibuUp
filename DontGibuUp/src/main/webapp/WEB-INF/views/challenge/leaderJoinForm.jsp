@@ -11,11 +11,11 @@
 	let memberNum = "${member.mem_num}";
 	let memberNick = "${member.mem_nick}";
 	let memberEmail = "${member.email}";
-	//let memberPhone = "${member.phone}";
 	let pageContextPath = "${pageContext.request.contextPath}";	
 	let chalPhoto = "${challenge.chal_photo}";
 	let mem_point = ${mem_point};
 </script>
+<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
 <div class="container">
     <h2>챌린지 참가</h2>
     <div class="line">
@@ -72,14 +72,9 @@
 		e.preventDefault();
     	const url = '/challenge/deleteImage';
             
-        // 전송할 데이터
-        const data = new URLSearchParams();
-        data.append('imagePath', pageContextPath + '/upload/'+chalPhoto);
-            
-        // 서버에 이미지 삭제 요청을 POST 방식으로 보냅니다.
-        navigator.sendBeacon(url, data);	        
+        // 서버에 챌린지 세션 삭제 요청을 POST 방식으로 보냅니다.
+        navigator.sendBeacon(url);	        
 	} 
 	
 	$(window).on('beforeunload', handleBeforeUnload);
 </script>
-<script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>

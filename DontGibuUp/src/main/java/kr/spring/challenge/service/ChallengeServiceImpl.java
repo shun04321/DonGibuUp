@@ -3,6 +3,7 @@ package kr.spring.challenge.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,17 @@ public class ChallengeServiceImpl implements ChallengeService{
 		payVO.setChal_joi_num(joinVO.getChal_joi_num());
 		challengeMapper.insertChallengePayment(payVO);
 		
-		//4. 챌린지 채팅방 정보 삽입 (공개 챌린지일 경우만)
+		//4. 결제시 포인트 변동사항 기록 
+		if(payVO.getChal_point() > 0) {
+			//포인트 로그 작성
+			PointVO pointVO = new PointVO(20,-payVO.getChal_point(),payVO.getMem_num());
+			pointService.insertPointLog(pointVO);
+			
+			//회원 포인트 업데이트
+			memberService.updateMemPoint(pointVO);
+		}
+		
+		//5. 챌린지 채팅방 정보 삽입 (공개 챌린지일 경우만)
 		if(chalVO.getChal_public() == 0) {
 			chatVO.setChal_num(chalVO.getChal_num());	
 			long chat_id = challengeMapper.selectChat_id();
@@ -69,7 +80,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 			challengeMapper.insertChallengeChat(chatVO);
 		}
 		
-		//5. 챌린지 개설 알림
+		//6. 챌린지 개설 알림
         NotifyVO notifyVO = new NotifyVO();
         notifyVO.setMem_num(chalVO.getMem_num()); //챌린지 개설자에게 알림
         notifyVO.setNotify_type(3); //알림 타입: 챌린지 개설 알림
@@ -605,8 +616,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 	 * params.put("week_end", deadline); // 해당 주 종료일
 	 * 
 	 * return challengeMapper.countWeeklyVerify(params); }
-	 */
-    
+	 */    
+
     //*챌린지 관리자*//
     //챌린지 목록
     @Override
