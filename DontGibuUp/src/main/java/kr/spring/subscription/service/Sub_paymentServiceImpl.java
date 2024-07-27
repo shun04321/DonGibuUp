@@ -51,4 +51,9 @@ public class Sub_paymentServiceImpl implements Sub_paymentService{
 		return Sub_paymentMapper.getSub_paymentBySub_num(sub_num);
 	}
 
+	@Override
+	public void updateSubPayStatus(long sub_pay_num, long sub_pay_status) {
+		Sub_paymentMapper.updateSubPayStatus(sub_pay_num, sub_pay_status);
+	}
+
 }

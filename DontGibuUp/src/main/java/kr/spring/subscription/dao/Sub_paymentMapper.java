@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import kr.spring.subscription.vo.Sub_paymentVO;
 
@@ -30,4 +31,8 @@ public interface Sub_paymentMapper {
 	//sub_num에 해당하는 기부 목록만 가져오기
 	@Select("SELECT * FROM sub_payment WHERE sub_num=#{sub_num} ORDER BY sub_pay_date DESC")
 	public List<Sub_paymentVO> getSub_paymentBySub_num(long sub_num);
+	
+	//환불신청시 결제상태 변경
+	@Update("UPDATE sub_payment SET sub_pay_status=#{sub_pay_status} WHERE sub_pay_num=#{sub_pay_num}")
+	public void updateSubPayStatus(long sub_pay_num, long sub_pay_status);
 }

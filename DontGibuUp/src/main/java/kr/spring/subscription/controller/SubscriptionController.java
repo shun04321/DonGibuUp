@@ -38,6 +38,8 @@ import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.payuid.service.PayuidService;
 import kr.spring.payuid.vo.PayuidVO;
+import kr.spring.refund.service.RefundService;
+import kr.spring.refund.vo.RefundVO;
 import kr.spring.subscription.service.Sub_paymentService;
 import kr.spring.subscription.service.SubscriptionService;
 import kr.spring.subscription.vo.SubscriptionVO;
@@ -73,6 +75,8 @@ public class SubscriptionController {
 	NotifyService notifyService;
 	@Autowired
 	CSService csService;
+	@Autowired
+	RefundService refundService;
 
 	/*--------------------
 	 * 정기 기부 메인창 이동
@@ -608,6 +612,7 @@ public class SubscriptionController {
 	    modelAndView.addObject("subscription", subscription);
 	    modelAndView.addObject("subpayment", subpayment);
 	    modelAndView.addObject("subscriptionVO", new SubscriptionVO()); // Add PayuidVO object
+	    modelAndView.addObject("refundVO", new RefundVO()); // Add PayuidVO object
 
 	    return modelAndView;
 	}
@@ -676,6 +681,32 @@ public class SubscriptionController {
 		
 		return "AdminSubscription";
 	}
+	
+	//환불신청
+	@PostMapping("/subscription/paymentRefund")
+	@ResponseBody
+	public Map<String,String> insertRefund(HttpServletRequest request,
+										   HttpSession session, 
+										   RefundVO refundVO, long sub_pay_num) {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else {
+		refundVO.setMem_num(user.getMem_num());
+		refundVO.setPayment_type(1);
+		refundVO.setReturn_point(0);
+		
+        System.out.println("Received RefundVO: " + refundVO + ", sub_pay_num : " + sub_pay_num);
+        
+        refundService.insertRefund(refundVO);
+        // 결제 상태 환불 신청으로 변경
+		sub_paymentService.updateSubPayStatus(sub_pay_num, 1);
+		mapJson.put("result", "success");
+		}
+		return mapJson;
+	}
+	
 }
 
 

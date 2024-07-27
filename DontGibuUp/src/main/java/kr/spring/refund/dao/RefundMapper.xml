@@ -14,8 +14,7 @@
 			<if test="reason_other != null and reason_other != ''">
 				reason_other,
 			</if>
-			return_point,
-			refund_status 
+			return_point
 		)VALUES(
 			refund_seq.nextval,
 			#{mem_num},
@@ -26,8 +25,7 @@
 			<if test="reason_other != null and reason_other != ''">
 				#{reason_other},
 			</if>
-			#{return_point},
-			#{refund_status}
+			#{return_point}
 		)
 	</insert>
 	

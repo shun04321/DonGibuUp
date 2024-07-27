@@ -19,4 +19,6 @@ public interface Sub_paymentService {
 	public int getSub_paymentCountByMem_num(Map<String,Object> map);
 	public List<Sub_paymentVO> getSub_paymentByMem_num(Map<String,Object> map);
 	public List<Sub_paymentVO> getSub_paymentBySub_num(long sub_num);
+	//환불신청시 결제상태 변경
+	public void updateSubPayStatus(long sub_pay_num, long sub_pay_status);
 }
