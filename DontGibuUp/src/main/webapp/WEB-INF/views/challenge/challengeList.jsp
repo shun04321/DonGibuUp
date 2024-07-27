@@ -46,33 +46,33 @@
 			
 		</div>
 		<form id="searchTitle">
-<div class="nanum" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-    <div style="flex: 1; display: flex; gap: 10px; align-items: center;">
-        <select class="order" name="order" style="padding: 8px 8px; border-radius: 5px; border: 1px solid #ccc;">
-            <option value="0" <c:if test="${param.order == 0}">selected</c:if>>최신순</option>
-            <option value="1" <c:if test="${param.order == 1}">selected</c:if>>인기순</option>
-            <option value="2" <c:if test="${param.order == 2}">selected</c:if>>시작일순</option>
-            <option value="3" <c:if test="${param.order == 3}">selected</c:if>>참여인원순</option>
-        </select>
-        <select class="freqOrder" name="freqOrder" style="padding: 8px 8px; border-radius: 5px; border: 1px solid #ccc;">
-            <option value="" <c:if test="${empty param.freqOrder}">selected</c:if>>인증빈도</option>
-            <option value="0" <c:if test="${param.freqOrder == 0}">selected</c:if>>매일</option>
-            <option value="1" <c:if test="${param.freqOrder == 1}">selected</c:if>>주1일</option>
-            <option value="2" <c:if test="${param.freqOrder == 2}">selected</c:if>>주2일</option>
-            <option value="3" <c:if test="${param.freqOrder == 3}">selected</c:if>>주3일</option>
-            <option value="4" <c:if test="${param.freqOrder == 4}">selected</c:if>>주4일</option>
-            <option value="5" <c:if test="${param.freqOrder == 5}">selected</c:if>>주5일</option>
-            <option value="6" <c:if test="${param.freqOrder == 6}">selected</c:if>>주6일</option>
-        </select>
-    </div>
-    <div style="flex: 1; display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
-        <c:if test="${!empty user}">
-            <input type="button" value="챌린지 개설하기" style="padding: 6px 12px; border-radius: 5px; background-color: #5bc1ac; color: white; border: none; cursor: pointer;">
-        </c:if>
-        <input type="search" name="keyword" id="keyword" value="${param.keyword}" placeholder="제목을 입력하세요" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc;">
-        <input type="submit" value="찾기" style="padding: 6px 12px; border-radius: 5px; background-color: #597081; color: white; border: none; cursor: pointer;">
-    </div>
-</div>
+			<div class="nanum" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+			    <div style="flex: 1; display: flex; gap: 10px; align-items: center;">
+			        <select class="order" name="order" style="padding: 8px 8px; border-radius: 5px; border: 1px solid #ccc;">
+			            <option value="0" <c:if test="${param.order == 0}">selected</c:if>>최신순</option>
+			            <option value="1" <c:if test="${param.order == 1}">selected</c:if>>인기순</option>
+			            <option value="2" <c:if test="${param.order == 2}">selected</c:if>>시작일순</option>
+			            <option value="3" <c:if test="${param.order == 3}">selected</c:if>>참여인원순</option>
+			        </select>
+			        <select class="freqOrder" name="freqOrder" style="padding: 8px 8px; border-radius: 5px; border: 1px solid #ccc;">
+			            <option value="" <c:if test="${empty param.freqOrder}">selected</c:if>>인증빈도</option>
+			            <option value="0" <c:if test="${param.freqOrder == 0}">selected</c:if>>매일</option>
+			            <option value="1" <c:if test="${param.freqOrder == 1}">selected</c:if>>주1일</option>
+			            <option value="2" <c:if test="${param.freqOrder == 2}">selected</c:if>>주2일</option>
+			            <option value="3" <c:if test="${param.freqOrder == 3}">selected</c:if>>주3일</option>
+			            <option value="4" <c:if test="${param.freqOrder == 4}">selected</c:if>>주4일</option>
+			            <option value="5" <c:if test="${param.freqOrder == 5}">selected</c:if>>주5일</option>
+			            <option value="6" <c:if test="${param.freqOrder == 6}">selected</c:if>>주6일</option>
+			        </select>
+			    </div>
+			    <div style="flex: 1; display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
+			        <c:if test="${!empty user}">
+			            <input type="button" value="챌린지 개설하기" style="padding: 6px 12px; border-radius: 5px; background-color: #5bc1ac; color: white; border: none; cursor: pointer;">
+			        </c:if>
+			        <input type="search" name="keyword" id="keyword" value="${param.keyword}" placeholder="제목을 입력하세요" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc;">
+			        <input type="submit" value="찾기" style="padding: 6px 12px; border-radius: 5px; background-color: #597081; color: white; border: none; cursor: pointer;">
+			    </div>
+			</div>
 		</form>
 		<br>
 		<div id="output" class="row"></div>

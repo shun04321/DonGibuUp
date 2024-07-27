@@ -94,7 +94,7 @@ $(function() {
                     let now = new Date();
                     now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
                     sdate.setHours(0, 0, 0, 0);
-                    output += '<div class="col-lg-4 col-md-6 col-12" style="margin-bottom: 30px;">';
+                    output += '<div class="col-lg-4 col-md-6 col-12 nanum" style="margin-bottom: 30px;">';
                     output += '<div class="custom-block-wrap">';
                     
                     // 이미지와 참가 인원 오버레이

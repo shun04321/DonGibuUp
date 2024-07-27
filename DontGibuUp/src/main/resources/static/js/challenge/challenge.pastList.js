@@ -91,7 +91,7 @@ $(function() {
 					now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
 					sdate.setHours(0, 0, 0, 0);
 
-					output += '<div class="col-lg-4 col-md-6 col-12" style="margin-bottom: 30px;">';
+					output += '<div class="col-lg-4 col-md-6 col-12 nanum" style="margin-bottom: 30px;">';
 					output += '<div class="custom-block-wrap">';
 					if (item.chal_photo) {
 						output += '<img src="' + pageContext + '/upload/' + item.chal_photo + '" class="custom-block-image img-fluid" >'; //챌린지 썸네일
@@ -133,7 +133,7 @@ $(function() {
 					output += '</div>';
 
 					output += '</div>';
-					output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">Challenge now</a>';
+					output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">참가하기</a>';
 					output += '</div>';
 
 					output += '</div>';
