@@ -64,17 +64,14 @@ function updateTotalAmount() {
 function confirmPurchase(pageContextPath) {
     let buyerName = "${sessionScope.user.mem_nick}";
 
-    console.log('TotalAmount in confirmPurchase:', totalAmount);
-
     var selectedCarts = [];
     $('input[name="cart_num"]:checked').each(function() {
         var cartNum = $(this).val();
+        var itemNum = $('#cart_quantity_' + cartNum).data('item-num'); // Ensure this is set correctly in HTML
         var quantity = $('#cart_quantity_' + cartNum).val();
         var price = parseInt($('#price_' + cartNum).text().replace(/,/g, ''), 10);
-        selectedCarts.push({ item_num: parseInt(cartNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
+        selectedCarts.push({ item_num: parseInt(itemNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
     });
-
-    console.log("Selected Carts: ", selectedCarts);
 
     if (totalAmount === 0 && parseInt($('#goods_do_point').val()) > 0) {
         if (confirm('전액 포인트로 결제하시겠습니까?')) {
@@ -126,13 +123,11 @@ function confirmPurchase(pageContextPath) {
             currency: "KRW",
         },
         (rsp) => {
-            console.log("Payment Response: ", rsp);
             if (!rsp.error_code) {
                 $.ajax({
                     url: pageContextPath + '/goods/paymentVerify/' + rsp.imp_uid,
                     method: 'POST',
                 }).done(function(data) {
-                    console.log("Verification Response: ", data);
                     if (data.response.status == 'paid') {
                         $.ajax({
                             url: pageContextPath + '/goods/purchaseFromCart',
@@ -149,7 +144,6 @@ function confirmPurchase(pageContextPath) {
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',
                             success: function(param) {
-                                console.log("Purchase Complete Response: ", param);
                                 if (param.result == 'success') {
                                     alert('구매가 완료되었습니다.');
                                     window.location.href = pageContextPath + '/goods/purchaseHistory';
@@ -165,9 +159,6 @@ function confirmPurchase(pageContextPath) {
                         alert('결제 검증 중 오류가 발생했습니다.');
                     }
                 }).fail(function(jqXHR, textStatus, errorThrown) {
-                    console.log('jqXHR:', jqXHR);
-                    console.log('textStatus:', textStatus);
-                    console.log('errorThrown:', errorThrown);
                     alert('결제 검증 요청 실패: ' + errorThrown);
                 });
             } else {

@@ -110,7 +110,11 @@ public class PurchaseServiceImpl implements PurchaseService {
 	    }
 
 	
-
+	 @Override
+	    @Transactional
+	    public void updateStock(Map<String, Object> paramMap) {
+	        goodsMapper.updateStock(paramMap);
+	    }
 
 	
 

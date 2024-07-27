@@ -273,7 +273,7 @@ public class PurchaseController {
                 purchaseVO.setItem_name(itemName);
                 purchaseVO.setBuyer_name(buyerName);
                 purchaseVO.setPay_price(amount); // 이 부분 추가
-                purchaseVO.setMem_num(memberVO.getMem_num()); // memNum 설정
+                purchaseVO.setMem_num(memberVO.getMem_num()); 
                 
                 // cart_items 리스트 처리
                 List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
@@ -288,9 +288,13 @@ public class PurchaseController {
                 try {
                     for (Map<String, Object> item : cartItems) {
                         // 재고 업데이트
-                        Long itemNum = Long.valueOf((Integer) item.get("item_num"));
+                        Long item_num = Long.valueOf((Integer) item.get("item_num"));
                         Long cartQuantity = Long.valueOf((Integer) item.get("cart_quantity"));
-                        purchaseService.updateStock(itemNum, cartQuantity, null);
+                        Map<String, Object> paramMap = new HashMap<>();
+                        paramMap.put("item_num", item_num);
+                        paramMap.put("cart_quantity", cartQuantity);
+                        paramMap.put("quantity", null); // 이 부분은 null로 설정
+                        purchaseService.updateStock(paramMap); // Update stock for cart items
                     }
 
                     purchaseService.insertPurchase(purchaseVO);

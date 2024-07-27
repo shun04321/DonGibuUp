@@ -1,6 +1,7 @@
 package kr.spring.goods.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.vo.PurchaseVO;
@@ -18,6 +19,6 @@ public interface PurchaseService {
     void insertPurchaseItems(CartVO cartVO);
     Long getSeq();
     void updateDeliveryStatusByImpUid(String impUid, String deliveryStatus);
-	
+    void updateStock(Map<String, Object> paramMap);
     void updateStock(Long item_num, Long cart_quantity, Integer quantity);
 }

@@ -90,7 +90,7 @@ function updateCartQuantity(cart_num) {
         <c:forEach var="cart" items="${list}">
             <tr>
                 <td class="align-center">
-                    <input type="checkbox" name="cart_num" value="${cart.cart_num}">
+                    <input type="checkbox" name="cart_num" value="${cart.cart_num}" data-item-num="${pageContext.request.contextPath}${cart.goods.item_num}">
                 </td>
                 <td class="align-center">
                     <img src="${pageContext.request.contextPath}${cart.goods.item_photo}" class="my-photo" width="100px" height="100px">
@@ -104,7 +104,7 @@ function updateCartQuantity(cart_num) {
                 </td>
                 <td class="align-center">${cart.goods.item_stock}</td>
                 <td class="align-center">
-                    <input type="number" id="cart_quantity_${cart.cart_num}" value="${cart.cart_quantity}" min="1">
+                    <input type="number" id="cart_quantity_${cart.cart_num}" value="${cart.cart_quantity}" min="1" data-item-num="${cart.goods.item_num}">
                 </td>
                 <td class="align-center">
                     <button type="button" onclick="updateCartQuantity(${cart.cart_num})">수량 변경</button>

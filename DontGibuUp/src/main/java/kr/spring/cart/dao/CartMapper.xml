@@ -57,10 +57,11 @@
 		c.cart_quantity,
 		c.cart_num,
 		c.item_price,
+		c.item_num,
 		i.item_stock,
 		i.item_photo
 		FROM cart c
-		JOIN item i USING(item_num)   	
+		JOIN item i  ON c.item_num = i.item_num   	
 		ORDER BY cart_num DESC)a)
         <![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
