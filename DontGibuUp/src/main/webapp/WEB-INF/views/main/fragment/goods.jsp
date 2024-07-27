@@ -5,7 +5,8 @@
 <%-- 메인 페이지의 css 파일은 /DontGibuUp/src/main/resources/static/css/main.css 파일 내에 있습니다. --%>
 <%-- css 설정이 필요하면 해당 파일 내의 적절한 섹션에서 수정해주세요 (git 충돌 주의) --%>
 
-<div>굿즈샵(테스트용)	
+<div>
+	<div class="title-style">굿즈샵(테스트용)</div>
 	<p style="white-space:pre-line">
 	
 	
@@ -14,15 +15,9 @@
 	
 	
 	
-	
-	
+
 	
 	테스트용
-	
-	
-	
-	
-	
 	
 	
 	

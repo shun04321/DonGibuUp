@@ -3,7 +3,7 @@
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 
 <%-- 상단 배너 --%>
-<div class="container col-lg-9">
+<div class="top-banner col-lg-9">
 	<div class="col-lg-6 col-md-6 col-12">
 		<div class="custom-text-box d-flex flex-wrap d-lg-block mb-lg-0">
 			<div class="counter-thumb">
@@ -28,9 +28,9 @@
 </div>
 
 <%-- 박스 레이아웃 --%>
-<div class="container container-padding main-container col-lg-9">  
-    <div class="row d-flex justify-content-around">
-        <div class="col-lg-8 left-section mb-0">
+<div class="main-container col-lg-9">  
+    <div class="d-flex justify-content-between">
+        <div class="left-section mb-0">
             <section class="main-section" id="challenge1_section">
                 <jsp:include page="/WEB-INF/views/main/fragment/challenge1.jsp" />
             </section>
@@ -41,7 +41,7 @@
                  <jsp:include page="/WEB-INF/views/main/fragment/subscription.jsp" />
             </section>
         </div>
-        <div class="col-lg-3 right-section">
+        <div class="right-section">
             <section class="main-section" id="dbox_section">
                 <jsp:include page="/WEB-INF/views/main/fragment/dbox.jsp" />
             </section>

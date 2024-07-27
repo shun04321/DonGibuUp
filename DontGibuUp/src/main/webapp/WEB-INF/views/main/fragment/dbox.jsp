@@ -6,8 +6,9 @@
 <%-- css 설정이 필요하면 해당 파일 내의 적절한 섹션에서 수정해주세요 (git 충돌 주의) --%>
 
 <div>
-기부박스(테스트용)	
-<p style="white-space:pre-line">
+	<div class="title-style">기부박스(테스트용)</div>
+	<p style="white-space:pre-line">
+	
 	
 	
 	
@@ -16,6 +17,7 @@
 	
 	
 
+	
 	테스트용
 	
 	

@@ -7,17 +7,14 @@
 
 
 <div>
-정기기부(테스트용)
+	<div class="title-style">정기기부(테스트용)</div>
 	<p style="white-space:pre-line">
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
 	
 	테스트용
 	

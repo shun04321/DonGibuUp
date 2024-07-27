@@ -7,20 +7,35 @@
 
 .main-container {
 	height: auto;
-	margin: 3rem;
+	width: 100%;
+	margin: 2rem auto !important;
+}
+
+.top-banner {
+	height: auto;
+	width: 100%;
+	margin: 2rem auto !important;	
 }
 
 .main-section {
 	background-color: #fff;
 	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 	border-radius: 0.75rem;
-	padding: 1rem;
+	padding: 1.5rem 1.8rem;
 	margin-bottom: 2.5rem; 
 }
 
 .left-section, .right-section {
 	display: flex;
 	flex-direction: column;
+}
+
+.left-section {
+	width: 67%
+}
+
+.right-section {
+	width: 28%;
 }
 
 @media ( max-width : 992px) {
@@ -30,6 +45,13 @@
 	.main-section {
 		height: auto;
 	}
+}
+
+.main-section .title-style {
+	font-family: "Noto Sans KR", sans-serif;
+	font-weight: 600;
+	font-size: 1.125rem;
+	color: #2e2e2e;
 }
 
 /*챌린지1*/
