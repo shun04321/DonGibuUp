@@ -71,7 +71,7 @@
 	margin-top: -2rem;
 	margin-right: 8rem;
 	margin-left: 28%;
-	color: #F4EADC;
+	color: #fff;
 	text-align: left;
 	font-size: 4rem;
 	font-weight: 800;
@@ -124,12 +124,13 @@
 	filter: invert(1);
 }
 
-#top_first_slide {
+#top_first_slide, #top_second_slide {
 	padding: 1rem;
 	border: 1px solid #fff;
 	width: 90%;
 	height: 90%;
-	border-radius: 0.75rem;
+	border-radius: 0.75rem !important;
+	overflow: hidden; /* 추가하여 자식 요소가 border-radius에 맞게 잘리는지 확인 */
 }
 
 
@@ -143,6 +144,10 @@
     .custom-text-box .banner-title div {
 	margin-bottom: -1.5rem;
 }
+}
+
+#top_second_slide .second-slide-text {
+	font-size: 2.3rem !important;
 }
 
 /* 화면 너비가 1200px 이하인 경우 */

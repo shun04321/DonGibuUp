@@ -5,9 +5,9 @@
 
 </div>
 
-    <div id="topBannerCarousel" class="carousel slide col-12" data-bs-ride="carousel" data-bs-interval="5000">
+    <div id="topBannerCarousel" class="carousel slide col-12" data-bs-ride="carousel" data-bs-interval="4000">
         <div class="carousel-inner">
-            <!-- 첫 번째 슬라이드 -->
+             <!-- 첫 번째 슬라이드 -->
             <div id="top_first_slide" class="carousel-item active p-0 w-100">
 				<div class="d-block w-100">
 					<div class="custom-text-box d-flex align-items-center mb-lg-0 justify-content-start">
@@ -41,14 +41,30 @@
 				</div>
             </div>
 
-<!--         	두 번째 슬라이드
-            <div class="carousel-item">
+        	<!-- 두 번째 슬라이드 -->
+            <div id="top_second_slide" class="carousel-item p-0 w-100 nanum">
                 <div class="d-block w-100">
-                    <h2>두 번째 슬라이드</h2>
-                    <p>여기는 두 번째 슬라이드의 HTML 콘텐츠입니다. 다양한 콘텐츠를 추가할 수 있습니다.</p>
+					<div class="cta-section section-padding section-bg">
+						<div class="container">
+							<div class="row justify-content-center align-items-center">
+					
+								<div class="col-lg-5 col-12 ms-auto">
+									<h2 class="mb-0 second-slide-text">
+										자기계발과 기부를 동시에? <br> Don Gibu Up!
+									</h2>
+								</div>
+					
+								<div class="col-lg-5 col-12">
+									<a href="${pageContext.request.contextPath}/challenge/list"
+										class="custom-btn btn smoothscroll">챌린지 참여하기</a>
+								</div>
+					
+							</div>
+						</div>
+					</div>
                 </div>
             </div>
-            세 번째 슬라이드
+<!--             세 번째 슬라이드
             <div class="carousel-item">
                 <div class="d-block w-100">
                     <h2>세 번째 슬라이드</h2>
@@ -56,6 +72,8 @@
                 </div>
             </div> -->
         </div>
+        
+        
     </div>
     
 <script>
