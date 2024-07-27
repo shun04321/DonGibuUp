@@ -66,16 +66,18 @@ function confirmPurchase(pageContextPath) {
 
     console.log('TotalAmount in confirmPurchase:', totalAmount);
 
+    var selectedCarts = [];
+    $('input[name="cart_num"]:checked').each(function() {
+        var cartNum = $(this).val();
+        var quantity = $('#cart_quantity_' + cartNum).val();
+        var price = parseInt($('#price_' + cartNum).text().replace(/,/g, ''), 10);
+        selectedCarts.push({ item_num: parseInt(cartNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
+    });
+
+    console.log("Selected Carts: ", selectedCarts);
+
     if (totalAmount === 0 && parseInt($('#goods_do_point').val()) > 0) {
         if (confirm('전액 포인트로 결제하시겠습니까?')) {
-            var selectedCarts = [];
-            $('input[name="cart_num"]:checked').each(function() {
-                var cartNum = $(this).val();
-                var quantity = $('#cart_quantity_' + cartNum).val();
-                var price = parseInt($('#price_' + cartNum).text().replace(/,/g, ''), 10);
-                selectedCarts.push({ item_num: parseInt(cartNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
-            });
-
             $.ajax({
                 url: pageContextPath + '/goods/purchaseComplete',
                 method: 'POST',
@@ -85,7 +87,7 @@ function confirmPurchase(pageContextPath) {
                     amount: 0,
                     pay_status: 0,
                     item_name: "장바구니 구매",
-                    buyer_name: "${sessionScope.user.mem_nick}",
+                    buyer_name: buyerName,
                     cart_items: selectedCarts,
                     point_used: parseInt($('#goods_do_point').val(), 10)
                 }),
@@ -120,7 +122,7 @@ function confirmPurchase(pageContextPath) {
             name: "장바구니 구매",
             pay_method: "card",
             amount: totalAmount,
-            buyer_name: "${sessionScope.user.mem_nick}",
+            buyer_name: buyerName,
             currency: "KRW",
         },
         (rsp) => {
@@ -141,8 +143,8 @@ function confirmPurchase(pageContextPath) {
                                 amount: parseInt(data.response.amount, 10),
                                 status: data.response.status,
                                 item_name: "장바구니 구매",
-                                buyer_name: "${sessionScope.user.mem_nick}",
-                                cart_items: selectedCarts,
+                                buyer_name: buyerName,
+                                cart_items: selectedCarts
                             }),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',

@@ -45,11 +45,11 @@ public class PurchaseVO {
     public void setCart_items(List<CartVO> cart_items) {
         this.cart_items = cart_items;
     }
-    public long getMemNum() {
+    public long getMem_num() {
         return mem_num;
     }
 
-    public void setMemNum(long memNum) {
-        this.mem_num = memNum;
+    public void setMem_num(long mem_num) {
+        this.mem_num = mem_num;
     }
 }

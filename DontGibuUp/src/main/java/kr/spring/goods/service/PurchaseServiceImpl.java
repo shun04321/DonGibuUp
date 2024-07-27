@@ -101,7 +101,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	}
 	
 	 @Override
-	    public void updateStock(int item_num, Integer cart_quantity, Integer quantity) {
+	    public void updateStock(Long item_num, Long cart_quantity, Integer quantity) {
 	        Map<String, Object> paramMap = new HashMap<>();
 	        paramMap.put("item_num", item_num);
 	        paramMap.put("cart_quantity", cart_quantity);

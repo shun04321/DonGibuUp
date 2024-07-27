@@ -17,7 +17,7 @@ public class CartVO {
 	@NotBlank
 	private long mem_num;	//회원 식별 번호
 	@NotBlank
-	private long cart_quantity;  //장바구니 상품 수량
+	private Long cart_quantity;  //장바구니 상품 수량
 	private long purchase_num; // 구매 식별번호 추가
     private int price; // 가격 필드 추가
 	private GoodsVO goods;	
@@ -38,11 +38,11 @@ public class CartVO {
         this.purchase_num = purchase_num;
     }
 
-    public long getCart_quantity() {
+    public Long getCart_quantity() {
         return cart_quantity;
     }
 
-    public void setCart_quantity(long cart_quantity) {
+    public void setCart_quantity(Long cart_quantity) {
         this.cart_quantity = cart_quantity;
     }
 

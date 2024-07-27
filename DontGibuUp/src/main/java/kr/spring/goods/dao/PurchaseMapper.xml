@@ -55,7 +55,7 @@
 <!-- ResultMap to map purchase and cart items -->
     <resultMap id="purchaseResultMap" type="kr.spring.goods.vo.PurchaseVO">
         <id property="purchase_num" column="purchase_num"/>
-        <result property="memNum" column="mem_num"/>
+        <result property="mem_num" column="mem_num"/>
         <result property="item_num" column="item_num"/>
         <result property="item_name" column="item_name"/>
         <result property="item_photo" column="item_photo"/>
@@ -100,10 +100,5 @@
         VALUES (#{purchase_num}, #{mem_num}, #{imp_uid}, #{amount}, SYSDATE, #{payStatus}, '배송 준비 중')
     </insert>
 	
-	<!-- 구매시 재고 차감 -->
-	<update id="updateStock" parameterType="map">
-    UPDATE item
-    SET stock = stock - #{quantity}
-    WHERE item_num = #{item_num}
-	</update>
+	
 </mapper>

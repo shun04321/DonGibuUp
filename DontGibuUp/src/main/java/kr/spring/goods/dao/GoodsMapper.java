@@ -29,5 +29,5 @@ public interface GoodsMapper {
 	public void deleteCartItems(long item_num);
 	void updateStock(Map<String, Object> paramMap);
 	
-
+	
 }

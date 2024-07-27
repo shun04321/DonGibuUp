@@ -111,10 +111,9 @@ public class PurchaseController {
             String merchantUid = (String) data.get("merchant_uid");
             int amount = (Integer) data.get("amount");
             String status = (String) data.get("status");
-            int item_num = (Integer) data.get("item_num");
+            Long item_num = Long.valueOf((Integer) data.get("item_num")); // 수정된 부분
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
-            Integer cart_quantity = (Integer) data.get("cart_quantity"); // 추가된 부분
             Integer quantity = (Integer) data.get("quantity"); // 추가된 부분
             
             
@@ -125,7 +124,7 @@ public class PurchaseController {
             log.debug("itemNum : " + item_num);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
-            log.debug("cart_quantity : " + cart_quantity); // 로그 추가
+
             log.debug("quantity : " + quantity); // 로그 추가
            
 
@@ -146,7 +145,7 @@ public class PurchaseController {
                     purchaseService.insertPurchase(purchaseVO);
                     
                     // 재고 업데이트
-                    purchaseService.updateStock(item_num, cart_quantity, quantity);
+                    purchaseService.updateStock(item_num, null, quantity);
                     
                    
                     mapJson.put("result", "success");
@@ -240,17 +239,15 @@ public class PurchaseController {
     public Map<String, String> purchaseFromCart(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
             throws IllegalStateException, IOException {
         Map<String, String> mapJson = new HashMap<>();
-        
+        // 세션 데이터 가져오기
+        MemberVO memberVO = (MemberVO) session.getAttribute("user");
         try {
-        	
-        	
             String impUid = (String) data.get("imp_uid");
             String merchantUid = (String) data.get("merchant_uid");
             int amount = (Integer) data.get("amount");
             String status = (String) data.get("status");
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
-            
             
             Long setSeq = 0L;
             log.debug("impUid : " + impUid);
@@ -259,17 +256,14 @@ public class PurchaseController {
             log.debug("status : " + status);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
-            
 
-            // 세션 데이터 가져오기
-            MemberVO member = (MemberVO) session.getAttribute("user");
-            log.debug("<<장바구니 결제>> - member : " + member);
-            if (member == null) {
+            log.debug("<<장바구니 결제>> - member : " + memberVO);
+            if (memberVO == null) {
                 mapJson.put("result", "logout");
             } else {
-            	 setSeq = purchaseService.getSeq();
+                setSeq = purchaseService.getSeq();
                 log.debug("Generated Sequence: " + setSeq);
-            	
+                
                 PurchaseVO purchaseVO = new PurchaseVO();
                 purchaseVO.setPurchase_num(setSeq);
                 purchaseVO.setImp_uid(impUid);
@@ -278,20 +272,29 @@ public class PurchaseController {
                 purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_name(itemName);
                 purchaseVO.setBuyer_name(buyerName);
-                purchaseVO.setMemNum(member.getMem_num()); // memNum 설정
-                //
+                purchaseVO.setPay_price(amount); // 이 부분 추가
+                purchaseVO.setMem_num(memberVO.getMem_num()); // memNum 설정
                 
                 // cart_items 리스트 처리
                 List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
+                log.debug("cartItems: " + cartItems);
+                
+                if (cartItems == null || cartItems.isEmpty()) {
+                    mapJson.put("result", "error");
+                    mapJson.put("message", "cart_items가 null이거나 비어 있습니다. 데이터를 확인하세요.");
+                    return mapJson;
+                }
+
                 try {
-                List<CartVO> cartItemList = new ArrayList<>();
+                    for (Map<String, Object> item : cartItems) {
+                        // 재고 업데이트
+                        Long itemNum = Long.valueOf((Integer) item.get("item_num"));
+                        Long cartQuantity = Long.valueOf((Integer) item.get("cart_quantity"));
+                        purchaseService.updateStock(itemNum, cartQuantity, null);
+                    }
 
-                purchaseVO.setCart_items(cartItemList); // purchaseVO에 cart_items 설정         
-
-                    purchaseService.insertPurchaseWithCartItems(purchaseVO);
+                    purchaseService.insertPurchase(purchaseVO);
                     mapJson.put("result", "success");
-                    
-                    
                     
                 } catch (Exception e) {
                     log.error("결제 정보 저장 중 오류 발생", e);

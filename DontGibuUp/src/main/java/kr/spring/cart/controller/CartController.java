@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.*;
 import kr.spring.cart.service.CartService;
 import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.vo.GoodsVO;
+import kr.spring.member.vo.MemberVO;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import javax.servlet.http.HttpSession;
 @Slf4j
 @Controller
 public class CartController {
@@ -63,9 +65,9 @@ public class CartController {
      *==================================*/
     @GetMapping("/cart/list")
     public String getList(@RequestParam(defaultValue = "1") int pageNum,
-                          Model model) {
+                          Model model,HttpSession session) {
         Map<String, Object> map = new HashMap<String, Object>();
-
+        MemberVO memberVO = (MemberVO) session.getAttribute("user");
         // 전체, 검색 레코드 수
         int count = cartService.cartRowCount(map);
 

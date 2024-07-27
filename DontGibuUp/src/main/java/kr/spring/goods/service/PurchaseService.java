@@ -19,5 +19,5 @@ public interface PurchaseService {
     Long getSeq();
     void updateDeliveryStatusByImpUid(String impUid, String deliveryStatus);
 	
-	void updateStock(int item_num, Integer cart_quantity, Integer quantity);
+    void updateStock(Long item_num, Long cart_quantity, Integer quantity);
 }

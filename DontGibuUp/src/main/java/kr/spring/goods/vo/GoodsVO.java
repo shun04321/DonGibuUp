@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Setter
 @ToString
 public class GoodsVO {
-	private Long item_status = 0L; // 기본 값을 0으로 설정
+private Long item_status = 0L; // 기본 값을 0으로 설정
 private long item_num; //상품번호
 private Long dcate_num;	//카테고리 고유번호
 @NotBlank

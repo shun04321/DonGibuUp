@@ -1,4 +1,5 @@
 let totalPrice;
+let quantity = parseInt(document.getElementById('quantity').value); // 수량 가져오기
 
 document.addEventListener("DOMContentLoaded", function() {
     // 페이지 로드 시 필요한 초기 작업들
@@ -63,6 +64,11 @@ function buyNow() {
 *				결제 실행
 *==========================================*/
 function confirmPurchase() {
+	
+	console.log('confirmPurchase function called');
+        console.log('totalPrice before processing:', totalPrice); // 전역 totalPrice 값 확인
+        console.log('Quantity in confirmPurchase:', quantity); // 전역 quantity 값 확인
+	
     let totalPricef = totalPrice;
     let buyerName = "${sessionScope.member.mem_nick}";
     
@@ -83,7 +89,8 @@ function confirmPurchase() {
                     item_num: parseInt(itemNum, 10), // 정수로 변환
                     item_name: itemName,
                     buyer_name: buyerName,
-                    point_used: parseInt($('#goods_do_point').val(), 10) // 사용된 포인트
+                    point_used: parseInt($('#goods_do_point').val(), 10), // 사용된 포인트
+                    quantity: quantity // quantity 값 추가
                 }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -139,6 +146,7 @@ function confirmPurchase() {
                                 item_num: parseInt(itemNum, 10), // 정수로 변환
                                 item_name: itemName,
                                 buyer_name: buyerName,
+                                quantity: quantity // quantity 값 추가
                             }),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',

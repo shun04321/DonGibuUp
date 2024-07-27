@@ -28,5 +28,5 @@ public interface PurchaseMapper {
 	    Long getSeq();
 	    void updateDeliveryStatusByImpUid(@Param("impUid") String impUid, @Param("deliveryStatus") String deliveryStatus);
 	   
-
+	    
 }
