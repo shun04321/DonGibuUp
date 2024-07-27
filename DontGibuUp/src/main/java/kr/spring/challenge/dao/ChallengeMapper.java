@@ -139,4 +139,10 @@ public interface ChallengeMapper {
     //챌린지 종료시 환급 포인트 지급
     @Insert("INSERT INTO point_log (point_num, mem_num, pevent_type, point_amount, point_date) VALUES (point_log_seq.NEXTVAL, #{mem_num}, #{pevent_type}, #{pevent_amount}, SYSDATE)")
     public void insertRefundPoints(@Param("mem_num") Long mem_num, @Param("pevent_type") int pevent_type, @Param("pevent_amount") int pevent_amount);
+
+    //*챌린지 관리자*//
+    //챌린지 목록
+    public List<ChallengeVO> selectChallengeList(Map<String, Object> map);
+    //챌린지 레코드 수
+    public int selectChallengeCount(Map<String, Object> map);
 }

@@ -50,7 +50,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="${pageContext.request.contextPath}/admin/adminChallenge">
               <i class="menu-icon mdi mdi-account-multiple-outline"></i>
               <span class="menu-title">챌린지</span>
             </a>

@@ -3,7 +3,6 @@ package kr.spring.challenge.service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -607,4 +606,17 @@ public class ChallengeServiceImpl implements ChallengeService{
 	 * 
 	 * return challengeMapper.countWeeklyVerify(params); }
 	 */
+    
+    //*챌린지 관리자*//
+    //챌린지 목록
+    @Override
+    public List<ChallengeVO> selectChallengeList(Map<String, Object> map) {
+        return challengeMapper.selectChallengeList(map);
+    }
+
+    //챌린지 레코드 수
+    @Override
+    public int selectChallengeCount(Map<String, Object> map) {
+        return challengeMapper.selectChallengeCount(map);
+    }
 }

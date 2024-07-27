@@ -48,6 +48,7 @@ public class ChallengeVO {
 	private String chal_edate;
 	private String mem_nick;
 	private String mem_photo;
+	private String categoryName;
 	
 	public void calculateChalEdate() {
 		LocalDate sdate = LocalDate.parse(chal_sdate,DateTimeFormatter.ISO_LOCAL_DATE);

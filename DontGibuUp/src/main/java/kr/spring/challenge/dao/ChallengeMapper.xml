@@ -394,5 +394,57 @@
     <delete id="deleteChallengeReview" parameterType="long">
         DELETE FROM CHAL_REVIEW WHERE chal_rev_num = #{chal_rev_num}
     </delete>
+
+	<!-- 관리자 -->
+    <!-- 챌린지 목록 -->
+	<select id="selectChallengeList" parameterType="map" resultType="ChallengeVO">
+	    SELECT * 
+	    FROM (SELECT a.*, rownum rnum FROM (
+	            SELECT c.chal_num, c.chal_public, c.chal_type, c.chal_title, c.chal_rdate, m.mem_nick, cc.ccate_name AS categoryName
+	            FROM CHALLENGE c
+	            JOIN MEMBER m ON c.mem_num = m.mem_num
+	            JOIN CHAL_CATEGORY cc ON c.chal_type = cc.ccate_num
+	            <include refid="challengeAdminSearch"/>
+	            <include refid="challengeAdminOrder"/>
+	    )a) 
+	    	<![CDATA[
+		WHERE rnum >= ${start} AND rnum <= #{end}
+		]]>
+	</select>
+	
+	<!-- 챌린지 총 레코드 수 / 검색 레코드 수 -->
+	<select id="selectChallengeCount" parameterType="map" resultType="integer">
+	    SELECT COUNT(*)
+	    FROM CHALLENGE c
+	    <include refid="challengeAdminSearch"/>
+	</select>
+	
+	<sql id="challengeAdminSearch">
+	    <where>
+	        <if test="keyword != null and keyword != ''">
+	            <if test="keyfield == '1'">
+	                c.chal_num = #{keyword}
+	            </if>
+	            <if test="keyfield == '2'">
+	                c.chal_title LIKE '%' || #{keyword} || '%'
+	            </if>
+	            <if test="keyfield == '3'">
+	                m.mem_nick LIKE '%' || #{keyword} || '%'
+	            </if>
+	        </if>
+	    </where>
+	</sql>
+	
+	<sql id="challengeAdminOrder">
+	    <if test="order == '1'">
+	        ORDER BY c.chal_rdate DESC
+	    </if>
+	    <if test="order == '2'">
+	        ORDER BY c.chal_title ASC
+	    </if>
+	    <if test="order == '3'">
+	        ORDER BY m.mem_nick ASC
+	    </if>
+	</sql>
     
 </mapper>

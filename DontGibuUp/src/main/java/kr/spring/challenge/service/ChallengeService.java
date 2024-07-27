@@ -87,4 +87,10 @@ public interface ChallengeService {
     public void refundPointsToUsers(Long chal_num);
     //챌린지 인증 요청 알림 실행
     //public void processTodayVerificationRequest();
+    
+    //*챌린지 관리자*//
+    //챌린지 목록
+    public List<ChallengeVO> selectChallengeList(Map<String, Object> map);
+    //챌린지 레코드 수
+    public int selectChallengeCount(Map<String, Object> map);
 }

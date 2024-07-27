@@ -681,7 +681,10 @@ public class ChallengeController {
 		return "challengeReviewList";
 	}
 
-	//챌린지 종료시 환급 포인트 지급
+	/*==========================
+	 *  챌린지 스케줄러
+	 *==========================*/
+	//환급 포인트 지급
 	@GetMapping("/challenge/refundPoints")
 	public ResponseEntity<String> refundPointsToUsers(@RequestParam("chal_num") Long chal_num) {
 		try {
@@ -690,6 +693,48 @@ public class ChallengeController {
 		} catch (Exception e) {
 			return new ResponseEntity<>("포인트 환급 중 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+	/*==========================
+	 *  챌린지 관리자
+	 *==========================*/
+	// 관리자 챌린지 목록
+	@GetMapping("/admin/adminChallenge")
+	public String adminChallengeList(@RequestParam(defaultValue = "1") int pageNum,
+	                                 @RequestParam(defaultValue = "1") int order, 
+	                                 String keyfield, String keyword, 
+	                                 Model model) {
+
+	    log.debug("<<챌린지 목록 - order>> : " + order);
+
+	    Map<String, Object> map = new HashMap<String, Object>();
+	    if (keyword != null && keyword.equals("")) {
+	        keyword = null;
+	    }
+
+	    map.put("keyfield", keyfield);
+	    map.put("keyword", keyword);
+
+	    // 전체, 검색 레코드 수
+	    int count = challengeService.selectChallengeCount(map);
+
+	    // 페이지 처리
+	    PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "adminChallenge", "&order=" + order);
+
+	    List<ChallengeVO> list = null;
+	    if (count > 0) {
+	        map.put("order", order);
+	        map.put("start", page.getStartRow());
+	        map.put("end", page.getEndRow());
+
+	        list = challengeService.selectChallengeList(map);
+	    }
+
+	    model.addAttribute("count", count);
+	    model.addAttribute("list", list);
+	    model.addAttribute("page", page.getPage());
+
+	    return "adminChallenge";
 	}
 
 }

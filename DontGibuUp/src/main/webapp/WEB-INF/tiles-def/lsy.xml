@@ -13,27 +13,22 @@
 	</definition>
 	<!-- 마이페이지 -->
 	<definition name="challengeJoinList" extends="mypageLayout">
-		<put-attribute name="title" value="MyPage - 챌린지 현황"/>
+		<put-attribute name="title" value="챌린지 현황"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinList.jsp"/>
 	</definition>
-<!-- 	<definition name="challengeJoinView" extends="main">
-		<put-attribute name="title" value="챌린지 신청 상세"/>
-		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinView.jsp"/>
-	</definition> -->
 	<definition name="challengeVerifyWrite" extends="mypageLayout">
-		<put-attribute name="title" value="MyPage - 챌린지 인증"/>
+		<put-attribute name="title" value="챌린지 인증"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeVerifyWrite.jsp"/>
 	</definition>	
 	<definition name="challengeVerifyList" extends="mypageLayout">
-		<put-attribute name="title" value="MyPage - 챌린지 인증 목록"/>
+		<put-attribute name="title" value="챌린지 인증 목록"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeVerifyList.jsp"/>
 	</definition>		
 	<definition name="challengeReviewWrite" extends="mypageLayout">
-		<put-attribute name="title" value="MyPage - 챌린지 후기 작성"/>
+		<put-attribute name="title" value="챌린지 후기 작성"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeReviewWrite.jsp"/>
 	</definition>		
@@ -41,5 +36,11 @@
 		<put-attribute name="title" value="챌린지 후기 목록"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeReviewList.jsp"/>
-	</definition>		
+	</definition>	
+	<!-- 관리자 -->	
+	<definition name="adminChallenge" extends="adminInquiry">
+		<put-attribute name="title" value="챌린지 목록" />
+		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/admin/challenge/adminChallenge.jsp"/>
+	</definition>
 </tiles-definitions>
