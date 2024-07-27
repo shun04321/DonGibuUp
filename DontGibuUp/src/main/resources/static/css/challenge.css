@@ -249,6 +249,21 @@ span.upload_button {
 }
 
 /* SY */
+/* 챌린지 목록 */
+.image-wrapper {
+    position: relative;
+}
+
+.participants-overlay {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+}
 /* 챌린지 상세 */
 .challenge-detail {
 	width: 60%;
@@ -617,7 +632,7 @@ h2 {
 }
 
 .host-card {
-	background-color: #e0f7fa; /* 개설자를 위한 특별한 색상 */
+	background-color: #f0f8ff; /* 개설자를 위한 특별한 색상 */
 }
 
 /* 챌린지 인증 */

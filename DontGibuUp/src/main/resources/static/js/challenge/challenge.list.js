@@ -96,16 +96,19 @@ $(function() {
                     sdate.setHours(0, 0, 0, 0);
                     output += '<div class="col-lg-4 col-md-6 col-12" style="margin-bottom: 30px;">';
                     output += '<div class="custom-block-wrap">';
+                    
+                    // 이미지와 참가 인원 오버레이
+                    output += '<div class="image-wrapper">';
                     if (challenge.chal_photo) {
                         output += '<img src="' + pageContext + '/upload/' + challenge.chal_photo + '" class="custom-block-image img-fluid" >'; //챌린지 썸네일
                     } else {
                         output += '<img src="' + pageContext + '/images/챌린지_기본이미지.jpg" class="custom-block-image img-fluid" >'; //챌린지 썸네일 - 기본 이미지
                     }
+                    output += '<div class="participants-overlay"><i class="bi bi-person-fill"></i> ' + currentParticipants + '명</div>';
+                    output += '</div>';
+                    
                     output += '<div class="custom-block">';
                     output += '<div class="custom-block-body">';
-                    // 참가 인원수 표시
-                    output += '<p class="mb-0">참가 인원: ' + currentParticipants + '명</p>';
-                    output += '<br>';
                     
                     output += '<h5 class="mb-3">' + challenge.chal_title + '</h5>';
                     output += '<p>';
@@ -147,7 +150,7 @@ $(function() {
                     output += '</div>';
 
                     output += '</div>';
-                    output += '<a href="detail?chal_num=' + challenge.chal_num + '" class="custom-btn btn">Challenge now</a>';
+                    output += '<a href="detail?chal_num=' + challenge.chal_num + '" class="custom-btn btn nanum">참가하기</a>';
                     output += '</div>';
 
                     output += '</div>';
