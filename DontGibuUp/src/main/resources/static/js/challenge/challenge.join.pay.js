@@ -80,7 +80,6 @@ $(function() {
 			$('.error-color').show();
 			return;
 		}
-
 		payAndEnroll2();
 	});
 
@@ -107,7 +106,11 @@ function convertToNumber(str) {
 
 function totalPayment(point, originalFee) {
 	var final_fee = parseInt(originalFee) - parseInt(point);
-	if (final_fee <= 0 || isNaN(final_fee)) final_fee = parseInt(originalFee);
+	if (isNaN(final_fee)){
+		final_fee = parseInt(originalFee);
+	} else if(final_fee <= 0){
+		final_fee = 0;
+	}
 	$('.final_fee').text(formatNumber(final_fee));
 }
 
@@ -190,10 +193,11 @@ function payAndEnroll2() {
 function payAndEnroll() {
 	let finalFee = convertToNumber($('.final_fee').text());
 	let usedPoints = convertToNumber($('.used-point').val());
+	let dcate_num = parseInt($('input[type="radio"]:checked').val());
 	shouldIgnoreBeforeUnload = true;
 
 	if (finalFee == 0) {//전액 포인트 결제
-		if (confirm('전액 포인트로 결제하시겠습니까?')) {
+		if (confirm('전액 포인트로 결제하시겠습니까?')) {			
 			$.ajax({
 				url: '/challenge/payAndEnroll',
 				method: 'POST',
@@ -206,7 +210,7 @@ function payAndEnroll() {
 				contentType: 'application/json; charset=utf-8',
 				dataType: 'json',
 				success: function(param) {
-
+					finalResult(param);
 				},
 				error: function() {
 					alert('기부하기 오류 발생');
@@ -245,14 +249,7 @@ function payAndEnroll() {
 					}).done(function(data) {
 						if (data.response.status == 'paid') {
 							console.log('검증 success');
-
-							//결제 정보에 넣을 데이터 가공하기
-							let dcate_numStr = $('input[type="radio"]:checked').val();
-							let dcate_num = parseInt(dcate_numStr);
 							console.log('dcate_num >> ' + dcate_num);
-							console.log(typeof dcate_num);
-							console.log(typeof data.response.amount);
-							console.log(typeof usedPoints);
 
 							//결제 정보 처리 및 완료하기
 							$.ajax({
@@ -268,21 +265,7 @@ function payAndEnroll() {
 								contentType: 'application/json; charset=utf-8',
 								dataType: 'json',
 								success: function(param) {
-									if (param.result == 'logout') {
-										alert('로그인 후 사용해주세요.');
-									} else if (param.result == 'success') {
-										let sdate = new Date(param.sdate);
-										let now = new Date();
-										now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
-										sdate.setHours(0, 0, 0, 0);
-										alert('챌린지 개설이 완료되었습니다!');
-
-										if (sdate.getTime() == now.getTime()) {
-											window.location.href = pageContextPath + '/challenge/join/list?status=on';
-										} else if (sdate > now) {
-											window.location.href = pageContextPath + '/challenge/join/list?status=pre';
-										}
-									}
+									finalResult(param);
 								},
 								error: function() {
 									//챌린지 결제 취소하기!!메서드 넣기
@@ -301,5 +284,24 @@ function payAndEnroll() {
 				}
 			}
 		);
+	}
+}
+
+function finalResult(param) {
+	if (param.result == 'logout') {
+		alert('로그인 후 사용해주세요.');
+	} else if (param.result == 'success') {
+		let sdate = new Date(param.sdate);
+		let now = new Date();
+		now.setHours(0, 0, 0, 0); // 시간 부분을 0으로 설정
+		sdate.setHours(0, 0, 0, 0);
+		alert('챌린지 개설이 완료되었습니다!');
+		if (sdate.getTime() == now.getTime()) {
+			window.location.href = pageContextPath + '/challenge/join/list?status=on';
+		} else if (sdate > now) {
+			window.location.href = pageContextPath + '/challenge/join/list?status=pre';
+		}
+	} else {
+		alert('개설 오류 발생');
 	}
 }

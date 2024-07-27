@@ -218,11 +218,17 @@
 	<!-- 챌린지 결제 -->
 	<insert id="insertChallengePayment" parameterType="challengePaymentVO">
 		INSERT INTO chal_payment
-		(chal_pay_num, chal_joi_num, mem_num, od_imp_uid, chal_pay_price, chal_point,
-		chal_pay_date, chal_pay_status)
+		(chal_pay_num, chal_joi_num, mem_num, 
+		<if test="od_imp_uid != null">
+			od_imp_uid,
+		</if>
+		 chal_pay_price, chal_point, chal_pay_status)
 		VALUES
-		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, #{od_imp_uid}, #{chal_pay_price}, #{chal_point},
-		SYSDATE, #{chal_pay_status})
+		(chal_payment_seq.nextval, #{chal_joi_num}, #{mem_num}, 
+		<if test="od_imp_uid != null">
+			#{od_imp_uid},
+		</if> 
+		#{chal_pay_price}, #{chal_point},#{chal_pay_status})
 	</insert>
 	
 	<!-- 챌린지 참가 삭제 -->
