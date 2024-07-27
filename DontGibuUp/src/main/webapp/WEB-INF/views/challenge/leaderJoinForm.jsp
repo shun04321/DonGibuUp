@@ -14,6 +14,35 @@
 	let pageContextPath = "${pageContext.request.contextPath}";	
 	let chalPhoto = "${challenge.chal_photo}";
 	let mem_point = ${mem_point};
+	let shouldIgnoreBeforeUnload = false;
+	let unloadTriggered = false;
+
+	function handleBeforeUnload(e){		
+		if (shouldIgnoreBeforeUnload) {
+			console.log('handleBeforeUnload 취소');
+	        return; // 이벤트 핸들러를 실행하지 않음
+	    }
+		e.preventDefault();
+		e.returnValue = '';
+		
+		unloadTriggered = true;   		        
+	}  
+	
+	function handleUnload(e) {
+	    if (shouldIgnoreBeforeUnload || !unloadTriggered) {
+	    	console.log('handleUnload 취소');
+	        return; // 이벤트 핸들러를 실행하지 않음
+	    }
+
+	    // 서버에 챌린지 세션 삭제 요청을 POST 방식으로 보냅니다.
+	    const url = '/challenge/deleteImage';
+	    navigator.sendBeacon(url);
+	}
+	
+	$(function(){
+		$(window).on('beforeunload', handleBeforeUnload);
+		$(window).on('unload', handleUnload);	
+	});	
 </script>
 <script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
 <div class="container">
@@ -67,14 +96,3 @@
         </div>
     </form:form>
 </div>
-<script>
-	function handleBeforeUnload(e){
-		e.preventDefault();
-    	const url = '/challenge/deleteImage';
-            
-        // 서버에 챌린지 세션 삭제 요청을 POST 방식으로 보냅니다.
-        navigator.sendBeacon(url);	        
-	} 
-	
-	$(window).on('beforeunload', handleBeforeUnload);
-</script>
