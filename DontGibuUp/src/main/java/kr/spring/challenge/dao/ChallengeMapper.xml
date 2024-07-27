@@ -416,6 +416,8 @@
 	<select id="selectChallengeCount" parameterType="map" resultType="integer">
 	    SELECT COUNT(*)
 	    FROM CHALLENGE c
+	    JOIN MEMBER m ON c.mem_num = m.mem_num
+	    JOIN CHAL_CATEGORY cc ON c.chal_type = cc.ccate_num
 	    <include refid="challengeAdminSearch"/>
 	</select>
 	

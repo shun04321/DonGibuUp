@@ -715,6 +715,10 @@ public class ChallengeController {
 	    map.put("keyfield", keyfield);
 	    map.put("keyword", keyword);
 
+	    // 디버깅: 검색 필드와 키워드 출력
+	    log.debug("키필드: " + keyfield);
+	    log.debug("키워드: " + keyword);
+
 	    // 전체, 검색 레코드 수
 	    int count = challengeService.selectChallengeCount(map);
 
@@ -728,6 +732,12 @@ public class ChallengeController {
 	        map.put("end", page.getEndRow());
 
 	        list = challengeService.selectChallengeList(map);
+
+	        // 디버깅: 쿼리 후 결과 리스트 출력
+	        log.debug("검색된 챌린지 수: " + list.size());
+	        for (ChallengeVO challenge : list) {
+	            log.debug(challenge.toString());
+	        }
 	    }
 
 	    model.addAttribute("count", count);
