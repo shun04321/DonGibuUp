@@ -4,27 +4,7 @@
 
 <%-- 상단 배너 --%>
 <div class="top-banner col-lg-9">
-	<div class="col-lg-6 col-md-6 col-12">
-		<div class="custom-text-box d-flex flex-wrap d-lg-block mb-lg-0">
-			<div class="counter-thumb">
-				<div class="d-flex">
-					<span class="counter-number" data-from="1" data-to="2009"
-						data-speed="1000"></span> <span class="counter-number-text"></span>
-				</div>
-
-				<span class="counter-text">Founded</span>
-			</div>
-
-			<div class="counter-thumb mt-4">
-				<div class="d-flex">
-					<span class="counter-number" data-from="1" data-to="120"
-						data-speed="1000"></span> <span class="counter-number-text">B</span>
-				</div>
-
-				<span class="counter-text">Donations</span>
-			</div>
-		</div>
-	</div>
+	<jsp:include page="/WEB-INF/views/main/fragment/top_banner.jsp" />
 </div>
 
 <%-- 박스 레이아웃 --%>
@@ -59,4 +39,3 @@
 	<script src="${pageContext.request.contextPath}/t1/js/click-scroll.js"></script>
 	<script src="${pageContext.request.contextPath}/t1/js/counter.js"></script>
 	<script src="${pageContext.request.contextPath}/t1/js/custom.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
