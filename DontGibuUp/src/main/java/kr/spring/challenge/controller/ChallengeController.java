@@ -321,7 +321,12 @@ public class ChallengeController {
 				//달성률이 100%인 경우
 				returnPoint = (int) (chal_fee * 0.95);
 				donaAmount = (int) (chal_fee * 0.10);
-			} else {
+			}else if (achieveRate >= 90 && achieveRate <= 99) {
+				//달성률이 90~99%인 경우
+				returnPoint = (int) (chal_fee * 0.90);
+				donaAmount = (int) (chal_fee * 0.10);
+			}
+			else {
 				returnPoint = (int) (achieveRate / 100.0 * chal_fee);
 				donaAmount = (int) (chal_fee - returnPoint);
 			}
@@ -698,7 +703,7 @@ public class ChallengeController {
 	/*==========================
 	 *  챌린지 관리자
 	 *==========================*/
-	// 관리자 챌린지 목록
+	//챌린지 목록
 	@GetMapping("/admin/adminChallenge")
 	public String adminChallengeList(@RequestParam(defaultValue = "1") int pageNum,
 	                                 @RequestParam(defaultValue = "1") int order, 
@@ -745,6 +750,80 @@ public class ChallengeController {
 	    model.addAttribute("page", page.getPage());
 
 	    return "adminChallenge";
+	}
+	
+	//챌린지 상세
+	@GetMapping("/admin/adminChallengeDetail")
+	public ModelAndView adminChallengeDetail(@RequestParam("chal_num") long chal_num, HttpSession session) {
+		ChallengeVO challenge = challengeService.selectChallenge(chal_num);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("chal_num", chal_num);
+
+		//현재 참가 중인 인원 수 조회
+		int currentParticipants = challengeService.countCurrentParticipants(chal_num);
+
+		//참여금을 포맷팅
+		NumberFormat numberFormat = NumberFormat.getNumberInstance(Locale.US);
+		String formattedFee = numberFormat.format(challenge.getChal_fee());
+
+		
+		
+		/*
+		 * // 챌린지 참가 목록 가져오기 List<ChallengeJoinVO> joinList =
+		 * challengeService.selectJoinMemberList(Map.of("chal_num", chal_num));
+		 * 
+		 * // 총 참여금 계산 long totalFee = challenge.getChal_fee() * joinList.size();
+		 * 
+		 * // 총 기부금, 100% 이상 달성한 회원 수, 90% 이상 달성한 회원 수, 90% 미만 달성한 회원 수, 평균 달성률 계산 long
+		 * totalDonation = 0; long fullAchievers = 0; long highAchievers = 0; long
+		 * lowAchievers = 0; double totalAchievement = 0.0;
+		 * 
+		 * for (ChallengeJoinVO join : joinList) { List<ChallengeVerifyVO> verifyList =
+		 * challengeService.selectChallengeVerifyList(Map.of("chal_joi_num",
+		 * join.getChal_joi_num())); long successCount = verifyList.stream().filter(v ->
+		 * v.getChal_ver_status() == 0).count();
+		 * 
+		 * // null 체크 및 기본값 설정 String chalSdate = join.getChal_sdate(); String chalEdate
+		 * = join.getChal_edate(); if (chalSdate == null || chalEdate == null) { // 기본값
+		 * 설정 또는 로그 남기기 continue; }
+		 * 
+		 * LocalDate startDate = LocalDate.parse(join.getChal_sdate(),
+		 * DateTimeFormatter.ISO_LOCAL_DATE); LocalDate endDate =
+		 * LocalDate.parse(join.getChal_edate(), DateTimeFormatter.ISO_LOCAL_DATE); long
+		 * totalWeeks = ChronoUnit.WEEKS.between(startDate, endDate) + 1; long
+		 * totalCount = totalWeeks * join.getChal_freq();
+		 * 
+		 * int achieveRate = totalCount > 0 ? (int) ((double) successCount / totalCount
+		 * * 100) : 0;
+		 * 
+		 * long chal_fee = join.getChal_fee(); int donaAmount;
+		 * 
+		 * if (achieveRate == 100) { donaAmount = (int) (chal_fee * 0.10);
+		 * fullAchievers++; } else if (achieveRate >= 90) { donaAmount = (int) (chal_fee
+		 * * 0.10); highAchievers++; } else { donaAmount = (int) (chal_fee -
+		 * (achieveRate / 100.0 * chal_fee)); lowAchievers++; }
+		 * 
+		 * totalDonation += donaAmount; totalAchievement += achieveRate; }
+		 * 
+		 * double averageAchievement = joinList.size() > 0 ? totalAchievement /
+		 * joinList.size() : 0;
+		 */
+	    
+		ModelAndView mav = new ModelAndView("adminChallengeDetail");
+		mav.addObject("challenge", challenge);
+		mav.addObject("formattedFee", formattedFee);
+		mav.addObject("currentParticipants", currentParticipants);
+
+		/*
+		 * mav.addObject("totalFee", totalFee); mav.addObject("totalDonation",
+		 * totalDonation); mav.addObject("fullAchievers", fullAchievers);
+		 * mav.addObject("highAchievers", highAchievers); mav.addObject("lowAchievers",
+		 * lowAchievers); mav.addObject("averageAchievement", averageAchievement);
+		 */
+
+	    
+		return mav;
 	}
 
 }

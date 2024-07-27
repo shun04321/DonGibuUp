@@ -62,7 +62,7 @@
                         <tr>
                             <td class="text-center">${challenge.chal_num}</td>
 					        <td class="text-center">${challenge.categoryName}</td>
-					        <td class="text-left"><a href="challengeDetail?chal_num=${challenge.chal_num}" class="text-decoration-none">${challenge.chal_title}</a></td>
+					        <td class="text-left"><a href="adminChallengeDetail?chal_num=${challenge.chal_num}" class="text-decoration-none">${challenge.chal_title}</a></td>
 					        <td class="text-center">${challenge.mem_nick}</td>
 					        <td class="text-center">${challenge.chal_public == 0 ? '공개' : '비공개'}</td>
 					        <td class="text-center">${challenge.chal_rdate}</td>
