@@ -1,14 +1,50 @@
 @charset "UTF-8";
 
+/*전체 레이아웃*/
+.container-padding {
+	padding: 2rem;
+}
+
+.main-container {
+	height: auto;
+	margin: 3rem;
+}
+
 .main-section {
-	height: 20rem;
-	border: 1px solid #000;
-	margin: 2rem 0;
+	background-color: #fff;
+	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+	border-radius: 0.75rem;
+	padding: 1rem;
+	margin-bottom: 2.5rem; 
 }
 
-.left-section {
-	margin-right: 2rem;
+.left-section, .right-section {
+	display: flex;
+	flex-direction: column;
 }
 
-.right-section {
+@media ( max-width : 992px) {
+	.left-section {
+		margin-bottom: 2.5rem;
+	}
+	.main-section {
+		height: auto;
+	}
 }
+
+/*챌린지1*/
+
+/*챌린지2*/
+
+/*정기기부*/
+
+/*기부박스*/
+
+/*굿즈샵*/
+
+
+
+
+
+
+
