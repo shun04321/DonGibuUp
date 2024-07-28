@@ -29,7 +29,9 @@ import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.cs.vo.ReportVO;
 import kr.spring.member.service.MemberService;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.member.vo.PaymentVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.FileUtil;
@@ -88,7 +90,10 @@ public class MyPageController {
 			model.addAttribute("birth_month", parsedDate.getMonthValue());
 			model.addAttribute("birth_day", parsedDate.getDayOfMonth());
 		}
+		
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
 
+		model.addAttribute("memberTotal", memberTotal);
 		model.addAttribute("memberVO", memberVO);
 		return "memberInfo";
 	}
@@ -155,7 +160,12 @@ public class MyPageController {
 
 	//비밀번호 수정 폼
 	@GetMapping("/member/myPage/changePassword")
-	public String changePasswordForm() {
+	public String changePasswordForm(Model model, HttpSession session) {
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+
+		model.addAttribute("memberTotal", memberTotal);
+		
 		return "memberChangePassword";
 	}
 
@@ -190,8 +200,11 @@ public class MyPageController {
 		MemberVO user = (MemberVO)session.getAttribute("user");
 		MemberVO member =  memberService.selectMemberDetail(user.getMem_num());
 		
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+		
 		//모델에 rcode 담아보내기
 		model.addAttribute("rcode", member.getMem_rcode());
+		model.addAttribute("memberTotal", memberTotal);
 		
 		return "inviteFriendEvent";
 	}
@@ -216,9 +229,13 @@ public class MyPageController {
 			list = pointService.getMemberPointList(map);
 		}
 		
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+
+		
 		model.addAttribute("count", count);
 		model.addAttribute("list", list);
 		model.addAttribute("page", page.getPage());
+		model.addAttribute("memberTotal", memberTotal);
 		
         // ObjectMapper를 사용하여 JSON 형식으로 변환
         ObjectMapper objectMapper = new ObjectMapper();
@@ -232,6 +249,40 @@ public class MyPageController {
 		}
 		
 		return "memberPoint";
+	}
+	
+	//결제내역 페이지
+	@GetMapping("/member/myPage/payment")
+	public String memberPayment(@RequestParam(defaultValue="1") int pageNum, HttpSession session, Model model) {
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+		model.addAttribute("memberTotal", memberTotal);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mem_num", user.getMem_num());
+		
+		int count = memberService.selectMemberPaymentCount(map);
+		
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "payment");
+		
+		List<PaymentVO> list = null;
+		
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = memberService.selectMemberPayment(map);
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+
+		log.debug("<<결제 내역>> : " + list);
+		
+		return "memberPayment";
 	}
 	
 	//문의내역 페이지

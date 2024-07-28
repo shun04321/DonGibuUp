@@ -27,15 +27,6 @@
                   <form:password path="mem_pw" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password"/>
                   <form:errors path="mem_pw" cssClass="form-error"></form:errors>
                 </div>
-                
-                <div class="my-2 d-flex justify-content-between align-items-center">
-                  <div class="form-check nanum">
-                    <label class="form-check-label text-muted">
-                      <input type="checkbox" class="form-check-input">
-                      자동 로그인
-                    </label>
-                  </div>
-                </div> 
                                
                 <div class="mt-3 d-flex justify-content-center align-items-center">
                   <form:button class="btn btn-block btn-primary font-weight-medium auth-form-btn nanum custom-btn">로그인</form:button>

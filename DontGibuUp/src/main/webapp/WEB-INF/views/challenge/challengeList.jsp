@@ -67,7 +67,7 @@
 			    </div>
 			    <div style="flex: 1; display: flex; gap: 10px; justify-content: flex-end; align-items: center;">
 			        <c:if test="${!empty user}">
-			            <input type="button" value="챌린지 개설하기" onclick="location.href='write'" style="padding: 6px 12px; border-radius: 5px; background-color: #5bc1ac; color: white; border: none; cursor: pointer;">
+			            <input type="button" class="btn-custom" value="챌린지 개설하기" onclick="location.href='write'">
 			        </c:if>
 			        <input type="search" name="keyword" id="keyword" value="${param.keyword}" placeholder="제목을 입력하세요" style="padding: 5px 10px; border-radius: 5px; border: 1px solid #ccc;">
 			        <input type="submit" value="찾기" style="padding: 6px 12px; border-radius: 5px; background-color: #597081; color: white; border: none; cursor: pointer;">

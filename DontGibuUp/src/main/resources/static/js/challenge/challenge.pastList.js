@@ -133,7 +133,7 @@ $(function() {
 					output += '</div>';
 
 					output += '</div>';
-					output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">참가하기</a>';
+					output += '<a href="detail?chal_num=' + item.chal_num + '" class="custom-btn btn">상세보기</a>';
 					output += '</div>';
 
 					output += '</div>';

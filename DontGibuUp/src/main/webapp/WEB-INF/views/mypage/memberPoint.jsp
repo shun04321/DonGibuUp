@@ -33,7 +33,7 @@
 	<h4 class="mb-4">포인트</h4>
 	<div class="row justify-content-left main-content-container">
 		<c:if test="${count == 0}">
-		<div class="result-display">표시할 게시물이 없습니다.</div>
+		<div class="result-display">포인트 거래 내역이 없습니다.</div>
 		</c:if>
 		<c:if test="${count > 0}">
             <table class="table table-clean">

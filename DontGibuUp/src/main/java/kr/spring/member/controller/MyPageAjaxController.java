@@ -138,25 +138,6 @@ public class MyPageAjaxController {
 		return mapAjax;
 	}
 	
-	/*===============================
-			멤버 토탈 불러오기
-	================================*/
-	@GetMapping("member/myPage/memberTotal")
-	@ResponseBody
-	public Map<String, Object> getMemberTotal(HttpSession session, HttpServletRequest request) {
-		Map<String, Object> mapAjax = new HashMap<String, Object>();
-		MemberVO user = (MemberVO) session.getAttribute("user");
-		
-		if (user == null) {
-			mapAjax.put("result", "logout");
-		} else {
-			MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
-			
-			mapAjax.put("result", "success");
-			mapAjax.put("memberTotal", memberTotal);
-		}
-		return mapAjax;
-	}
 }
 
 

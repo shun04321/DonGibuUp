@@ -278,6 +278,7 @@ span.upload_button {
 .challenge-header {
 	text-align: center;
 	margin-bottom: 20px;
+	position: relative;
 }
 
 .challenge-header2 {
@@ -299,6 +300,71 @@ span.upload_button {
 	max-height: 300px;
 	border-radius: 10px;
 	object-fit: cover;
+}
+
+.challenge-info-overlay {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    padding: 0 10px;
+}
+
+.challenge-title {
+    font-size: 42px; /* 제목 글씨 크기 */
+    color: white; /* 제목 글씨 색상 흰색 */
+    margin: 0;
+    flex-grow: 1;
+    text-align: left;
+    text-shadow: 
+        0px 1px 2px rgba(0, 0, 0, 0.1), /* 가벼운 그림자 */
+        0px 2px 4px rgba(0, 0, 0, 0.1), /* 중간 그림자 */
+        0px 4px 8px rgba(0, 0, 0, 0.1), /* 더 진한 그림자 */
+        0px 8px 16px rgba(0, 0, 0, 0.1); /* 가장 진한 그림자 */
+}
+
+.like-button-container {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid rgba(255, 255, 255, 0.8); /* 테두리 두께를 2px로 설정 */
+    border-radius: 20px; /* 둥근 테두리 */
+    padding: 5px 7px; /* 내부 패딩 */
+    background: rgba(0, 0, 0, 0.5); /* 약간의 반투명 배경 */
+}
+
+.like-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.0em; /* 글자 크기 조정 */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: 5px; /* 아이콘과 숫자 사이의 간격 */
+}
+
+.like-btn i {
+    font-size: 1.0em; /* 아이콘 크기 */
+    line-height: 1; /* 아이콘과 숫자의 높이 맞춤 */
+}
+
+#likeIcon {
+    margin-right: 5px;
+    transition: color 0.3s;
+}
+
+.like-btn.clicked #likeIcon {
+    color: white; /* 클릭 시 하트 색상 */
+}
+
+#output_fcount {
+    font-size: 1.0em;
+    color: white; /* 숫자 색상 */
+    line-height: 1; /* 숫자 높이 맞춤 */
 }
 
 .challenge-info2 {
@@ -323,33 +389,72 @@ span.upload_button {
 	height: 50px;
 	border-radius: 50%;
 	margin-right: 10px;
+	vertical-align: middle; /* 이미지와 텍스트 수직 정렬 */
+}
+
+.challenge-info2 p {
+	display: flex;
+	align-items: center;
 }
 
 .challenge-info2 .details {
 	flex-grow: 1;
+	align-items: center; /* 추가된 속성 */
+	display: flex; /* 추가된 속성 */
+	color: #717275; /* 글씨 색상 변경 */
+    font-size: 1.2em; /* 글씨 크기 증가 */
 }
 
 .challenge-stats {
-	display: flex;
-	justify-content: space-between;
-	margin-top: 20px;
-	padding: 10px 0;
-	border-top: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	font-size: 14px;
-	align-items: center;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    margin: 20px 0 10px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
 }
 
-.challenge-stats div {
-	text-align: center;
+.challenge-stats .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.challenge-stats div:not(:last-child) {
-	border-right: 1px solid #ddd;
+.challenge-stats .row:not(:last-child) {
+    border-bottom: 1px solid #ddd;
 }
 
-.challenge-content {
-	margin-top: 20px;
+.challenge-stats .col {
+    flex: 1;
+    text-align: center;
+    padding: 0 10px; /* 각 컬럼 간격 조정 */
+}
+
+.challenge-stats span {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.challenge-stats p {
+    margin: 0;
+    color: #333;
+}
+
+.challenge-stats .highlight {
+    color: #007bff; /* 부트스트랩 기본 색상 사용 */
+}
+
+@media (max-width: 767px) {
+    .challenge-stats > div {
+        flex: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .challenge-stats > div:last-child {
+        border-bottom: none;
+    }
 }
 
 .challenge-content h3 {
@@ -363,18 +468,46 @@ span.upload_button {
 	font-size: 14px;
 }
 
+.inline-text {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5; /* 텍스트가 수직 중앙에 정렬되도록 조정 */
+}
+
+.btn-custom {
+    padding: 6px 12px;
+    border-radius: 5px;
+    background-color: #5bc1ac;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-custom:hover {
+    background-color: #48a590; /* 호버 시 조금 더 어두운 색 */
+}
+
+.btn-custom:disabled,
+.btn-custom[disabled] {
+    background-color: #cccccc; /* 비활성화 시 회색 배경 */
+    color: #666666; /* 비활성화 시 텍스트 색상 */
+    cursor: not-allowed; /* 커서 변경 */
+    opacity: 0.6; /* 약간 투명하게 */
+}
 .review-summary {
 	display: flex;
 	align-items: center;
 }
 
 .review-summary .rating-value {
-	font-size: 1.5em;
-	margin: 0 0.5em;
+	font-size: 2.0em;
+	color: #333333;
 }
 
 .review-summary .rating-stars {
 	color: #FFD700; /* Gold color for stars */
+	margin: 0 0.5em;
 }
 
 .review-summary .review-count {
@@ -407,14 +540,14 @@ span.upload_button {
 	flex: 0 0 auto;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	padding: 10px;
+	padding: 15px;
 	margin: 10px;
-	width: 160px;
-	height: 80px;
+	width: 210px;
+	height: 110px;
 	box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .profile-img {
@@ -952,6 +1085,14 @@ textarea {
 	font-size: 14px;
 }
 
+.textreview {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
 textarea:focus {
 	outline: none;
 	border-color: #007bff;
@@ -979,7 +1120,7 @@ textarea:focus {
 .review-container2 {
 	border: 1px solid #ddd;
 	border-radius: 8px;
-	padding: 16px;
+	padding: 40px;
 	max-width: 600px;
 	margin: 20px auto;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -988,7 +1129,7 @@ textarea:focus {
 .challenge-info3 {
 	display: flex;
 	align-items: center;
-	margin-bottom: 16px;
+	margin-bottom: 30px;
 	flex-direction: row;
 }
 
@@ -996,7 +1137,7 @@ textarea:focus {
 	width: 100px;
 	height: 100px;
 	border-radius: 8px;
-	margin-right: 16px;
+	margin-right: 25px;
 	object-fit: cover;
 }
 
@@ -1008,6 +1149,7 @@ textarea:focus {
 	margin: 0 0 8px;
 	font-size: 24px;
 	text-align: left;
+	color: #5bc1ac;
 }
 
 .challenge-details p {
@@ -1035,7 +1177,7 @@ textarea:focus {
 }
 
 .star {
-	font-size: 24px;
+	font-size: 36px;
 	color: #ffcc00;
 	cursor: pointer;
 	transition: color 0.2s, transform 0.2s;
@@ -1080,18 +1222,45 @@ textarea:focus {
 	margin-top: 20px;
 }
 
+.cancel-button {
+	text-align: center;
+	margin-top: 20px;
+}
+
 .submit-button input[type="submit"] {
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	padding: 10px 20px;
-	font-size: 16px;
-	cursor: pointer;
+    padding: 10px;
+    border-radius: 100px;
+    background-color: #597081;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.cancel-button {
+    padding: 10px;
+    border-radius: 100px;
+    background-color: #f0f0f0; /* 연한 회색 */
+    color: #333; /* 진한 회색 텍스트 */
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
 }
 
 .submit-button input[type="submit"]:hover {
-	background-color: #0056b3;
+	background-color: #5bc1ac; /* 호버 시 조금 더 어두운 색 */
+}
+
+.cancel-button:hover {
+	background-color: #dcdcdc; /* 호버 시 조금 더 어두운 색 */
+}
+
+.submit-button {
+    display: flex;
+    justify-content: space-between; /* 두 버튼 사이의 간격 균일 */
+    gap: 10px; /* 버튼 사이의 간격 조정 */
 }
 
 .rating-error, .content-error {
@@ -1121,7 +1290,7 @@ textarea:focus {
 	width: 60%;
 	border: 1px solid #ddd;
 	border-radius: 8px;
-	padding: 16px;
+	padding: 30px;
 	max-width: 800px;
 	margin: 20px auto;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -1130,12 +1299,14 @@ textarea:focus {
 .review-list-container h2 {
 	text-align: center;
 	margin-bottom: 20px;
-	font-size: 20px;
+	font-size: 25px;
+	color: #5bc1ac;
 }
 
 .review-summary2 {
 	text-align: left;
 	margin-bottom: 20px;
+	padding-left: 30px; 
 }
 
 .average-rating {
@@ -1150,9 +1321,19 @@ textarea:focus {
 	margin-right: 8px;
 }
 
+.rating-value2 {
+	font-weight: bold;
+	margin-right: 20px;
+}
+
 .rating-stars {
 	color: #ffcc00;
 	font-size: 32px;
+}
+
+.rating-stars2 {
+	color: #ffcc00;
+	font-size: 26px;
 }
 
 .review-count {
@@ -1160,6 +1341,12 @@ textarea:focus {
 	color: #666;
 	margin-top: 8px;
 }
+
+.review-count2 {
+	font-size: 14px;
+	color: #666;
+}
+
 
 .sort-select-container {
 	margin-top: 10px;
@@ -1202,12 +1389,13 @@ textarea:focus {
 }
 
 .nickname {
+	font-size: 16px;
 	font-weight: bold;
 	margin-right: 10px;
 }
 
 .date {
-	font-size: 12px;
+	font-size: 14px;
 	color: #999;
 	margin-right: 10px;
 }

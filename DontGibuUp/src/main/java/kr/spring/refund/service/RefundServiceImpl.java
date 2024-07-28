@@ -40,4 +40,14 @@ public class RefundServiceImpl implements RefundService{
 	public void updateRefundStatus(long refund_num, int status) {
 		refundMapper.updateRefundStatus(refund_num, status);
 	}
+
+	@Override
+	public int getRefundCount(Map<String, Object> map) {
+		return refundMapper.getRefundCount(map);
+	}
+
+	@Override
+	public RefundVO getRefundVOByReNum(long refund_num) {
+		return refundMapper.getRefundVOByReNum(refund_num);
+	}
 }

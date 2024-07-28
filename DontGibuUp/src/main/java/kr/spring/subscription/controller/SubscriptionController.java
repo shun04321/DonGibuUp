@@ -616,7 +616,7 @@ public class SubscriptionController {
 
 	    return modelAndView;
 	}
-
+	//정기기부 중지
 	@PostMapping("/subscription/updateSub_status")
 	@ResponseBody
 	public Map<String,String> updateSub_status(long sub_num,HttpSession session){
@@ -645,11 +645,52 @@ public class SubscriptionController {
 		return mapJson;
 	}
 	
+	
 	@GetMapping("/admin/refundRequest")
-	public String getListRefund() {
-		
-		return "refundRequest";
-	}
+    public String getListRefund(HttpSession session, Model model,
+            @RequestParam(defaultValue="1") int pageNum,
+            @RequestParam(defaultValue="3") int refund_status) {
+
+        MemberVO user = (MemberVO)session.getAttribute("user");
+
+        if (user == null) {
+            log.warn("세션에 사용자 정보가 없습니다.");
+            return "redirect:/login"; // 사용자가 로그인되지 않은 경우 리다이렉트
+        }
+
+        log.debug("사용자 mem_num: {}", user.getMem_num());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("mem_num", user.getMem_num());
+        map.put("refund_status", refund_status); // 필요한 경우 추가
+
+        log.debug("map 내용: {}", map);
+
+        int count = refundService.getRefundCount(map);
+        log.debug("환불 요청 수: {}", count);
+
+        PagingUtil page = new PagingUtil(pageNum, count, 10, 10, "refundRequest");
+
+        List<RefundVO> list = null;
+        if (count > 0) {
+            map.put("start", page.getStartRow());
+            map.put("end", page.getEndRow());
+            log.debug("페이지 범위: {} - {}", page.getStartRow(), page.getEndRow());
+            list = refundService.getRefundList(map);
+            log.debug("환불 요청 목록 크기: {}", list.size());
+        } else {
+            log.debug("환불 요청 목록이 비어있음");
+        }
+
+        model.addAttribute("page", page.getPage());
+        model.addAttribute("count", count);
+        model.addAttribute("list", list);
+
+        log.debug("모델에 데이터 추가됨");
+
+        return "refundRequest";
+    }
+	
 	
 	@GetMapping("/admin/AdminSubscription")
 	public String getSubscriptionList(HttpSession session, Model model,
@@ -681,6 +722,7 @@ public class SubscriptionController {
 		
 		return "AdminSubscription";
 	}
+
 	
 	//환불신청
 	@PostMapping("/subscription/paymentRefund")
@@ -707,6 +749,111 @@ public class SubscriptionController {
 		return mapJson;
 	}
 	
+	/*-----------------------
+	 * 환불 api
+		 ------------------------*/
+	@PostMapping("/admin/approvalRefund")
+	@ResponseBody
+	public Map<String,String> refund(@RequestBody RefundVO refundVO, HttpSession session) {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user==null) {
+			mapJson.put("result", "logout");
+		}
+		
+		String token = subscriptionService.getToken();
+		Gson gson = new Gson();
+		token = token.substring(token.indexOf("response") + 10);
+		token = token.substring(0, token.length() - 1);
+
+		// token에서 response 부분을 추출하여 GetTokenVO로 변환
+		GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
+
+		String access_token = vo.getAccess_token();
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(access_token);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("merchant_uid", refundVO.getImp_uid());
+		map.put("reason", refundVO.getReason());
+
+		String json = gson.toJson(map);
+		System.out.println("json : " + json);
+
+		HttpEntity<String> entity = new HttpEntity<>(json, headers);
+		ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/payments/cancel", entity, String.class);
+
+		// API 응답을 문자열로 받음
+		String responseBody = response.getBody();
+
+		// API 응답 문자열에서 code와 message 값을 추출
+	    Map<String, Object> responseMap = gson.fromJson(responseBody, Map.class);
+	    Number codeNumber = (Number) responseMap.get("code");
+	    int code = codeNumber.intValue();
+	    String message = (String) responseMap.get("message");
+	    System.out.println("response : " + response);
+
+		if (response.getStatusCode() == HttpStatus.OK) {	        	
+			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
+			if (code == 0) { 
+				//환불 성공
+				refundService.updateRefundStatus(refundVO.getRefund_num(), 1);
+				// refundVO 객체에서 imp_uid를 가져온다
+				String impUid = refundVO.getImp_uid();
+
+				// impUid에서 "merchant_uid"를 제거하여 sub_pay_num을 추출한다
+				String prefix = "merchant_uid"; 
+				String subPayNumStr = impUid.substring(prefix.length());
+			    
+			    // subPayNum 문자열을 long 타입으로 변환한다
+			    long subPayNum = Long.parseLong(subPayNumStr);
+				// subPayNum을 사용하여 결제 상태를 환불 완료로 변경한다
+				sub_paymentService.updateSubPayStatus(subPayNum, 2);
+
+				mapJson.put("result", "success");
+			} else {
+				mapJson.put("result", "error");
+				mapJson.put("error_msg", message); // 에러 메시지 추가
+			}
+		} else {
+			// API 호출 실패
+			mapJson.put("result", "netWorkerror");
+		}
+		return mapJson;
+	}
+	
+	@PostMapping("/admin/rejectionRefund")
+	@ResponseBody
+	public Map<String,String> approvalRefund(@RequestBody RefundVO refundVO, HttpSession session){
+	    Map<String, String> mapJson = new HashMap<>();
+	    MemberVO user = (MemberVO) session.getAttribute("user");
+	    if (user == null) {
+	        mapJson.put("result", "logout");
+	        return mapJson;
+	    }
+	    refundVO = refundService.getRefundVOByReNum(refundVO.getRefund_num());
+	    
+	 // refundVO 객체에서 imp_uid를 가져온다
+		String impUid = refundVO.getImp_uid();
+
+		// impUid에서 "merchant_uid"를 제거하여 sub_pay_num을 추출한다
+		String prefix = "merchant_uid"; 
+		String subPayNumStr = impUid.substring(prefix.length());
+	    
+	    // subPayNum 문자열을 long 타입으로 변환한다
+	    long subPayNum = Long.parseLong(subPayNumStr);
+		// subPayNum을 사용하여 결제 상태를 환불 불가로 변경한다
+		sub_paymentService.updateSubPayStatus(subPayNum, 3);
+	    refundService.updateRefundStatus(refundVO.getRefund_num(), 2);
+	    mapJson.put("result", "success");
+
+	    return mapJson;
+	}
+
 }
 
 
