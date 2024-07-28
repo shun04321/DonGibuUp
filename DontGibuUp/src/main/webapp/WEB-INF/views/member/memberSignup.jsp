@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
-
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.signup.js"></script>
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
+ 
   <div class="container-scroller nanum">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
       <div class="content-wrapper d-flex align-items-center auth px-0">
@@ -51,8 +51,8 @@
                   <form:errors path="friend_rcode" maxlength="10" cssClass="form-error"></form:errors>
                 </div>
 
-                <div class="mt-3 d-flex justify-content-center align-items-center">
-                  <form:button class="btn btn-block btn-primary font-weight-medium auth-form-btn nanum custom-btn">회원가입</form:button>
+                <div class="submit-button mt-3 d-flex justify-content-center align-items-center">
+                  <form:button class="submit-button2 btn btn-block btn-primary font-weight-medium auth-form-btn nanum custom-btn">회원가입</form:button>
                 </div>
                 <br>
                 <hr>

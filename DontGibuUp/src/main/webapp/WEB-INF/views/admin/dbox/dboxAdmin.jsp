@@ -24,9 +24,9 @@
 				<input type="submit" value="찾기">
 			</li>
 		</ul>
-		<div class="status-check">
+		<div class="status-check align-center">
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck0" value="0">
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck0" value="0" >
 			  <label class="" for="statusCheck0">신청완료</label>
 			</div>
 			<div class="form-check form-check-inline">
@@ -95,7 +95,7 @@
 				<img src="${pageContext.request.contextPath}/upload/${dbox.dcate_icon}" style="height:1rem;">${dbox.dcate_name}
 			</td>
 			<td class="align-center">${dbox.dbox_rdate}
-			<td class="align-center" class="dbox_status">
+			<td class="dbox_status align-center">
 			<c:if test="${dbox.dbox_status == 0}">
 			신청완료
 			</c:if>

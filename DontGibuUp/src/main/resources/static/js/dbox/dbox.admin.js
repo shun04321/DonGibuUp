@@ -1,5 +1,6 @@
 $(document).ready(function() {
-	let subUrl='';
+	let subUrl=window.location.href.split('keyword=')[1].split('&order=')[0];
+	console.log('href : ' + window.location.href.split('keyword=')[1].split('&order=')[0])
 	 // 체크박스 상태 변경 시 updateURL 함수 호출
     $('.form-check-input').change(function() {
         subUrl = updateURL();
@@ -7,7 +8,7 @@ $(document).ready(function() {
 	//최신순, 오래된순
 	$('#order').change(function() {
 		var finalUrl = 'dboxAdmin?' +
-	                   '&keyfield=' + $('#keyfield').val() +
+	                   'keyfield=' + $('#keyfield').val() +
 	                   '&keyword=' + $('#keyword').val() +
 	                   subUrl +
 	                   '&order=' + $('#order').val();
