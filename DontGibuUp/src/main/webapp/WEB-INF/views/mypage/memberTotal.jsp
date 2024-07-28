@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/member/member.total.js/"></script>
 <section class="container mt-5 mb-4">
 	<div id="member_total_item" class="mb-1">
 	    <div class="mb-1">
@@ -19,15 +18,15 @@
 	    <div class="row text-center d-flex">
 	        <div class="total-menu col-12 col-sm-4 mb-3 mb-sm-0 border-right">
 	            <div class="total-label">포인트</div>
-	            <div class="total-content" id="mem_point"></div>
+	            <div class="total-content" id="mem_point">${memberTotal.mem_point}</div>
 	        </div>
 	        <div class="total-menu col-12 col-sm-4 mb-3 mb-sm-0 border-right">
 	            <div class="total-label">총 기부횟수</div>
-	            <div class="total-content" id="total_count"></div>
+	            <div class="total-content" id="total_count">${memberTotal.total_count}</div>
 	        </div>
 	        <div class="total-menu col-12 col-sm-4 border-right-last-none">
 	            <div class="total-label">누적 기부액</div>
-	            <div class="total-content" id="total_amount"></div>
+	            <div class="total-content" id="total_amount">${memberTotal.total_amount}</div>
 	        </div>
 	    </div>
 	</div>
