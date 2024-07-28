@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <!-- <script>
@@ -37,7 +38,7 @@
 		<div class="result-display">결제내역이 없습니다.</div>
 		</c:if>
  		<c:if test="${count > 0}">
-            <table class="table table-clean">
+            <table class="table table-clean align-center">
                 <thead>
                     <tr>
                         <th>분류</th>
@@ -61,7 +62,7 @@
                                     <c:when test="${payment.type == 3}">굿즈샵</c:when>
                                 </c:choose>
                             </td>
-                            <td>${payment.pay_date}</td>
+                            <td>${fn:substring(payment.pay_date, 0, 10)}</td>
                             <td>
                                 <c:choose>
                                     <c:when test="${payment.type == 0}"><a href="${pageContext.request.contextPath}/subscription/subscriptionDetail?sub_num=${payment.id}">[${payment.ref}] 카테고리 정기기부</a></c:when>
@@ -71,7 +72,10 @@
                                 </c:choose>
                             </td>
                             <td><fmt:formatNumber value="${payment.price}" type="number" minFractionDigits="0" maxFractionDigits="0"/></td>
-                            <td><fmt:formatNumber value="${payment.donation}" type="number" minFractionDigits="0" maxFractionDigits="0"/></td>
+                            <td>
+                            	<c:if test="${payment.type == 2}">${payment.donation}</c:if>
+                            	<c:if test="${payment.type != 2}"><fmt:formatNumber value="${payment.donation}" type="number" minFractionDigits="0" maxFractionDigits="0"/></c:if>
+                            </td>
                             <td><fmt:formatNumber value="${payment.point}" type="number" minFractionDigits="0" maxFractionDigits="0"/>P</td>
                             <td>
                                 <c:choose>

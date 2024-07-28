@@ -204,7 +204,7 @@
     <select id="selectMemberPayment" parameterType="map" resultType="paymentVO">
 		SELECT *
 		FROM (SELECT
-		        x.*, rownum rnum FROM (SELECT 
+		        x.*, rownum rnum FROM ((SELECT 
 										    0 AS type,
 										    TO_CHAR(a.sub_pay_num) AS payment_id,
 										    TO_CHAR(sub_num) AS id,
@@ -213,7 +213,7 @@
 										    TO_CHAR(a.sub_price) AS donation,
 										    TO_CHAR(0) AS point,
 										    TO_CHAR(a.sub_pay_status) AS status,
-										    TO_CHAR(a.sub_pay_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(a.sub_pay_date, 'YYYY-MM-DD HH24:MI:SS') AS pay_date, -- 날짜 포맷 조정
 										    TO_CHAR(b.dcate_name) AS ref
 										FROM sub_payment a
 										JOIN subscription
@@ -233,7 +233,7 @@
 										    TO_CHAR(c.dbox_do_price) AS donation,
 										    TO_CHAR(c.dbox_do_point) AS point,  -- NULL로 표시하고 싶은 경우, 이 줄을 주석처리하세요
 										    TO_CHAR(c.dbox_do_status) AS status,
-										    TO_CHAR(c.dbox_do_reg_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(c.dbox_do_reg_date, 'YYYY-MM-DD HH24:MI:SS') AS pay_date, -- 날짜 포맷 조정
 										    TO_CHAR(d.dbox_title) AS ref
 										FROM dbox_donation c
 										JOIN dbox d
@@ -248,13 +248,13 @@
 										    TO_CHAR(chal_joi_num) AS id,
 										    TO_CHAR(e.mem_num) AS mem_num,
 										    TO_CHAR(e.chal_pay_price) AS price,
-										    TO_CHAR(NVL(j.chal_joi_total, e.chal_pay_price*0.1)) AS donation,
+										    '미정' AS donation,
 										    TO_CHAR(e.chal_point) AS point,  -- NULL로 표시하고 싶은 경우, 이 줄을 주석처리하세요
 										    TO_CHAR(e.chal_pay_status) AS status,
-										    TO_CHAR(e.chal_pay_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(e.chal_pay_date, 'YYYY-MM-DD HH24:MI:SS') AS pay_date, -- 날짜 포맷 조정
 										    TO_CHAR(f.chal_title) AS ref
 										FROM chal_payment e
-										JOIN chal_join j
+										JOIN chal_join
 										USING(chal_joi_num)
 										JOIN challenge f
 										USING(chal_num)
@@ -271,11 +271,13 @@
 										    TO_CHAR(ROUND(g.pay_price*0.1)) AS donation,
 										    TO_CHAR(g.point_used) AS point,
 										    TO_CHAR(g.pay_status) AS status,
-										    TO_CHAR(g.pay_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(g.pay_date, 'YYYY-MM-DD HH24:MI:SS') AS pay_date, -- 날짜 포맷 조정
 										    NULL AS ref
 										FROM purchase g
 										WHERE g.mem_num=#{mem_num}
-				)x)
+		        )
+		        ORDER BY pay_date DESC
+		        )x)
 		<![CDATA[
 		WHERE rnum >= ${start} AND rnum <= #{end}
 		]]>
