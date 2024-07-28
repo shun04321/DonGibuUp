@@ -234,6 +234,44 @@ public class MyPageController {
 		return "memberPoint";
 	}
 	
+	//결제내역 페이지
+	@GetMapping("/member/myPage/payment")
+	public String memberPayment(@RequestParam(defaultValue="1") int pageNum, HttpSession session, Model model) {
+//		MemberVO user = (MemberVO) session.getAttribute("user");
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("mem_num", user.getMem_num());
+//		
+////		int count = pointService.getMPointRowCount(map);
+//		
+//		//페이지 처리
+//		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "memberPoint");
+//		
+//		List<PointVO> list = null;
+//		
+//		if (count > 0) {
+//			map.put("start", page.getStartRow());
+//			map.put("end", page.getEndRow());
+//			list = pointService.getMemberPointList(map);
+//		}
+//		
+//		model.addAttribute("count", count);
+//		model.addAttribute("list", list);
+//		model.addAttribute("page", page.getPage());
+//		
+//        // ObjectMapper를 사용하여 JSON 형식으로 변환
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        try {
+//			String listJson = objectMapper.writeValueAsString(list);
+//			log.debug("listJson : " + listJson);
+//			model.addAttribute("listJson", listJson);
+//		} catch (JsonProcessingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+		return "memberPayment";
+	}
+	
 	//문의내역 페이지
 	@GetMapping("/member/myPage/inquiry")
 	public String memberInquiry(Model model, HttpSession session) {

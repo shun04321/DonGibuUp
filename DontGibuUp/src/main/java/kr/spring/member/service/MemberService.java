@@ -5,6 +5,7 @@ import java.util.Map;
 
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.member.vo.PaymentVO;
 import kr.spring.point.vo.PointVO;
 
 public interface MemberService {
@@ -34,6 +35,9 @@ public interface MemberService {
 	
 	//멤버 토탈 불러오기
 	public MemberTotalVO selectMemberTotal(long mem_num);
+	
+	//결제내역 가져오기
+	public PaymentVO selectMemberPayment(long mem_num);
 	
 	//프로필사진 업데이트
 	public void updateMemPhoto(MemberVO memberVO);

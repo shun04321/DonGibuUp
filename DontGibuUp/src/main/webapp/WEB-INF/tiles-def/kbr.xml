@@ -50,7 +50,7 @@
 		<put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="nav" value="/WEB-INF/views/template/nav_myPage.jsp"/>
-		<put-attribute name="body" value="/WEB-INF/views/mypage/memberInfo.jsp"/>
+		<put-attribute name="body" value=""/>
 		<put-attribute name="footer" value="/WEB-INF/views/template/footer.jsp"/>
 	</definition>
 	<definition name="memberInfo" extends="mypageLayout">
@@ -81,6 +81,11 @@
 		<put-attribute name="title" value="MyPage - 포인트" />
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/mypage/memberPoint.jsp"/>
+	</definition>
+	<definition name="memberPayment" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 결제내역" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberPayment.jsp"/>
 	</definition>
 	<definition name="memberInquiry" extends="mypageLayout">
 		<put-attribute name="title" value="MyPage - 1:1문의" />

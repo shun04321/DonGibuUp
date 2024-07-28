@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.member.vo.MemberVO;
+import kr.spring.member.vo.PaymentVO;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.vo.PointVO;
@@ -75,6 +76,9 @@ public interface MemberMapper {
 	//비밀번호 수정
 	@Update("UPDATE member SET mem_pw=#{mem_pw} WHERE mem_num=#{mem_num}")
 	public void updatePassword(MemberVO memberVO);
+	
+	//결제내역 가져오기
+	public PaymentVO selectMemberPayment(long mem_num);
 	
 	/*---------------------------------------
 				관리자 회원관리

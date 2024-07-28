@@ -12,6 +12,7 @@
 		<a href="${pageContext.request.contextPath}/member/myPage/changePassword" class="category-block-link"> 비밀번호 수정</a>
 		<a href="${pageContext.request.contextPath}/member/myPage/inviteFriendEvent" class="category-block-link"> 친구초대</a>
 		<a href="${pageContext.request.contextPath}/member/myPage/point" class="category-block-link"> 포인트</a>
+		<a href="${pageContext.request.contextPath}/member/myPage/payment" class="category-block-link"> 결제내역</a>
 	</div>
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">기부활동</h5>

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.member.vo.PaymentVO;
 import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
@@ -182,12 +183,6 @@ public class MemberServiceImpl implements MemberService {
 	public void updateMemPhoto(MemberVO memberVO) {
 		memberMapper.updateMemPhoto(memberVO);
 	}
-	
-
-	@Override
-	public MemberTotalVO selectMemberTotal(long mem_num) {
-		return memberMapper.selectMemberTotal(mem_num);
-	}
 
 	@Override
 	public void updateMember(MemberVO memberVO) {
@@ -199,6 +194,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateMemPoint(PointVO pointVO) {
 		memberMapper.updateMemPoint(pointVO);
+	}
+	
+	
+	@Override
+	public MemberTotalVO selectMemberTotal(long mem_num) {
+		return memberMapper.selectMemberTotal(mem_num);
+	}
+	
+	@Override
+	public PaymentVO selectMemberPayment(long mem_num) {
+		return memberMapper.selectMemberPayment(mem_num);
 	}
 
 
