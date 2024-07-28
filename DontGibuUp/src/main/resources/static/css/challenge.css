@@ -475,7 +475,7 @@ span.upload_button {
     line-height: 1.5; /* 텍스트가 수직 중앙에 정렬되도록 조정 */
 }
 
-.challenge-info2 .btn-custom {
+.btn-custom {
     padding: 6px 12px;
     border-radius: 5px;
     background-color: #5bc1ac;
@@ -484,12 +484,12 @@ span.upload_button {
     cursor: pointer;
 }
 
-.challenge-info2 .btn-custom:hover {
+.btn-custom:hover {
     background-color: #48a590; /* 호버 시 조금 더 어두운 색 */
 }
 
-.challenge-info2 .btn-custom:disabled,
-.challenge-info2 .btn-custom[disabled] {
+.btn-custom:disabled,
+.btn-custom[disabled] {
     background-color: #cccccc; /* 비활성화 시 회색 배경 */
     color: #666666; /* 비활성화 시 텍스트 색상 */
     cursor: not-allowed; /* 커서 변경 */
@@ -1085,6 +1085,14 @@ textarea {
 	font-size: 14px;
 }
 
+.textreview {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
 textarea:focus {
 	outline: none;
 	border-color: #007bff;
@@ -1112,7 +1120,7 @@ textarea:focus {
 .review-container2 {
 	border: 1px solid #ddd;
 	border-radius: 8px;
-	padding: 16px;
+	padding: 40px;
 	max-width: 600px;
 	margin: 20px auto;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -1121,7 +1129,7 @@ textarea:focus {
 .challenge-info3 {
 	display: flex;
 	align-items: center;
-	margin-bottom: 16px;
+	margin-bottom: 30px;
 	flex-direction: row;
 }
 
@@ -1129,7 +1137,7 @@ textarea:focus {
 	width: 100px;
 	height: 100px;
 	border-radius: 8px;
-	margin-right: 16px;
+	margin-right: 25px;
 	object-fit: cover;
 }
 
@@ -1141,6 +1149,7 @@ textarea:focus {
 	margin: 0 0 8px;
 	font-size: 24px;
 	text-align: left;
+	color: #5bc1ac;
 }
 
 .challenge-details p {
@@ -1168,7 +1177,7 @@ textarea:focus {
 }
 
 .star {
-	font-size: 24px;
+	font-size: 36px;
 	color: #ffcc00;
 	cursor: pointer;
 	transition: color 0.2s, transform 0.2s;
@@ -1213,18 +1222,45 @@ textarea:focus {
 	margin-top: 20px;
 }
 
+.cancel-button {
+	text-align: center;
+	margin-top: 20px;
+}
+
 .submit-button input[type="submit"] {
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	padding: 10px 20px;
-	font-size: 16px;
-	cursor: pointer;
+    padding: 10px;
+    border-radius: 100px;
+    background-color: #597081;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.cancel-button {
+    padding: 10px;
+    border-radius: 100px;
+    background-color: #f0f0f0; /* 연한 회색 */
+    color: #333; /* 진한 회색 텍스트 */
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
 }
 
 .submit-button input[type="submit"]:hover {
-	background-color: #0056b3;
+	background-color: #5bc1ac; /* 호버 시 조금 더 어두운 색 */
+}
+
+.cancel-button:hover {
+	background-color: #dcdcdc; /* 호버 시 조금 더 어두운 색 */
+}
+
+.submit-button {
+    display: flex;
+    justify-content: space-between; /* 두 버튼 사이의 간격 균일 */
+    gap: 10px; /* 버튼 사이의 간격 조정 */
 }
 
 .rating-error, .content-error {

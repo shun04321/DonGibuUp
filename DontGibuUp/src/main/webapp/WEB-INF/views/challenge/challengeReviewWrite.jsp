@@ -28,33 +28,34 @@
     </div>
     <form:form action="${pageContext.request.contextPath}/challenge/review/write" method="post" modelAttribute="challengeReviewVO">
         <form:hidden path="chal_num" value="${chal_num}"/>
-        <div class="review-rating">
-            <label for="chal_rev_grade">챌린지에 만족하셨나요?</label>
+        <div class="review-content2">
+            <label for="chal_rev_grade"><b>챌린지에 만족하셨나요?</b></label>
             <span class="rating-error"></span>
         </div>
         <div class="stars">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
+            <span class="star" data-value="1"><i class="bi bi-star-fill"></i></span>
+            <span class="star" data-value="2"><i class="bi bi-star-fill"></i></span>
+            <span class="star" data-value="3"><i class="bi bi-star-fill"></i></span>
+            <span class="star" data-value="4"><i class="bi bi-star-fill"></i></span>
+            <span class="star" data-value="5"><i class="bi bi-star-fill"></i></span>
         </div>
         <form:hidden path="chal_rev_grade" id="chal_rev_grade" value=""/>
-        <br><br>
+        <br>
         <div class="review-content2">
-            <label for="chal_rev_content">내용을 입력해 주세요</label>
+            <label for="chal_rev_content"><b>내용을 입력해 주세요</b></label>
             <span class="content-error"></span>
         </div>
         <br>
         <div class="review-content3">
-            <form:textarea path="chal_rev_content" rows="5" cols="50" placeholder="후기 작성시 500p가 지급됩니다." id="chal_rev_content"></form:textarea>
+            <form:textarea class="textreview" path="chal_rev_content" rows="5" cols="50" placeholder="후기 작성시 500p가 지급됩니다." id="chal_rev_content"></form:textarea>
             <div class="char-count">
                 0 / 최소 20자
             </div>
         </div>
-        <div class="submit-button">
-            <input type="submit" value="등록"/>
-        </div>
+		<div class="submit-button">
+		    <input type="button" value="취소" class="cancel-button" onclick="history.back();"/>
+		    <input type="submit" value="등록" class="submit-button"/>
+		</div>
     </form:form>
 </div>
 </body>
