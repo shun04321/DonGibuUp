@@ -40,9 +40,11 @@ $(function(){
     // 좋아요 상태 표시
     function displayFav(param){
         if(param.status == 'yesFav') {
-            $('#likeBtn').text('♥');
+            $('#likeIcon').removeClass('bi-heart').addClass('bi-heart-fill');
+            $('#likeBtn').addClass('clicked');
         } else if(param.status == 'noFav') {
-            $('#likeBtn').text('♡');
+            $('#likeIcon').removeClass('bi-heart-fill').addClass('bi-heart');
+            $('#likeBtn').removeClass('clicked');
         } else {
             alert('좋아요 표시 오류 발생');
         }
