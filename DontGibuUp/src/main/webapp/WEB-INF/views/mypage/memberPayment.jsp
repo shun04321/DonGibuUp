@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <!-- <script>
@@ -35,7 +36,7 @@
 		<c:if test="${count == 0}">
 		<div class="result-display">결제내역이 없습니다.</div>
 		</c:if>
-		<c:if test="${count > 0}">
+ 		<c:if test="${count > 0}">
             <table class="table table-clean">
                 <thead>
                     <tr>
@@ -43,6 +44,8 @@
                         <th>일자</th>
                         <th>내역</th>
                         <th>결제액</th>
+                        <th>기부액</th>
+                        <th>사용포인트</th>
                         <th>결제상태</th>
                     </tr>
                 </thead>
@@ -52,22 +55,35 @@
                         <tr>
                             <td>
                                 <c:choose>
-                                    <c:when test="${point.pevent_type >= 10 && point.pevent_type < 20}">적립</c:when>
-                                    <c:when test="${point.pevent_type >= 20 && point.pevent_type < 30}">사용</c:when>
-                                    <c:when test="${point.pevent_type >= 30 && point.pevent_type < 40}">환불</c:when>
-                                    <c:when test="${point.pevent_type >= 40 && point.pevent_type < 50}">회수</c:when>
-                                    <c:otherwise>기타</c:otherwise>
+                                    <c:when test="${payment.type == 0}">정기기부</c:when>
+                                    <c:when test="${payment.type == 1}">기부박스</c:when>
+                                    <c:when test="${payment.type == 2}">챌린지</c:when>
+                                    <c:when test="${payment.type == 3}">굿즈샵</c:when>
                                 </c:choose>
                             </td>
-                            <td>${point.point_date}</td>
-                            <td>${point.pevent_detail}</td>
-                            <td>${point.point_amount}</td>
-                            <td id="remain_${point.point_num}"></td>
+                            <td>${payment.pay_date}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${payment.type == 0}"><a href="${pageContext.request.contextPath}/subscription/subscriptionDetail?sub_num=${payment.id}">[${payment.ref}] 카테고리 정기기부</a></c:when>
+                                    <c:when test="${payment.type == 1}"><a href="#">[${payment.ref}] 기부박스 기부</a></c:when>
+                                    <c:when test="${payment.type == 2}"><a href="#">[${payment.ref}] 챌린지 참여금</a></c:when>
+                                    <c:when test="${payment.type == 3}"><a href="#">굿즈샵에서 상품 구매 [구매번호 : ${payment.id}]</a></c:when>
+                                </c:choose>
+                            </td>
+                            <td><fmt:formatNumber value="${payment.price}" type="number" minFractionDigits="0" maxFractionDigits="0"/></td>
+                            <td><fmt:formatNumber value="${payment.donation}" type="number" minFractionDigits="0" maxFractionDigits="0"/></td>
+                            <td><fmt:formatNumber value="${payment.point}" type="number" minFractionDigits="0" maxFractionDigits="0"/>P</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${payment.status == 0}">결제완료</c:when>
+                                    <c:otherwise>결제취소</c:otherwise>
+                                </c:choose>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
 		<div class="align-center">${page}</div>
-		</c:if>
+ 		</c:if>
 	</div>
 </div>

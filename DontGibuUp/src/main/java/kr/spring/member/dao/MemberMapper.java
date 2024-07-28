@@ -77,8 +77,11 @@ public interface MemberMapper {
 	@Update("UPDATE member SET mem_pw=#{mem_pw} WHERE mem_num=#{mem_num}")
 	public void updatePassword(MemberVO memberVO);
 	
+	//결제내역 카운트
+	public int selectMemberPaymentCount(Map<String, Object> map);
+	
 	//결제내역 가져오기
-	public PaymentVO selectMemberPayment(long mem_num);
+	public List<PaymentVO> selectMemberPayment(Map<String, Object> map);
 	
 	/*---------------------------------------
 				관리자 회원관리

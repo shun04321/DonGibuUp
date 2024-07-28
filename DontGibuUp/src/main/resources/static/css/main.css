@@ -82,6 +82,7 @@
 }
 
 .custom-text-box {
+	height: 282px;
 	background-image: url('/images/banner-background.png') !important; /* 배경 이미지 URL */
 	background-size: cover !important;
 }
@@ -131,6 +132,10 @@
 	height: 90%;
 	border-radius: 0.75rem !important;
 	overflow: hidden; /* 추가하여 자식 요소가 border-radius에 맞게 잘리는지 확인 */
+}
+
+.cta-section {
+	height: 282px;
 }
 
 

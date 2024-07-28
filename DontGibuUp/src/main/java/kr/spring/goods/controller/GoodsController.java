@@ -1,6 +1,7 @@
 package kr.spring.goods.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.springframework.web.servlet.ModelAndView;
 
-
-
+import kr.spring.category.service.CategoryService;
+import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.goods.service.GoodsService;
 import kr.spring.goods.util.fileUtil;
 import kr.spring.goods.vo.GoodsVO;
@@ -41,7 +42,8 @@ import lombok.extern.slf4j.Slf4j;
 public class GoodsController {
     @Autowired
     private GoodsService goodsService;
-    
+    @Autowired
+    private CategoryService categoryService;  // CategoryService 주입
     
     // 자바빈 초기화
     @ModelAttribute
@@ -83,6 +85,16 @@ public class GoodsController {
             list = goodsService.selectList(map, mem_status);
         }
 
+        // 카테고리 정보 가져오기
+        List<Map<String, Object>> categories = goodsService.getCategories();
+        Map<Integer, String> categoriesMap = new HashMap<>();
+        for (Map<String, Object> category : categories) {
+            Integer categoryId = ((BigDecimal) category.get("DCATE_NUM")).intValue();
+            String categoryName = (String) category.get("DCATE_NAME");
+            categoriesMap.put(categoryId, categoryName);
+        }
+        model.addAttribute("categories", categoriesMap);
+
         model.addAttribute("count", count);
         model.addAttribute("list", list);
         model.addAttribute("page", page.getPage());
@@ -90,7 +102,6 @@ public class GoodsController {
 
         return "goodsList";
     }
-
     /*===================================
      * 상품 상세
      *==================================*/

@@ -144,10 +144,6 @@
 		SELECT 
 		    a.mem_point, 
 		    a.mem_num,
-		    COALESCE(sub_counts.total_sub_price, 0) AS sub_total,
-		    COALESCE(donation_counts.total_dbox_price, 0) AS dbox_total,
-		    COALESCE(chal_counts.total_chal_price, 0) AS chal_total,
-		    COALESCE(goods_counts.total_goods_price, 0) AS goods_total,
 		    (COALESCE(sub_counts.count, 0) + COALESCE(donation_counts.count, 0) + COALESCE(chal_counts.count, 0) + COALESCE(goods_counts.count, 0)) AS total_count,
 		    ROUND(COALESCE(sub_counts.total_sub_price, 0) + COALESCE(donation_counts.total_dbox_price, 0) + COALESCE(chal_counts.total_chal_price, 0) + COALESCE(goods_counts.total_goods_price, 0)) AS total_amount
 		FROM member_detail a
@@ -193,6 +189,97 @@
 		ON a.mem_num = goods_counts.mem_num
 		WHERE a.mem_num = #{mem_num}
     </select>
+    
+    <!-- 결제내역 카운트 -->
+    <select id="selectMemberPaymentCount" parameterType="map" resultType="integer">
+		SELECT 
+		    (SELECT COUNT(*) FROM sub_payment WHERE mem_num = #{mem_num}) +
+		    (SELECT COUNT(*) FROM dbox_donation WHERE mem_num = #{mem_num}) +
+		    (SELECT COUNT(*) FROM chal_payment WHERE mem_num = #{mem_num}) +
+		    (SELECT COUNT(*) FROM purchase WHERE mem_num = #{mem_num}) AS total_count
+		FROM dual
+	</select>
+    
+    <!-- 결제내역 -->
+    <select id="selectMemberPayment" parameterType="map" resultType="paymentVO">
+		SELECT *
+		FROM (SELECT
+		        x.*, rownum rnum FROM (SELECT 
+										    0 AS type,
+										    TO_CHAR(a.sub_pay_num) AS payment_id,
+										    TO_CHAR(sub_num) AS id,
+										    TO_CHAR(a.mem_num) AS mem_num,
+										    TO_CHAR(a.sub_price) AS price,
+										    TO_CHAR(a.sub_price) AS donation,
+										    TO_CHAR(0) AS point,
+										    TO_CHAR(a.sub_pay_status) AS status,
+										    TO_CHAR(a.sub_pay_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(b.dcate_name) AS ref
+										FROM sub_payment a
+										JOIN subscription
+										USING(sub_num)
+										JOIN dona_category b
+										USING(dcate_num)
+										WHERE a.mem_num=#{mem_num}
+										
+										UNION ALL
+										
+										SELECT 
+										    1 AS type,
+										    TO_CHAR(c.dbox_imp_uid) AS payment_id,
+										    TO_CHAR(c.dbox_do_num) AS id,
+										    TO_CHAR(c.mem_num) AS mem_num,
+										    TO_CHAR(c.dbox_do_price) AS price,
+										    TO_CHAR(c.dbox_do_price) AS donation,
+										    TO_CHAR(c.dbox_do_point) AS point,  -- NULL로 표시하고 싶은 경우, 이 줄을 주석처리하세요
+										    TO_CHAR(c.dbox_do_status) AS status,
+										    TO_CHAR(c.dbox_do_reg_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(d.dbox_title) AS ref
+										FROM dbox_donation c
+										JOIN dbox d
+										USING(dbox_num)
+										WHERE c.mem_num=#{mem_num}
+										
+										UNION ALL
+										
+										SELECT
+										    2 AS type,
+										    TO_CHAR(e.chal_pay_num) AS payment_id,
+										    TO_CHAR(chal_joi_num) AS id,
+										    TO_CHAR(e.mem_num) AS mem_num,
+										    TO_CHAR(e.chal_pay_price) AS price,
+										    TO_CHAR(NVL(j.chal_joi_total, e.chal_pay_price*0.1)) AS donation,
+										    TO_CHAR(e.chal_point) AS point,  -- NULL로 표시하고 싶은 경우, 이 줄을 주석처리하세요
+										    TO_CHAR(e.chal_pay_status) AS status,
+										    TO_CHAR(e.chal_pay_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    TO_CHAR(f.chal_title) AS ref
+										FROM chal_payment e
+										JOIN chal_join j
+										USING(chal_joi_num)
+										JOIN challenge f
+										USING(chal_num)
+										WHERE e.mem_num=#{mem_num}
+										
+										UNION ALL
+										
+										SELECT
+										    3 AS type,
+										    TO_CHAR(g.imp_uid) AS payment_id,
+										    TO_CHAR(g.purchase_num) AS id,
+										    TO_CHAR(g.mem_num) AS mem_num,
+										    TO_CHAR(g.pay_price) AS price,
+										    TO_CHAR(ROUND(g.pay_price*0.1)) AS donation,
+										    TO_CHAR(g.point_used) AS point,
+										    TO_CHAR(g.pay_status) AS status,
+										    TO_CHAR(g.pay_date, 'YYYY-MM-DD') AS pay_date, -- 날짜 포맷 조정
+										    NULL AS ref
+										FROM purchase g
+										WHERE g.mem_num=#{mem_num}
+				)x)
+		<![CDATA[
+		WHERE rnum >= ${start} AND rnum <= #{end}
+		]]>
+	</select>
 </mapper>
 
 
