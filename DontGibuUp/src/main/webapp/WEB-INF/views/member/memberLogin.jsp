@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/challenge.css">
 
   <div class="container-scroller nanum">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
@@ -27,19 +28,19 @@
                   <form:password path="mem_pw" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password"/>
                   <form:errors path="mem_pw" cssClass="form-error"></form:errors>
                 </div>
-                               
-                <div class="mt-3 d-flex justify-content-center align-items-center">
-                  <form:button class="btn btn-block btn-primary font-weight-medium auth-form-btn nanum custom-btn">로그인</form:button>
+
+                <div class="submit-button mt-3 d-flex justify-content-center align-items-center submit-button">
+                  <form:button class="submit-button2 btn btn-block btn-primary font-weight-medium auth-form-btn nanum custom-btn">로그인</form:button>
                 </div>
-                <br>
-                
+
                 <div class="align-center">
                   <a href="findPassword" class="auth-link text-black nanum">비밀번호 찾기</a> |
                   <a href="signup" class="auth-link text-black nanum">회원가입</a>
 				</div>
+				<br>
 				<hr>
-				
                 <div class="mb-2 align-center">
+                	 <p><small>SNS로 간편하게 시작하기</small></p>
                   <a href="${pageContext.request.contextPath}/member/oauth/kakao" class="me-2">
                     <img alt="카카오톡 간편 로그인" width="60" src="${pageContext.request.contextPath}/images/logo_sns/kakaotalk_logo.png">
                   </a>
