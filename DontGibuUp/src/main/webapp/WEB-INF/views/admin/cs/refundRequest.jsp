@@ -4,7 +4,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 환불 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/admin.subscription.js"></script>
 <script>
 $(document).ready(function() {
     // 툴팁 표시 및 숨김
@@ -114,7 +113,7 @@ $(document).ready(function() {
                     <th class="align-center">결제액</th>
                     <th class="align-center">환불사유</th> 
                     <th class="align-center">신청일</th>
-                    <th class="align-center">환불일</th>
+                    <th class="align-center">환불(반려)일</th>
                     <th class="align-center">환불상태</th>
                 </tr>
                 <c:forEach var="refund" items="${list}">
