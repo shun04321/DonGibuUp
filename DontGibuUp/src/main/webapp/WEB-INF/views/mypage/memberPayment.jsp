@@ -44,8 +44,9 @@ $(document).ready(function() {
             reasonDiv.append('<label><input type="radio" name="reason" value="3"> 배송문제</label>');
             reasonDiv.append('<label><input type="radio" name="reason" value="4"> 기타</label>');
         } else if (paymentType == 2) {
-            $('#refundButton').prop('disabled', true);
+        	 $(this).prop('checked', false); // 체크박스 해제
             alert('챌린지 유형은 환불이 불가능합니다.');
+            return;
         } else {
             reasonDiv.append('<label><input type="radio" name="reason" value="0"> 단순변심</label>');
             reasonDiv.append('<label><input type="radio" name="reason" value="1"> 결제오류</label>');
@@ -172,6 +173,9 @@ $(document).ready(function() {
         <div class="result-display">결제내역이 없습니다.</div>
         </c:if>
         <c:if test="${count > 0}">
+        	<div class="align-left">
+        		<small>챌린지 결제는 현재 페이지에서 환불 신청할 수 없습니다.</small>
+        	</div>
             <table class="table table-clean align-center">
                 <thead>
                     <tr>
@@ -236,6 +240,9 @@ $(document).ready(function() {
                 </tbody>
             </table>
         </c:if>
+    </div>
+    <div class="align-center">
+    	${page}
     </div>
 </div>
 
