@@ -649,7 +649,7 @@ public class SubscriptionController {
 	@GetMapping("/admin/refundRequest")
     public String getListRefund(HttpSession session, Model model,
             @RequestParam(defaultValue="1") int pageNum,
-            @RequestParam(defaultValue="0") int refund_status) {
+            @RequestParam(defaultValue="3") int refund_status) {
 
         MemberVO user = (MemberVO)session.getAttribute("user");
 
@@ -749,13 +749,111 @@ public class SubscriptionController {
 		return mapJson;
 	}
 	
+	/*-----------------------
+	 * 환불 api
+		 ------------------------*/
+	@PostMapping("/admin/approvalRefund")
+	@ResponseBody
+	public Map<String,String> refund(@RequestBody RefundVO refundVO, HttpSession session) {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		if(user==null) {
+			mapJson.put("result", "logout");
+		}
+		
+		String token = subscriptionService.getToken();
+		Gson gson = new Gson();
+		token = token.substring(token.indexOf("response") + 10);
+		token = token.substring(0, token.length() - 1);
+
+		// token에서 response 부분을 추출하여 GetTokenVO로 변환
+		GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
+
+		String access_token = vo.getAccess_token();
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(access_token);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("merchant_uid", refundVO.getImp_uid());
+		map.put("reason", refundVO.getReason());
+
+		String json = gson.toJson(map);
+		System.out.println("json : " + json);
+
+		HttpEntity<String> entity = new HttpEntity<>(json, headers);
+		ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/payments/cancel", entity, String.class);
+
+		// API 응답을 문자열로 받음
+		String responseBody = response.getBody();
+
+		// API 응답 문자열에서 code와 message 값을 추출
+	    Map<String, Object> responseMap = gson.fromJson(responseBody, Map.class);
+	    Number codeNumber = (Number) responseMap.get("code");
+	    int code = codeNumber.intValue();
+	    String message = (String) responseMap.get("message");
+	    System.out.println("response : " + response);
+
+		if (response.getStatusCode() == HttpStatus.OK) {	        	
+			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
+			if (code == 0) { 
+				//환불 성공
+				refundService.updateRefundStatus(refundVO.getRefund_num(), 1);
+				// refundVO 객체에서 imp_uid를 가져온다
+				String impUid = refundVO.getImp_uid();
+
+				// impUid에서 "merchant_uid"를 제거하여 sub_pay_num을 추출한다
+				String prefix = "merchant_uid"; 
+				String subPayNumStr = impUid.substring(prefix.length());
+			    
+			    // subPayNum 문자열을 long 타입으로 변환한다
+			    long subPayNum = Long.parseLong(subPayNumStr);
+				// subPayNum을 사용하여 결제 상태를 환불 완료로 변경한다
+				sub_paymentService.updateSubPayStatus(subPayNum, 2);
+
+				mapJson.put("result", "success");
+			} else {
+				mapJson.put("result", "error");
+				mapJson.put("error_msg", message); // 에러 메시지 추가
+			}
+		} else {
+			// API 호출 실패
+			mapJson.put("result", "netWorkerror");
+		}
+		return mapJson;
+	}
 	
-	/*
-	 * //환불 상세
-	 * 
-	 * @GetMapping("/admin/Admin")
-	 */
-	
+	@PostMapping("/admin/rejectionRefund")
+	@ResponseBody
+	public Map<String,String> approvalRefund(@RequestBody RefundVO refundVO, HttpSession session){
+	    Map<String, String> mapJson = new HashMap<>();
+	    MemberVO user = (MemberVO) session.getAttribute("user");
+	    if (user == null) {
+	        mapJson.put("result", "logout");
+	        return mapJson;
+	    }
+	    refundVO = refundService.getRefundVOByReNum(refundVO.getRefund_num());
+	    
+	 // refundVO 객체에서 imp_uid를 가져온다
+		String impUid = refundVO.getImp_uid();
+
+		// impUid에서 "merchant_uid"를 제거하여 sub_pay_num을 추출한다
+		String prefix = "merchant_uid"; 
+		String subPayNumStr = impUid.substring(prefix.length());
+	    
+	    // subPayNum 문자열을 long 타입으로 변환한다
+	    long subPayNum = Long.parseLong(subPayNumStr);
+		// subPayNum을 사용하여 결제 상태를 환불 불가로 변경한다
+		sub_paymentService.updateSubPayStatus(subPayNum, 3);
+	    refundService.updateRefundStatus(refundVO.getRefund_num(), 2);
+	    mapJson.put("result", "success");
+
+	    return mapJson;
+	}
+
 }
 
 

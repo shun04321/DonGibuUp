@@ -30,8 +30,8 @@
 	</insert>
 	
 	<sql id="refund_status">
-	    <if test="refund_status != null and refund_status != ''">
-	        WHERE refund_status = #{refund_status}
+	    <if test="refund_status != 3">
+	        AND refund_status = #{refund_status}
 	    </if>
 	</sql>
 
@@ -59,7 +59,7 @@
     SELECT
         COUNT(*)
     FROM
-        refund
+        refund WHERE 1=1
     <include refid="refund_status"/>
 </select>
 </mapper>

@@ -169,6 +169,9 @@
                         환불신청중
                     </c:when>
                     <c:when test="${payment.sub_pay_status == 2}">
+                        환불완료
+                    </c:when>
+                    <c:when test="${payment.sub_pay_status == 3}">
                         환불불가
                     </c:when>
                 </c:choose>

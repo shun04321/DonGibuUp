@@ -28,7 +28,11 @@ public interface RefundMapper {
 	@Delete("DELETE FROM refund WHERE refund_num=#{refund_num}")
 	public void deleteRefund(long refund_num);
 	
+	//refund_num으로 refundVO 얻기
+	@Select("SELECT * FROM refund WHERE refund_num=#{refund_num}")
+	public RefundVO getRefundVOByReNum(long refund_num);
+	
 	//환불 승인 및 반려
-	@Update("UPDATE refund SET refund_status=#{refund_status}, refund_status=SYSDATE WHERE refund_num=#{refund_num}")
-	public void updateRefundStatus(long refund_num, int status);
+	@Update("UPDATE refund SET refund_status=#{refund_status}, refund_date=SYSDATE WHERE refund_num=#{refund_num}")
+	public void updateRefundStatus(long refund_num, int refund_status);
 }

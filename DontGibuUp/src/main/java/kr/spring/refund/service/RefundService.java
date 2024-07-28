@@ -3,6 +3,8 @@ package kr.spring.refund.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
+
 import kr.spring.refund.vo.RefundVO;
 
 public interface RefundService {
@@ -17,6 +19,9 @@ public interface RefundService {
 		
 		//사용자 환불신청 목록 조회
 		public List<RefundVO> getRefundListByMemnum(Map<String,Object> map);
+		
+		//refund_num으로 refundVO 얻기
+		public RefundVO getRefundVOByReNum(long refund_num);
 		
 		//환불 취소(삭제)
 		public void deleteRefund(long refund_num);
