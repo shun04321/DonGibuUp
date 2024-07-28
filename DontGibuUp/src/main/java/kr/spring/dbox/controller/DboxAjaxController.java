@@ -186,7 +186,7 @@ public class DboxAjaxController {
 				//NotifyVO 객체 정의
 				NotifyVO notifyVO = new NotifyVO();
 				notifyVO.setMem_num(member.getMem_num()); //알림 받을 회원 번호
-				notifyVO.setNotify_type(22);//알림 타입(아래 알림 타입 토글 참조)
+				notifyVO.setNotify_type(23);//알림 타입(아래 알림 타입 토글 참조)
 				notifyVO.setNot_url("/dbox/" + dbox_num + "/content"); //알림을 누르면 반환할url (루트 컨텍스트 다음 부분만)
 				
 				//동적 데이터 매핑
@@ -208,7 +208,7 @@ public class DboxAjaxController {
 				//포인트 사용한 경우에만 포인트 로그
 				if(point >0) {
 					//포인트 사용
-					PointVO point_revent1 = new PointVO(23, -point, member.getMem_num()); //(포인트 타입, 포인트 양(음수면 -), 포인트 받을 회원 번호)
+					PointVO point_revent1 = new PointVO(21, -point, member.getMem_num()); //(포인트 타입, 포인트 양(음수면 -), 포인트 받을 회원 번호)
 					
 					//포인트 로그 추가
 					pointService.insertPointLog(point_revent1);
