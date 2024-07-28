@@ -31,6 +31,7 @@ import kr.spring.cs.vo.ReportVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.member.vo.PaymentVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
 import kr.spring.util.FileUtil;
@@ -258,37 +259,29 @@ public class MyPageController {
 		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
 		model.addAttribute("memberTotal", memberTotal);
 		
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		map.put("mem_num", user.getMem_num());
-//		
-////		int count = pointService.getMPointRowCount(map);
-//		
-//		//페이지 처리
-//		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "memberPoint");
-//		
-//		List<PointVO> list = null;
-//		
-//		if (count > 0) {
-//			map.put("start", page.getStartRow());
-//			map.put("end", page.getEndRow());
-//			list = pointService.getMemberPointList(map);
-//		}
-//		
-//		model.addAttribute("count", count);
-//		model.addAttribute("list", list);
-//		model.addAttribute("page", page.getPage());
-//		
-//        // ObjectMapper를 사용하여 JSON 형식으로 변환
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        try {
-//			String listJson = objectMapper.writeValueAsString(list);
-//			log.debug("listJson : " + listJson);
-//			model.addAttribute("listJson", listJson);
-//		} catch (JsonProcessingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("mem_num", user.getMem_num());
+		
+		int count = memberService.selectMemberPaymentCount(map);
+		
+		
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, 30, 10, "payment");
+		
+		List<PaymentVO> list = null;
+		
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = memberService.selectMemberPayment(map);
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+
+		log.debug("<<결제 내역>> : " + list);
+		
 		return "memberPayment";
 	}
 	
