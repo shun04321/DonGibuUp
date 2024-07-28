@@ -56,6 +56,9 @@ public class GoodsServiceImpl implements GoodsService {
         goodsMapper.deleteCartItems(item_num); // 자식 레코드 먼저 삭제
         goodsMapper.deleteGoods(item_num); // 부모 레코드 삭제
     }
-
+    @Override
+    public List<Map<String, Object>> getCategories() {
+        return goodsMapper.getCategories();
+    }
    
 }
