@@ -34,9 +34,12 @@ $(function() {
 		};
 
 		function updateReadCount(messageId, readCount) {
-			$(`#read-count-${messageId}`).text(readCount);
+			let messageElement = document.querySelector(`div[data-message-id='${messageId}'] .read-count`);
+			if (messageElement) {
+				messageElement.textContent = `${readCount}`;
+			}
 		}
-		
+
 		message_socket.onclose = function(evt) {
 			//소켓이 종료된 후 부가적인 작성이 있을 경우 명시
 			console.log('chat close');
@@ -128,7 +131,6 @@ $(function() {
 							//챌린지 시작 메시지, 신규 입장 메시지
 							output += '<div class="greeting-message">';
 							output += item.chat_content.substring(0, item.chat_content.indexOf('@{common}'));
-							console.log(item.chat_content.substring(0, item.chat_content.indexOf('@{common}')));
 							output += '</div>';
 						} else {
 							//날짜 표시
@@ -171,7 +173,7 @@ $(function() {
 
 		//일반 메시지
 		if (item.mem_num != param.mem_num) {
-			sub_output += '<div class="to-position">';
+			sub_output += `<div class="to-position" data-message-id="${item.chat_id}">`;
 			sub_output += '<div class="space-photo">';
 			if (item.mem_photo != null) {
 				sub_output += `<img src="${contextPath}/upload/${item.mem_photo}" width="40" height="40" class="my-photo">`;
@@ -188,7 +190,7 @@ $(function() {
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
 		sub_output += `<div class="item2">
-						    <div>${item.chat_readCount}</div>
+						    <div class="read-count">${item.chat_readCount}</div>
 						    <div>${item.chat_date.split(' ')[1]}</div>
 						   </div>`;
 		sub_output += '</div></div>';

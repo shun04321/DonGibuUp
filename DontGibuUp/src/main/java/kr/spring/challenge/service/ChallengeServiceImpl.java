@@ -641,4 +641,9 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public int selectChallengeCount(Map<String, Object> map) {
 		return challengeMapper.selectChallengeCount(map);
 	}
+
+	@Override
+	public ChallengePaymentVO selectChallengePayment(Long chal_joi_num) {
+		return challengeMapper.selectChallengePayment(chal_joi_num);
+	}
 }

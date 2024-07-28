@@ -58,7 +58,16 @@ public interface ChallengeMapper {
     public ChallengeReviewVO selectChallengeReviewByMemberAndChallenge(Map<String, Object> map);
     
     //*챌린지 결제*//
+    //결제 데이터 등록
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
+    //단일 결제 정보 불러오기
+    @Select("SELECT * FROM chal_payment WHERE chal_joi_num=#{chal_joi_num}")
+    public ChallengePaymentVO selectChallengePayment(Long chal_joi_num);
+    //결제 취소 상태로 변경
+    @Update("UPDATE chal_payment SET chal_pay_status=1 WHERE chal_joi_num=#{chal_joi_num}")
+    public void updateChalPaymentStatus(Long chal_joi_num);
+    @Update("UPDATE chal_join SET chal_pay_status=1 WHERE chal_joi_num=#{chal_joi_num}")
+    public void updateChalJoinStatus(Long chal_joi_num);
     
     //*챌린지 인증*//
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);

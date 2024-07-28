@@ -31,7 +31,7 @@
 							<div class="view-detail">
 								<c:choose>
 									<c:when test="${status == 'pre'}">
-										<a class="red-custom" href="#" onclick="deleteChallenge(${challengeJoin.chal_joi_num})">챌린지취소</a>
+										<a class="red-custom" href="#" onclick="deleteChallenge(${challengeJoin.chal_joi_num},${challengeData.isHost})">챌린지취소</a>
 									</c:when>
 									<c:when test="${status == 'on'}">
 										<a class="orange-custom" href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
