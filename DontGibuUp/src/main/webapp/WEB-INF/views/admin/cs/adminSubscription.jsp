@@ -6,7 +6,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/admin.subscription.js"></script>
 <div class="page-main">
-	<h2>회원 관리</h2>
+	<h2>정기기부 관리</h2>
 	<form action="AdminSubscription" id="search_form" method="get">
 		<ul class="search">
 			<li>

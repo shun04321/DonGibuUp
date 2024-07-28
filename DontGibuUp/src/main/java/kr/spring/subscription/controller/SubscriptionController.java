@@ -616,7 +616,7 @@ public class SubscriptionController {
 
 	    return modelAndView;
 	}
-
+	//정기기부 중지
 	@PostMapping("/subscription/updateSub_status")
 	@ResponseBody
 	public Map<String,String> updateSub_status(long sub_num,HttpSession session){
@@ -645,11 +645,52 @@ public class SubscriptionController {
 		return mapJson;
 	}
 	
+	
 	@GetMapping("/admin/refundRequest")
-	public String getListRefund() {
-		
-		return "refundRequest";
-	}
+    public String getListRefund(HttpSession session, Model model,
+            @RequestParam(defaultValue="1") int pageNum,
+            @RequestParam(defaultValue="0") int refund_status) {
+
+        MemberVO user = (MemberVO)session.getAttribute("user");
+
+        if (user == null) {
+            log.warn("세션에 사용자 정보가 없습니다.");
+            return "redirect:/login"; // 사용자가 로그인되지 않은 경우 리다이렉트
+        }
+
+        log.debug("사용자 mem_num: {}", user.getMem_num());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("mem_num", user.getMem_num());
+        map.put("refund_status", refund_status); // 필요한 경우 추가
+
+        log.debug("map 내용: {}", map);
+
+        int count = refundService.getRefundCount(map);
+        log.debug("환불 요청 수: {}", count);
+
+        PagingUtil page = new PagingUtil(pageNum, count, 10, 10, "refundRequest");
+
+        List<RefundVO> list = null;
+        if (count > 0) {
+            map.put("start", page.getStartRow());
+            map.put("end", page.getEndRow());
+            log.debug("페이지 범위: {} - {}", page.getStartRow(), page.getEndRow());
+            list = refundService.getRefundList(map);
+            log.debug("환불 요청 목록 크기: {}", list.size());
+        } else {
+            log.debug("환불 요청 목록이 비어있음");
+        }
+
+        model.addAttribute("page", page.getPage());
+        model.addAttribute("count", count);
+        model.addAttribute("list", list);
+
+        log.debug("모델에 데이터 추가됨");
+
+        return "refundRequest";
+    }
+	
 	
 	@GetMapping("/admin/AdminSubscription")
 	public String getSubscriptionList(HttpSession session, Model model,
@@ -681,6 +722,7 @@ public class SubscriptionController {
 		
 		return "AdminSubscription";
 	}
+
 	
 	//환불신청
 	@PostMapping("/subscription/paymentRefund")
@@ -706,6 +748,13 @@ public class SubscriptionController {
 		}
 		return mapJson;
 	}
+	
+	
+	/*
+	 * //환불 상세
+	 * 
+	 * @GetMapping("/admin/Admin")
+	 */
 	
 }
 

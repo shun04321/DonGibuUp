@@ -9,6 +9,9 @@ public interface RefundService {
 	//환불 신청
 		public void insertRefund(RefundVO refundVO);
 		
+		//관리자 환불신청 목록 수 
+		public int getRefundCount(Map<String,Object> map);
+		
 		//관리자 환불신청 목록 조회
 		public List<RefundVO> getRefundList(Map<String,Object> map);
 		

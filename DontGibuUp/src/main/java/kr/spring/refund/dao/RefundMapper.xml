@@ -20,7 +20,7 @@
 			#{mem_num},
 			#{payment_type},
 			#{imp_uid},
-			#{amount},
+			#{amount},	
 			#{reason},
 			<if test="reason_other != null and reason_other != ''">
 				#{reason_other},
@@ -31,7 +31,7 @@
 	
 	<sql id="refund_status">
 	    <if test="refund_status != null and refund_status != ''">
-	        AND refund_status = #{refund_status}
+	        WHERE refund_status = #{refund_status}
 	    </if>
 	</sql>
 
@@ -53,9 +53,15 @@
     )
     <![CDATA[
     WHERE rnum >= #{start} AND rnum <= #{end}
-    ]]>
+    ]]> ORDER BY refund_num DESC
 </select>
-
+<select id="getRefundCount" parameterType="map" resultType="int">
+    SELECT
+        COUNT(*)
+    FROM
+        refund
+    <include refid="refund_status"/>
+</select>
 </mapper>
 
 

@@ -179,9 +179,9 @@
 
                 <div class="refund-info">
                     환불사유<br> <br>
-                    <label><input type="radio" name="reason" value="1"> 단순변심</label>
-                    <label><input type="radio" name="reason" value="2"> 결제오류</label>
-                    <label><input type="radio" name="reason" value="3"> 기타</label><br>
+                    <label><input type="radio" name="reason" value="0"> 단순변심</label>
+                    <label><input type="radio" name="reason" value="1"> 결제오류</label>
+                    <label><input type="radio" name="reason" value="2"> 기타</label><br>
                     <input type="text" name="otherReason" id="otherReason" placeholder="기타 환불 사유 입력" disabled><br>
                     <div class="total-refund">
                         환불액: <span id="totalAmount">0</span> 원

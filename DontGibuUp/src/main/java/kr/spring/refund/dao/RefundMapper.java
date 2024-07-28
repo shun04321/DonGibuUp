@@ -15,6 +15,9 @@ public interface RefundMapper {
 	//환불 신청
 	public void insertRefund(RefundVO refundVO);
 	
+	//관리자 환불신청 목록 카운트
+	public int getRefundCount(Map<String,Object> map);
+	
 	//관리자 환불신청 목록 조회
 	public List<RefundVO> getRefundList(Map<String,Object> map);
 	
