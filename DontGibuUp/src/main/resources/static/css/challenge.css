@@ -34,7 +34,7 @@
 }
 
 .challenge-verify-stats {
-	width: 80%;
+	width: 100%;
 	margin-top: 20px;
 	padding: 10px 0;
 	font-size: 14px;
@@ -266,9 +266,9 @@ span.upload_button {
 }
 /* 챌린지 상세 */
 .challenge-detail {
-	width: 60%;
+	width: 50%;
 	margin: auto;
-	padding: 20px;
+	padding: 40px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -284,12 +284,13 @@ span.upload_button {
 .challenge-header2 {
 	text-align: center;
 	width: 100%;
+	position: relative;
 }
 
 .challenge-header img {
 	width: 100%;
 	height: auto;
-	max-height: 300px;
+	max-height: 350px;
 	border-radius: 10px;
 	object-fit: cover;
 }
@@ -297,7 +298,7 @@ span.upload_button {
 .challenge-header2 img {
 	width: 100%;
 	height: auto;
-	max-height: 300px;
+	max-height: 350px;
 	border-radius: 10px;
 	object-fit: cover;
 }
@@ -310,21 +311,25 @@ span.upload_button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
     padding: 0 10px;
 }
 
 .challenge-title {
-    font-size: 42px; /* 제목 글씨 크기 */
-    color: white; /* 제목 글씨 색상 흰색 */
+    font-size: 36px;
     margin: 0;
-    flex-grow: 1;
-    text-align: left;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
     text-shadow: 
-        0px 1px 2px rgba(0, 0, 0, 0.1), /* 가벼운 그림자 */
-        0px 2px 4px rgba(0, 0, 0, 0.1), /* 중간 그림자 */
-        0px 4px 8px rgba(0, 0, 0, 0.1), /* 더 진한 그림자 */
-        0px 8px 16px rgba(0, 0, 0, 0.1); /* 가장 진한 그림자 */
+        1px 1px 1px rgba(0, 0, 0, 0.3), /* 미세한 그림자 */
+        2px 2px 2px rgba(0, 0, 0, 0.2), /* 중간 그림자 */
+        3px 3px 3px rgba(0, 0, 0, 0.1); /* 가장 진한 그림자 */
+    animation: fadeIn 0.7s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 .like-button-container {
@@ -433,7 +438,6 @@ span.upload_button {
 }
 
 .challenge-stats span {
-    font-weight: bold;
     margin-bottom: 5px;
 }
 
@@ -475,6 +479,8 @@ span.upload_button {
     margin: 0;
     padding: 0;
     line-height: 1.5; /* 텍스트가 수직 중앙에 정렬되도록 조정 */
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .red-custom {
@@ -531,6 +537,21 @@ span.upload_button {
 }
 
 .gray-custom:hover {
+    background-color: #f8f9fa; /* 호버 시 약간 더 밝은 회색 배경 */
+    border-color: #c6c8ca; /* 호버 시 테두리 색상 변경 */
+}
+
+.gray2-custom {
+    padding: 5px 8px;
+    border-radius: 5px;
+    background-color: white; /* 배경색을 흰색으로 설정 */
+    color: #333; /* 글자 색상 회색으로 설정 */
+    border: 1px solid #d6d8db; /* 회색 테두리 */
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.gray2-custom:hover {
     background-color: #f8f9fa; /* 호버 시 약간 더 밝은 회색 배경 */
     border-color: #c6c8ca; /* 호버 시 테두리 색상 변경 */
 }
@@ -904,7 +925,7 @@ h2 {
 	margin-left: 50px;
 	margin-right: 50px;
 	margin-bottom: 20px;
-	padding: 20px;
+	padding: 40px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	background-color: #ffffff;
@@ -995,32 +1016,32 @@ h2 {
 }
 
 .challenge-stat2-item span:first-child {
-	font-size: 12px;
+	font-size: 14px;
 	color: #888;
 }
 
 .challenge-stat2-item1 span:first-child {
-	font-size: 12px;
+	font-size: 14px;
 	color: #888;
 }
 
 .challenge-stat2-item2 span:first-child {
-	font-size: 12px;
+	font-size: 14px;
 	color: #888;
 }
 
 .challenge-stat2-item span:last-child {
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: bold;
 }
 
 .challenge-stat2-item1 span:last-child {
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: bold;
 }
 
 .challenge-stat2-item2 span:last-child {
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: bold;
 }
 

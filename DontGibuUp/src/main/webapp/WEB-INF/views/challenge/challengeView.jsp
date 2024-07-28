@@ -33,7 +33,11 @@
 	        <img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진" class="challenge-thumbnail">
 	    </c:if>
 	    <div class="challenge-info-overlay">
-	        <h2 class="challenge-title nanum">${challenge.chal_title}</h2>
+	        	<h2 class="challenge-title nanum">
+				<a href="${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}" style="color: white; text-decoration: none;">
+					${challenge.chal_title}
+				</a>
+			</h2>	
 	        <div class="like-button-container">
 	            <button id="likeBtn" class="like-btn" data-num="${challenge.chal_num}">
 	                <i class="bi bi-heart" id="likeIcon"></i>&nbsp;

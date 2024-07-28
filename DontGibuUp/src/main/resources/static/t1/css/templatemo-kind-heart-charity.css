@@ -238,7 +238,7 @@ strong {
 -----------------------------------------*/
 .progress {
   background: var(--border-color);
-  height: 5px;
+  height: 7px;
 }
 
 .progress-bar {

@@ -21,14 +21,20 @@
         <c:if test="${!empty challenge.chal_photo}">
         	<img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진">
         </c:if>
-		<div class="challenge-info">			
-			<h2 class="align-left">${challenge.chal_title}</h2>
-			<div class="details">	
-				<button class="detail-button"
-					onclick="location.href='${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}'">상세보기</button>
+		<div class="challenge-info-overlay">			
+			<h2 class="challenge-title nanum">
+				<a href="${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}" style="color: white; text-decoration: none;">
+					${challenge.chal_title}
+				</a>
+			</h2>
+			<div class="details">
+				<a href="#" onclick="history.back(); return false;" style="color: white; text-decoration: none;">	
+					<button class="gray2-custom">목록으로</button>
+				</a>
 			</div>		
-		</div>
+		</div>	    
 	</div>
+	<br>
 		<div class="challenge-stats2">
 			<div class="challenge-stat2-item">
 				<span>인증 빈도</span>&nbsp;&nbsp;
@@ -44,8 +50,8 @@
 				<span>${chal_sdate} ~ ${chal_edate}</span>
 			</div>
 			<div class="challenge-stat2-item1">
-			    <span>달성률</span>&nbsp;&nbsp;
-			    <span><b>${achievementRate}%</b></span>&nbsp;&nbsp;
+			    <span>달성률</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			    <span style="color: #198754;"><b>${achievementRate}%</b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			    <div class="progress progress-md">
 			        <div class="progress-bar bg-success" role="progressbar" style="width: ${achievementRate}%" 
 			        aria-valuenow="${achievementRate}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -53,29 +59,29 @@
 			</div>
 			<div class="challenge-stat2-item2">
 				<span>인증 성공</span> &nbsp;&nbsp;
-				<span>${successCount}회</span>
+				<span style="color: #5bc1ac;">${successCount}회</span>
 			</div>
 			<div class="challenge-stat2-item2">
 				<span>인증 실패</span>&nbsp;&nbsp;
-				<span>${failureCount}회</span>
+				<span style="color: #FA5151;">${failureCount}회</span>
 			</div>
 			<div class="challenge-stat2-item2">
 				<span>남은 인증</span>&nbsp;&nbsp;
-				<span>${remainingCount}회</span>
+				<span style="color: #909090;">${remainingCount}회</span>
 			</div>
 			<div class="challenge-stat2-item2">
 				<c:choose>
 					<c:when test="${status == 'post'}">
-						<button class="disabled-button" disabled>완료된 챌린지</button>
+						<button class="btn-custom" disabled>완료된 챌린지</button>
 					</c:when>
 					<c:when test="${hasTodayVerify}">
-						<button class="disabled-button" disabled>오늘 인증 완료</button>
+						<button class="btn-custom" disabled>오늘 인증 완료</button>
 					</c:when>
 					<c:when test="${hasCompletedWeeklyVerify}">
-						<button class="disabled-button" disabled>이번주 인증 완료</button>
+						<button class="btn-custom" disabled>이번주 인증 완료</button>
 					</c:when>
 					<c:otherwise>
-						<button class="active-button"
+						<button class="btn-custom"
 							onclick="location.href='${pageContext.request.contextPath}/challenge/verify/write?chal_joi_num=${chal_joi_num}&status=${status}'">인증하기</button>
 					</c:otherwise>
 				</c:choose>
