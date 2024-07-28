@@ -246,21 +246,28 @@
 	<!-- 챌린지 채팅방 메시지 생성 -->
 	<insert id="insertChallengeChat" parameterType="challengeChatVO">
 		INSERT INTO chal_chat
-		(chat_id, chal_num, mem_num, chat_content, chat_filename)
+		(
+		<if test="chat_date != null">
+			chat_date,
+		</if>
+		chat_id, chal_num, mem_num, chat_content, chat_filename)
 		VALUES
-		(#{chat_id},#{chal_num},#{mem_num},
+		(<if test="chat_date != null">
+			#{chat_date},
+		</if>
+		#{chat_id},#{chal_num},#{mem_num},
 		<if test="chat_content != null">
-    	#{chat_content}
-    </if>
-    <if test="chat_content == null">
-    	null
-    </if>,
-		<if test="chat_filename != null">
-    	#{chat_filename}
-    </if>
-    <if test="chat_filename == null">
-    	null
-    </if>)
+    		#{chat_content}
+    	</if>
+    	<if test="chat_content == null">
+    		null
+    	</if>,
+			<if test="chat_filename != null">
+    		#{chat_filename}
+    	</if>
+    	<if test="chat_filename == null">
+    		null
+    	</if>)
 	</insert>
 	
 	<!-- 챌린지 채팅 읽기 -->
@@ -285,7 +292,7 @@
 		JOIN member USING(mem_num)
 		JOIN member_detail USING(mem_num)
 		WHERE chal_num=#{chal_num}
-		AND chat_date >= (SELECT chal_joi_date
+		AND TO_DATE(chat_date) >= (SELECT TO_DATE(chal_joi_date)
 							FROM chal_join
 							WHERE chal_num=#{chal_num}
 							AND mem_num=#{mem_num})

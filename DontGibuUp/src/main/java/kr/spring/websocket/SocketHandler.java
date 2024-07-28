@@ -8,12 +8,16 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class SocketHandler extends TextWebSocketHandler {
 
 	private Map<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	/*
 	 * 클라이언트가 연결되면, 클라이언트와 관련된 WebSocketSession을 users 맵에 저장한다. 이 users 맵은
@@ -45,14 +49,44 @@ public class SocketHandler extends TextWebSocketHandler {
 	protected void handleTextMessage(
 			WebSocketSession session, TextMessage message) throws Exception {
 		log.debug(session.getId() + "로부터 메시지 수신: " + message.getPayload());
+		
+		JsonNode jsonNode = objectMapper.readTree(message.getPayload());
+        String type = jsonNode.get("type").asText();
 
-		log.debug("[접속 user 수 : " + users.values().size()+"]");
-		for (WebSocketSession s : users.values()) {
-			s.sendMessage(message);
-			log.debug(s.getId() + "에 메시지 발송: " + message.getPayload());
-		}
+        if ("chatMessage".equals(type)) {
+            handleChatMessage(session, jsonNode);
+        } else if ("updateReadCount".equals(type)) {
+            handleUpdateReadCount(jsonNode);
+        }
 	}
+	
+	private void handleChatMessage(WebSocketSession session, JsonNode jsonNode) throws Exception {
+        log.debug("[접속 user 수 : " + users.values().size() + "]");
+        for (WebSocketSession s : users.values()) {
+            if (s.isOpen()) {
+                s.sendMessage(new TextMessage(jsonNode.toString()));
+                log.debug(s.getId() + "에 메시지 발송: " + jsonNode.toString());
+            }
+        }
+    }
 
+    private void handleUpdateReadCount(JsonNode jsonNode) throws Exception {
+        Long messageId = jsonNode.get("messageId").asLong();
+        int readCount = jsonNode.get("readCount").asInt();
+
+        String updateMessage = String.format(
+                "{\"type\": \"updateReadCount\", \"messageId\": %d, \"readCount\": %d}",
+                messageId, readCount
+        );
+
+        for (WebSocketSession s : users.values()) {
+            if (s.isOpen()) {
+                s.sendMessage(new TextMessage(updateMessage));
+                log.debug(s.getId() + "에 읽은 사람 수 업데이트 메시지 발송: " + updateMessage);
+            }
+        }
+    }
+	
 	@Override
 	public void handleTransportError(
 			WebSocketSession session, Throwable exception) throws Exception {
