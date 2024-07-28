@@ -38,7 +38,7 @@
     }
 </style>
 <div>
-    <div class="title-style">나의 도움이 필요한 사람들은?</div>
+    <div class="title-style">정기후원이란?</div>
     <small>정기후원은 매월 일정한 금액을 후원하는 방법으로, 후원금은 선택한 분야에서 지원이 시급한 이웃에게 전달되어 지속적으로<br> 도움을 줄 수 있습니다.</small>
     <p style="white-space:pre-line"></p>
     <div class="container">
@@ -60,7 +60,7 @@
             <p>
                 정기기부를 시작하는 것은 매우 간단합니다. 아래 버튼을 클릭하여 기부를 시작해보세요.
             </p>
-            <button onclick="location.href='/subscription/subscriptionMain'">지금 기부하기</button>
+            <button onclick="location.href='/subscription/subscriptionMain'">정기기부 시작하기</button>
         </div>
     </div>
 </div>
