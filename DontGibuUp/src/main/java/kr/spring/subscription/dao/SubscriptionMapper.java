@@ -53,4 +53,10 @@ public interface SubscriptionMapper {
 	
 	@Select("SELECT * FROM subscription WHERE sub_ndate = #{tomorrow} AND sub_status = 0")
 	public List<SubscriptionVO> getSubscriptionByD1(int tomorrow);
+	
+	//impuid로 기부박스 결제번호와 굿즈샵 결제번호 가져오기
+	@Select("SELECT purchase_num FROM purchase WHERE imp_uid=#{imp_uid}")
+	public long getPurchase_num(String imp_uid);
+	@Select("SELECT dbox_do_num FROM dbox_donation WHERE dbox_imp_uid=#{imp_uid}")
+	public long getDboxDoNum(String imp_uid);
 }

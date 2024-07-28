@@ -26,11 +26,13 @@ $(document).ready(function() {
         var refund_num = $(this).data('refund-num');
         var imp_uid = $(this).data('imp-uid');
         var reason_other = $(this).data('reason-other');
+        var payment_type = $(this).data('type');
+        var return_point = $(this).data('return');
 
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/admin/approvalRefund',
-            data: JSON.stringify({ refund_num: refund_num, imp_uid: imp_uid, reason_other: reason_other }),
+            data: JSON.stringify({ refund_num: refund_num, imp_uid: imp_uid, reason_other: reason_other, payment_type: payment_type , return_point : return_point}),
             contentType: 'application/json; charset=UTF-8',
             success: function(param) {
                 if (param.result === 'success') {
@@ -54,11 +56,12 @@ $(document).ready(function() {
     // 반려 버튼 클릭 이벤트
     $('.reject-btn').click(function() {
         var refund_num = $(this).data('refund-num');
+        var payment_type = $(this).data('type');
 
         $.ajax({
             type: 'POST',
             url: '${pageContext.request.contextPath}/admin/rejectionRefund',
-            data: JSON.stringify({refund_num: refund_num}),
+            data: JSON.stringify({refund_num: refund_num, payment_type: payment_type}),
             contentType: 'application/json; charset=UTF-8',
             success: function(param) {
                 if (param.result === 'success') {
@@ -146,8 +149,9 @@ $(document).ready(function() {
                         <td class="align-center">
                             <c:choose>
                                 <c:when test="${refund.refund_status==0}">
-                                    <input type="button" class="approve-btn" value="승인" data-refund-num="${refund.refund_num}" data-imp-uid="${refund.imp_uid}" data-reason-other="${refund.reason_other}">
-                                    <input type="button" class="reject-btn" value="반려" data-refund-num="${refund.refund_num}">
+                                    <input type="button" class="approve-btn" value="승인" data-refund-num="${refund.refund_num}" data-imp-uid="${refund.imp_uid}" data-reason-other="${refund.reason_other}" data-type="${refund.payment_type}"
+                                    	data-return="${refund.return_point}">
+                                    <input type="button" class="reject-btn" value="반려" data-refund-num="${refund.refund_num}" data-type="${refund.payment_type}">
                                 </c:when>
                                 <c:when test="${refund.refund_status==1}">승인</c:when>
                                 <c:when test="${refund.refund_status==2}">반려</c:when>

@@ -24,7 +24,7 @@ public interface SubscriptionService {
     // 오늘 날짜 구하기
     public int getTodayDate();
     
-    String getToken();
+    String getToken(int payment_type);
     //정기 결제 날짜가 오늘인 구독 목록 반환
     public List<SubscriptionVO> getSubscriptionByDay(int today);
     
@@ -44,4 +44,9 @@ public interface SubscriptionService {
   	public int getSubscriptionCount(Map<String,Object> map);
   	//모든 사용자의 정기기부 현황 확인
   	public List<SubscriptionVO> getSubscription(Map<String,Object> map);
+  	
+  //impuid로 기부박스 결제번호와 굿즈샵 결제번호 가져오기
+  	public long getPurchase_num(String imp_uid);
+  	
+  	public long getDboxDoNum(String imp_uid);
 }
