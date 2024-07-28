@@ -39,7 +39,7 @@
 <section class="section-padding nanum">
 	<div class="container">
 		<div class="align-right">
-			<button onclick="location.href='inquiry'">1:1 문의하기</button>
+			<button class="custom-btn" onclick="location.href='inquiry'">1:1 문의하기</button>
 		</div>
 		<div class="mb-3">
 			<a class="tags-block-link"  href="faqlist?">전체</a> <a class="tags-block-link"  href="faqlist?category=0">정기기부</a> <a
