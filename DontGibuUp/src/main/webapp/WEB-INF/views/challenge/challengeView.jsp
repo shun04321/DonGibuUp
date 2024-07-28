@@ -151,8 +151,8 @@
 	<c:if test="${not empty challenge.chal_content}">
         <h5 class="mb-4">이런 분들께 추천합니다</h5>
         <p class="align-center">${challenge.chal_content}</p>
+        <br>
     </c:if>
-    <br>
         <h5 class="mb-4">이렇게 인증해주세요</h5>
 		<p class="align-center">${challenge.chal_verify}</p>
     </div>
