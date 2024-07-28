@@ -20,7 +20,10 @@
 					<c:set var="challengeJoin" value="${challengeData.challengeJoin}" />
 					<div class="challenge-card ${challengeData.isHost ? 'host-card' : 'participant-card'}">					
 						<div class="card-header">
-						<h3 style="color: #5a6f80;">${challengeJoin.chal_title}&nbsp;
+						<h3 style="color: #5a6f80;">
+							<a href="${pageContext.request.contextPath}/challenge/detail?chal_num=${challengeJoin.chal_num}" >
+								${challengeJoin.chal_title}&nbsp;
+							</a>
 						    <c:if test="${challengeData.achieveRate >= 90}">
 						        <i class="bi bi-trophy-fill" style="font-size: 0.8em; color: #FFD700;"></i>
 						    </c:if>

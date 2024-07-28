@@ -29,8 +29,8 @@
 			</div>		
 		</div>
 	</div>
-		<div class="challenge-stats">
-			<div class="challenge-stat-item">
+		<div class="challenge-stats2">
+			<div class="challenge-stat2-item">
 				<span>인증 빈도</span>&nbsp;&nbsp;
 				<c:if test="${chalFreq == 0}">
 					<span>매일</span>
@@ -39,11 +39,11 @@
 					<span>주 ${chalFreq}일</span>
 				</c:if>
 			</div>
-			<div class="challenge-stat-item">
+			<div class="challenge-stat2-item">
 				<span>기간</span>&nbsp;&nbsp;
 				<span>${chal_sdate} ~ ${chal_edate}</span>
 			</div>
-			<div class="challenge-stat-item1">
+			<div class="challenge-stat2-item1">
 			    <span>달성률</span>&nbsp;&nbsp;
 			    <span><b>${achievementRate}%</b></span>&nbsp;&nbsp;
 			    <div class="progress progress-md">
@@ -51,19 +51,19 @@
 			        aria-valuenow="${achievementRate}" aria-valuemin="0" aria-valuemax="100"></div>
 			    </div>
 			</div>
-			<div class="challenge-stat-item2">
+			<div class="challenge-stat2-item2">
 				<span>인증 성공</span> &nbsp;&nbsp;
 				<span>${successCount}회</span>
 			</div>
-			<div class="challenge-stat-item2">
+			<div class="challenge-stat2-item2">
 				<span>인증 실패</span>&nbsp;&nbsp;
 				<span>${failureCount}회</span>
 			</div>
-			<div class="challenge-stat-item2">
+			<div class="challenge-stat2-item2">
 				<span>남은 인증</span>&nbsp;&nbsp;
 				<span>${remainingCount}회</span>
 			</div>
-			<div class="challenge-stat-item2">
+			<div class="challenge-stat2-item2">
 				<c:choose>
 					<c:when test="${status == 'post'}">
 						<button class="disabled-button" disabled>완료된 챌린지</button>

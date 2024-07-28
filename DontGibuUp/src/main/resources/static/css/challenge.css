@@ -412,6 +412,8 @@ span.upload_button {
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
+    	flex-wrap: wrap;
+	gap: 10px;
 }
 
 .challenge-stats .row {
@@ -825,7 +827,7 @@ h2 {
 .verify-container {
 	max-width: 600px;
 	margin: 20px auto;
-	padding: 20px;
+	padding: 40px;
 	border: 1px solid #ddd;
 	border-radius: 10px;
 	background-color: #fff;
@@ -944,13 +946,13 @@ h2 {
 	background-color: #0056b3;
 }
 
-.challenge-stats {
+.challenge-stats2 {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
 }
 
-.challenge-stat-item {
+.challenge-stat2-item {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -963,7 +965,7 @@ h2 {
 	justify-content: center;
 }
 
-.challenge-stat-item1 {
+.challenge-stat2-item1 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -975,7 +977,7 @@ h2 {
 	justify-content: center;
 }
 
-.challenge-stat-item2 {
+.challenge-stat2-item2 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
@@ -988,36 +990,36 @@ h2 {
 	justify-content: center;
 }
 
-.challenge-stat-item1 .progress {
+.challenge-stat2-item1 .progress {
 	width: 70%; /* progress bar가 부모 요소에 맞추어 100% 너비로 설정 */
 }
 
-.challenge-stat-item span:first-child {
+.challenge-stat2-item span:first-child {
 	font-size: 12px;
 	color: #888;
 }
 
-.challenge-stat-item1 span:first-child {
+.challenge-stat2-item1 span:first-child {
 	font-size: 12px;
 	color: #888;
 }
 
-.challenge-stat-item2 span:first-child {
+.challenge-stat2-item2 span:first-child {
 	font-size: 12px;
 	color: #888;
 }
 
-.challenge-stat-item span:last-child {
+.challenge-stat2-item span:last-child {
 	font-size: 14px;
 	font-weight: bold;
 }
 
-.challenge-stat-item1 span:last-child {
+.challenge-stat2-item1 span:last-child {
 	font-size: 14px;
 	font-weight: bold;
 }
 
-.challenge-stat-item2 span:last-child {
+.challenge-stat2-item2 span:last-child {
 	font-size: 14px;
 	font-weight: bold;
 }
@@ -1273,6 +1275,9 @@ textarea:focus {
 .submit-button {
 	text-align: center;
 	margin-top: 20px;
+	display: flex;
+    justify-content: space-between; /* 두 버튼 사이의 간격 균일 */
+    gap: 10px; /* 버튼 사이의 간격 조정 */
 }
 
 .cancel-button {
@@ -1281,6 +1286,18 @@ textarea:focus {
 }
 
 .submit-button input[type="submit"] {
+    padding: 10px;
+    border-radius: 100px;
+    background-color: #597081;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.submit-button2 {
+	margin-top: 20px;
     padding: 10px;
     border-radius: 100px;
     background-color: #597081;
@@ -1306,14 +1323,12 @@ textarea:focus {
 	background-color: #5bc1ac; /* 호버 시 조금 더 어두운 색 */
 }
 
-.cancel-button:hover {
-	background-color: #dcdcdc; /* 호버 시 조금 더 어두운 색 */
+.submit-button2:hover {
+	background-color: #5bc1ac; /* 호버 시 조금 더 어두운 색 */
 }
 
-.submit-button {
-    display: flex;
-    justify-content: space-between; /* 두 버튼 사이의 간격 균일 */
-    gap: 10px; /* 버튼 사이의 간격 조정 */
+.cancel-button:hover {
+	background-color: #dcdcdc; /* 호버 시 조금 더 어두운 색 */
 }
 
 .rating-error, .content-error {
