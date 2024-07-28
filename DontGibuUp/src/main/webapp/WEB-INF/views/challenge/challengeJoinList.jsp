@@ -20,7 +20,7 @@
 					<c:set var="challengeJoin" value="${challengeData.challengeJoin}" />
 					<div class="challenge-card ${challengeData.isHost ? 'host-card' : 'participant-card'}">					
 						<div class="card-header">
-						<h3>${challengeJoin.chal_title}&nbsp;
+						<h3 style="color: #5a6f80;">${challengeJoin.chal_title}&nbsp;
 						    <c:if test="${challengeData.achieveRate >= 90}">
 						        <i class="bi bi-trophy-fill" style="font-size: 0.8em; color: #FFD700;"></i>
 						    </c:if>
@@ -33,7 +33,7 @@
 									<c:when test="${status == 'on'}">
 										<a class="orange-custom" href="${pageContext.request.contextPath}/challenge/verify/list?chal_num=${challengeJoin.chal_num}&chal_joi_num=${challengeJoin.chal_joi_num}&status=${status}">인증내역</a>
 										<c:if test="${challengeData.total_count > 1}">
-											<a class="gray-custom" href="#" class="chal_talk" data-chal-num="${challengeJoin.chal_num}"
+											<a class="gray-custom chal_talk" href="#" data-chal-num="${challengeJoin.chal_num}"
 											data-chal-joi-num="${challengeJoin.chal_joi_num}" data-status="${status}">단체톡방</a>
 										</c:if>										
 									</c:when>
