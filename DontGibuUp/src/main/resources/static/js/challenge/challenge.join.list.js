@@ -71,6 +71,7 @@ function deleteChallenge(chalJoiNum,isLeader) {
 			chal_joi_num: chalJoiNum, 
 			isLeader:isLeader
 		}),
+		contentType:'application/json; charset=utf-8',
 		success: function(response) {
 			alert('챌린지가 취소되었습니다.');
 			location.reload(); // 페이지 새로고침

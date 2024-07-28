@@ -123,8 +123,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	@Override
 	public void deleteChalPhoto(Long chal_num) {
-		// TODO Auto-generated method stub
-
+		challengeMapper.deleteChalPhoto(chal_num);
 	}
 
 	//참가 인원수 조회
@@ -342,6 +341,27 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public Integer selectChallengeJoinListRowCount(Map<String, Object> map) {
 		return challengeMapper.selectChallengeJoinListRowCount(map);
+	}
+	
+	//개별 챌린지 취소
+	@Override
+	public void updateJoinStatus(Long chal_joi_num) {
+		//챌린지 결제 상태 - 취소
+		challengeMapper.updateChalPaymentStatus(chal_joi_num);
+		//챌린지 참가 삭제
+		challengeMapper.deleteChallengeJoin(chal_joi_num);
+		
+		//사용 포인트 복구
+		ChallengePaymentVO chalPayVO = challengeMapper.selectChallengePayment(chal_joi_num);
+		int chal_point = chalPayVO.getChal_point();		
+		if(chal_point > 0) {
+			//포인트 로그 작성
+			PointVO pointVO = new PointVO(30,chalPayVO.getChal_point(),chalPayVO.getMem_num());
+			pointService.insertPointLog(pointVO);
+
+			//회원 포인트 업데이트
+			memberService.updateMemPoint(pointVO);
+		}
 	}
 
 	//후기 작성 시 포인트 지급

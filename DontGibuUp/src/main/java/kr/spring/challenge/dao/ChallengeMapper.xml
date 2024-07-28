@@ -230,12 +230,6 @@
 		</if> 
 		#{chal_pay_price}, #{chal_point},#{chal_pay_status})
 	</insert>
-	
-	<!-- 챌린지 참가 삭제 -->
-	<delete id="deleteChallengeJoin" parameterType="long">
-		DELETE FROM
-		chal_join WHERE chal_joi_num = #{chal_joi_num}
-	</delete>
 
 	<!-- 챌린지 ID로 챌린지 참가 데이터 삭제 -->
 	<delete id="deleteChallengeJoinsByChallengeId"

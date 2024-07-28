@@ -34,8 +34,10 @@ public interface ChallengeService {
 	public Integer selectJoinMemberRowCount(Map<String,Object> map);
 	public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);
 	public void deleteChallengeJoin(Long chal_joi_num);
-    //챌린지 ID로 챌린지 참가 데이터 삭제
 	public void deleteChallengeJoinsByChallengeId(Long chal_num);
+	//참가 상태 변경
+	public void updateJoinStatus(Long chal_joi_num);
+    
     //리더 여부 확인
 	public boolean isChallengeLeader(Long chal_num, Long mem_num);
 	//리더 chal_joi_num 확인하기

@@ -671,7 +671,7 @@ public class ChallengeAjaxController {
 	@PostMapping("/challenge/join/delete")
 	public ResponseEntity<String> deleteChallengeJoin(@RequestBody Map<String,Object> requestData, HttpSession session) {
 		try {
-			long chal_joi_num = Long.parseLong((String) requestData.get("chal_joi_num"));
+			long chal_joi_num = ((Integer) requestData.get("chal_joi_num")).longValue();
 			boolean isLeader = Boolean.parseBoolean(requestData.get("isLeader").toString());	
 			
 			MemberVO member = (MemberVO) session.getAttribute("user");
@@ -683,7 +683,17 @@ public class ChallengeAjaxController {
 			}
 			
 			if(isLeader) {
+				//chal_num이 동일한 결제 데이터 가져오기
 				
+				//해당 데이터 결제 취소 요청하기
+				
+				//결제,참가 상태 및 포인트 변경
+				
+				//챌린지 톡방 환영 메시지 삭제
+				
+				//챌린지 삭제
+				
+				//세션에 포인트 반영(리더만)
 			}else {
 				ChallengePaymentVO payVO = challengeService.selectChallengePayment(chal_joi_num);	
 				String od_imp_uid = payVO.getOd_imp_uid();	
@@ -692,21 +702,14 @@ public class ChallengeAjaxController {
 				CancelData cancelData = new CancelData(od_imp_uid, true);
 				impClient.cancelPaymentByImpUid(cancelData);
 				
+				//결제,참가 상태 및 포인트 변경
+				challengeService.updateJoinStatus(chal_joi_num);
 				
-				
-				//해야할 것: chal_payment 결제상태 1로 수정, chal_joi 참가상태 1로 수정 -> 참가 정보 사용시 상태가 0인 것으로 수정(대량 수정 예상)
-				//        포인트 사용시 되돌리기+세션
+				//세션에 포인트 반영
+				int chal_point = payVO.getChal_point();				
+				member.setMem_point(member.getMem_point()+chal_point);
 			}
 			
-
-			//리더인 경우 챌린지와 참가 데이터 모두 삭제
-			if (challengeService.isChallengeLeader(challengeJoin.getChal_num(), member.getMem_num())) {
-				challengeService.deleteChallengeJoinsByChallengeId(challengeJoin.getChal_num());
-				challengeService.deleteChallenge(challengeJoin.getChal_num());
-			} else {
-				//리더가 아닌 경우 챌린지 참가 데이터만 삭제
-				challengeService.deleteChallengeJoin(chal_joi_num);
-			}
 			return ResponseEntity.ok("챌린지가 취소되었습니다.");
 		} catch (Exception e) {
 			log.error("챌린지 취소 중 오류 발생", e);

@@ -46,8 +46,7 @@ public interface ChallengeMapper {
     public ChallengeJoinVO selectChallengeJoin(Long chal_num);
     //챌린지 참가 회원 목록
     public Integer selectJoinMemberRowCount(Map<String,Object> map);
-    public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);    
-    public void deleteChallengeJoin(Long chal_joi_num);
+    public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);   
     //챌린지 리더 참가 정보 불러오기
     @Select("SELECT MIN(chal_joi_num) FROM chal_join WHERE chal_num=#{chal_num}")
     public Long selectLeaderJoiNum(Long chal_num);
@@ -66,8 +65,9 @@ public interface ChallengeMapper {
     //결제 취소 상태로 변경
     @Update("UPDATE chal_payment SET chal_pay_status=1 WHERE chal_joi_num=#{chal_joi_num}")
     public void updateChalPaymentStatus(Long chal_joi_num);
-    @Update("UPDATE chal_join SET chal_pay_status=1 WHERE chal_joi_num=#{chal_joi_num}")
-    public void updateChalJoinStatus(Long chal_joi_num);
+    //챌린지 참가 삭제
+    @Delete("DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}")
+    public void deleteChallengeJoin(Long chal_joi_num);
     
     //*챌린지 인증*//
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
