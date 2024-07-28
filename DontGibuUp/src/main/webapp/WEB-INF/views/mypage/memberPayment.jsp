@@ -13,9 +13,10 @@ $(document).ready(function() {
         var paymentDateString = $(this).data('date'); // 결제일을 데이터 속성으로 가져옴
         var paymentDate = new Date(paymentDateString); // 결제일을 Date 객체로 변환
         var currentDate = new Date();
+        var payStatus = $(this).data('status');
         var threeWeeksInMillis = 3 * 7 * 24 * 60 * 60 * 1000;
 
-		    if (paymentType == 2 || (currentDate - paymentDate > threeWeeksInMillis)) {
+		    if (paymentType == 2 || (currentDate - paymentDate > threeWeeksInMillis) || payStatus != 0) {
             $(this).prop('disabled', true);
             $(this).closest('tr').find('td:eq(8)').append('<span class="disabled-reason">(환불 불가)</span>');
         }
@@ -208,7 +209,8 @@ $(document).ready(function() {
                     <c:forEach var="payment" items="${list}">
                         <tr>
                             <td>
-                                <input type="radio" name="refundCheck" data-type="${payment.type}" data-id="${payment.payment_id}" data-amount="${payment.price}" id="refund_radio_${payment.payment_id}" data-date="${payment.pay_date}">
+                                <input type="radio" name="refundCheck" data-type="${payment.type}" data-id="${payment.payment_id}" data-amount="${payment.price}" id="refund_radio_${payment.payment_id}" data-date="${payment.pay_date}"
+                                data-status="${payment.status}">
                                 <input type="hidden" name="paymentId" value="${payment.id}">                           
                             </td>
                             <td>
