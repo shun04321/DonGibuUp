@@ -118,7 +118,6 @@
 		  COUNT(*)
 		FROM dbox 
 		<include refid="dboxSearch"></include>
-		<include refid="dboxStatus"></include>
 	</select>
 	<!-- 기부박스 전체 목록/검색 목록 -->
 	<select id="selectList" parameterType="map" resultType="dboxVO">
