@@ -56,7 +56,7 @@ function updateTotalAmount() {
         $('#no').html('<small>기부금액보다 포인트가 클 수 없습니다.</small>');
         return;
     }
-	pointUsed=point; // 전역 변수로 설정
+    pointUsed = point; // 전역 변수로 설정
     $('#pay_sum').text(totalAmount.toLocaleString());
     $('#pay_price').val(totalAmount);
 }
@@ -77,13 +77,15 @@ function confirmPurchase(pageContextPath) {
         }
         var price = parseInt($('#price_' + cartNum).text().replace(/,/g, ''), 10);
         selectedCarts.push({ item_num: parseInt(itemNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
-    	// 재고 부족시 에러 메시지
-   
+        // 재고 부족시 에러 메시지
     });
-	 if (hasInvalidStock) {
+    if (hasInvalidStock) {
         alert("재고가 부족하여 구매할 수 없습니다.");
         return;
-        }
+    }
+
+    let pamount = totalAmount; // 결제금액 - 포인트
+    let pay_price = totalAmount + pointUsed; // 포인트를 적용하기 전의 총 결제 금액
 
     if (totalAmount === 0 && pointUsed > 0) {
         if (confirm('전액 포인트로 결제하시겠습니까?')) {
@@ -93,7 +95,8 @@ function confirmPurchase(pageContextPath) {
                 data: JSON.stringify({
                     imp_uid: null,
                     merchant_uid: "dongibuup",
-                    amount: 0,
+                    pamount: 0,
+                    pay_price: pay_price,
                     pay_status: 0,
                     item_name: "장바구니 구매",
                     buyer_name: buyerName,
@@ -148,7 +151,8 @@ function confirmPurchase(pageContextPath) {
                             data: JSON.stringify({
                                 imp_uid: rsp.imp_uid,
                                 merchant_uid: rsp.merchant_uid,
-                                amount: parseInt(data.response.amount, 10),
+                                pamount: totalAmount,
+                                pay_price: pay_price,
                                 status: data.response.status,
                                 item_name: "장바구니 구매",
                                 buyer_name: buyerName,

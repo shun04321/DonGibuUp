@@ -109,18 +109,20 @@ public class PurchaseController {
         	Long purchase_num = (Long)data.get("purchase_num");
             String impUid = (String) data.get("imp_uid");
             String merchantUid = (String) data.get("merchant_uid");
-            int amount = (Integer) data.get("amount");
+            int pamount = (Integer) data.getOrDefault("pamount",0);
+            int pay_price =(Integer) data.getOrDefault("pay_price",0);
             String status = (String) data.get("status");
             Long item_num = Long.valueOf((Integer) data.get("item_num")); // 수정된 부분
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
             Integer quantity = (Integer) data.get("quantity"); // 추가된 부분
             String deliveryAddress = (String) data.get("delivery_address"); // 추가된 부분
-            int pointUsed = (Integer) data.get("point_used"); // 추가된 부분
+            int pointUsed = (Integer) data.getOrDefault("point_used",0); // 추가된 부분
             
             log.debug("impUid : " + impUid);
             log.debug("merchantUid : " + merchantUid);
-            log.debug("amount : " + amount);
+            log.debug("amount : " + pamount);
+            log.debug("pay_price : " + pay_price);
             log.debug("status : " + status);
             log.debug("itemNum : " + item_num);
             log.debug("itemName : " + itemName);
@@ -137,7 +139,8 @@ public class PurchaseController {
                 purchaseVO.setPurchase_num(purchase_num);
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
-                purchaseVO.setPay_price(amount);
+                purchaseVO.setPay_price(pay_price);
+                purchaseVO.setPamount(pamount);
                 purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_num(item_num);
                 purchaseVO.setMem_num(member.getMem_num()); // mem_num 설정
@@ -241,22 +244,23 @@ public class PurchaseController {
     public Map<String, String> purchaseFromCart(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
             throws IllegalStateException, IOException {
         Map<String, String> mapJson = new HashMap<>();
-        // 세션 데이터 가져오기
         MemberVO memberVO = (MemberVO) session.getAttribute("user");
         try {
             String impUid = (String) data.get("imp_uid");
             String merchantUid = (String) data.get("merchant_uid");
-            int amount = (Integer) data.get("amount");
+            int pamount = (Integer) data.get("pamount");
+            int pay_price = (Integer) data.get("pay_price");
             String status = (String) data.get("status");
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
             String deliveryAddress = (String) data.get("delivery_address"); // 추가된 부분
             int pointUsed = (Integer) data.get("point_used"); // 추가된 부분
-            
+
             Long setSeq = 0L;
             log.debug("impUid : " + impUid);
             log.debug("merchantUid : " + merchantUid);
-            log.debug("amount : " + amount);
+            log.debug("pamount : " + pamount);
+            log.debug("pay_price : " + pay_price);
             log.debug("status : " + status);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
@@ -267,23 +271,23 @@ public class PurchaseController {
             } else {
                 setSeq = purchaseService.getSeq();
                 log.debug("Generated Sequence: " + setSeq);
-                
+
                 PurchaseVO purchaseVO = new PurchaseVO();
                 purchaseVO.setPurchase_num(setSeq);
                 purchaseVO.setImp_uid(impUid);
                 purchaseVO.setMerchant_uid(merchantUid);
-                purchaseVO.setAmount(amount);
+                purchaseVO.setPamount(pamount);
+                purchaseVO.setPay_price(pay_price);
                 purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_name(itemName);
                 purchaseVO.setBuyer_name(buyerName);
-                purchaseVO.setPay_price(amount); // 이 부분 추가
-                purchaseVO.setMem_num(memberVO.getMem_num()); 
+                purchaseVO.setMem_num(memberVO.getMem_num());
                 purchaseVO.setDelivery_address(deliveryAddress); // 추가된 부분
                 purchaseVO.setPoint_used(pointUsed); // 추가된 부분
-                // cart_items 리스트 처리
+
                 List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
                 log.debug("cartItems: " + cartItems);
-                
+
                 if (cartItems == null || cartItems.isEmpty()) {
                     mapJson.put("result", "error");
                     mapJson.put("message", "cart_items가 null이거나 비어 있습니다. 데이터를 확인하세요.");
@@ -292,19 +296,18 @@ public class PurchaseController {
 
                 try {
                     for (Map<String, Object> item : cartItems) {
-                        // 재고 업데이트
                         Long item_num = Long.valueOf((Integer) item.get("item_num"));
                         Long cartQuantity = Long.valueOf((Integer) item.get("cart_quantity"));
                         Map<String, Object> paramMap = new HashMap<>();
                         paramMap.put("item_num", item_num);
                         paramMap.put("cart_quantity", cartQuantity);
-                        paramMap.put("quantity", null); // 이 부분은 null로 설정
+                        paramMap.put("quantity", null);
                         purchaseService.updateStock(paramMap); // Update stock for cart items
                     }
 
                     purchaseService.insertPurchase(purchaseVO);
                     mapJson.put("result", "success");
-                    
+
                 } catch (Exception e) {
                     log.error("결제 정보 저장 중 오류 발생", e);
                     mapJson.put("result", "error");

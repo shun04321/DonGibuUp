@@ -1,7 +1,7 @@
 let totalPrice;
 let quantity = parseInt(document.getElementById('quantity').value); // 수량 가져오기
 let pointUsed; 
-
+let pay_price;
 document.addEventListener("DOMContentLoaded", function() {
     // 페이지 로드 시 필요한 초기 작업들
     let itemName = "${goods.item_name}";
@@ -25,8 +25,8 @@ function buyNow() {
 
     function payTotal() {
         let quantity = parseInt(document.getElementById('quantity').value); // 수량 가져오기
-        totalPrice = itemPrice * quantity; // 총 가격 계산
-        console.log('Initial totalPrice:', totalPrice);
+        pay_price = itemPrice * quantity; // 총 가격 계산
+        console.log('Initial pay_Price:', pay_price);
         
         let point = parseInt($('#goods_do_point').val());
         let mem_point = parseInt($('#mem_point').val());
@@ -41,15 +41,15 @@ function buyNow() {
         
         $('#no').empty(); // span 메세지 초기화
         
-        if (totalPrice == point) { // 총금액과 포인트가 같을시 금액 0 원
+        if (pay_price == point) { // 총금액과 포인트가 같을시 금액 0 원
             totalPrice = 0;
-        } else if (totalPrice > point) { // price 입력, point 미입력시 price값이 결제금액
-            totalPrice -= point;
-        } else if (totalPrice < point) {
+        } else if (pay_price > point) { // price 입력, point 미입력시 price값이 결제금액
+            totalPrice = pay_price-point;
+        } else if (pay_price < point) {
             totalPrice = 0;
             $('#no').append('<small>기부금액보다 포인트가 클 수 없습니다.</small>');
         } else { // 정상 입력시 결제금액 : price-point
-            totalPrice -= point;
+            totalPrice = pay_price-point;
         }
         
         console.log('Final totalPrice:', totalPrice);
@@ -59,15 +59,18 @@ function buyNow() {
         // 결제금액 #,###으로 노출
         $('#pay_sum').text(totalPrice.toLocaleString());
         // input hidden값을 결제금액으로 설정
-        $('#pay_price').val(totalPrice);
+        $('#pay_price').val(pay_price);
     }
 }
 /*==========================================
 *				결제 실행
 *==========================================*/
 function confirmPurchase() {
+	let totalPricef = totalPrice;
+	let pay_price = itemPrice * quantity;
 	let stock = parseInt("${goods.item_stock}");
-	let quantity = parseInt(document.getElementById('quantity').value);
+	quantity = parseInt(document.getElementById('quantity').value);
+    
     // 재고 확인
     if (quantity > stock) {
         alert("재고 수량을 초과할 수 없습니다.");
@@ -79,7 +82,7 @@ function confirmPurchase() {
     console.log('Quantity in confirmPurchase:', quantity); // 전역 quantity 값 확인
     console.log('PointUsed in confirmPurchase:', pointUsed); // 전역 pointUsed 값 확인
 
-    let totalPricef = totalPrice;
+    let pamount = totalPrice; // 결제금액 - 포인트
     let buyerName = "${sessionScope.member.mem_nick}";
     let deliveryAddress = document.getElementById('delivery_address').value;
 
@@ -93,7 +96,8 @@ function confirmPurchase() {
                 data: JSON.stringify({
                     imp_uid: null, // 포인트 결제 시에는 결제 UID가 필요 없음
                     merchant_uid: "dongibuup",
-                    amount: 0,
+                    pamount: 0,
+                    pay_price: pay_price,
                     pay_status: 0,
                     item_num: parseInt(itemNum, 10), // 정수로 변환
                     item_name: itemName,
@@ -129,7 +133,8 @@ function confirmPurchase() {
                 merchant_uid: "merchant_" + new Date().getTime(),
                 name: itemName,
                 pay_method: "card",
-                amount: totalPricef,
+                amount: totalPrice,
+                pay_price: pay_price,
                 buyer_name: buyerName,
                 currency: "KRW",
             },
@@ -151,7 +156,8 @@ function confirmPurchase() {
                                 data: JSON.stringify({
                                     imp_uid: rsp.imp_uid,
                                     merchant_uid: rsp.merchant_uid,
-                                    amount: parseInt(data.response.amount, 10), // 정수로 변환
+                                    pamount: totalPrice ,// 정수로 변환
+                                    pay_price: pay_price,
                                     status: data.response.status,
                                     item_num: parseInt(itemNum, 10), // 정수로 변환
                                     item_name: itemName,

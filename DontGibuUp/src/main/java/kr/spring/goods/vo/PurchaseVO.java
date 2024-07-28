@@ -27,6 +27,7 @@ public class PurchaseVO {
     private Date payDate;
     private int payStatus;
     private String deliveryStatus;
+    private int pamount; // 추가된 필드
     // 추가된 부분
     private int totalAmount;
     private String delivery_address; // 새로 추가된 필드
