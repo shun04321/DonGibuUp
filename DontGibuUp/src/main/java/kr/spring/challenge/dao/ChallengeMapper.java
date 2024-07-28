@@ -62,6 +62,8 @@ public interface ChallengeMapper {
     //단일 결제 정보 불러오기
     @Select("SELECT * FROM chal_payment WHERE chal_joi_num=#{chal_joi_num}")
     public ChallengePaymentVO selectChallengePayment(Long chal_joi_num);
+    //동일 chal_num 결제 정보 불러오기
+    public List<ChallengePaymentVO> selectChallengePaymentList(Long chal_num);
     //결제 취소 상태로 변경
     @Update("UPDATE chal_payment SET chal_pay_status=1 WHERE chal_joi_num=#{chal_joi_num}")
     public void updateChalPaymentStatus(Long chal_joi_num);

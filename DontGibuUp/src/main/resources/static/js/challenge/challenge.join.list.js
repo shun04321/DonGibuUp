@@ -60,9 +60,16 @@ function loadChallenges(month) {
 }
 
 function deleteChallenge(chalJoiNum,isLeader) {
-	if (!confirm('챌린지를 취소하시겠습니까?')) {
-		return;
+	if(isLeader){
+		if(!confirm('챌린지를 삭제하시겠습니까?')){
+			return;
+		}
+	}else{
+		if (!confirm('챌린지를 취소하시겠습니까?')) {
+			return;
+		}
 	}
+	
 
 	$.ajax({
 		url:'delete',

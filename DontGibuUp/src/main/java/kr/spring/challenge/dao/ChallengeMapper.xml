@@ -230,6 +230,11 @@
 		</if> 
 		#{chal_pay_price}, #{chal_point},#{chal_pay_status})
 	</insert>
+	
+	<!-- 동일 챌린지 결제 정보 불러오기 -->
+	<insert id="selectChallengePaymentList">
+		
+	</insert>
 
 	<!-- 챌린지 ID로 챌린지 참가 데이터 삭제 -->
 	<delete id="deleteChallengeJoinsByChallengeId"
