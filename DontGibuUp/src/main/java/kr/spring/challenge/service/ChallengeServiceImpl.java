@@ -77,6 +77,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 			chatVO.setChal_num(chalVO.getChal_num());	
 			long chat_id = challengeMapper.selectChat_id();
 			chatVO.setChat_id(chat_id);
+			chatVO.setChat_date(chalVO.getChal_sdate());			
 			challengeMapper.insertChallengeChat(chatVO);
 		}
 
