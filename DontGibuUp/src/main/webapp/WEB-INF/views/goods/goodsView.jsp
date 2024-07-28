@@ -45,7 +45,21 @@
     </div>
     <hr size="1" width="100%">
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const quantityInput = document.getElementById('quantity');
+        const stock = parseInt("${goods.item_stock}");
+        
+        quantityInput.addEventListener('input', function() {
+            if (this.value > stock) {
+                alert('재고 수량을 초과할 수 없습니다.');
+                this.value = stock;
+            } else if (this.value < 1) {
+                this.value = 1;
+            }
+        });
+    });
+</script>
 <!-- 다음 주소 검색 API -->
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript">

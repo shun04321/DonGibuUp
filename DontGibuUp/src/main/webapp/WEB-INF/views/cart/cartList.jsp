@@ -156,7 +156,24 @@ function updateCartQuantity(cart_num) {
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const quantityInputs = document.querySelectorAll('input[id^="cart_quantity_"]');
+        
+        quantityInputs.forEach(function(input) {
+            const stock = parseInt(input.getAttribute('max'));
 
+            input.addEventListener('input', function() {
+                if (this.value > stock) {
+                    alert('재고 수량을 초과할 수 없습니다.');
+                    this.value = stock;
+                } else if (this.value < 1) {
+                    this.value = 1;
+                }
+            });
+        });
+    });
+</script>
 <script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 <script type="text/javascript">
     function execDaumPostcode() {

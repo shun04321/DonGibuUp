@@ -1,6 +1,7 @@
 let totalPrice;
 let quantity = parseInt(document.getElementById('quantity').value); // 수량 가져오기
 let pointUsed; 
+
 document.addEventListener("DOMContentLoaded", function() {
     // 페이지 로드 시 필요한 초기 작업들
     let itemName = "${goods.item_name}";
@@ -65,6 +66,14 @@ function buyNow() {
 *				결제 실행
 *==========================================*/
 function confirmPurchase() {
+	let stock = parseInt("${goods.item_stock}");
+	let quantity = parseInt(document.getElementById('quantity').value);
+    // 재고 확인
+    if (quantity > stock) {
+        alert("재고 수량을 초과할 수 없습니다.");
+        return;
+    }
+	
     console.log('confirmPurchase function called');
     console.log('totalPrice before processing:', totalPrice); // 전역 totalPrice 값 확인
     console.log('Quantity in confirmPurchase:', quantity); // 전역 quantity 값 확인

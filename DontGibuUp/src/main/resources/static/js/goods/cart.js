@@ -66,13 +66,24 @@ function confirmPurchase(pageContextPath) {
     let deliveryAddress = document.getElementById('delivery_address').value;
 
     var selectedCarts = [];
+    let hasInvalidStock = false; // 재고 부족 여부 확인 변수
     $('input[name="cart_num"]:checked').each(function() {
         var cartNum = $(this).val();
         var itemNum = $('#cart_quantity_' + cartNum).data('item-num'); // Ensure this is set correctly in HTML
         var quantity = $('#cart_quantity_' + cartNum).val();
+        var stock = parseInt($('#stock_' + cartNum).text()); // 재고 확인
+        if (stock < 1) {
+            hasInvalidStock = true;
+        }
         var price = parseInt($('#price_' + cartNum).text().replace(/,/g, ''), 10);
         selectedCarts.push({ item_num: parseInt(itemNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
+    	// 재고 부족시 에러 메시지
+   
     });
+	 if (hasInvalidStock) {
+        alert("재고가 부족하여 구매할 수 없습니다.");
+        return;
+        }
 
     if (totalAmount === 0 && pointUsed > 0) {
         if (confirm('전액 포인트로 결제하시겠습니까?')) {
