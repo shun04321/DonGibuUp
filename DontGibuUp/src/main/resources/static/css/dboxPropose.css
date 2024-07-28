@@ -1,10 +1,11 @@
 @charset "UTF-8";
 
 .dbox_information {
-    margin: 20px;
+	margin: 20px;
 }
+
 .pr-steps {
-    margin-top: 4rem !important;
+	margin-top: 1rem !important;
 }
 
 .pr-step .card-body {
@@ -12,10 +13,11 @@
 }
 
 .pr-arrow {
-	width: 5rem !important;
-    text-align: center;
-    font-size: 1.2em;
-    margin: 10px 20px;
+	width: 3rem !important;
+	text-align: center;
+	font-size: 1.2em;
+	margin: 0;
+	padding: 0 !important;
 }
 
 .pr-step .card-title {
@@ -23,7 +25,7 @@
 }
 
 .pr-btn-div {
-	margin-top: 3rem;
+	padding: 0 !important;
 }
 
 .pr-custom-btn {
@@ -38,4 +40,85 @@
 
 .pr-custom-btn:hover {
 	background-color: #5bc1ac;
+}
+
+/*공통*/
+ul {
+	list-style: none;
+	padding: 0 !important;
+}
+
+.error-color {
+	color: red;
+}
+
+/*step1*/
+.propose-body {
+	margin: 5rem 25rem;
+}
+
+@media ( max-width : 1200px) { /* 대형 화면 크기 */
+	.propose-body {
+		margin: 4rem 20rem;
+	}
+}
+
+@media ( max-width : 992px) { /* 중간 화면 크기 */
+	.propose-body {
+		margin: 3rem 15rem;
+	}
+}
+
+@media ( max-width : 768px) { /* 작은 화면 크기 */
+	.propose-body {
+		margin: 2rem 10rem;
+	}
+}
+
+@media ( max-width : 576px) { /* 초소형 화면 크기 */
+	.propose-body {
+		margin: 1rem 5rem;
+	}
+}
+
+@media ( max-width : 400px) { /* 매우 작은 화면 크기 */
+	.propose-body {
+		margin: 1rem 2rem;
+	}
+}
+
+.pr-form-content {
+	margin-bottom: 3rem;
+}
+
+.pr-li-item {
+	margin-bottom: 2rem !important;
+}
+
+.pr-form-label {
+	font-size: 1.4rem;
+}
+
+.validation-dot {
+	display: inline-block;
+	width: 6px;
+	height: 6px;
+	background-color: red;
+	border-radius: 50%;
+	margin-left: 5px;
+	margin-top: 2px;
+}
+
+/*step2*/
+.pr-li-item textarea {
+	resize: none;
+	height: 6rem;
+}
+
+#dbox_bank, #dbox_account_name {
+	width: 23%;
+}
+
+#dbox_account {
+	width: 50%;
 }

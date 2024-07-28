@@ -2,14 +2,15 @@
     pageEncoding="UTF-8"%>
 <!-- 기부박스 제안 시작 -->
 <section class="section-padding nanum">
-	<div class="container">
+	<div class="container p-0">
 	<div class="container dbox_information">
-	    <div class="row mb-4">
-	        <div class="col-12">
-	            <h4 class="text-center">기부박스는 이렇게 진행돼요</h4>
+	    <div class="row mb-4 justify-content-center">
+	        <div class="col-lg-9 col-12 p-0">
+	            <h4 class="text-left mb-1">기부박스는 이렇게 진행돼요</h4>
+	            <p>돈기부업과 함께라면 누구나 변화를 만들어 나갈 수 있어요</p>
 	        </div>
 	    </div>
-	    <div class="row d-flex pr-steps justify-content-between align-items-center">
+	    <div class="row d-flex pr-steps justify-content-center align-items-center">
 	        <div class="col-sm-12 col-md-6 col-lg-2 pr-step mb-4">
 	            <div class="card">
 	                <div class="card-body">
@@ -62,7 +63,7 @@
 	        </div>
 	    </div>
 	</div>
-	<div class="container d-flex justify-content-end pr-btn-div">
+	<div class="container d-flex justify-content-end pr-btn-div col-lg-9 col-12 mx-auto">
 		<input type="button" class="pr-custom-btn" value="제안하기" onclick="location.href='propose/step1'" class="propose-btn">
 	</div>
 </div>
