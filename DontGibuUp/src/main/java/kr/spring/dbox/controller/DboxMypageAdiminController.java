@@ -97,7 +97,7 @@ public class DboxMypageAdiminController {
 		int count = dboxService.selectAdminListCount(map);
 
 		//페이지 처리
-		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 20, 10, "dboxAdmin", "&order=" + order);
+		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, 10, 10, "dboxAdmin", "&order=" + order);
 
 		List<DboxVO> list = null;
 		if (count > 0) {
