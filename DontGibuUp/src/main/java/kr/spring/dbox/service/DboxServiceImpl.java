@@ -82,6 +82,10 @@ public class DboxServiceImpl implements DboxService {
 	public DboxResultVO selectDboxResult(long dbox_num) {//기부 결과 개별 데이터
 		return dboxMapper.selectDboxResult(dbox_num);
 	}
+	@Override
+	public void updatePayStatus(long dbox_do_num, long dbox_do_status) {
+		dboxMapper.updatePayStatus(dbox_do_num, dbox_do_status);
+	}
 
 
 }

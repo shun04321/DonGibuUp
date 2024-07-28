@@ -32,6 +32,8 @@ import kr.spring.config.validation.ValidationSequence;
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.FaqVO;
 import kr.spring.cs.vo.InquiryVO;
+import kr.spring.dbox.service.DboxService;
+import kr.spring.goods.service.GoodsService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.service.NotifyService;
@@ -77,6 +79,10 @@ public class SubscriptionController {
 	CSService csService;
 	@Autowired
 	RefundService refundService;
+	@Autowired
+	GoodsService goodsService;
+	@Autowired
+	DboxService dboxService;
 
 	/*--------------------
 	 * 정기 기부 메인창 이동
@@ -736,7 +742,7 @@ public class SubscriptionController {
 			mapJson.put("result", "logout");
 		}else {
 		refundVO.setMem_num(user.getMem_num());
-		refundVO.setPayment_type(1);
+		refundVO.setPayment_type(0);
 		refundVO.setReturn_point(0);
 		
         System.out.println("Received RefundVO: " + refundVO + ", sub_pay_num : " + sub_pay_num);
@@ -853,6 +859,46 @@ public class SubscriptionController {
 
 	    return mapJson;
 	}
+	
+		//종합결제내역에서 환불신청
+		@PostMapping("/myPage/paymentRefund")
+		@ResponseBody
+		public Map<String,String> insertRefundByType(HttpServletRequest request,
+											   HttpSession session, 
+											   RefundVO refundVO) {
+			Map<String,String> mapJson = new HashMap<String,String>();
+			MemberVO user = (MemberVO)session.getAttribute("user");
+			if(user == null) {
+				mapJson.put("result", "logout");
+			}else {
+			refundVO.setMem_num(user.getMem_num());
+	        System.out.println("Received RefundVO: " + refundVO);
+	        
+	        refundService.insertRefund(refundVO);
+	        // 결제 상태 환불 신청으로 변경
+	        if(refundVO.getPayment_type()==0) {
+	        	// refundVO 객체에서 imp_uid를 가져온다
+	    		String impUid = refundVO.getImp_uid();
+
+	    		// impUid에서 "merchant_uid"를 제거하여 sub_pay_num을 추출한다
+	    		String prefix = "merchant_uid"; 
+	    		String subPayNumStr = impUid.substring(prefix.length());
+	    	    
+	    	    // subPayNum 문자열을 long 타입으로 변환한다
+	    	    long sub_pay_num = Long.parseLong(subPayNumStr);
+	        	sub_paymentService.updateSubPayStatus(sub_pay_num, 1);
+	        }else if(refundVO.getPayment_type()==1) {
+	        	//기부박스 결제 상태 변경
+	        	dboxService.updatePayStatus(refundVO.getId(), 1);
+	        }else {
+	        	//굿즈샵 결제 환불신청으로 변경
+	        	goodsService.updatePayStatus(refundVO.getId(), 1);
+	        }
+			
+			mapJson.put("result", "success");
+			}
+			return mapJson;
+		}
 
 }
 

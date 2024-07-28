@@ -19,5 +19,5 @@ public class RefundVO {
 	private String reg_date;
 	private String refund_date;
 	private int refund_status;
-	
+	private long id;
 }

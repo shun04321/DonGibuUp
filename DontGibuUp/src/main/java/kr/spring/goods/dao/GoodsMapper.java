@@ -30,4 +30,8 @@ public interface GoodsMapper {
 	void updateStock(Map<String, Object> paramMap);
 	
 	List<Map<String, Object>> getCategories();
+	
+	//환불신청시 결제상태 변경
+	@Update("UPDATE purchase SET pay_status=#{pay_status} WHERE purchase_num=#{purchase_num}")
+	public void updatePayStatus(long purchase_num, long pay_status);
 }

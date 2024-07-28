@@ -184,7 +184,7 @@
                     환불사유<br> <br>
                     <label><input type="radio" name="reason" value="0"> 단순변심</label>
                     <label><input type="radio" name="reason" value="1"> 결제오류</label>
-                    <label><input type="radio" name="reason" value="2"> 기타</label><br>
+                    <label><input type="radio" name="reason" value="4"> 기타</label><br>
                     <input type="text" name="otherReason" id="otherReason" placeholder="기타 환불 사유 입력" disabled><br>
                     <div class="total-refund">
                         환불액: <span id="totalAmount">0</span> 원
@@ -223,7 +223,7 @@ $(document).ready(function() {
     });
 
     $('input[name="reason"]').change(function() {
-        if ($(this).val() === '3') {
+        if ($(this).val() === '4') {
             $('#otherReason').prop('disabled', false); // 활성화
         } else {
             $('#otherReason').val('');

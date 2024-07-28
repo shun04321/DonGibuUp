@@ -52,4 +52,8 @@ public interface DboxMapper {
 	//Dbox 결과보고
 	@Select("SELECT * FROM dbox_result WHERE dbox_num=#{dbox_num}")
 	public DboxResultVO selectDboxResult(long dbox_num);//결과보고 가져오기
+	
+	//환불신청시 결제상태 변경
+	@Update("UPDATE dbox_donation SET dbox_do_status=#{dbox_do_status} WHERE dbox_do_num=#{dbox_do_num}")
+	public void updatePayStatus(long dbox_do_num, long dbox_do_status);
 }

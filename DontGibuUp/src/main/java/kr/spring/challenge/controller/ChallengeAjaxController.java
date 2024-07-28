@@ -13,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -663,5 +665,52 @@ public class ChallengeAjaxController {
 		}
 
 		return mapJson;
+	}
+	
+	//챌린지 참가 삭제
+	@PostMapping("/challenge/join/delete")
+	public ResponseEntity<String> deleteChallengeJoin(@RequestBody Map<String,Object> requestData, HttpSession session) {
+		try {
+			long chal_joi_num = Long.parseLong((String) requestData.get("chal_joi_num"));
+			boolean isLeader = Boolean.parseBoolean(requestData.get("isLeader").toString());	
+			
+			MemberVO member = (MemberVO) session.getAttribute("user");
+			ChallengeJoinVO challengeJoin = challengeService.selectChallengeJoin(chal_joi_num);
+
+			//참가 정보가 없거나 회원 정보가 일치하지 않는 경우 처리
+			if (challengeJoin == null || challengeJoin.getMem_num() != member.getMem_num()) {
+				return ResponseEntity.status(HttpStatus.FORBIDDEN).body("챌린지 참가 정보가 없거나 권한이 없습니다.");
+			}
+			
+			if(isLeader) {
+				
+			}else {
+				ChallengePaymentVO payVO = challengeService.selectChallengePayment(chal_joi_num);	
+				String od_imp_uid = payVO.getOd_imp_uid();	
+				
+				//결제 취소 요청하기
+				CancelData cancelData = new CancelData(od_imp_uid, true);
+				impClient.cancelPaymentByImpUid(cancelData);
+				
+				
+				
+				//해야할 것: chal_payment 결제상태 1로 수정, chal_joi 참가상태 1로 수정 -> 참가 정보 사용시 상태가 0인 것으로 수정(대량 수정 예상)
+				//        포인트 사용시 되돌리기+세션
+			}
+			
+
+			//리더인 경우 챌린지와 참가 데이터 모두 삭제
+			if (challengeService.isChallengeLeader(challengeJoin.getChal_num(), member.getMem_num())) {
+				challengeService.deleteChallengeJoinsByChallengeId(challengeJoin.getChal_num());
+				challengeService.deleteChallenge(challengeJoin.getChal_num());
+			} else {
+				//리더가 아닌 경우 챌린지 참가 데이터만 삭제
+				challengeService.deleteChallengeJoin(chal_joi_num);
+			}
+			return ResponseEntity.ok("챌린지가 취소되었습니다.");
+		} catch (Exception e) {
+			log.error("챌린지 취소 중 오류 발생", e);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
+		}
 	}
 }

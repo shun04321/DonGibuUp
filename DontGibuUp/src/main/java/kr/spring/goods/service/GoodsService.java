@@ -17,4 +17,5 @@ public interface GoodsService {
     void deleteGoods(long item_num);
     // 카테고리명을 가져오는 메서드 추가
     List<Map<String, Object>> getCategories();
+	public void updatePayStatus(long purchase_num, long pay_status);
 }

@@ -33,4 +33,6 @@ public interface DboxService {
 	
 	//Dbox 결과보고
 	public DboxResultVO selectDboxResult(long dbox_num);//기부 결과 개별 데이터
+	
+	public void updatePayStatus(long dbox_do_num, long dbox_do_status);
 }

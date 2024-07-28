@@ -121,16 +121,18 @@ $(document).ready(function() {
                         <td class="align-center">${refund.refund_num}</td>
                         <td class="align-center"><a href="detail?mem_num=${refund.mem_num}">${refund.mem_num}</a></td>
                         <td class="align-center">
-                            <c:if test="${refund.payment_type == 0}">굿즈샵</c:if>
-                            <c:if test="${refund.payment_type == 1}">정기기부</c:if>
-                            <c:if test="${refund.payment_type == 2}">기부박스</c:if>
+                            <c:if test="${refund.payment_type == 0}">정기기부</c:if>
+                            <c:if test="${refund.payment_type == 1}">기부박스</c:if>
+                            <c:if test="${refund.payment_type == 3}">굿즈샵</c:if>
                         </td>
                         <td class="align-center"><fmt:formatNumber value="${refund.amount}" type="number" pattern="#,##0"/>원</td>
                         <td class="align-center">
                             <c:choose>
                                 <c:when test="${refund.reason==0}">단순변심</c:when>
                                 <c:when test="${refund.reason==1}"><a href='#'>결제오류</a></c:when>
-                                <c:when test="${refund.reason==2}">
+                                <c:when test="${refund.reason==2}"><a href='#'>상품문제</a></c:when>
+                                <c:when test="${refund.reason==3}"><a href='#'>배송문제</a></c:when>
+                                <c:when test="${refund.reason==4}">
                                     기타
                                     <span class="tooltip-text" style="display:none;">${refund.reason_other}</span>
                                 </c:when>

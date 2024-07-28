@@ -60,5 +60,10 @@ public class GoodsServiceImpl implements GoodsService {
     public List<Map<String, Object>> getCategories() {
         return goodsMapper.getCategories();
     }
+
+	@Override
+	public void updatePayStatus(long purchase_num, long pay_status) {
+		goodsMapper.updatePayStatus(purchase_num, pay_status);
+	}
    
 }
