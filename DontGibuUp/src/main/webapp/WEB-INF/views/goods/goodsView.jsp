@@ -46,6 +46,23 @@
     <hr size="1" width="100%">
 </div>
 
+<!-- 다음 주소 검색 API -->
+<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
+<script type="text/javascript">
+    function execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+                var roadAddr = data.roadAddress; // 도로명 주소 변수
+                var jibunAddr = data.jibunAddress; // 지번 주소 변수
+
+                // 사용자가 선택한 주소를 검색 창에 넣습니다.
+                document.getElementById('delivery_address').value = roadAddr ? roadAddr : jibunAddr;
+            }
+        }).open();
+    }
+</script>
+
 <!-- 모달 창 -->
 <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -65,6 +82,14 @@
                     <label class="form-label">결제 금액</label>
                     <span id="pay_sum"></span>
                 </div>
+                <!-- 주소 입력 필드 -->
+                <div class="mb-3">
+                    <label for="delivery_address" class="form-label">배송 주소</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="delivery_address" placeholder="배송 받을 주소 입력" readonly>
+                        <button type="button" class="btn btn-outline-secondary" onclick="execDaumPostcode()">주소 검색</button>
+                    </div>
+                </div>
                 <!-- 보유 포인트 -->
                 <input type="hidden" id="mem_point" value="${sessionScope.user.mem_point}">
                 <!-- 결제 금액 메시지 -->
@@ -77,5 +102,4 @@
         </div>
     </div>
 </div>
-
 <script src="${pageContext.request.contextPath}/js/goods/purchase.js"></script>

@@ -29,7 +29,8 @@ public class PurchaseVO {
     private String deliveryStatus;
     // 추가된 부분
     private int totalAmount;
-    
+    private String delivery_address; // 새로 추가된 필드
+    private int point_used; // 새로 추가된 필드
     private Long cartItemNum;
     private String cartItemPrice;
     private int cartQuantity;

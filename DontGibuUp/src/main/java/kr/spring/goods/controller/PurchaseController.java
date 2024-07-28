@@ -115,7 +115,8 @@ public class PurchaseController {
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
             Integer quantity = (Integer) data.get("quantity"); // 추가된 부분
-            
+            String deliveryAddress = (String) data.get("delivery_address"); // 추가된 부분
+            int pointUsed = (Integer) data.get("point_used"); // 추가된 부분
             
             log.debug("impUid : " + impUid);
             log.debug("merchantUid : " + merchantUid);
@@ -124,7 +125,7 @@ public class PurchaseController {
             log.debug("itemNum : " + item_num);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
-
+            log.debug("deliveryAddress : " + deliveryAddress); // 추가된 로그
             log.debug("quantity : " + quantity); // 로그 추가
            
 
@@ -140,7 +141,8 @@ public class PurchaseController {
                 purchaseVO.setPayStatus(0); // 결제 완료 상태로 설정
                 purchaseVO.setItem_num(item_num);
                 purchaseVO.setMem_num(member.getMem_num()); // mem_num 설정
-                
+                purchaseVO.setDelivery_address(deliveryAddress); // 추가된 부분
+                purchaseVO.setPoint_used(pointUsed); // 추가된 부분
                 try {
                     purchaseService.insertPurchase(purchaseVO);
                     
@@ -248,6 +250,8 @@ public class PurchaseController {
             String status = (String) data.get("status");
             String itemName = (String) data.get("item_name");
             String buyerName = (String) data.get("buyer_name");
+            String deliveryAddress = (String) data.get("delivery_address"); // 추가된 부분
+            int pointUsed = (Integer) data.get("point_used"); // 추가된 부분
             
             Long setSeq = 0L;
             log.debug("impUid : " + impUid);
@@ -256,7 +260,7 @@ public class PurchaseController {
             log.debug("status : " + status);
             log.debug("itemName : " + itemName);
             log.debug("buyerName : " + buyerName);
-
+            log.debug("deliveryAddress : " + deliveryAddress); // 추가된 로그
             log.debug("<<장바구니 결제>> - member : " + memberVO);
             if (memberVO == null) {
                 mapJson.put("result", "logout");
@@ -274,7 +278,8 @@ public class PurchaseController {
                 purchaseVO.setBuyer_name(buyerName);
                 purchaseVO.setPay_price(amount); // 이 부분 추가
                 purchaseVO.setMem_num(memberVO.getMem_num()); 
-                
+                purchaseVO.setDelivery_address(deliveryAddress); // 추가된 부분
+                purchaseVO.setPoint_used(pointUsed); // 추가된 부분
                 // cart_items 리스트 처리
                 List<Map<String, Object>> cartItems = (List<Map<String, Object>>) data.get("cart_items");
                 log.debug("cartItems: " + cartItems);

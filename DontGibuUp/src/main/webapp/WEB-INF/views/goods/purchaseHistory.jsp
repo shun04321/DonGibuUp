@@ -32,6 +32,7 @@
                 <th>상품명</th>
                 <th>사진</th>
                 <th>총액</th>
+                <th>사용한 포인트</th>
                 <th>구매일</th>
                 <th>상태</th>
                 <th>Action</th>
@@ -62,6 +63,7 @@
                         </c:choose>
                     </td>
                     <td>${purchase.amount}</td>
+                    <td>${purchase.point_used}</td> <!-- 추가된 부분 -->
                     <td class="align-center"><fmt:formatDate value="${purchase.payDate}" pattern="yyyy-MM-dd" /></td>
                     <td>
                         <c:choose>

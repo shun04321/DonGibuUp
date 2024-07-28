@@ -1,5 +1,5 @@
 let totalAmount;
-
+let pointUsed; // 전역 변수로 설정
 document.addEventListener("DOMContentLoaded", function() {
     let itemName = "${goods.item_name}";
     let itemPrice = "${goods.item_price}";
@@ -56,13 +56,14 @@ function updateTotalAmount() {
         $('#no').html('<small>기부금액보다 포인트가 클 수 없습니다.</small>');
         return;
     }
-
+	pointUsed=point; // 전역 변수로 설정
     $('#pay_sum').text(totalAmount.toLocaleString());
     $('#pay_price').val(totalAmount);
 }
 
 function confirmPurchase(pageContextPath) {
     let buyerName = "${sessionScope.user.mem_nick}";
+    let deliveryAddress = document.getElementById('delivery_address').value;
 
     var selectedCarts = [];
     $('input[name="cart_num"]:checked').each(function() {
@@ -73,7 +74,7 @@ function confirmPurchase(pageContextPath) {
         selectedCarts.push({ item_num: parseInt(itemNum, 10), cart_quantity: parseInt(quantity, 10), price: price });
     });
 
-    if (totalAmount === 0 && parseInt($('#goods_do_point').val()) > 0) {
+    if (totalAmount === 0 && pointUsed > 0) {
         if (confirm('전액 포인트로 결제하시겠습니까?')) {
             $.ajax({
                 url: pageContextPath + '/goods/purchaseComplete',
@@ -86,7 +87,8 @@ function confirmPurchase(pageContextPath) {
                     item_name: "장바구니 구매",
                     buyer_name: buyerName,
                     cart_items: selectedCarts,
-                    point_used: parseInt($('#goods_do_point').val(), 10)
+                    point_used: pointUsed, // 사용된 포인트 추가
+                    delivery_address: deliveryAddress // 주소 값 추가
                 }),
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
@@ -139,7 +141,9 @@ function confirmPurchase(pageContextPath) {
                                 status: data.response.status,
                                 item_name: "장바구니 구매",
                                 buyer_name: buyerName,
-                                cart_items: selectedCarts
+                                cart_items: selectedCarts,
+                                point_used: pointUsed, // 사용된 포인트 추가
+                                delivery_address: deliveryAddress // 주소 값 추가
                             }),
                             contentType: 'application/json; charset=utf-8',
                             dataType: 'json',
