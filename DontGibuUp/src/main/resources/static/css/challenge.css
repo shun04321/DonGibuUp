@@ -1254,7 +1254,7 @@ textarea:focus {
 	width: 60%;
 	border: 1px solid #ddd;
 	border-radius: 8px;
-	padding: 16px;
+	padding: 30px;
 	max-width: 800px;
 	margin: 20px auto;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -1263,12 +1263,14 @@ textarea:focus {
 .review-list-container h2 {
 	text-align: center;
 	margin-bottom: 20px;
-	font-size: 20px;
+	font-size: 25px;
+	color: #5bc1ac;
 }
 
 .review-summary2 {
 	text-align: left;
 	margin-bottom: 20px;
+	padding-left: 30px; 
 }
 
 .average-rating {
@@ -1283,9 +1285,19 @@ textarea:focus {
 	margin-right: 8px;
 }
 
+.rating-value2 {
+	font-weight: bold;
+	margin-right: 20px;
+}
+
 .rating-stars {
 	color: #ffcc00;
 	font-size: 32px;
+}
+
+.rating-stars2 {
+	color: #ffcc00;
+	font-size: 26px;
 }
 
 .review-count {
@@ -1293,6 +1305,12 @@ textarea:focus {
 	color: #666;
 	margin-top: 8px;
 }
+
+.review-count2 {
+	font-size: 14px;
+	color: #666;
+}
+
 
 .sort-select-container {
 	margin-top: 10px;
@@ -1335,12 +1353,13 @@ textarea:focus {
 }
 
 .nickname {
+	font-size: 16px;
 	font-weight: bold;
 	margin-right: 10px;
 }
 
 .date {
-	font-size: 12px;
+	font-size: 14px;
 	color: #999;
 	margin-right: 10px;
 }
