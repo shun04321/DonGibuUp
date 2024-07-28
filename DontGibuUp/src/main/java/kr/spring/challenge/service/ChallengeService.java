@@ -46,6 +46,7 @@ public interface ChallengeService {
 	
 	//*챌린지 결제*//
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
+    public ChallengePaymentVO selectChallengePayment(Long chal_joi_num);
     
 	//*챌린지 인증*//
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);

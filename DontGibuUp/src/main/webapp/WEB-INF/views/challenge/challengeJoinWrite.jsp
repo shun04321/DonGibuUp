@@ -15,20 +15,20 @@
         let mem_point = ${mem_point};
 </script>
 <script src="${pageContext.request.contextPath}/js/challenge/challenge.join.pay.js"></script>
-<h2>챌린지 참가</h2>
-<div class="join-container">
-	<div class="line">
+<br><br><br><br>
+<div class="join-container nanum">
+	<div class="challenge-info3">
 		<c:if test="${empty challengeVO.chal_photo}">
 			<img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg"
-				alt="챌린지 사진">
+				alt="챌린지 사진"  class="challenge-thumbnail">
 		</c:if>
 		<c:if test="${!empty challengeVO.chal_photo}">
 			<img
 				src="${pageContext.request.contextPath}/upload/${challengeVO.chal_photo}"
-				alt="챌린지 사진">
+				alt="챌린지 사진"  class="challenge-thumbnail">
 		</c:if>
-		<div class="text-content">
-			<h3>${challengeVO.chal_title}</h3>
+		<div class="challenge-details">
+			<h2>${challengeVO.chal_title}</h2>
 			<c:if test="${challengeVO.chal_freq == 0}">
 				<p>매일</p>
 			</c:if>
@@ -39,47 +39,66 @@
 		</div>
 	</div>
 	<form:form id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
-		<ul>
 			<form:hidden path="chal_num" value="${challengeJoinVO.chal_num}" />
-			<li>
-				<label for="dcate_num">기부 카테고리</label> 
+				<label for="dcate_num"><h6 style="color: #212529;">기부 카테고리</h6></label>&nbsp;
 				<span id="charityInfo"></span> 
 				<span id="dcate_num_error" class="error-color" style="display: none;">기부 카테고리를 선택하세요.</span>
-			</li>
-			<li>
+				<br><br>
+				
 				<c:forEach var="category" items="${categories}">
-					<form:radiobutton path="dcate_num" value="${category.dcate_num}" label="${category.dcate_name}"
-						data-charity="${category.dcate_charity}"/>
+				    <input type="radio" class="custom-radio" name="dcate_num" id="dcate_${category.dcate_num}" value="${category.dcate_num}" data-charity="${category.dcate_charity}">
+				    <label class="custom-radio-label" for="dcate_${category.dcate_num}">${category.dcate_name}</label>
 				</c:forEach>
-			</li>
-			<br>
+				
+				<br><br>
 			<li class="result-details">
-				<p>
+				<p style="margin-top: 16px; font-size: 14px;">
 					100% 성공 <span class="right"><span class="chal_fee_90"></span>p
 					+ 추가 <span class="chal_fee_5"></span>p 환급, 
 					<span class="chal_fee_10"></span>원 기부</span>
 				</p>
-				<p>
+				<p style="font-size: 14px;">
 					90% 이상 성공 <span class="right"><span class="chal_fee_90"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span>
 				</p>
-				<p>
+				<p style="font-size: 14px;">
 					90% 미만 성공 <span class="right">성공률만큼 환급, 나머지 기부</span>
 				</p>
 			</li>
 		</ul>
-		<br>
-		<ul>
-			<li>참여금 <span class="chal_fee"></span>원</li>
-			<li>보유 포인트 <span class="mem-point">${mem_point}</span>p</li>
-			<li>사용할 포인트 <input type="text" class="used-point" value="0">p</li>
-			<hr width="100%" size="1" noshade="noshade">
-			<li>결제금액 <span class="final_fee"></span>원</li>
-		</ul>
+		<br><br>
+		<div class="payment-details">
+		    <h6>
+		        참여금 
+		        <span class="amount-container">
+		            <span class="amount chal_fee"></span><span class="currency">원</span>
+		        </span>
+		    </h6>
+		    <br>
+		    <h6>
+		        보유 포인트 
+		        <span class="amount-container2">
+		            <span class="amount mem-point">${mem_point}</span><span class="currency">p</span>
+		        </span>
+		    </h6>
+		    <h6>
+		        사용할 포인트 
+		        <span class="input-container">
+		            <input type="text" class="used-point" value="0"><span class="currency">p</span>
+		        </span>
+		    </h6>
+		    <hr>
+		    <h6 style="font-size: 24px;">
+		        결제금액 
+		        <span class="amount-container">
+		            <span class="amount final_fee"></span><span class="currency">원</span>
+		        </span>
+		    </h6>
+		</div>
 		<br>
 		<div class="align-center">
-			결제 조건 및 서비스 약관에 동의합니다
-			<p>
-				<button type="button" id="pay2">결제하기</button>
+			<p style="color: #ddd;"><b>결제 조건 및 서비스 약관에 동의합니다</b></p>
+			<button type="button" id="pay2">결제하기</button>
 		</div>
 	</form:form>
 </div>
+<br><br><br><br>

@@ -4,7 +4,7 @@
 <!-- 목록 시작 -->
 <script src="${pageContext.request.contextPath}/js/dbox/dbox.list.js"></script>
 
-<section class="section-padding">
+<section class="section-padding nanum">
 	<div class="container">
 		<div class="row">
 			<%-- 기부박스 제안하기 버튼 --%>

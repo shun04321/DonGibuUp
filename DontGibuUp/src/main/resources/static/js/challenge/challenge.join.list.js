@@ -59,15 +59,18 @@ function loadChallenges(month) {
 	});
 }
 
-function deleteChallenge(chalJoiNum) {
+function deleteChallenge(chalJoiNum,isLeader) {
 	if (!confirm('챌린지를 취소하시겠습니까?')) {
 		return;
 	}
 
 	$.ajax({
-		url: contextPath + '/challenge/join/delete',
+		url:'delete',
 		type: 'POST',
-		data: { chal_joi_num: chalJoiNum },
+		data: JSON.stringify({ 
+			chal_joi_num: chalJoiNum, 
+			isLeader:isLeader
+		}),
 		success: function(response) {
 			alert('챌린지가 취소되었습니다.');
 			location.reload(); // 페이지 새로고침

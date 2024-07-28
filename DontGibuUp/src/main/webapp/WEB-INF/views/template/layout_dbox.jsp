@@ -13,9 +13,9 @@
 	<div id="main_header">
 		<tiles:insertAttribute name="header"/>
 	</div>
-	<div id="page_nav">
+<%-- 	<div id="page_nav">
 		<tiles:insertAttribute name="nav"/>
-	</div>
+	</div> --%>
 	<div id="page_body">
 		<tiles:insertAttribute name="body"/>
 	</div>

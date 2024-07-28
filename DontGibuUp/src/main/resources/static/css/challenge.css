@@ -662,9 +662,9 @@ span.upload_button {
 
 /* 챌린지 참가 */
 .join-container {
-	max-width: 600px;
+	max-width: 700px;
 	margin: 50px auto;
-	padding: 20px;
+	padding: 40px;
 	border: 1px solid #ccc;
 	border-radius: 8px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -764,7 +764,8 @@ h2 {
 	flex-direction: column;
 	margin-top: 10px;
 	border: 1px solid #ddd;
-	padding: 10px;
+	padding-left: 20px;
+    padding-right: 20px;
 	border-radius: 8px;
 	background-color: #f9f9f9;
 }
@@ -775,6 +776,91 @@ h2 {
 
 .right {
 	margin-left:auto;
+}
+
+/* 커스텀 라디오 버튼 스타일 */
+input.custom-radio[type="radio"] {
+    display: none; /* 기본 라디오 버튼 숨기기 */
+}
+
+input.custom-radio[type="radio"] + label.custom-radio-label {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-bottom: 5px; /* 버튼 간격 추가 */
+    border: 1px solid #e9eaeb;
+    border-radius: 20px;
+    background-color: white;
+    color: #717275;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    font-size: 0.9em; /* 글자 크기 줄이기 */
+}
+
+input.custom-radio[type="radio"]:checked + label.custom-radio-label {
+    background-color: #f0f8ff;
+    border-color: #999;
+}
+
+input.custom-radio[type="radio"] + label.custom-radio-label:hover {
+    background-color: #e7e7e7;
+    border-color: #999;
+}
+
+.payment-details {
+    width: 100%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+.payment-details h6 {
+    color: #212529;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+}
+
+.payment-details .amount-container,
+.payment-details .input-container {
+    display: flex;
+    align-items: center;
+}
+
+.payment-details .amount-container .amount,
+.payment-details .amount-container .currency,
+.payment-details .input-container .currency {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.amount-container .amount {
+    color: #007bff; /* 파란색 */
+}
+
+.amount-container2 .amount {
+    color: #717275;
+}
+
+.payment-details .currency {
+    margin-left: 2px; /* 금액과 단위 사이 간격 최소화 */
+    color: #212529; /* 단위의 색상 */
+}
+
+.payment-details .used-point {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80px;
+    text-align: right;
+    margin-right: 2px; /* input 요소와 단위 사이 간격 최소화 */
+}
+
+.payment-details hr {
+    border: 0;
+    border-top: 2px solid #ddd;
+    margin: 15px 0;
 }
 
 /* 챌린지 참가 목록 */
