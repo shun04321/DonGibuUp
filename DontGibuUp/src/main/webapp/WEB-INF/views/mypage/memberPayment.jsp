@@ -7,13 +7,32 @@
     src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script>
 $(document).ready(function() {
+    // 체크박스 비활성화 로직 추가
+    $('input[name="refundCheck"]').each(function() {
+        var paymentType = $(this).data('type');
+        var paymentDateString = $(this).data('date'); // 결제일을 데이터 속성으로 가져옴
+        var paymentDate = new Date(paymentDateString); // 결제일을 Date 객체로 변환
+        var currentDate = new Date();
+        var payStatus = $(this).data('status');
+        var threeWeeksInMillis = 3 * 7 * 24 * 60 * 60 * 1000;
+
+		    if (paymentType == 2 || (currentDate - paymentDate > threeWeeksInMillis) || payStatus != 0) {
+            $(this).prop('disabled', true);
+            $(this).closest('tr').find('td:eq(8)').append('<span class="disabled-reason">(환불 불가)</span>');
+        }
+    });
+
     $('input[name="refundCheck"]').on('click', function() {
         var paymentType = $(this).data('type');
         var impUid = $(this).data('id');
         var amount = $(this).data('amount');
+        var reasonDiv = $('.reason-div');
+        var refundButton = $('#refundButton');
+
         if (paymentType == "0") {
             impUid = "merchant_uid" + impUid;
         }
+
         var point = $(this).closest('tr').find('td:eq(6)').text().replace('P', '').trim();
         var status = $(this).closest('tr').find('td:eq(7)').text();
         var detail = $(this).closest('tr').find('td:eq(3)').text().trim();
@@ -34,7 +53,6 @@ $(document).ready(function() {
         $('#selectedStatus').text(status.trim());
         $('#selectPayment').text(detail);
 
-        var reasonDiv = $('.reason-div');
         reasonDiv.empty();
 
         if (paymentType == 3) {
@@ -43,16 +61,13 @@ $(document).ready(function() {
             reasonDiv.append('<label><input type="radio" name="reason" value="2"> 상품문제</label>');
             reasonDiv.append('<label><input type="radio" name="reason" value="3"> 배송문제</label>');
             reasonDiv.append('<label><input type="radio" name="reason" value="4"> 기타</label>');
-        } else if (paymentType == 2) {
-        	 $(this).prop('checked', false); // 체크박스 해제
-            alert('챌린지 유형은 환불이 불가능합니다.');
-            return;
         } else {
             reasonDiv.append('<label><input type="radio" name="reason" value="0"> 단순변심</label>');
             reasonDiv.append('<label><input type="radio" name="reason" value="1"> 결제오류</label>');
             reasonDiv.append('<label><input type="radio" name="reason" value="4"> 기타</label>');
-            $('#refundButton').prop('disabled', false);
         }
+
+        refundButton.prop('disabled', false);
 
         $('#hiddenPaymentType').val(paymentType);
         $('#hiddenImpUid').val(impUid);
@@ -194,7 +209,8 @@ $(document).ready(function() {
                     <c:forEach var="payment" items="${list}">
                         <tr>
                             <td>
-                                <input type="radio" name="refundCheck" data-type="${payment.type}" data-id="${payment.payment_id}" data-amount="${payment.price}" id="refund_radio_${payment.payment_id}">
+                                <input type="radio" name="refundCheck" data-type="${payment.type}" data-id="${payment.payment_id}" data-amount="${payment.price}" id="refund_radio_${payment.payment_id}" data-date="${payment.pay_date}"
+                                data-status="${payment.status}">
                                 <input type="hidden" name="paymentId" value="${payment.id}">                           
                             </td>
                             <td>
