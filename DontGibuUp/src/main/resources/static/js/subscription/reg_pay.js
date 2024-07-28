@@ -112,9 +112,7 @@ $(document).ready(function () {
 			});
 		 	let today = new Date();
        		// 다음 달의 오늘 날짜 계산
-        	let nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-        	//만약 오늘 날짜가 28일 이후라면 마지막 날짜가 됨.
-        	if (today.getDate() > 28) {
+         	if (today.getDate() > 28) {
      
             $("#paymentDateInfo").text(28);
             $("#sub_date").val(28);
