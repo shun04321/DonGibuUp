@@ -7,7 +7,7 @@
 <tiles-definitions>
 	<!-- 챌린지 -->
 	<definition name="challengeJoinWrite" extends="main">
-		<put-attribute name="title" value="MyPage - 챌린지 참가"/>
+		<put-attribute name="title" value="챌린지 참가"/>
 		<put-attribute name="css" value="/WEB-INF/views/challenge/challengeCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/challenge/challengeJoinWrite.jsp"/>
 	</definition>

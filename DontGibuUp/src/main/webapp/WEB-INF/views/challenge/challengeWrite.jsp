@@ -39,6 +39,7 @@
 				<form:input type="date" path="chal_sdate"/>
 				<script type="text/javascript">
 					let today = new Date();
+					today.setDate(today.getDate() + 1);
 					
 					let year = today.getFullYear();
 					let month = ('0'+(today.getMonth()+1)).slice(-2);

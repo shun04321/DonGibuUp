@@ -293,7 +293,6 @@ public class ChallengeAjaxController {
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		long leader_joi_num = challengeService.selectLeaderJoiNum(chal_num);
 
-
 		if(user == null) {
 			mapJson.put("result", "logout");
 		}else if(leader_joi_num != chal_joi_num) {
@@ -325,16 +324,34 @@ public class ChallengeAjaxController {
 	// 결제 정보 검증하기
 	@PostMapping("/challenge/paymentVerifyWrite/{imp_uid}")
 	@ResponseBody
-	public IamportResponse<Payment> validateIamportWrite(@PathVariable String imp_uid, HttpSession session, HttpServletRequest request)
+	public IamportResponse<Payment> validateIamportWrite(@PathVariable String imp_uid, 
+			long chal_num,HttpSession session)
 			throws IamportResponseException, IOException {
+		log.debug("chal_num >> "+chal_num);
+		
 		IamportResponse<Payment> payment = impClient.paymentByImpUid(imp_uid);
 
-		// 로그인 여부 확인하기
+		//로그인 여부 확인하기
 		MemberVO member = (MemberVO) session.getAttribute("user");
-
-		// 실 결제 금액 가져오기
-		long paidAmount = payment.getResponse().getAmount().longValue();
-
+		
+		//챌린지 참여 금액
+		int chalFee = challengeService.selectChallenge(chal_num).getChal_fee();
+		
+		//실 결제 금액
+		int paidAmount = payment.getResponse().getAmount().intValue();
+		//사용된 포인트
+		String usedPointsJSON = payment.getResponse().getCustomData();
+		int usedPoints = 0;
+		
+		JSONObject usedPointsObject = new JSONObject(usedPointsJSON);
+		usedPoints = usedPointsObject.getInt("usedPoints");
+		
+		if(chalFee - usedPoints != paidAmount || member == null) {
+			//결제 취소 요청하기
+			CancelData cancelData = new CancelData(imp_uid, true);
+			impClient.cancelPaymentByImpUid(cancelData);
+		}
+		
 		log.debug("payment: " + payment);
 
 		return payment;
@@ -345,21 +362,20 @@ public class ChallengeAjaxController {
 	@ResponseBody
 	public Map<String, String> saveChallengeInfoWrite(@RequestBody Map<String, Object> data, HttpSession session, HttpServletRequest request)
 			throws IllegalStateException, IOException {
-		String odImpUid = (String) data.get("od_imp_uid");
 		int chalPayPrice = (Integer) data.get("chal_pay_price");
-		int chalPoint = (Integer) data.get("chal_point");
-		int chalPayStatus = (Integer) data.get("chal_pay_status");
-		int dcateNum = Integer.parseInt((String) data.get("dcate_num"));
-		Long chalNum = Long.parseLong((String) data.get("chal_num"));
-		String sdate = (String) data.get("sdate"); //클라이언트에서 전달된 sdate
-
-		log.debug("odImpUid : " + odImpUid);
 		log.debug("chalPayPrice : " + chalPayPrice);
+		
+		int chalPoint = (Integer) data.get("chal_point");
 		log.debug("chalPoint : " + chalPoint);
+		
+		int chalPayStatus = (Integer) data.get("chal_pay_status");
 		log.debug("chalPayStatus : " + chalPayStatus);
+		
+		int dcateNum = (Integer) data.get("dcate_num");
 		log.debug("dcateNum : " + dcateNum);
+		
+		long chalNum = Long.parseLong( (String) data.get("chal_num"));		
 		log.debug("chalNum : " + chalNum);
-		log.debug("sdate : " + sdate);
 
 		Map<String, String> mapJson = new HashMap<>();
 
@@ -381,12 +397,22 @@ public class ChallengeAjaxController {
 			challengePaymentVO.setMem_num(member.getMem_num());
 			challengePaymentVO.setChal_pay_price(chalPayPrice);
 			challengePaymentVO.setChal_point(chalPoint);
-			challengePaymentVO.setOd_imp_uid(odImpUid);			
+			if(chalPayPrice > 0) {
+				String odImpUid = (String) data.get("od_imp_uid");
+				challengePaymentVO.setOd_imp_uid(odImpUid);
+				log.debug("odImpUid : "+odImpUid);
+			}		
 
 			try {
 				challengeService.insertChallengeJoin(challengeJoinVO, challengePaymentVO);
+				
+				//포인트 사용시 반영
+				if(chalPoint > 0) {
+					//세션 포인트 업데이트
+					member.setMem_point(member.getMem_point()-chalPoint);
+				}
+				
 				mapJson.put("result", "success");
-				mapJson.put("sdate", sdate); //응답에 sdate 포함
 			} catch (Exception e) {
 				log.error("챌린지 참가 및 결제 정보 저장 중 오류 발생", e);
 				mapJson.put("result", "error");
@@ -427,7 +453,7 @@ public class ChallengeAjaxController {
 			//결제 취소 요청하기
 			CancelData cancelData = new CancelData(imp_uid, true);
 			impClient.cancelPaymentByImpUid(cancelData);
-			//대표 사진 업로드 및 파일 저장
+			//대표 사진 제거
 			FileUtil.removeFile(request, challengeVO.getChal_photo());
 		}
 		log.debug("payment"+payment);
