@@ -772,6 +772,18 @@ public class SubscriptionController {
 			refundService.insertRefund(refundVO);
 			// 결제 상태 환불 신청으로 변경
 			sub_paymentService.updateSubPayStatus(sub_pay_num, 1);
+			
+			//환불 신청 알림
+			String payment_type = "";
+			
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setNotify_type(30);
+			notifyVO.setNot_url("/member/myPage/payment");
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("type","정기기부");
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
+			
 			mapJson.put("result", "success");
 		}
 		return mapJson;
@@ -846,23 +858,44 @@ public class SubscriptionController {
 					long subPayNum = Long.parseLong(subPayNumStr);
 					// subPayNum을 사용하여 결제 상태를 환불 완료로 변경한다
 					sub_paymentService.updateSubPayStatus(subPayNum, 2);
-				}else if(refundVO.getPayment_type()==1) { //기부박스 결제 상태 업로드
-					long dbox_do_num = subscriptionService.getDboxDoNum(refundVO.getImp_uid());
+	
+				}else if(refundVO.getPayment_type()==1) {	
 					//포인트 반환
 					pointVO.setMem_num(refundVO.getMem_num());
 					pointVO.setPevent_type(30);
 					pointVO.setPoint_amount(refundVO.getReturn_point());
 					memberService.updateMemPoint(pointVO);
+					//결제상태 변경
+					long dbox_do_num = subscriptionService.getDboxDoNum(refundVO.getImp_uid());
 					dboxService.updatePayStatus(dbox_do_num, 2);
 				}else {
-					long purchase_num = subscriptionService.getPurchase_num(refundVO.getImp_uid());
 					//포인트 반환
 					pointVO.setMem_num(refundVO.getMem_num());
 					pointVO.setPevent_type(30);
 					pointVO.setPoint_amount(refundVO.getReturn_point());
 					memberService.updateMemPoint(pointVO);
+					//결제상태 변경
+					long purchase_num = subscriptionService.getPurchase_num(refundVO.getImp_uid());
 					goodsService.updatePayStatus(purchase_num, 2);
 				}
+				//환불 신청 알림
+				String payment_type = "";
+				if(refundVO.getPayment_type()==0) {
+					payment_type="정기기부";
+				}else if(refundVO.getPayment_type()==1) {
+					payment_type="기부박스";
+				}else {
+					payment_type="굿즈샵";
+				}
+				
+				NotifyVO notifyVO = new NotifyVO();
+				notifyVO.setMem_num(user.getMem_num());
+				notifyVO.setNotify_type(31);
+				notifyVO.setNot_url("/member/myPage/payment");
+				Map<String, String> dynamicValues = new HashMap<String, String>();
+				dynamicValues.put("type",payment_type);
+				notifyService.insertNotifyLog(notifyVO, dynamicValues);
+				
 				mapJson.put("result", "success");
 			} else {
 				mapJson.put("result", "error");
@@ -906,6 +939,24 @@ public class SubscriptionController {
 		}
 
 			refundService.updateRefundStatus(refundVO.getRefund_num(), 2);
+			//환불 신청 알림
+			String payment_type = "";
+			if(refundVO.getPayment_type()==0) {
+				payment_type="정기기부";
+			}else if(refundVO.getPayment_type()==1) {
+				payment_type="기부박스";
+			}else {
+				payment_type="굿즈샵";
+			}
+			
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setNotify_type(32);
+			notifyVO.setNot_url("/member/myPage/payment");
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("type",payment_type);
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
+			
 		mapJson.put("result", "success");
 
 		return mapJson;
@@ -945,7 +996,23 @@ public class SubscriptionController {
 				//굿즈샵 결제 환불신청으로 변경
 				goodsService.updatePayStatus(refundVO.getId(), 1);
 			}
-
+			//환불 신청 알림
+			String payment_type = "";
+			if(refundVO.getPayment_type()==0) {
+				payment_type="정기기부";
+			}else if(refundVO.getPayment_type()==1) {
+				payment_type="기부박스";
+			}else {
+				payment_type="굿즈샵";
+			}
+			
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setNotify_type(30);
+			notifyVO.setNot_url("/member/myPage/payment");
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("type",payment_type);
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
 			mapJson.put("result", "success");
 		}
 		return mapJson;
