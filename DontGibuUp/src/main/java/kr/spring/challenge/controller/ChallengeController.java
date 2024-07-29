@@ -47,6 +47,7 @@ import kr.spring.challenge.vo.ChallengeVerifyVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.FileUtil;
 import kr.spring.util.PagingUtil;
+import kr.spring.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -109,7 +110,11 @@ public class ChallengeController {
 		challengeVO.calculateChalEdate();
 		// 대표 사진 업로드 및 파일 저장
 		challengeVO.setChal_photo(FileUtil.createFile(request, challengeVO.getUpload()));
-
+		//챌린지 작성시 줄바꿈 허용,기타 html 비허용
+		challengeVO.setChal_title(StringUtil.useNoHTML(challengeVO.getChal_title()));	
+		challengeVO.setChal_content(StringUtil.useBrNoHTML(challengeVO.getChal_content()));
+		challengeVO.setChal_verify(StringUtil.useBrNoHTML(challengeVO.getChal_verify()));
+		
 		session.setAttribute("challengeVO", challengeVO);
 
 		return "redirect:/challenge/leaderJoin";
