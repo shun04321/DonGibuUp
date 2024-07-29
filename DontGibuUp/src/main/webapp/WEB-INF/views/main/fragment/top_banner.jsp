@@ -46,9 +46,9 @@
                 <div class="d-block w-100">
 					<div class="cta-section section-padding section-bg">
 						<div class="container">
-							<div class="row justify-content-center align-items-center">
+							<div class="row justify-content-center align-items-center col-12">
 					
-								<div class="col-lg-5 col-12 ms-auto">
+								<div class="col-lg-6 col-12 ms-auto">
 									<h2 class="mb-0 second-slide-text">
 										자기계발과 기부를 동시에? <br> Don Gibu Up!
 									</h2>
