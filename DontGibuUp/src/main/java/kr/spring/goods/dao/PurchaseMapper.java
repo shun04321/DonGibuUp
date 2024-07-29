@@ -27,6 +27,6 @@ public interface PurchaseMapper {
 	    @Select("SELECT purchase_seq.nextval FROM dual")
 	    Long getSeq();
 	    void updateDeliveryStatusByImpUid(@Param("impUid") String impUid, @Param("deliveryStatus") String deliveryStatus);
-	   
-	    
+	    Long getLastInsertedPurchaseNum(); // 추가된 메서드
+	    PurchaseVO getPurchaseByImpUid(@Param("impUid") String impUid); // 새로운 메소드 추가
 }

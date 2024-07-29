@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
@@ -16,12 +17,11 @@
         form.submit();
     }
 </script>
-
 <div class="page-main">
     <h2>${goods.item_name}</h2>
     <ul class="detail-info">
         <li><img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2"></li>
-        <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: ${goods.item_price}<br> 수량: <input type="number" id="quantity" name="quantity" value="1" min="1" max="${goods.item_stock}"></li>
+        <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: <fmt:formatNumber value="${goods.item_price}" type="number" groupingUsed="true"/>원<br> 수량: <input type="number" id="quantity" name="quantity" value="0" min="0" max="${goods.item_stock}"></li>
     </ul>
     <div class="detail-content">${goods.item_detail}</div>
     <div>

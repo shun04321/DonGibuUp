@@ -8,7 +8,9 @@
     INSERT INTO purchase (purchase_num, mem_num, item_num, imp_uid, merchant_uid, pay_price, pay_date, pay_status, delivery_status, delivery_address, point_used, pamount)
     VALUES (purchase_seq.nextval, #{mem_num}, #{item_num}, #{imp_uid,jdbcType=VARCHAR}, #{merchant_uid}, #{pay_price}, SYSDATE, #{payStatus}, '배송 준비 중', #{delivery_address}, #{point_used}, #{pamount})
 </insert>
-
+<select id="getLastInsertedPurchaseNum" resultType="long">
+        SELECT purchase_seq.currval FROM dual
+    </select>
     <!-- 장바구니 선택 항목 구매 아이템 추가 SQL -->
 
     <select id="getPurchaseListByMember" parameterType="long" resultType="kr.spring.goods.vo.PurchaseVO">
@@ -45,6 +47,11 @@
         SET delivery_status = #{deliveryStatus}
         WHERE purchase_num = #{purchase_num}
     </update>
+
+
+	<select id="getPurchaseByImpUid" resultType="kr.spring.goods.vo.PurchaseVO">
+    SELECT * FROM purchase WHERE imp_uid = #{impUid}
+</select>
 
     <update id="updateDeliveryStatusByImpUid">
         UPDATE purchase

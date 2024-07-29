@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- 상품 목록 출력 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/goods/cart.js"></script>
@@ -62,6 +63,29 @@ function updateCartQuantity(cart_num) {
         }
     });
 }
+function updateCartQuantity(cart_num) {
+    var newQuantity = $('#cart_quantity_' + cart_num).val();
+
+    $.ajax({
+        url: $('#contextPath').data('context-path') + '/cart/updateQuantity',
+        type: 'POST',
+        data: {
+            cart_num: cart_num,
+            cart_quantity: newQuantity
+        },
+        success: function(response) {
+            if (response === 'success') {
+                alert('수량이 업데이트되었습니다.');
+                location.reload();
+            } else {
+                alert('업데이트 실패. 다시 시도해주세요.');
+            }
+        },
+        error: function() {
+            alert('에러가 발생했습니다. 다시 시도해주세요.');
+        }
+    });
+}
 </script>
 
 <div class="page-main">
@@ -76,14 +100,14 @@ function updateCartQuantity(cart_num) {
 <table class="striped-table">
     <thead>
         <tr>
-            <th>선택</th>
+            <th width="80">선택</th>
             <th>사진</th>
-            <th>장바구니번호</th>
-            <th width="400">상품명</th>
-            <th>가격</th>
+            <th width="150">장바구니번호</th>
+            <th width="350">상품명</th> <!-- 상품명 열의 너비를 400px에서 500px으로 수정 -->
+            <th width="150">가격</th>
             <th>재고</th>
             <th>담은 수량</th>
-            <th>수량 업데이트</th>
+            <th width="150">수량 업데이트</th>
         </tr>
     </thead>
     <tbody>
@@ -100,14 +124,16 @@ function updateCartQuantity(cart_num) {
                     <a href="detail?item_num=${cart.goods.item_num}">${cart.goods.item_name}</a>
                 </td>
                 <td class="align-center">
-                    <span id="price_${cart.cart_num}">${cart.goods.item_price}</span>
+                    <span id="price_${cart.cart_num}">
+                        <fmt:formatNumber value="${cart.goods.item_price}" type="number" groupingUsed="true"/> 원
+                    </span>
                 </td>
-                <td class="align-center">${cart.goods.item_stock}</td>
+                <td class="align-center">${cart.goods.item_stock} ea</td>
                 <td class="align-center">
-                    <input type="number" id="cart_quantity_${cart.cart_num}" value="${cart.cart_quantity}" min="1" data-item-num="${cart.goods.item_num}">
+                    <input type="number" id="cart_quantity_${cart.cart_num}" value="${cart.cart_quantity}" min="1" max="${cart.goods.item_stock}" data-item-num="${cart.goods.item_num}">
                 </td>
                 <td class="align-center">
-                    <button type="button" onclick="updateCartQuantity(${cart.cart_num})">수량 변경</button>
+                    <button type="button" class="default-btn" onclick="updateCartQuantity(${cart.cart_num})">수량 변경</button>
                 </td>
             </tr>
         </c:forEach>

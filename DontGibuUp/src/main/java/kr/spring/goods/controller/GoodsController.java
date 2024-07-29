@@ -164,7 +164,7 @@ public class GoodsController {
         model.addAttribute("message", "성공적으로 상품이 등록되었습니다.");
         model.addAttribute("uri", request.getContextPath() + "/goods/list");
 
-        return "common/resultAlert";
+        return "redirect:/goods/list";
     }
 
     /*===================================

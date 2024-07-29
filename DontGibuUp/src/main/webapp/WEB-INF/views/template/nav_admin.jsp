@@ -56,10 +56,16 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" data-bs-toggle="collapse" href="#chartsa" aria-expanded="false" aria-controls="chartsa">
               <i class="menu-icon mdi mdi mdi-shopping"></i>
               <span class="menu-title">굿즈샵</span>
+              <i class="menu-arrow"></i>
             </a>
+            <div class="collapse" id="chartsa">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/purchaseList">구매관리</a></li> 
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="${pageContext.request.contextPath}/admin/refundRequest">

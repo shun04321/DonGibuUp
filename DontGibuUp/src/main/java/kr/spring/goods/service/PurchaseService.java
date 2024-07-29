@@ -21,4 +21,6 @@ public interface PurchaseService {
     void updateDeliveryStatusByImpUid(String impUid, String deliveryStatus);
     void updateStock(Map<String, Object> paramMap);
     void updateStock(Long item_num, Long cart_quantity, Integer quantity);
+    Long getLastInsertedPurchaseNum() throws Exception; // 추가된 메서드
+    PurchaseVO getPurchaseByImpUid(String impUid); // 새로운 메소드 추가
 }

@@ -10,6 +10,8 @@
     <link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+     
+     
      <section class="cta-section section-padding section-bg">
     <div class="container">
         <div class="row justify-content-center align-items-center">
@@ -61,23 +63,44 @@
 		 	<form:textarea path="item_detail"/>
 		 	<form:errors path="item_detail" cssClass="error-color"/>
 		 	<script>
-				 function MyCustomUploadAdapterPlugin(editor) {
-					    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-					        return new UploadAdapter(loader);
-					    }
-					}
-				 
-				 ClassicEditor
-		            .create( document.querySelector( '#item_detail' ),{
-		            	extraPlugins: [MyCustomUploadAdapterPlugin]
-		            })
-		            .then( editor => {
-						window.editor = editor;
-					} )
-		            .catch( error => {
-		                console.error( error );
-		            } );
-			    </script> 
+                function MyCustomUploadAdapterPlugin(editor) {
+                    editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                        return new UploadAdapter(loader);
+                    }
+                }
+             
+                ClassicEditor
+                .create(document.querySelector('#item_detail'), {
+                    extraPlugins: [MyCustomUploadAdapterPlugin],
+                    height: 400, // 에디터의 높이를 400px로 설정합니다.
+                    toolbar: {
+                        items: [
+                            'heading', '|',
+                            'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|',
+                            'insertTable', 'tableColumn', 'tableRow', 'mergeTableCells', '|',
+                            'undo', 'redo'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [ 'tableColumn', 'tableRow', 'mergeTableCells' ]
+                    },
+                    licenseKey: '',
+                    
+                })
+                .then(editor => {
+                    window.editor = editor;
+                    editor.editing.view.change(writer => {
+                        writer.setStyle(
+                            'height',
+                            '400px',
+                            editor.editing.view.document.getRoot()
+                        );
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            </script>
 		</li>
 		<li>
 		 	<form:label path="item_photo">파일업로드</form:label>

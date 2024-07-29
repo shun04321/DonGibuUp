@@ -9,10 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.spring.cart.dao.CartMapper;
+import kr.spring.cart.service.CartService;
 import kr.spring.cart.vo.CartVO;
 import kr.spring.goods.dao.GoodsMapper;
 import kr.spring.goods.dao.PurchaseMapper;
 import kr.spring.goods.vo.PurchaseVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,7 +32,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public void insertPurchase(PurchaseVO purchaseVO) {
         purchaseMapper.insertPurchase(purchaseVO);
+        
     }
+    
+    @Autowired
+	NotifyService notifyService;
 
     @Override
     @Transactional
@@ -45,6 +53,7 @@ public class PurchaseServiceImpl implements PurchaseService {
             purchaseMapper.insertPurchaseItems(cartItem);
             log.debug("Inserted purchase item: " + cartItem);
         }
+        
     }
     @Override
     public List<CartVO> getPurchaseItems(long purchase_num) {
@@ -69,10 +78,20 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
+    public Long getLastInsertedPurchaseNum() throws Exception {
+        return purchaseMapper.getLastInsertedPurchaseNum();
+    }
+    
+    @Override
     public List<PurchaseVO> getAllPurchases() {
         return purchaseMapper.getAllPurchases();
     }
-
+    
+    @Override
+    public PurchaseVO getPurchaseByImpUid(String impUid) {
+        return purchaseMapper.getPurchaseByImpUid(impUid); // 새로운 메소드 구현
+    }
+    
     @Override
     public void updateDeliveryStatus(int purchaseNum, String deliveryStatus) {
         purchaseMapper.updateDeliveryStatus(purchaseNum, deliveryStatus);
