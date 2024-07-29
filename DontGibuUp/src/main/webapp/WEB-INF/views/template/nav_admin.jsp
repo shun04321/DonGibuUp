@@ -25,7 +25,6 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/manageMember">회원정보</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/managePoint">포인트</a></li>
-                <li class="nav-item"> <a class="nav-link" href="#">결제</a></li>
               </ul>
             </div>
           </li>
