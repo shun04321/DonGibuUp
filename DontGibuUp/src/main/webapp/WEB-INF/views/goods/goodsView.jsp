@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 <script>
@@ -17,34 +16,53 @@
         form.submit();
     }
 </script>
-<div class="page-main">
-    <h2>${goods.item_name}</h2>
-    <ul class="detail-info">
-        <li><img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2"></li>
-        <li>재고: ${goods.item_stock}<br> 카테고리: ${goods.dcate_num}<br> 가격: <fmt:formatNumber value="${goods.item_price}" type="number" groupingUsed="true"/>원<br> 수량: <input type="number" id="quantity" name="quantity" value="0" min="0" max="${goods.item_stock}"></li>
-    </ul>
-    <div class="detail-content">${goods.item_detail}</div>
-    <div>
-        <input type="button" value="목록" onclick="location.href='list'">
 
-        <form id="purchaseForm" method="post">
-            <input type="hidden" name="merchantUid" value="${goods.item_num}_${System.currentTimeMillis()}">
-            <input type="hidden" id="goods_do_price" name="amount" value="${goods.item_price}">
-            <input type="button" value="구매하기" id="buy_now_button">
-        </form>
-
-        <form id="cartForm" action="${pageContext.request.contextPath}/cart/insert" method="post">
-            <input type="hidden" name="item_num" value="${goods.item_num}">
-            <c:if test="${not empty sessionScope.user}">
-                <input type="hidden" name="mem_num" value="${sessionScope.user.mem_num}">
-            </c:if>
-            <label for="cart_quantity">수량:</label>
-            <input type="number" id="cart_quantity" name="cart_quantity" value="1" min="1" max="${goods.item_stock}">
-            <input type="button" value="장바구니 담기" onclick="addToCart()">
-        </form>
+<section class="section-padding nanum col-6 mx-auto">
+    <div class="container">
+    <h4 class="mb-4">${goods.item_name}</h4>
+    
+    <div class="detail-info d-flex">
+       	<div class="g-photo-div"><img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2"></div>
+    	<div>
+    		<div class="g-basic-info">
+	        	<div class="mb-1">재고: ${goods.item_stock}</div>
+	        	<div class="mb-1">카테고리: ${goods.dcate_num}</div> 
+	        	<div class="mb-1">가격: ${goods.item_price}</div>
+    		</div>
+        	<div class="d-flex mb-1" style="height:36px"><label class="me-1" style="width:5rem">수량:</label><input class="form-control"
+        		type="number" id="quantity" name="quantity" value="1" min="1" max="${goods.item_stock}" class="me-2">
+        		<form id="purchaseForm" method="post">
+		            <input type="hidden" name="merchantUid" value="${goods.item_num}_${System.currentTimeMillis()}">
+		            <input type="hidden" id="goods_do_price" name="amount" value="${goods.item_price}">
+		            <input type="button" value="구매하기" class="g-custom-btn ms-2" id="buy_now_button" style="height:100%">
+		        </form>
+        	</div>
+		    <div>		
+		        <form id="cartForm" action="${pageContext.request.contextPath}/cart/insert" method="post">
+		            <input type="hidden" name="item_num" value="${goods.item_num}">
+		            <c:if test="${not empty sessionScope.user}">
+		                <input type="hidden" name="mem_num" value="${sessionScope.user.mem_num}">
+		            </c:if>
+		            <div class="d-flex mb-1" style="height:36px">
+		            	<label for="cart_quantity" class="me-1" style="width:5rem">수량:</label><input class="form-control"
+		             	type="number" id="cart_quantity" name="cart_quantity" value="1" min="1" max="${goods.item_stock}">
+		            	<input type="button" value="장바구니" class="g-custom-btn ms-2" onclick="addToCart()">
+		            </div>
+		        </form>
+			</div>
+    	</div>
     </div>
-    <hr size="1" width="100%">
-</div>
+    
+
+	
+    <div class="detail-content">${goods.item_detail}</div>
+	
+	<div class="align-right">
+		<input type="button" value="목록" class="g-custom-btn" onclick="location.href='list'">
+	</div>
+	<hr size="1" width="100%">
+	</div>
+</section>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const quantityInput = document.getElementById('quantity');
@@ -94,7 +112,7 @@
                 <!-- 결제 금액 출력 필드 -->
                 <div class="mb-3">
                     <label class="form-label">결제 금액</label>
-                    <span id="pay_sum"></span>
+                    <span id="pay_sum">${goods.item_price}</span>
                 </div>
                 <!-- 주소 입력 필드 -->
                 <div class="mb-3">
