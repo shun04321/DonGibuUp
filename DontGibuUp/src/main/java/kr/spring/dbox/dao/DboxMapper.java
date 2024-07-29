@@ -12,6 +12,7 @@ import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.subscription.vo.SubscriptionVO;
 
 @Mapper 
 public interface DboxMapper {
@@ -56,4 +57,12 @@ public interface DboxMapper {
 	//환불신청시 결제상태 변경
 	@Update("UPDATE dbox_donation SET dbox_do_status=#{dbox_do_status} WHERE dbox_do_num=#{dbox_do_num}")
 	public void updatePayStatus(long dbox_do_num, long dbox_do_status);
+	
+	
+	/*마이페이지*/
+	//제안한 기부박스 개수
+	@Select("SELECT COUNT(*) FROM dbox WHERE mem_num=#{mem_num}")
+	public int getDboxCountbyMem_num(Map<String, Object> map);
+	//제안한 기부박스 현황 확인
+	public List<DboxVO> getDboxByMem_num(Map<String, Object> map);
 }

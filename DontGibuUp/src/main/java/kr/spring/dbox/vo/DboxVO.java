@@ -53,6 +53,7 @@ public class DboxVO {
 	private String dbox_edate;				//STEP2 - 종료일
 	private Date dbox_rdate;						//제안 완료시 - 신청등록일
 	private int dbox_status;						//제안 완료시 - 0:신청완료,1:심사완료,2:신청반려,3:진행중,4:진행완료,5:진행중단
+	private String dbox_accomment;
 	
 	//파일처리
 	private MultipartFile dbox_team_photo_file;

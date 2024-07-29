@@ -241,4 +241,43 @@
 			#{dbox_do_annony})
 
 	</insert>
+	
+	<!-- 마이페이지 제안한 기부박스 목록 -->
+	<select id="getDboxByMem_num" parameterType="map" resultType="dboxVO">
+		SELECT
+	 	   *
+	    FROM (SELECT
+	            a.*,
+	            rownum rnum
+	          FROM (SELECT
+	                  d.*, c.dcate_name dcate_name, c.dcate_icon dcate_icon, t.total
+	                FROM dbox d
+	                JOIN dona_category c
+	                ON d.dcate_num = c.dcate_num
+	                LEFT OUTER JOIN (
+	                	SELECT dbox_num, SUM(dbox_do_price) total 
+	                	FROM dbox_donation group by dbox_num ) t
+	                ON d.dbox_num = t.dbox_num
+	                WHERE d.mem_num=#{mem_num} ORDER BY d.dbox_num DESC
+	                )a)
+	    <![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>
+	</select>
 </mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

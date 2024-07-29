@@ -12,6 +12,7 @@ import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.subscription.vo.SubscriptionVO;
 
 @Service
 @Transactional
@@ -87,5 +88,15 @@ public class DboxServiceImpl implements DboxService {
 		dboxMapper.updatePayStatus(dbox_do_num, dbox_do_status);
 	}
 
+	//마이페이지
+	@Override
+	public int getDboxCountbyMem_num(Map<String, Object> map) {
+		return dboxMapper.getDboxCountbyMem_num(map);
+	}
+	@Override
+	public List<DboxVO> getDboxByMem_num(Map<String, Object> map) {
+		return dboxMapper.getDboxByMem_num(map);
+	}
+	
 
 }

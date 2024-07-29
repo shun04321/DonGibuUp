@@ -28,6 +28,8 @@ import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
 import kr.spring.cs.service.CSService;
 import kr.spring.cs.vo.InquiryVO;
 import kr.spring.cs.vo.ReportVO;
+import kr.spring.dbox.service.DboxService;
+import kr.spring.dbox.vo.DboxVO;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -50,6 +52,9 @@ public class MyPageController {
 	
 	@Autowired
 	CSService csService;
+	
+	@Autowired
+	DboxService dboxService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -451,4 +456,56 @@ public class MyPageController {
 		
 		return "redirect:/member/myPage/report";
 	}
+	
+	/*===================================
+	 * 		dbox
+	 *==================================*/
+	
+	/*===================================
+	 * 		제안한 기부박스
+	 *==================================*/
+    @GetMapping("/dbox/myPage/dboxMyPropose")
+    public String dboxMyPropose(@RequestParam(defaultValue="1") int pageNum, HttpSession session, Model model) {
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	
+    	MemberVO user = (MemberVO) session.getAttribute("user");
+    	
+    	map.put("mem_num", user.getMem_num());
+    	int count = dboxService.getDboxCountbyMem_num(map);
+    	
+    	log.debug("<<MyPage - 제안한 기부박스 개수>> : " + count);
+    	
+		//페이지 처리
+		PagingUtil page = new PagingUtil(pageNum, count, 10, 10, "dboxMyPropose");
+		
+		List<DboxVO> list = null;
+		
+		if (count > 0) {
+			map.put("start", page.getStartRow());
+			map.put("end", page.getEndRow());
+			list = dboxService.getDboxByMem_num(map);
+		}
+		
+		for (DboxVO dbox : list) {
+			dbox.setDbox_accomment(StringUtil.useBrNoHTML(dbox.getDbox_accomment()));
+		}
+
+		model.addAttribute("count", count);
+		model.addAttribute("list", list);
+		model.addAttribute("page", page.getPage());
+
+		log.debug("<<제안한 기부박스 내역>> : " + list);
+    	
+        return "dboxMyPropose";
+    }	
+    
+    /*===================================
+     * 		기부박스 기부내역
+     *==================================*/
+    @GetMapping("/dbox/myPage/dboxMyDonation")
+    public String dboxMyDonation() {
+    	log.debug("<<MyPage - 기부박스 기부내역>> : ");
+    	
+    	return "dboxMyDonation";
+    }	
 }

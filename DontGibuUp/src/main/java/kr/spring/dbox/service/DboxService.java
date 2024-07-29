@@ -3,10 +3,13 @@ package kr.spring.dbox.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Select;
+
 import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.subscription.vo.SubscriptionVO;
 
 public interface DboxService {
 	//Dbox 등록
@@ -35,4 +38,10 @@ public interface DboxService {
 	public DboxResultVO selectDboxResult(long dbox_num);//기부 결과 개별 데이터
 	
 	public void updatePayStatus(long dbox_do_num, long dbox_do_status);
+	
+	/*마이페이지*/
+	//제안한 기부박스 개수
+	public int getDboxCountbyMem_num(Map<String, Object> map);
+	//제안한 기부박스 현황 확인
+	public List<DboxVO> getDboxByMem_num(Map<String, Object> map);
 }

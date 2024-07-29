@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
 /* item_subscribe를 테두리가 있는 박스로 만듭니다. */
-.item_subscribe {
+.item_dbox {
 	text-align: center; /* 텍스트 가운데 정렬 */
-	width: 600px;
+	width: 800px;
 	border: 1px solid #ccc;
 	border-radius: 10px; /* 둥근 테두리 */
 	padding: 10px;
@@ -14,9 +14,13 @@
 	background-color: #f9f9f9; /* 배경 색상 추가 */
 }
 
-.item_subscribe img {
+.item_dbox img {
 	width: 30px; /* 아이콘 크기 조정 */
 	height: 30px;
+}
+
+.dbox-title-dt {
+	padding: 10px 50px 0 50px;
 }
 
 .cont-item {
@@ -111,7 +115,7 @@
 	display: block;
 }
 
-.item_subscribe {
+.item_dbox {
 	margin-bottom: 20px;
 	padding: 10px;
 	border: 1px solid #ddd;
@@ -148,14 +152,13 @@
 	margin-top: 20px;
 }
 
-#subscriptionList .page-main {
+#dboxMyPropose .page-main {
 	padding: 20px;
 	border-radius: 8px;
 	margin-top: 20px;
-	width: 650px;
 }
 
-#paymentHistory h3, #subscriptionList h3{
+#paymentHistory h3, #dboxMyPropose h4{
 	margin-top: 0;
 	font-size: 24px;
 	color: #333;
