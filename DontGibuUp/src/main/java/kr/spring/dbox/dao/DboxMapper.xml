@@ -60,9 +60,34 @@
 				dcate_num = #{category}
 			</if>
 			<if test="keyword !=null and keyword != ''">
-				<if test="category !=null and category != ''">
+				<if test="(category !=null and category != '') or (statusVal != null and statusVal != '')">
 					AND
 				</if>
+				<if test="keyfield == 1">
+					dbox_title LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyfield == 2">
+					(dbox_team_name LIKE '%' || #{keyword} || '%' OR
+					dbox_team_name LIKE '%' || #{keyword} || '%')
+				</if>
+				<if test="keyfield == 3">
+					dbox_content LIKE '%' || #{keyword} || '%'
+				</if>	
+				<if test="keyfield == 4">
+					(dbox_title LIKE '%' || #{keyword} || '%' OR
+					dbox_content LIKE '%' || #{keyword} || '%')
+				</if>
+			</if>
+		</where>
+	</sql>
+	<sql id="dboxSearchCount">
+		<where>
+			dbox_status=3
+			<if test="category != null and category != ''">
+				AND dcate_num = #{category}
+			</if>
+			<if test="keyword !=null and keyword != ''">
+				AND
 				<if test="keyfield == 1">
 					dbox_title LIKE '%' || #{keyword} || '%'
 				</if>
@@ -91,6 +116,7 @@
 	            </foreach>
 	        </if>  	
 			<if test="keyword !=null and keyword != ''">
+				AND
 				<if test="keyfield == 1">
 					dbox_num LIKE '%' || #{keyword} || '%'
 				</if>
@@ -131,7 +157,7 @@
 		SELECT
 		  COUNT(*)
 		FROM dbox 
-		<include refid="dboxSearch"></include>
+		<include refid="dboxSearchCount"></include>
 	</select>
 	<!-- 기부박스 전체 목록/검색 목록 -->
 	<select id="selectList" parameterType="map" resultType="dboxVO">
