@@ -80,6 +80,9 @@ public interface ChallengeMapper {
     public void deleteChallengeVerify(Long chal_ver_num);    
     //주별 인증 횟수 확인
     public int countWeeklyVerify(Map<String, Object> params);
+    //오늘의 인증 개수 확인 
+    @Select("SELECT COUNT(*) FROM chal_verify WHERE chal_joi_num=#{chal_joi_num} AND TRUNC(chal_reg_date) = TRUNC(SYSDATE)")
+    public Integer countTodayVerify(Long chal_joi_num);
     //챌린지 인증 상태 변경
     @Update("UPDATE chal_verify SET chal_ver_status=#{chal_ver_status} WHERE chal_ver_num=#{chal_ver_num}")
     public void updateVerifyStatus(Map<String,Long> map);

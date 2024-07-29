@@ -63,6 +63,7 @@ public interface ChallengeService {
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
     public void deleteChallengeVerify(Long chal_ver_num);
     public int countWeeklyVerify(Long chal_joi_num, LocalDate startDate, int weekNumber);//Integer?
+    public Integer countTodayVerify(Long chal_joi_num);
     //리더의 챌린지 인증 취소
     public void updateVerifyStatus(Map<String,Long> map);
     //회원의 챌린지 인증 제보
@@ -108,5 +109,4 @@ public interface ChallengeService {
     public List<ChallengeVO> getPopularChallenges();
     //운동 챌린지
     public List<ChallengeVO> getExerciseChallenges();
-
 }

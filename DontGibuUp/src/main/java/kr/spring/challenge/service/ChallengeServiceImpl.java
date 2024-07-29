@@ -282,6 +282,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 		params.put("weekNumber", weekNumber);
 		return challengeMapper.countWeeklyVerify(params);
 	}
+	
+	@Override
+	public Integer countTodayVerify(Long chal_joi_num) {
+		return challengeMapper.countTodayVerify(chal_joi_num);
+	}
 
 	@Override
 	public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map) {
@@ -440,8 +445,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 				//회원 포인트 업데이트
 				memberService.updateMemPoint(pointVO);
-			}
-			
+			}			
 			
 			//챌린지 삭제 알림
 			NotifyVO notifyVO = new NotifyVO();
@@ -773,7 +777,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public List<ChallengeVO> getPopularChallenges() {
 	    return challengeMapper.getPopularChallenges();
 	}
-	
 	//운동 챌린지
 	@Override
 	public List<ChallengeVO> getExerciseChallenges() {

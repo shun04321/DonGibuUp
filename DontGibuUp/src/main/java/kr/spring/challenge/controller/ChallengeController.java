@@ -281,12 +281,6 @@ public class ChallengeController {
 
 		// 이번 달의 챌린지만 필터링
 		List<ChallengeJoinVO> list = challengeService.selectChallengeJoinList(map);
-		
-		  challengeService.selectChallengeJoinList(map).stream() .filter(challenge -> {
-		  if (challenge.getChal_sdate() == null) { return false; } return
-		  challenge.getChal_sdate().substring(0, 7).equals(currentMonthString); })
-		  .collect(Collectors.toList());
-		 
 
 		// 각 챌린지에 대한 달성률과 참여금 계산
 		List<Map<String, Object>> challengeDataList = list.stream().map(challengeJoin -> {
@@ -556,7 +550,17 @@ public class ChallengeController {
 		// 달성률 계산 (정수로 변환)
 		int achievementRate = (int) ((double) successCount / totalCount * 100);
 		mav.addObject("achievementRate", achievementRate);
-
+		
+		//오늘의 인증 완료 여부 확인
+		int todayVerify = challengeService.countTodayVerify(chal_joi_num);
+		if(todayVerify > 0) {
+			mav.addObject("hasTodayVerify", true);
+		}		
+		
+		//이번 주 인증 완료 여부 확인
+		
+		
+		//페이징 처리를 위한 인증 개수 처리
 		mav.addObject("count", count);
 
 		// 회원이 챌린지 리더인지 확인
