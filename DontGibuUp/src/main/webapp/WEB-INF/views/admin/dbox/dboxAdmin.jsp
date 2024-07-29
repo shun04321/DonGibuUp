@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- 기부박스 관리 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/dbox/dbox.admin.js"></script>
 <div class="page-main">
  	<h2>기부박스 관리</h2>
 	<form action="dboxAdmin" id="search_form" method="get">
-		<ul class="search">
+		<ul class="search" style="width:60%;text-align:center">
 			<li>
 				<select name="keyfield" id="keyfield">
 					<option value="1" <c:if test="${param.keyfield == 1}">selected</c:if>>기부박스 번호</option>
@@ -26,28 +26,28 @@
 		</ul>
 		<div class="status-check align-center">
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck0" value="0" >
-			  <label class="" for="statusCheck0">신청완료</label>
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck0" value="0"  <c:forEach var="status" items="${paramValues.status}"><c:if test="${status == '0'}">checked</c:if></c:forEach>>
+			  <label for="statusCheck0">신청완료</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck1" value="1">
-			  <label class="" for="statusCheck1">심사완료</label>
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck1" value="1"  <c:forEach var="status" items="${paramValues.status}"><c:if test="${status == '1'}">checked</c:if></c:forEach>>
+			  <label for="statusCheck1">심사완료</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck2" value="2">
-			  <label class="" for="statusCheck2">신청반려</label>
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck2" value="2"  <c:forEach var="status" items="${paramValues.status}"><c:if test="${status == '2'}">checked</c:if></c:forEach>>
+			  <label for="statusCheck2">신청반려</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck3" value="3">
-			  <label class="" for="statusCheck3">진행중</label>
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck3" value="3"  <c:forEach var="status" items="${paramValues.status}"><c:if test="${status == '3'}">checked</c:if></c:forEach>>
+			  <label for="statusCheck3">진행중</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck4" value="4">
-			  <label class="" for="statusCheck4">진행완료</label>
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck4" value="4"  <c:forEach var="status" items="${paramValues.status}"><c:if test="${status == '4'}">checked</c:if></c:forEach>>
+			  <label for="statusCheck4">진행완료</label>
 			</div>
 			<div class="form-check form-check-inline">
-			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck5" value="5">
-			  <label class="" for="statusCheck5">진행중단</label>
+			  <input name="status" class="form-check-input" type="checkbox" id="statusCheck5" value="5"  <c:forEach var="status" items="${paramValues.status}"><c:if test="${status == '5'}">checked</c:if></c:forEach>>
+			  <label for="statusCheck5">진행중단</label>
 			</div>
 		</div>
 		<div class="align-right">
@@ -56,6 +56,11 @@
 				<option value="2" <c:if test="${param.order == 2}">selected</c:if>>오래된순</option>
 			</select>
 		</div>
+		<script>
+		$('#order').change(function() {
+		    $('#search_form').submit();               
+		});
+		</script>
 	</form>
 	<c:if test="${count == 0}">
 	<div class="result-display">표시할 기부박스가 없습니다.</div>
