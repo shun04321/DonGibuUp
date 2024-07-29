@@ -4,8 +4,8 @@ $(function(){
 		if($(this).val()=='1'){
 			//기관 선택시 사업자 등록번호 노출  
 			let output= '';
-				output += '<label><h3>사업자등록번호<span class="validation-check">*필수</span></h3></label>';
-				output += '<input type="text" id="dbox_business_rnum" name="dbox_business_rnum" placeholder="숫자 10자리">';
+				output += '<label class="d-flex mb-2"><h3 class="pr-form-label">사업자등록번호</h3><span class="validation-check validation-dot"></span></label>';
+				output += '<input type="text" id="dbox_business_rnum" name="dbox_business_rnum" placeholder="숫자 10자리" class="form-control">';
 				output += '<span class="form-error"></span>';		
 			$('#dbox_business').html(output);
 			$('#dbox_business').show();
@@ -61,10 +61,10 @@ $(function(){
 	//사용계획 입력 한줄 생성 함수
 	function dboxBudgetAdd(bud_num){
 		let output = '';
-			output += '<div id="bud_num'+bud_num+'">';
-			output += '<input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_purpose" class="bud_purpose" placeholder="사용용도 및 산출근거" style="width:40%">';
-			output += ' <input type="text" name="dboxBudgets[' + (bud_num - 1) + '].dbox_bud_price" class="bud_price" placeholder="금액(원)" style="width:20%">';
-			output += ' <input type="button" data-bud_num="'+bud_num+'" class="bud_delete_btn" value="삭제"><br>';
+			output += '<div id="bud_num'+bud_num+'" class="d-flex justify-content-between align-items-center mb-2">';
+			output += `<input type="text" name="dboxBudgets[${bud_num - 1}].dbox_bud_purpose" class="bud_purpose form-control" placeholder="사용용도 및 산출근거" style="width:54%">`;
+			output += ` <input type="text" name="dboxBudgets[${bud_num - 1}].dbox_bud_price" class="bud_price form-control" placeholder="금액(원)" style="width:30%">`;
+			output += ` <input type="button" data-bud_num="${bud_num}" class="bud_delete_btn form-control" value="삭제" style="width:14%">`;
 			output += '</div>';
 		$('#dbox_budget').append(output);
 	}

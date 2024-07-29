@@ -17,9 +17,9 @@ $(function(){
 </script>
 <!-- nav 시작 -->
 <div class="align-center d-flex justify-content-center">
-	<input type="button" id="btn1" value="1.나의 다짐" onclick="location.href='${pageContext.request.contextPath}/dbox/propose/step1'" class="nav_buttons">
+	<input type="button" id="btn1" value="1.나의 다짐" onclick="location.href='${pageContext.request.contextPath}/dbox/propose/step1'" class="nav_buttons pr-btn-left">
 	<input type="button" id="btn2" value="2.팀 및 계획 작성" onclick="location.href='${pageContext.request.contextPath}/dbox/propose/step2'" class="nav_buttons">
-	<input type="button" id="btn3" value="3.내용 작성" onclick="location.href='${pageContext.request.contextPath}/dbox/propose/step3'" class="nav_buttons">
+	<input type="button" id="btn3" value="3.내용 작성" onclick="location.href='${pageContext.request.contextPath}/dbox/propose/step3'" class="nav_buttons pr-btn-right">
 </div>
 <hr size="3" noshade="noshade" width="100%">
 <!-- nav 끝 -->
