@@ -175,6 +175,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminReportReply.jsp"/>
 	</definition>
+	<definition name="adminPurchase" extends="adminInquiry">
+		<put-attribute name="title" value="구매내역" />
+		<put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/goods/adminPurchase.jsp"/>
+	</definition>
 	
 <!-- 	<definition name="dboxProposeEnd2" extends="dboxPropose">
 		<put-attribute name="title" value="기부박스 제안하기 : 제안 완료"/>

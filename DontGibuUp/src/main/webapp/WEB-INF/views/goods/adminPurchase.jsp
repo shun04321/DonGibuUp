@@ -2,40 +2,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<!-- CSS FILES -->
-    <link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
-
- <section class="cta-section section-padding section-bg">
-    <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-lg-5 col-12 ms-auto">
-                <h2 class="mb-0">
-                    Make an impact. <br> Save lives.
-                </h2>
-            </div>
-            <div class="col-lg-5 col-12">
-                <a href="#" class="me-4">Make a donation</a> <a href="#section_4" class="custom-btn btn smoothscroll">Become a volunteer</a>
-            </div>
-        </div>
-    </div>
-</section>
-<div>
 
 
-     <h2>관리자 - 구매내역</h2>
-    <div>
-        <input type="button" value="상품 목록" onclick="location.href='${pageContext.request.contextPath}/goods/list'">
-        <input type="button" value="홈" onclick="location.href='${pageContext.request.contextPath}/main/main'">
+<section class="section-padding nanum">
+	<div class="container">
+		<div class="mb-4">
+     <h2>구매내역</h2>
+    <div class="align-right">
+        <input type="button" class="g-custom-btn" value="상품 목록" onclick="location.href='${pageContext.request.contextPath}/goods/list'">
+        <input type="button" class="g-custom-btn" value="홈" onclick="location.href='${pageContext.request.contextPath}/main/main'">
     </div>
     <c:if test="${not empty purchaseList}">
-        <table border="1">
+        <table class="table table-clean table-hover mt-3">
             <thead>
                 <tr>
                     <th>회원번호</th>
                     <th>상품명</th>
-                    <th>사진</th>
                     <th>총액</th>
                     <th>구매일</th>
                     <th>결제 상태</th>
@@ -45,7 +27,7 @@
             </thead>
             <tbody>
                 <c:forEach var="purchase" items="${purchaseList}">
-                    <tr>
+                    <tr class="text-center">
                         <td class="align-center">${purchase.mem_num}</td>
                         <td>
                             <c:choose>
@@ -54,16 +36,6 @@
                                 </c:when>
                                 <c:otherwise>
                                     장바구니 구매
-                                </c:otherwise>
-                            </c:choose>
-                        </td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${not empty purchase.item_photo}">
-                                    <img src="${pageContext.request.contextPath}${purchase.item_photo}" alt="${purchase.item_name}" width="100" height="100">
-                                </c:when>
-                                <c:otherwise>
-                                    <img src="${pageContext.request.contextPath}/images/cart.png" alt="장바구니 구매" width="100" height="100">
                                 </c:otherwise>
                             </c:choose>
                         </td>
@@ -115,6 +87,8 @@
         </table>
     </c:if>
 </div>
+</div>
+</section>
 <c:if test="${empty purchaseList}">
     <p>구매 내역 없음</p>
 </c:if>

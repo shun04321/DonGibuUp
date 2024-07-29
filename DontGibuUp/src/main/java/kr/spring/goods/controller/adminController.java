@@ -29,7 +29,7 @@ public class adminController {
     public String getPurchaseList(Model model) {
         List<PurchaseVO> purchaseList = purchaseService.getAllPurchases();
         model.addAttribute("purchaseList", purchaseList);
-        return "goods/adminPurchase";
+        return "adminPurchase";
     }
 
     @PostMapping("/admin/updateDeliveryStatus")
@@ -49,18 +49,30 @@ public class adminController {
             int notifyType = 0;
             if ("배송 시작".equals(deliveryStatus)) {
                 notifyType = 18;
+                notifyVO.setNotify_type(notifyType);
+                notifyVO.setNot_url("/goods/detail?item_num=" + purchaseVO.getItem_num()); // 알림을 누르면 반환할 URL
+                
+                // 동적 데이터 매핑
+                Map<String, String> dynamicValues = new HashMap<>();
+                dynamicValues.put("purchase_num", String.valueOf(purchaseVO.getPurchase_num())); // 알림 템플릿 참조
+                
+                // NotifyService 호출
+                notifyService.insertNotifyLog(notifyVO, dynamicValues); // 알림 로그 찍기
             } else if ("배송 완료".equals(deliveryStatus)) {
                 notifyType = 19;
+                notifyVO.setNotify_type(notifyType);
+                notifyVO.setNot_url("/goods/detail?item_num=" + purchaseVO.getItem_num()); // 알림을 누르면 반환할 URL
+                
+                // 동적 데이터 매핑
+                Map<String, String> dynamicValues = new HashMap<>();
+                dynamicValues.put("purchase_num", String.valueOf(purchaseVO.getPurchase_num())); // 알림 템플릿 참조
+                
+                // NotifyService 호출
+                notifyService.insertNotifyLog(notifyVO, dynamicValues); // 알림 로그 찍기
+            } else {
+            	return "redirect:/admin/purchaseList";
             }
-            notifyVO.setNotify_type(notifyType);
-            notifyVO.setNot_url("/goods/detail?item_num=" + purchaseVO.getItem_num()); // 알림을 누르면 반환할 URL
             
-            // 동적 데이터 매핑
-            Map<String, String> dynamicValues = new HashMap<>();
-            dynamicValues.put("purchase_num", String.valueOf(purchaseVO.getPurchase_num())); // 알림 템플릿 참조
-            
-            // NotifyService 호출
-            notifyService.insertNotifyLog(notifyVO, dynamicValues); // 알림 로그 찍기
         }
         
         return "redirect:/admin/purchaseList";
