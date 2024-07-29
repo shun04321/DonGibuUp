@@ -7,13 +7,15 @@
 <section class="section-padding nanum">
 	<div class="container">
 		<div>
-			<%-- 기부박스 제안하기 버튼 --%>
-			<div class="text-end mt-2 mb-2">
-				<button type="button" class="btn btn-outline-dark btn-lg" onclick="location.href='${pageContext.request.contextPath}/dbox/propose'">기부박스 제안하기</button>
-			</div>
 			
 			<%-- 카테고리 --%>
 			<div id="category_output" class="text-center" style="margin-bottom:5rem"></div>
+			
+			<%-- 기부박스 제안하기 버튼 --%>
+			<div class="text-end mt-2 mb-4 d-flex align-items-center justify-content-end">
+				<img src="${pageContext.request.contextPath}/images/edit.png" style="width:18px;height:18px;">
+				<button type="button" class="pr-propose-btn ps-1" onclick="location.href='${pageContext.request.contextPath}/dbox/propose'">기부박스 제안하기</button>
+			</div>
 			
 			<%-- 검색 --%>
 			<form action="list" id="search_form" method="get">

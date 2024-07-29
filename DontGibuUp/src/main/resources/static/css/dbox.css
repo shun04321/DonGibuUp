@@ -21,6 +21,8 @@
 	border: 1px solid #5bc1ac;
 }
 
-.db-list-item {
-	
+.pr-propose-btn {
+	border: none;
+	border-bottom: 1px solid #000;
+	background-color: transparent;
 }
