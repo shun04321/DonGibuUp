@@ -21,7 +21,14 @@
                     <div class="item_dbox">
                         <dl class="header-item">
                             <dt class="d-flex flex-column align-items-start dbox-title-dt">
-                                <span style="font-size:1.25rem" class="mb-2"><a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/content">${dbox.dbox_title}</a></span>
+                                <span style="font-size:1.25rem" class="mb-2">
+                                	<c:if test="${dbox.dbox_status==0}"><a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/example">${dbox.dbox_title}</a></c:if>
+									<c:if test="${dbox.dbox_status==1}"><a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/example">${dbox.dbox_title}</a></c:if>
+                                    <c:if test="${dbox.dbox_status==2}">${dbox.dbox_title}</c:if>
+                                    <c:if test="${dbox.dbox_status==3}"><a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/content">${dbox.dbox_title}</a></c:if>
+                                    <c:if test="${dbox.dbox_status==4}"><a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/content">${dbox.dbox_title}</a></c:if>
+                                    <c:if test="${dbox.dbox_status==5}">${dbox.dbox_title}</c:if>
+                                </span>
                                 <span><img src="${pageContext.request.contextPath}/upload/${dbox.dcate_icon}" alt="기부처 아이콘" width="30">${dbox.dcate_name}</span>
                             </dt>
                             <dd>
