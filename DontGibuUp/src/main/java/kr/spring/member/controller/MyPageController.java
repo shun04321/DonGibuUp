@@ -242,6 +242,7 @@ public class MyPageController {
 		memberVO.setMem_num(user.getMem_num());
 
 		//회원탈퇴 service
+		memberService.deleteAccount(user.getMem_num());
 		
 		session.invalidate();
 		

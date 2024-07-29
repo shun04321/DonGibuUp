@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.spring.cart.dao.CartMapper;
+import kr.spring.cart.vo.CartVO;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -33,6 +36,8 @@ public class MemberServiceImpl implements MemberService {
 	NotifyService notifyService;
 	@Autowired
 	PasswordEncoder pwEncoder;
+	@Autowired
+	CartMapper cartMapper;
 
 	//회원가입
 	@Override
@@ -270,12 +275,22 @@ public class MemberServiceImpl implements MemberService {
 	public void deleteAccount(long mem_num) {
 		
 		//delete detail
-		memberMapper.deleteMemberDetail(mem_num);
+		//memberMapper.deleteMemberDetail(mem_num);
+		
+	    // 카트 삭제
+	    List<CartVO> cart_list = cartMapper.selectCartsByMember(mem_num);
+	    
+	    if (!cart_list.isEmpty()) {
+	        List<Long> cart_nums = cart_list.stream()
+	                                       .map(CartVO::getCart_num)
+	                                       .collect(Collectors.toList());
+	        cartMapper.deleteCarts(cart_nums);  // Modify your mapper to handle batch delete
+	    }
 		
 		//status 업데이트
-		MemberVO member = new MemberVO();
-		member.setMem_status(0);
-		memberMapper.updateMemStatus(member);
+		/*		MemberVO member = new MemberVO();
+				member.setMem_status(0);
+				memberMapper.updateMemStatus(member);*/
 		
 	}
 

@@ -67,4 +67,12 @@
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
 	</select>
+	
+	<delete id="deleteCarts">
+	    DELETE FROM cart
+	    WHERE cart_num IN
+	    <foreach item="cart_num" collection="cart_nums" open="(" separator="," close=")">
+	        #{cart_num}
+	    </foreach>
+	</delete>
 </mapper>
