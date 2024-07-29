@@ -261,19 +261,19 @@ public class GoodsController {
     public String deleteSubmit(@RequestParam("item_num") long item_num, HttpSession session, Model model) {
         // 세션에서 member_status 확인
         MemberVO user = (MemberVO) session.getAttribute("user");
-        Integer member_status = user != null ? user.getMem_status() : null;
+        Integer memberStatus = user != null ? user.getMem_status() : null;
 
-        if (member_status == null || member_status != 9) {
+        if (memberStatus == null || memberStatus != 9) {
             model.addAttribute("message", "관리자만 접근 가능합니다.");
             model.addAttribute("uri", "/goods/list");
-            return "common/resultAlert";
+            return "redirect:/goods/list";
         }
 
         goodsService.deleteGoods(item_num);
 
         model.addAttribute("message", "상품이 삭제되었습니다.");
         model.addAttribute("uri", "/goods/list");
-        return "common/resultAlert";
+        return "redirect:/goods/list";
     }
 
 

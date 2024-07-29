@@ -37,13 +37,14 @@ a:hover{
 } */
 /* 페이지 레이아웃
 ---------------------*/
-.page-main{
-	width:98%;
-	margin:0 auto;
+.page-main {
+    width: 98%;
+    margin: 0 auto;
 }
-.page-one{
-	width:600px;
-	margin:0 auto;
+
+.page-one {
+    max-width: 1200px; /* 최대 너비를 설정하여 큰 화면에서는 더 넓게 사용 가능 */
+    margin: 0 auto;
 }
 /* 공통 메시지
 ---------------------*/
