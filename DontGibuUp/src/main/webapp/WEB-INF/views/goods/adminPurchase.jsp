@@ -14,7 +14,7 @@
     </div>
     <c:if test="${not empty purchaseList}">
         <table class="table table-clean table-hover mt-3">
-            <thead>
+            <thead class="align-center">
                 <tr>
                     <th>회원번호</th>
                     <th>상품명</th>
@@ -45,6 +45,9 @@
                             <c:choose>
                                 <c:when test="${purchase.payStatus == 0}">
                                     결제완료
+                                </c:when>
+                                <c:when test="${purchase.payStatus == 1}">
+                                    환불신청
                                 </c:when>
                                 <c:when test="${purchase.payStatus == 2}">
                                     환불완료

@@ -72,6 +72,11 @@
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/common/resultBody.jsp"/>
 	</definition>
+	<definition name="memberDeleteAccount" extends="memberInfo">
+		<put-attribute name="title" value="MyPage - 회원탈퇴"/>
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/mypage/memberDeleteAccount.jsp"/>
+	</definition>
 	<definition name="inviteFriendEvent" extends="memberInfo">
 		<put-attribute name="title" value="MyPage - 친구초대" />
 		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>

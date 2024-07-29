@@ -198,6 +198,58 @@ public class MyPageController {
 		
 		return "changePasswordResultPage";
 	}
+	
+	//회원탈퇴
+	@GetMapping("/member/myPage/deleteAccount")
+	public String deleteAccountForm(Model model, HttpSession session) {
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+
+		model.addAttribute("memberTotal", memberTotal);
+		
+		return "memberDeleteAccount";
+	}
+	
+	//회원탈퇴
+	@PostMapping("/member/myPage/deleteAccount")
+	public String deleteAccount(@Valid MemberVO memberVO, BindingResult result,
+			Model model, HttpServletRequest request, HttpSession session) {
+		
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		
+		log.debug("<<회원탈퇴>> : " + memberVO);
+
+		if (memberVO.getMem_pw().equals("")) {
+			log.debug("<<에러>> : " + result.getAllErrors());
+			result.rejectValue("mem_pw", "NotBlank.mem_pw");
+			
+			MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+			model.addAttribute("memberTotal", memberTotal);
+			return "memberDeleteAccount";
+		}
+		
+		MemberVO member = memberService.selectMember(user.getMem_num());
+		
+		if (!memberService.isCheckedPassword(member, memberVO.getMem_pw())) {
+			log.debug("<<에러>> : " + result.getAllErrors());
+			result.rejectValue("mem_pw", "pwNotMatched");
+			
+			MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+			model.addAttribute("memberTotal", memberTotal);
+			return "memberDeleteAccount";
+		}
+		
+		memberVO.setMem_num(user.getMem_num());
+
+		//회원탈퇴 service
+		
+		session.invalidate();
+		
+		model.addAttribute("message", "회원탈퇴가 완료되었습니다");
+		model.addAttribute("url", request.getContextPath() + "/main/main");
+		
+		return "common/resultAlert";
+	}
 
 	//친구초대이벤트 페이지
 	@GetMapping("/member/myPage/inviteFriendEvent")

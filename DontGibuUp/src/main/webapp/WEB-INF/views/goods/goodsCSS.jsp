@@ -37,4 +37,25 @@
 .g-buy-label {
 	font-weight: bold;
 }
+.table thead th {
+	text-align: center; /* 헤더 셀 가운데 정렬 */
+	background-color: #5bc1ac; /* 헤더 배경색 */
+	color: #fff; /* 헤더 텍스트 색상 */
+}
+
+.table td {
+	vertical-align: middle;
+	padding: 0 !important; /* 행간 좁히기 */
+	height: 2.5rem;
+}
+
+.table-hover tbody tr:hover {
+	background-color: #fff !important;
+}
+
+.table th {
+	vertical-align: middle;
+	padding: 0.8rem !important; /* 행간 좁히기 */
+	height: 2.5rem;
+}
 </style>

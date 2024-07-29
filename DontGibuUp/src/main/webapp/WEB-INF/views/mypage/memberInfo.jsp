@@ -121,10 +121,10 @@
 		</form:form>
 
 		<div class="d-flex justify-content-left mb-3">
-			<a href="#" class="custom-cancel-btn">회원 탈퇴하기</a>
+			<a href="deleteAccount" class="custom-cancel-btn">회원 탈퇴하기</a>
 		</div>
     </div>
-</div>
+
 
 
 
