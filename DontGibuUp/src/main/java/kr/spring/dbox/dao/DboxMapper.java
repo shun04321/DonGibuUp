@@ -38,6 +38,8 @@ public interface DboxMapper {
 	public List<DboxVO> selectAdminList(Map<String, Object> map);//Dbox 관리자목록
 	@Select("SELECT * FROM dbox WHERE dbox_status=#{dbox_status}")
 	public List<DboxVO> selectStatusUpdateList(int dbox_status);//Dbox 업데이트 목록
+	@Select("SELECT * FROM (SELECT * FROM dbox WHERE dbox_status = 3 ORDER BY dbox_num DESC) WHERE ROWNUM <= 5")
+	public List<DboxVO> mainDboxList();//메인 기부박스 최신 목록 5개
 	@Select("SELECT * FROM dbox JOIN dona_category USING(dcate_num) WHERE dbox_num=#{dbox_num}")
 	public DboxVO selectDbox(long dbox_num);//Dbox 선택
 	

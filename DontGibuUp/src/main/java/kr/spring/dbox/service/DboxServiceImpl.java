@@ -61,6 +61,10 @@ public class DboxServiceImpl implements DboxService {
 		return dboxMapper.selectStatusUpdateList(dbox_status);
 	}
 	@Override
+	public List<DboxVO> mainDboxList() {//메인 기부박스 최신 목록 5개
+		return dboxMapper.mainDboxList();
+	}
+	@Override
 	public DboxVO selectDbox(long dbox_num) {
 		return dboxMapper.selectDbox(dbox_num);//Dbox 개별 선택	
 	}

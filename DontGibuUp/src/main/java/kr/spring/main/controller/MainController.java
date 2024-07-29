@@ -13,6 +13,8 @@ import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.data.service.DataService;
 import kr.spring.data.vo.TotalVO;
+import kr.spring.dbox.service.DboxService;
+import kr.spring.dbox.vo.DboxVO;
 import kr.spring.goods.service.GoodsService;
 import kr.spring.goods.vo.GoodsVO;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,8 @@ public class MainController {
 	private ChallengeService challengeService;
 	@Autowired
 	private GoodsService goodsService;
+	@Autowired
+	private DboxService dboxService;
 	@GetMapping("/")
 	public String init() {
 		return "redirect:/main/main";
@@ -51,7 +55,11 @@ public class MainController {
 		 // 최신 상품 하나만 가져오기
         GoodsVO todayGoods = goodsService.todayGoods();
         model.addAttribute("todayGoods", todayGoods);
-
+        
+        //기부박스 최근목록 5개
+        List<DboxVO> dboxList = dboxService.mainDboxList();
+        model.addAttribute("dboxList", dboxList);
+        
         return "main"; // Tiles의 설정명
    } 
 	

@@ -170,5 +170,12 @@
 /*정기기부*/
 
 /*기부박스*/
-
+.list-group-item {
+    display: flex;               /* Flexbox 사용 */
+    align-items: center;        /* 아이템을 수직으로 가운데 정렬 */
+    max-width: 100%;           /* 최대 너비 설정 (필요에 따라 조정) */
+    white-space: nowrap;        /* 줄 바꿈 방지 */
+    overflow: hidden;           /* 넘치는 부분 숨기기 */
+    text-overflow: ellipsis;    /* 넘칠 때 '...' 표시 */
+}
 /*굿즈샵*/
