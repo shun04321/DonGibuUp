@@ -36,7 +36,7 @@
 <img
 	src="${pageContext.request.contextPath}/upload/${category.dcate_banner}"
 	id="banner" width="100%;">
-<div class="page-main">
+<div class="page-main nanum">
 	<h2 style="margin-top: 80px;">${category.dcate_name}</h2>
 	<ul class="detail-info">
 		<li>${category.dcate_charity}<br>
@@ -135,7 +135,7 @@
 					};
 				</script>
 	<div class="pay-button">
-		<button id="paybutton" class="btn btn-info" data-bs-toggle="modal"
+		<button id="paybutton" class="btn btn-info nanum" data-bs-toggle="modal"
 			data-bs-target="#staticBackdrop">정기기부 신청</button>
 	</div>
 	

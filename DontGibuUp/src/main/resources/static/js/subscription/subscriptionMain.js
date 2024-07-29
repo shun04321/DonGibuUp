@@ -1,10 +1,11 @@
  document.addEventListener('DOMContentLoaded', function() {
-        const headers = document.querySelectorAll('.accordion-header');
+        const items = document.querySelectorAll('.accordion-item');
 
-        headers.forEach(header => {
-            header.addEventListener('click', function() {
+        items.forEach(item => {
+            item.addEventListener('click', function() {
                 // Toggle the active class
-                const body = this.nextElementSibling;
+                const body = this.lastElementChild;
+
                 
                 // Slide up all other accordion bodies
                 document.querySelectorAll('.accordion-body').forEach(b => {

@@ -12,6 +12,7 @@
 	type="text/css">
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/subscription/subscriptionMain.js"></script>
+<section class="nanum">
 <div class="container1">
 	<!-- 캐러셀 시작 -->
 	<div id="carouselExample2" class="carousel slide carousel-fade"
@@ -56,21 +57,23 @@
 	</div>
 	<!-- 캐러셀 끝 -->
 </div>
-<section class="section-padding">
-	<div class="container">
-		<div class="row">
+</section>
+
+<section class="section-padding nanum">
+	<div class="container d-flex justify-content-center">
+		<div class="row col-lg-9 justify-content-center">
 			<div class="col-lg-10 col-12 text-center mx-auto">
-				<h2 class="mb-5">마음이 움직이는 주제를 선택하세요.</h2>
+				<h4 class="mb-5">마음이 움직이는 주제를 선택하세요.</h4>
 			</div>
 			<c:forEach var="category" items="${list}" varStatus="loop">
-				<div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+				<div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0 ct-item">
 					<div
 						class="featured-block d-flex justify-content-center align-items-center">
 						<a
 							href="../category/categoryDetail?dcate_num=${category.dcate_num}">
 							<img
 							src="${pageContext.request.contextPath}/upload/${category.dcate_icon}"
-							class="featured-block-image img-fluid" id="icon"
+							class="featured-block-image img-fluid icon"
 							alt="Slide ${loop.index + 1}">
 							<p class="featured-block-text">
 								<span class="dcate_name">${category.dcate_name}</span>
@@ -81,18 +84,19 @@
 			</c:forEach>
 		</div>
 	</div>
-	<div class="container" style="padding-top: 50px;">
-		<h2>
+	
+	<div class="container col-lg-7" id="faq_container">
+		<h4>
 			<a href="/cs/faqlist?category=0">자주 묻는 질문</a>
-		</h2>
+		</h4>
 		<hr class="header-hr">
-		<div class="container">
-			<section class="accordion-section">
+		<div class="container px-0">
+			<section class="accordion-section mx-0">
 			<c:forEach var="faq" items="${faqlist}">
-				<div class="accordion-item">
+				<div class="accordion-item px-0">
 					<div class="accordion-header">
 						${faq.faq_question}
-						<div class="align-right">▼</div>
+						<div class="align-right accordion-icon">▼</div>
 					</div>
 					<div class="accordion-body">
 						${faq.faq_answer}

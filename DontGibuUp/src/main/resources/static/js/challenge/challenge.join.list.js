@@ -25,21 +25,27 @@
 	});
 });*/
 
-$(document).on('click','.chal_talk',function(e){
+let pageNum;
+
+if (pageNum == null) {
+	pageNum = 1;
+}
+
+$(document).on('click', '.chal_talk', function(e) {
 	e.preventDefault();
 	let chal_num = $(this).data('chal-num');
 	$.ajax({
-		url:'joinChal_chat',
-		type:'post',
-		data:{chal_num:chal_num},
-		success:function(rsp){
-			if(rsp.result == 'logout'){
-				window.location.replace(contextPath+'/member/login');
-			}else if(rsp.result == 'success'){
-				window.open('chal_chatDetail','Popup','width=800,height=800');
+		url: 'joinChal_chat',
+		type: 'post',
+		data: { chal_num: chal_num },
+		success: function(rsp) {
+			if (rsp.result == 'logout') {
+				window.location.replace(contextPath + '/member/login');
+			} else if (rsp.result == 'success') {
+				window.open('chal_chatDetail', 'Popup', 'width=800,height=800');
 			}
 		},
-		error:function(){
+		error: function() {
 			alert('네트워크 오류');
 		}
 	});
@@ -47,8 +53,8 @@ $(document).on('click','.chal_talk',function(e){
 
 function loadChallenges(month) {
 	$.ajax({
-		url: contextPath + '/challenge/join/list',
-		data: { status: status, month: month },
+		url: contextPath + `/challenge/join/list?month=${month}&status=${status}&pageNum=${pageNum}`,
+		/*data: { status: status, month: month },*/
 		success: function(response) {
 			$('#challengeContainer').html($(response).find('#challengeContainer').html());
 			updateEventListeners(); // Update event listeners after AJAX load
@@ -59,28 +65,31 @@ function loadChallenges(month) {
 	});
 }
 
-function deleteChallenge(chalJoiNum,isLeader) {
-	if(isLeader){
-		if(!confirm('챌린지를 삭제하시겠습니까?')){
+function deleteChallenge(chalJoiNum, isLeader) {
+	if (isLeader) {
+		if (!confirm('챌린지를 삭제하시겠습니까?')) {
 			return;
 		}
-	}else{
+	} else {
 		if (!confirm('챌린지를 취소하시겠습니까?')) {
 			return;
 		}
 	}
-	
 
 	$.ajax({
-		url:'delete',
+		url: 'delete',
 		type: 'POST',
-		data: JSON.stringify({ 
-			chal_joi_num: chalJoiNum, 
-			isLeader:isLeader
+		data: JSON.stringify({
+			chal_joi_num: chalJoiNum,
+			isLeader: isLeader
 		}),
-		contentType:'application/json; charset=utf-8',
+		contentType: 'application/json; charset=utf-8',
 		success: function(response) {
-			alert('챌린지가 취소되었습니다.');
+			if (isLeader) {
+				alert('챌린지가 삭제되었습니다.');
+			} else {
+				alert('챌린지가 취소되었습니다.');
+			}			
 			location.reload(); // 페이지 새로고침
 		},
 		error: function(xhr, status, error) {

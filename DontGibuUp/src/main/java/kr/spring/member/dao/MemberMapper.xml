@@ -254,7 +254,7 @@
 										    TO_CHAR(e.chal_pay_date, 'YYYY-MM-DD HH24:MI:SS') AS pay_date, -- 날짜 포맷 조정
 										    TO_CHAR(f.chal_title) AS ref
 										FROM chal_payment e
-										JOIN chal_join
+										LEFT OUTER JOIN chal_join
 										USING(chal_joi_num)
 										JOIN challenge f
 										USING(chal_num)
