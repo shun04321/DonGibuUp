@@ -87,13 +87,13 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item nav-category">STATS</li>
+<!--           <li class="nav-item nav-category">STATS</li>
           <li class="nav-item">
             <a class="nav-link" href="#">
               <i class="menu-icon mdi mdi-chart-line"></i>
               <span class="menu-title">통계</span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <p><br>
           </li>
