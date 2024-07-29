@@ -24,6 +24,7 @@ public interface DboxService {
 	public List<DboxVO> selectList(Map<String, Object> map);//Dbox 목록
 	public Integer selectAdminListCount(Map<String, Object> map);//Dbox 관리자개수
 	public List<DboxVO> selectAdminList(Map<String, Object> map);//Dbox 관리자목록
+	public List<DboxVO> selectStatusUpdateList(int dbox_status);//Dbox 업데이트 목록
 	public DboxVO selectDbox(long dbox_num);//Dbox 개별 데이터
 	
 	//Dbox 기부계획

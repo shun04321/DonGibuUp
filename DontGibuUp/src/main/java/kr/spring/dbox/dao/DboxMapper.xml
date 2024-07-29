@@ -50,7 +50,13 @@
 	<!-- sql 태그와 include 태그를 이용해서 SQL문을 재사용 -->
 	<sql id="dboxSearch">
 		<where>
+			<if test="statusVal != null and statusVal != ''">
+				dbox_status=#{statusVal}
+			</if>
 			<if test="category != null and category != ''">
+				<if test="statusVal != null and statusVal != ''">
+				AND
+				</if>
 				dcate_num = #{category}
 			</if>
 			<if test="keyword !=null and keyword != ''">
@@ -160,7 +166,7 @@
 			  		)a)	
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
-		]]>
+		]]>		
 		<include refid="dboxOrder"></include>
 	</select>
 	<!-- 관리자 기부박스 총레코드수/검색 레코드 수 -->

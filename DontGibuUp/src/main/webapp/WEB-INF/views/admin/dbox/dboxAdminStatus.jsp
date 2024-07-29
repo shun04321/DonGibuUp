@@ -79,9 +79,11 @@
 	 	$('#status_form').submit(function(){
 	 		if(!confirm('변경하시겠습니까?')){
 	 			return false;
-	 		}else if($('#reject').val() == '' || $('#reject').val() == null){
-	 			alert('내용 작성 필수');
-	 			return false;
+	 		}else if($('#reject').val().trim() == '' || $('#reject').val().trim() == null){
+	 			if(!$('#reject').prop('disabled')){
+		 			alert('내용 작성 필수');
+		 			return false;	 				
+	 			}
 	 		}
 	 	});
 	 	$('.status').change(function(){
