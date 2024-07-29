@@ -72,7 +72,7 @@
 		<tr>
 			<th class="align-center">기부박스 번호</th>
 			<th class="align-center">회원 번호</th>
-			<th class="align-left"  style="width:20%;">기부박스 제목</th>
+			<th class="align-left" style="width:20%;">기부박스 제목</th>
 			<th class="align-left">팀명(기관/단체)</th>
 			<th class="align-left">카테고리</th>
 			<th class="align-center">등록일</th>
