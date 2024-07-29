@@ -2,13 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- 기부박스 상태 관리 시작 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/dbox.css" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <div class="page-main">
  	<h2>기부박스 상태 관리</h2><br>
- 	
+ 		<button type="button" class="btn btn-outline-success mt-2 mb-2" onclick="location.href='/admin/dboxAdmin'">목록</button>
  	<h5>기부박스 정보</h5>
  	<div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+ 		기부박스 번호 : ${dbox.dbox_num}<br>
 	 	기간 : ${dbox.dbox_sdate} ~ ${dbox.dbox_edate}<br>
 	 	등록일 : ${dbox.dbox_rdate}<br>
 	 	상태 :  	
@@ -96,24 +99,56 @@
 	 	</script>
 	</div>
  	
+ 	<h5>신청자 정보</h5>
+ 	<div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+ 		회원 번호 : ${member.mem_num}<br>
+	 	닉네임 : 	<c:if test="${!empty member.mem_photo}">
+                <img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" class="rounded-circle my-image">&nbsp;${member.mem_nick}&nbsp;님<br>
+                </c:if>
+                <c:if test="${empty member.mem_photo}">
+                <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${member.mem_nick}&nbsp;님<br>
+                </c:if>
+	 	상태 : 
+			<c:if test="${member.mem_status == 0}">
+			탈퇴회원
+			</c:if>
+			<c:if test="${member.mem_status == 1}">
+			정지회원
+			</c:if>
+			<c:if test="${member.mem_status == 2}">
+			일반회원
+			</c:if>
+			<c:if test="${member.mem_status == 9}">
+			관리자
+			</c:if>
+	 	<br>
+	 	이메일 : ${member.mem_email}<br>
+	 	
+ 	
+ 	</div>
+ 	
  	<h5>팀 정보</h5>
  	<div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
 	 	팀 : 
-	 	<span class="badge">
-		<c:if test="${dbox.dbox_team_type == 1}">
-		기관
-		</c:if>
-		<c:if test="${dbox.dbox_team_type == 2}">
-		개인/단체
-		</c:if>
-		</span>
-		${dbox.dbox_team_name}<br>
-	 	팀 사진<br>
-	 	<img src="${pageContext.request.contextPath}/upload/dbox/${dbox.dbox_team_photo}" width="100"><br>
+		 	<span class="badge">
+			<c:if test="${dbox.dbox_team_type == 1}">
+			기관
+			</c:if>
+			<c:if test="${dbox.dbox_team_type == 2}">
+			개인/단체
+			</c:if>
+			</span>
+			${dbox.dbox_team_name}
+		 	<c:if test="${!empty dbox.dbox_team_photo}">
+		 	<img src="${pageContext.request.contextPath}/upload/dbox/${dbox.dbox_team_photo}"width="50" height="50" class="profile-photo"><br>
+		 	</c:if>
+		 	<c:if test="${empty dbox.dbox_team_photo}">
+		 	<img src="${pageContext.request.contextPath}/images/teamProfile.png" width="50" height="50" class="profile-photo"><br>
+		 	</c:if>
 		<c:if test="${dbox.dbox_team_type == 1}">
 		사업자 번호 : ${dbox.dbox_business_rnum}<br>
 		</c:if>
-	 	팀 설명 : ${dbox.dbox_team_detail}<br>
+	 	팀 설명 : ${dbox.dbox_team_detail} <br>
  	
  	</div>
  	

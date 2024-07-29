@@ -157,23 +157,36 @@ public class DboxMypageAdiminController {
     	
     	dboxService.updateDboxStatus(dbox_num, dbox_status);
     	//알림
-    	if(dbox_status <= 2) {//신청완료 -> 심사완료 / 신청반려
+    	if(dbox_status <= 2) {//1 : 심사완료 / 2 : 신청반려
 			NotifyVO notifyVO = new NotifyVO();
 			notifyVO.setMem_num(dbox.getMem_num());
 			notifyVO.setNotify_type(7); 
-			notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/example");
+			notifyVO.setNot_url("/dbox/myPage/dboxMyPropose");
 			
 			Map<String, String> dynamicValues = new HashMap<String, String>();
 			dynamicValues.put("dboxTitle", dbox.getDbox_title());
 			
 			notifyService.insertNotifyLog(notifyVO, dynamicValues);
     	}
-    	if(dbox_status == 5) {//진행 중단
+    	
+    	if(dbox_status == 3) {//진행중
+    		NotifyVO notifyVO = new NotifyVO();
+    		notifyVO.setMem_num(dbox.getMem_num());
+    		notifyVO.setNotify_type(8); 
+    		notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/content");
+    		
+    		Map<String, String> dynamicValues = new HashMap<String, String>();
+    		dynamicValues.put("dboxTitle", dbox.getDbox_title());
+    		
+    		notifyService.insertNotifyLog(notifyVO, dynamicValues);
+    	}
+    	
+    	if(dbox_status >= 4) {//4 : 진행완료 / 5 : 진행 중단
     		//알림
 			NotifyVO notifyVO = new NotifyVO();
 			notifyVO.setMem_num(dbox.getMem_num());
 			notifyVO.setNotify_type(9); 
-			notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/content");
+			notifyVO.setNot_url("/dbox/myPage/dboxMyPropose");
 			
 			Map<String, String> dynamicValues = new HashMap<String, String>();
 			dynamicValues.put("dboxTitle", dbox.getDbox_title());
@@ -186,7 +199,7 @@ public class DboxMypageAdiminController {
     		dboxService.updateDboxAcomment(dbox_num, "신청하신 [" + dbox.getDbox_title() + "] 기부박스가 반려되었습니다. \n\n신청반려사유 : " + reject);
     		
     	}else if(dbox_status==5) {
-    		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\\n진행중단사유 : " + reject);
+    		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\n진행중단사유 : " + reject);
 
     	}
     	

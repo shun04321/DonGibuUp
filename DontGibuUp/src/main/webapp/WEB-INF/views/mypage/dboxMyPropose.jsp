@@ -51,6 +51,10 @@
                                 <dt>현재 모금액</dt>
                                 <dd><fmt:formatNumber value="${dbox.total}" pattern="#,##0" /> 원</dd>
                             </dl>
+                            <dl class="info-item">
+                                <dt>기간</dt>
+                                <dd>${dbox.dbox_sdate}  ~  ${dbox.dbox_edate}</dd>
+                            </dl>
                         </div>
                     </div>
                     
