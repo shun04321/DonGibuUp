@@ -96,7 +96,7 @@
 </script>
 
 <!-- 모달 창 -->
-<div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade nanum" id="staticBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,18 +105,22 @@
             </div>
             <div class="modal-body">
                 <!-- 포인트 입력 필드 -->
-                <div class="mb-3">
-                    <label for="goods_do_point" class="form-label">사용할 포인트</label>
-                    <input type="number" class="form-control calculate" id="goods_do_point" placeholder="사용할 포인트 입력">
+                <div class="mb-3 d-flex">
+					<label class="g-buy-label" style="width:30%">보유 포인트</label>
+                	<span>${user.mem_point}</span>
+                </div>
+                <div class="mb-2 d-flex justify-content-start align-items-center">
+                    <label for="goods_do_point" class="form-label g-buy-label" style="width:30%">사용할 포인트</label>
+                    <input type="number" class="form-control calculate" id="goods_do_point" placeholder="사용할 포인트 입력" style="width:50%">
                 </div>
                 <!-- 결제 금액 출력 필드 -->
                 <div class="mb-3">
-                    <label class="form-label">결제 금액</label>
+                    <label class="form-label g-buy-label" style="width:30%">결제 금액</label>
                     <span id="pay_sum">${goods.item_price}</span>
                 </div>
                 <!-- 주소 입력 필드 -->
                 <div class="mb-3">
-                    <label for="delivery_address" class="form-label">배송 주소</label>
+                    <label for="delivery_address" class="form-label g-buy-label">배송 주소</label>
                     <div class="input-group">
                         <input type="text" class="form-control" id="delivery_address" placeholder="배송 받을 주소 입력" readonly>
                         <button type="button" class="btn btn-outline-secondary" onclick="execDaumPostcode()">주소 검색</button>

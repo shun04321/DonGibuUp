@@ -61,7 +61,7 @@
                                         <strong>가격:</strong> ${goods.item_price}<br>
                                         <strong>재고:</strong> ${goods.item_stock}
                                     </p>
-                                    <a href="detail?item_num=${goods.item_num}" class="btn custom-btn" style="width:100%;height:15px;line-height:0">상세보기</a>
+                                    <a href="detail?item_num=${goods.item_num}" class="btn custom-btn" style="width:100%;height:15px;line-height:0;font-size:0.9rem">상세보기</a>
                                     <c:if test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
                                         <a href="${pageContext.request.contextPath}/goods/update?item_num=${goods.item_num}" class="btn btn-secondary">상품정보 변경</a>
                                         <form action="${pageContext.request.contextPath}/goods/delete" method="post" style="display: inline;">

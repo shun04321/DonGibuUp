@@ -390,3 +390,7 @@ ul#delivery_info li span {
 .card-text {
 	font-size: 0.88rem;
 }
+
+.g-buy-label {
+	font-weight: bold;
+}
