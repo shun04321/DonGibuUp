@@ -35,6 +35,10 @@ public class DboxServiceImpl implements DboxService {
 	public void updateDboxStatus(long dbox_num, int dbox_status) {//Dbox Status 수정
 		dboxMapper.updateDboxStatus(dbox_num, dbox_status);
 	}
+	@Override
+	public void updateDboxAcomment(long dbox_num,String dbox_acomment) {//Dbox Acomment 수정
+		dboxMapper.updateDboxAcomment(dbox_num,dbox_acomment);
+	}
 	//Dbox 데이터 가져오기
 	@Override
 	public Integer selectListCount(Map<String, Object> map) {//Dbox 개수

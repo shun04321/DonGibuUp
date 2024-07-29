@@ -28,6 +28,8 @@ public interface DboxMapper {
 	//Dbox 수정
 	@Update("UPDATE dbox SET dbox_status=#{dbox_status} WHERE dbox_num=#{dbox_num}")
 	public void updateDboxStatus(long dbox_num,int dbox_status);
+	@Update("UPDATE dbox SET dbox_acomment=#{dbox_acomment} WHERE dbox_num=#{dbox_num}")
+	public void updateDboxAcomment(long dbox_num,String dbox_acomment);
 	
 	//Dbox 데이터 가져오기
 	public Integer selectListCount(Map<String, Object> map);//Dbox 개수

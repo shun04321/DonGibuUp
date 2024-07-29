@@ -17,6 +17,7 @@ public interface DboxService {
 	
 	//Dbox 수정
 	public void updateDboxStatus(long dbox_num,int dbox_status);//Dbox Status 수정
+	public void updateDboxAcomment(long dbox_num,String dbox_acomment);//Dbox Acomment 수정
 	
 	//Dbox 데이터 가져오기
 	public Integer selectListCount(Map<String, Object> map);//Dbox 개수

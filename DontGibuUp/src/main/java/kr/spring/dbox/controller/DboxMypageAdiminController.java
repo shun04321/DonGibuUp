@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.spring.dbox.service.DboxService;
@@ -119,7 +121,7 @@ public class DboxMypageAdiminController {
      * 		기부박스 상태 관리
      *==================================*/
     @GetMapping("/admin/dboxAdminStatus/{dboxNum}")
-	public String proposeExample(@PathVariable long dboxNum,Model model,HttpSession session) {
+	public String statusAdmin(@PathVariable long dboxNum,Model model,HttpSession session) {
 		log.debug("<<관리자 기부박스 상태관리 - dbox_num>> : "+ dboxNum);
     	//멤버정보
     	MemberVO member = (MemberVO) session.getAttribute("user");
@@ -138,6 +140,22 @@ public class DboxMypageAdiminController {
     	model.addAttribute("dboxBudget",dboxBudget);
     	
     	return "dboxAdminStatus";
- 
+    }
+    @GetMapping("/admin/dboxAdminStatus/Change")
+    public String statusChange(long dbox_num,int dbox_status,String reject) {
+    	log.debug("<<기부박스 상태 관리 - 기부박스 번호>> : " + dbox_num);
+    	log.debug("<<기부박스 상태 관리 - 기부박스 변경상태>> : " + dbox_status);
+    	log.debug("<<기부박스 상태 관리 - 반려/중단 사유>> : " + reject);
+    	
+    	DboxVO dbox = dboxService.selectDbox(dbox_num);
+    	
+    	dboxService.updateDboxStatus(dbox_num, dbox_status);
+    	if(dbox_status==2) {
+    		dboxService.updateDboxAcomment(dbox_num, "신청하신 [" + dbox.getDbox_title() + "] 기부박스가 반려되었습니다. \n\n신청반려사유 : " + reject);
+    	}else if(dbox_status==5) {
+    		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\\n진행중단사유 : " + reject);
+    	}
+    	
+    	return "redirect:/admin/dboxAdminStatus/"+dbox_num;
     }
 }
