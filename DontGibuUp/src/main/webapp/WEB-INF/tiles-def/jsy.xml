@@ -30,7 +30,7 @@
 		<put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/cart/cartList.jsp"/>
 	</definition>
-	<definition name="purchaseHistory" extends="mypageLayou">
+	<definition name="purchaseHistory" extends="mypageLayout">
     <put-attribute name="title" value="구매내역"/>
     <put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
     <put-attribute name="body" value="/WEB-INF/views/goods/purchaseHistory.jsp"/>
