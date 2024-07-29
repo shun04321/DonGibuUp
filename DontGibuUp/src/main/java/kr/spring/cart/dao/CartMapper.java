@@ -27,10 +27,9 @@ public interface CartMapper {
     @Update("UPDATE cart SET cart_quantity = #{cart_quantity} WHERE cart_num = #{cart_num}")
     public void updateCartQuantityByCartNum(@Param("cart_num") int cart_num, @Param("cart_quantity") int cart_quantity);
     
+    //회원탈퇴
     //회원별 cart_num 구하기
-    @Select("SELECT cart_num FROM cart WHERE mem_num=#{mem_num}")
-    public List<CartVO> selectCartsByMember(long mem_num);
-    
-    void deleteCarts(List<Long> cart_nums);
+    @Select("DELETE FROM cart WHERE mem_num=#{mem_num}")
+    public List<CartVO> deleteCartsByMember(long mem_num);
     
 }

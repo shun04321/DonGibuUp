@@ -163,4 +163,9 @@ public interface ChallengeMapper {
     public List<ChallengeVO> getPopularChallenges();
     //운동 챌린지
     public List<ChallengeVO> getExerciseChallenges();
+    
+    //회원탈퇴
+    //챌린지 좋아요 삭제
+    @Delete("DELETE FROM chal_fav WHERE mem_num=#{mem_num}")
+    public void deleteChalFavsByMember(long mem_num);
 }

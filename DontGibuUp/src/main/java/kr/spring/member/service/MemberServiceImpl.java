@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.cart.dao.CartMapper;
 import kr.spring.cart.vo.CartVO;
+import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -38,6 +39,8 @@ public class MemberServiceImpl implements MemberService {
 	PasswordEncoder pwEncoder;
 	@Autowired
 	CartMapper cartMapper;
+	@Autowired
+	ChallengeMapper challengeMapper;
 
 	//회원가입
 	@Override
@@ -278,14 +281,18 @@ public class MemberServiceImpl implements MemberService {
 		//memberMapper.deleteMemberDetail(mem_num);
 		
 	    // 카트 삭제
-	    List<CartVO> cart_list = cartMapper.selectCartsByMember(mem_num);
+		cartMapper.deleteCartsByMember(mem_num);
 	    
-	    if (!cart_list.isEmpty()) {
-	        List<Long> cart_nums = cart_list.stream()
-	                                       .map(CartVO::getCart_num)
-	                                       .collect(Collectors.toList());
-	        cartMapper.deleteCarts(cart_nums);  // Modify your mapper to handle batch delete
-	    }
+	    //챌린지 좋아요 삭제
+	    challengeMapper.deleteChalFavsByMember(mem_num);
+	    
+	    //신고 삭제(mem_num) reported_mem_num 일때는 일단 그대로 두고 보여줄 때 null이면 이미 탈퇴한 회원이라고 알려주기
+	    //문의 삭제
+	    //알림 로그 삭제
+	    //포인트 로그 삭제
+	    //환불신청 삭제
+	    
+	    
 		
 		//status 업데이트
 		/*		MemberVO member = new MemberVO();
