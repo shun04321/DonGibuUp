@@ -49,9 +49,9 @@ public interface DboxMapper {
 	
 	//Dbox 기부하기
 	public void insertDboxDonation(DboxDonationVO dboxDonationVO);//기부하기 등록
-	@Select("SELECT * FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num} ORDER BY dbox_do_num DESC")
+	@Select("SELECT * FROM dbox_donation JOIN member USING(mem_num) LEFT OUTER JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num} ORDER BY dbox_do_num DESC")
 	public List<DboxDonationVO> selectDboxDonations(long dbox_num);//기부하기 목록 가져오기
-	@Select("SELECT COUNT(*) FROM dbox_donation JOIN member USING(mem_num) JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
+	@Select("SELECT COUNT(*) FROM dbox_donation JOIN member USING(mem_num) LEFT OUTER JOIN member_detail USING(mem_num) WHERE dbox_num=#{dbox_num}")
 	public Integer selectDboxDonationsCount(long dbox_num);//기부하기 갯수 가져오기
 	@Select("SELECT SUM(dbox_do_price) FROM dbox_donation WHERE dbox_num=#{dbox_num}")
 	public Long selecDoantionTotal(long dbox_num);//기부 총액 가져오기
