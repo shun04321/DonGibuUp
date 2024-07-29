@@ -8,7 +8,7 @@
 <div id="latestGoods" class="container mt-5">
     <h5 class="mt-5 mb-3">최신 상품</h5>
     <div class="goods-item">
-        <div class="card">
+        <div class="card" onclick="location.href='${pageContext.request.contextPath}/goods/detail?item_num=${todayGoods.item_num}'" style="cursor: pointer;">
             <img src="${pageContext.request.contextPath}${todayGoods.item_photo}" class="card-img-top" alt="${todayGoods.item_name}">
             <div class="card-body">
                 <p class="card-category">카테고리: ${todayGoods.dcate_num}</p>
