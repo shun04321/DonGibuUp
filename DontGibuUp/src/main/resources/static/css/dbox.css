@@ -14,3 +14,13 @@
 	height:2rem;
 	width:2rem;
 }
+
+.category-link.tags-block-link.active {
+	color:#5bc1ac;
+	font-weight: bold;
+	border: 1px solid #5bc1ac;
+}
+
+.db-list-item {
+	
+}

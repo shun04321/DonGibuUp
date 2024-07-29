@@ -85,16 +85,22 @@ $(function(){
 
 				$('#category_output').empty();
 				if(category=='' || category==null){
-					$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list\'">전체</button>');										
+					/*$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list\'">전체</button>');*/
+					$('#category_output').append(`<a href="list" class="category-link tags-block-link active">전체</a>`);								
 				}else{
-					$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success mb-2" onclick="location.href=\'list\'">전체</button>');					
+					/*$('#category_output').append('<button type="button" class="btn btn-sm btn-outline-success mb-2" onclick="location.href=\'list\'">전체</button>');			*/		
+					$('#category_output').append(`<a href="list" class="category-link tags-block-link">전체</a>`);								
 				}
 				let category_output = '';
 				$(param.category_list).each(function(index,item){
 					if(item.dcate_num == category){
-						category_output += ' <button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
+/*						category_output += ' <button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
+						category_output += ` <button type="button" class="btn btn-sm btn-outline-success active mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'">
+											<img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>`;		*/	
+						category_output += `<a href="list?category=${item.dcate_num}" class="category-link tags-block-link active"><img src="../upload/${item.dcate_icon}" style="height:1rem;">${item.dcate_name}</a>`
 					}else{
-						category_output += ' <button type="button" class="btn btn-sm btn-outline-success mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
+/*						category_output += ' <button type="button" class="btn btn-sm btn-outline-success mb-2" onclick="location.href=\'list?category='+item.dcate_num+'\'"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</button>'						
+*/						category_output += `<a href="list?category=${item.dcate_num}" class="category-link tags-block-link"><img src="../upload/${item.dcate_icon}" style="height:1rem;">${item.dcate_name}</a>`
 					}
 				});
 				$('#category_output').append(category_output);
@@ -107,18 +113,21 @@ $(function(){
 				}
 				
 				$(param.list).each(function(index,item){
-					let output = '<div class="col-lg-4 col-md-6 col-12 mb-4 mb-lg-0">';
+					let output = '<div class="col-lg-4 col-md-6 col-12 nanum" style="margin-bottom: 30px;">';
 					output += '		<div class="custom-block-wrap">';
+					output += '		<div class="image-wrapper">';
 					output += '		<img src="../upload/dbox/'+item.dbox_photo+'" class="custom-block-image img-fluid" style="height:14rem;">';
 					//console.log('dbox_photo' + item.dbox_photo);
+					output += '		</div>';
+					
 					output += '   	<div class="custom-block">';
 					output += '     	<div class="custom-block-body">';
-					output += '         	<h5 class="mb-3">'+item.dbox_title+'</h5>';
-					output += '       			<span class="badge text-bg-success mb-3"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</span>';
+					output += '         	<h5 class="mb-3" style="min-height:4rem;">'+item.dbox_title+'</h5>';
+					output += '       			<span class="badge mb-3"><img src="../upload/'+item.dcate_icon+'" style="height:1rem;">'+item.dcate_name+'</span>';
 					if(item.dbox_team_photo!=null){
-					output += '       			<p><img src="../upload/dbox/'+item.dbox_team_photo+'" class="team-profile-photo">'+item.dbox_team_name+'</p>';						
+					output += '       			<p><img src="../upload/dbox/'+item.dbox_team_photo+'" class="team-profile-photo me-1">'+item.dbox_team_name+'</p>';						
 					}else{
-					output += '       			<p><img src="../images/teamProfile.png" class="team-profile-photo">'+item.dbox_team_name+'</p>';												
+					output += '       			<p><img src="../images/teamProfile.png" class="team-profile-photo me-1">'+item.dbox_team_name+'</p>';												
 					}
 					output += '       			<div class="progress" role="progressbar" aria-label="기부박스 달성률" aria-valuenow="'+Math.floor(item.total/item.dbox_goal*100)+'" aria-valuemin="0" aria-valuemax="100">';
 					output += '       				<div class="progress-bar progress-bar-striped bg-success" style="width: '+Math.floor(item.total/item.dbox_goal*100)+'%"></div>';
@@ -134,7 +143,7 @@ $(function(){
 					output += '					</div>';
 					output += '				</div>';
 					
-					output += '				<a href="../dbox/'+item.dbox_num+'/content" class="custom-btn btn">Donate now</a>';
+					output += '				<a href="../dbox/'+item.dbox_num+'/content" class="custom-btn btn">기부하기</a>';
 					output += '	  		</div>';
 					output += '	 	 </div>';
 					output += '	  </div>';
@@ -169,7 +178,7 @@ $(function(){
 	
 		
 	/* ===========================
-	 * 초기 데이터(목록) 호출
+	 * 초기 데	이터(목록) 호출
 	 * =========================== */		
 	selectList(1);
 });
