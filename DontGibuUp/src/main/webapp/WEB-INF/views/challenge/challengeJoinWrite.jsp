@@ -39,32 +39,31 @@
 		</div>
 	</div>
 	<form:form id="challenge_join" enctype="multipart/form-data" modelAttribute="challengeJoinVO">
-			<form:hidden path="chal_num" value="${challengeJoinVO.chal_num}" />
-				<label for="dcate_num"><h6 style="color: #212529;">기부 카테고리</h6></label>&nbsp;
-				<span id="charityInfo"></span> 
-				<span id="dcate_num_error" class="error-color" style="display: none;">기부 카테고리를 선택하세요.</span>
-				<br><br>
+		<form:hidden path="chal_num" value="${challengeJoinVO.chal_num}" />
+		<label for="dcate_num"><h6 style="color: #212529;">기부 카테고리</h6></label>&nbsp;
+		<span id="charityInfo"></span> 
+		<span id="dcate_num_error" class="error-color" style="display: none;">기부 카테고리를 선택하세요.</span>
+		<br><br>
 				
-				<c:forEach var="category" items="${categories}">
-				    <input type="radio" class="custom-radio" name="dcate_num" id="dcate_${category.dcate_num}" value="${category.dcate_num}" data-charity="${category.dcate_charity}">
-				    <label class="custom-radio-label" for="dcate_${category.dcate_num}">${category.dcate_name}</label>
-				</c:forEach>
+		<c:forEach var="category" items="${categories}">
+			<input type="radio" class="custom-radio" name="dcate_num" id="dcate_${category.dcate_num}" value="${category.dcate_num}" data-charity="${category.dcate_charity}">
+			<label class="custom-radio-label" for="dcate_${category.dcate_num}">${category.dcate_name}</label>
+		</c:forEach>
 				
-				<br><br>
-			<li class="result-details">
-				<p style="margin-top: 16px; font-size: 14px;">
-					100% 성공 <span class="right"><span class="chal_fee_90"></span>p
-					+ 추가 <span class="chal_fee_5"></span>p 환급, 
-					<span class="chal_fee_10"></span>원 기부</span>
-				</p>
-				<p style="font-size: 14px;">
-					90% 이상 성공 <span class="right"><span class="chal_fee_90"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span>
-				</p>
-				<p style="font-size: 14px;">
-					90% 미만 성공 <span class="right">성공률만큼 환급, 나머지 기부</span>
-				</p>
-			</li>
-		</ul>
+		<br><br>
+		<li class="result-details">
+			<p style="margin-top: 16px; font-size: 14px;">
+				100% 성공 <span class="right"><span class="chal_fee_90"></span>p
+				+ 추가 <span class="chal_fee_5"></span>p 환급, 
+				<span class="chal_fee_10"></span>원 기부</span>
+			</p>
+			<p style="font-size: 14px;">
+				90% 이상 성공 <span class="right"><span class="chal_fee_90"></span>p 환급, <span class="chal_fee_10"></span>원 기부</span>
+			</p>
+			<p style="font-size: 14px;">
+				90% 미만 성공 <span class="right">성공률만큼 환급, 나머지 기부</span>
+			</p>
+		</li>
 		<br><br>
 		<div class="payment-details">
 		    <h6>
