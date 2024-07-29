@@ -27,7 +27,7 @@ public interface GoodsMapper {
 	@Delete("DELETE FROM cart WHERE item_num = #{item_num}")
 	public void deleteCartItems(long item_num);
 	void updateStock(Map<String, Object> paramMap);
-	
+	public GoodsVO selectTodayGoods();
 	List<Map<String, Object>> getCategories();
 	
 	//환불신청시 결제상태 변경

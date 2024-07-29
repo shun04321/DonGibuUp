@@ -89,7 +89,15 @@
     </choose>
     WHERE item_num = #{item_num}
 </update>
-   
+   <select id="selectTodayGoods" resultType="goodsVO">
+    SELECT * 
+    FROM (
+        SELECT * 
+        FROM item 
+        ORDER BY item_reg_date DESC
+    ) 
+    WHERE ROWNUM = 1
+</select>
    
 	   <!-- 상품 수정 -->
     <update id="updateGoods" parameterType="goodsVO">

@@ -21,8 +21,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     GoodsMapper goodsMapper;
 
-    
-    
+
     @Override
     public void insertGoods(GoodsVO goods) {
         goodsMapper.insertGoods(goods);
@@ -65,5 +64,10 @@ public class GoodsServiceImpl implements GoodsService {
 	public void updatePayStatus(long purchase_num, long pay_status) {
 		goodsMapper.updatePayStatus(purchase_num, pay_status);
 	}
+
+	 @Override
+	    public GoodsVO todayGoods() {
+	        return goodsMapper.selectTodayGoods(); // 최신 상품 하나만 반환
+	    }
    
 }

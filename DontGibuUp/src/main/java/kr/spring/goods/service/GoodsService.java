@@ -18,4 +18,5 @@ public interface GoodsService {
     // 카테고리명을 가져오는 메서드 추가
     List<Map<String, Object>> getCategories();
 	public void updatePayStatus(long purchase_num, long pay_status);
+	GoodsVO todayGoods(); // 단일 상품 반환
 }

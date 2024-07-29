@@ -13,6 +13,8 @@ import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.data.service.DataService;
 import kr.spring.data.vo.TotalVO;
+import kr.spring.goods.service.GoodsService;
+import kr.spring.goods.vo.GoodsVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,7 +24,8 @@ public class MainController {
 	DataService dataService;
 	@Autowired
 	private ChallengeService challengeService;
-	
+	@Autowired
+	private GoodsService goodsService;
 	@GetMapping("/")
 	public String init() {
 		return "redirect:/main/main";
@@ -45,8 +48,12 @@ public class MainController {
 		model.addAttribute("currentParticipantsMap", currentParticipantsMap);
 		model.addAttribute("exerciseChallenges", exerciseChallenges);
 	    
-		return "main";//Tiles의 설정명
-	}
+		 // 최신 상품 하나만 가져오기
+        GoodsVO todayGoods = goodsService.todayGoods();
+        model.addAttribute("todayGoods", todayGoods);
+
+        return "main"; // Tiles의 설정명
+   } 
 	
 	@GetMapping("/main/admin")
 	public String adminMain() {
