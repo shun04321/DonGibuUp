@@ -36,7 +36,12 @@
 				<input type="hidden" name="mem_num" id="mem_num" value="${member.mem_num}">
 				<input type="hidden" name="mem_nick" id="mem_nick" value="${member.mem_nick}">
 				<input type="hidden" name="mem_email" id="mem_email" value="${member.mem_email}">
+				<c:if test="${dbox.dbox_status == 3}">
 				<button type="button" class="btn btn-success col-12" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="donation-btn">기부하기</button>
+				</c:if>
+				<c:if test="${dbox.dbox_status != 3}">
+				<button type="button" class="btn btn-success col-12" data-bs-toggle="modal" data-bs-target="#staticBackdrop" id="donation-btn" disabled>기부하기</button>
+				</c:if>
 			</div>
 		</div>
 		<!-- Modal 창 -->

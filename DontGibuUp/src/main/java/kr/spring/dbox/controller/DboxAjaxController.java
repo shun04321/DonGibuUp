@@ -84,6 +84,7 @@ public class DboxAjaxController {
 		map.put("order", order);
 		map.put("keyfield", keyfield);
 		map.put("keyword", keyword);
+		map.put("statusVal", 3);
 		//총 글의 개수
 		int count = dboxService.selectListCount(map);//category,order DboxMapper.xml에 우선 전달
 		log.debug("<<목록 - count : >>" + count);
@@ -92,7 +93,6 @@ public class DboxAjaxController {
 		PagingUtil page = new PagingUtil(keyfield, keyword, pageNum, count, rowCount,10,"list","&category="+category+"&order="+order);//페이지 표시는 하지 않고 start 번호 end 번호를 연산해줌
 		map.put("start", page.getStartRow());//DboxMapper.xml의 selectListReply의 rnum #{start}로 전달
 		map.put("end", page.getEndRow());//DboxMapper.xml의 selectListReply의 rnum #{end}로 전달
-		
 		
 		List<DboxVO> list = null;
 		if(count > 0) {

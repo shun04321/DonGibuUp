@@ -57,6 +57,10 @@ public class DboxServiceImpl implements DboxService {
 		return dboxMapper.selectAdminList(map);
 	}
 	@Override
+	public List<DboxVO> selectStatusUpdateList(int dbox_status) {//Dbox 업데이트 목록
+		return dboxMapper.selectStatusUpdateList(dbox_status);
+	}
+	@Override
 	public DboxVO selectDbox(long dbox_num) {
 		return dboxMapper.selectDbox(dbox_num);//Dbox 개별 선택	
 	}

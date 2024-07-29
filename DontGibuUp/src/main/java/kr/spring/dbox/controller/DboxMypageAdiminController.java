@@ -1,5 +1,6 @@
 package kr.spring.dbox.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,8 @@ import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.member.vo.MemberVO;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DboxMypageAdiminController {
 	@Autowired
 	private DboxService dboxService;
+	@Autowired
+	NotifyService notifyService;
 	
 	/*===================================
 	 * 		MyPage
@@ -150,12 +156,103 @@ public class DboxMypageAdiminController {
     	DboxVO dbox = dboxService.selectDbox(dbox_num);
     	
     	dboxService.updateDboxStatus(dbox_num, dbox_status);
+    	//알림
+    	if(dbox_status <= 2) {//신청완료 -> 심사완료 / 신청반려
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(dbox.getMem_num());
+			notifyVO.setNotify_type(7); 
+			notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/example");
+			
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("dboxTitle", dbox.getDbox_title());
+			
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
+    	}
+    	if(dbox_status == 5) {//진행 중단
+    		//알림
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(dbox.getMem_num());
+			notifyVO.setNotify_type(9); 
+			notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/content");
+			
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			dynamicValues.put("dboxTitle", dbox.getDbox_title());
+			
+			notifyService.insertNotifyLog(notifyVO, dynamicValues);
+    	}
+    	
+    	//신청반려 / 진행중단 사유 안내
     	if(dbox_status==2) {
     		dboxService.updateDboxAcomment(dbox_num, "신청하신 [" + dbox.getDbox_title() + "] 기부박스가 반려되었습니다. \n\n신청반려사유 : " + reject);
+    		
     	}else if(dbox_status==5) {
     		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\\n진행중단사유 : " + reject);
+
     	}
     	
     	return "redirect:/admin/dboxAdminStatus/"+dbox_num;
+    }
+    
+    @Scheduled(cron = "0 0 0 * * ?")//0초 0분 0시 매일 매월 ?요일
+    public void dboxUpdate() {
+    	LocalDate today = LocalDate.now();
+    	int dbox_status;
+    	log.debug("기부박스 날짜 갱신 - 오늘 날짜 : " + today);
+    	
+    	List<DboxVO> list = null;		
+		
+    	//심사완료한 기부박스 진행중으로 변환
+    	dbox_status = 1;
+    	list = dboxService.selectStatusUpdateList(dbox_status);
+    	
+    	for(DboxVO dbox : list) {
+            int year = Integer.parseInt(dbox.getDbox_sdate().split("-")[0]); // 연도
+            int month = Integer.parseInt(dbox.getDbox_sdate().split("-")[1]); // 월
+            int day = Integer.parseInt(dbox.getDbox_sdate().split("-")[2]); // 일
+    		LocalDate targetDate = LocalDate.of(year,month,day);//형식 변경
+    		log.debug("연,월,일 & targetDate: "+ dbox.getDbox_num() + " : " + year + "," + month + "," + day+ "&" + targetDate);
+    
+    		if(today.isEqual(targetDate))  {
+    			dboxService.updateDboxStatus(dbox.getDbox_num(), 3);
+    			log.debug("바뀐 dbox : 연,월,일 & targetDate: "+ dbox.getDbox_num() + " : " + year + "," + month + "," + day+ "&" + targetDate);
+    			//알림
+    			NotifyVO notifyVO = new NotifyVO();
+    			notifyVO.setMem_num(dbox.getMem_num());
+    			notifyVO.setNotify_type(8); 
+    			notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/content");
+    			
+    			Map<String, String> dynamicValues = new HashMap<String, String>();
+    			dynamicValues.put("dboxTitle", dbox.getDbox_title());
+    			
+    			notifyService.insertNotifyLog(notifyVO, dynamicValues);
+    		}
+    	}
+    	//진행중인 기부박스 진행완료로 변환
+    	dbox_status = 3;
+    	list = dboxService.selectStatusUpdateList(dbox_status);
+    	
+    	for(DboxVO dbox : list) {
+    		int year = Integer.parseInt(dbox.getDbox_edate().split("-")[0]); // 연도
+    		int month = Integer.parseInt(dbox.getDbox_edate().split("-")[1]); // 월
+    		int day = Integer.parseInt(dbox.getDbox_edate().split("-")[2]); // 일
+    		LocalDate targetDate = LocalDate.of(year,month,day);//형식 변경
+    		log.debug("연,월,일 & targetDate: "+ dbox.getDbox_num() + " : " + year + "," + month + "," + day+ "&" + targetDate);
+    		
+    		if(today.minusDays(1).isEqual(targetDate)) {//종료일 보정
+    			log.debug("바뀐 dbox : 연,월,일 & targetDate: "+ dbox.getDbox_num() + " : " + year + "," + month + "," + day+ "&" + targetDate);
+    			dboxService.updateDboxStatus(dbox.getDbox_num(), 4);
+    			
+    			//알림
+    			NotifyVO notifyVO = new NotifyVO();
+    			notifyVO.setMem_num(dbox.getMem_num());
+    			notifyVO.setNotify_type(9); 
+    			notifyVO.setNot_url("/dbox/" + dbox.getDbox_num() + "/content");
+    			
+    			Map<String, String> dynamicValues = new HashMap<String, String>();
+    			dynamicValues.put("dboxTitle", dbox.getDbox_title());
+    			
+    			notifyService.insertNotifyLog(notifyVO, dynamicValues);
+    		}
+    	}
     }
 }
