@@ -36,8 +36,8 @@
         <if test="dcate_num != null and dcate_num != 0">
             dcate_num = #{dcate_num}
         </if>
-        <if test="item_name != null and item_name != ''">
-            AND item_name LIKE '%' || #{item_name} || '%'
+        <if test="keyword != null and keyword != ''">
+            AND item_name LIKE '%' || #{keyword} || '%'
         </if>
     </where>
 </sql>
