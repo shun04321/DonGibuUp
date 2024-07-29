@@ -70,28 +70,7 @@
 .product-controls {
     margin-top: 10px;
 }
-.category-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
-}
 
-.btn-category {
-    display: inline-block;
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f5f5f5;
-    text-decoration: none;
-    color: #333;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.btn-category:hover {
-    background-color: #333;
-    color: #fff;
-}
 </style>
 <div class="page-main">
     <h2>상품 목록</h2>

@@ -1,42 +1,7 @@
 @charset "UTF-8";
 
 
-/************모달************/
 
-/* 전체 레이아웃
----------------------*/
-/* #main{
-	width:1024px;
-	margin:0 auto;
-	font-size:10pt;
-	font-family:"맑은 고딕";
-}
-#main_header{
-	margin-bottom:10px;
-	padding:0 10px 0 0;
-}
-#main_body{
-	padding:5px 5px 30px 5px;
-	min-height:500px;
-}
-#main_footer{
-	background-color:yellow;
-}
-
-a:link{
-	text-decoration:none;
-	color:#000000;
-}
-a:visited{
-	text-decoration:none;
-	color:#000000;
-}
-a:hover{
-	text-decoration:none;
-	color:#6C6C6C;
-} */
-/* 페이지 레이아웃
----------------------*/
 .page-main {
     width: 98%;
     margin: 0 auto;
@@ -97,6 +62,35 @@ div#main_menu ul li{
 .image-space .float-clear{
 	clear:both;
 }
+
+/*
+카테고리 스타일
+*/
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-category {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-category:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+
+
 /* 공통 등록, 수정 폼
 ---------------------*/
 /* form{
