@@ -766,4 +766,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public ChallengePaymentVO selectChallengePayment(Long chal_joi_num) {
 		return challengeMapper.selectChallengePayment(chal_joi_num);
 	}
+	
+	//*챌린지 메인*//
+	//인기 챌린지
+	@Override
+	public List<ChallengeVO> getPopularChallenges() {
+	    return challengeMapper.getPopularChallenges();
+	}
 }

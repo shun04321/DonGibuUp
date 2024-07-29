@@ -499,5 +499,20 @@
 			ORDER BY m.mem_nick ASC
 		</if>
 	</sql>
+	
+	<!-- 챌린지 메인 -->
+	<select id="getPopularChallenges" resultType="ChallengeVO">
+	    SELECT * FROM (
+	        SELECT c.*, m.mem_nick,
+	               (SELECT COUNT(*) FROM CHAL_FAV f WHERE f.chal_num = c.chal_num) AS fav_count
+	        FROM CHALLENGE c
+	        JOIN MEMBER m ON c.mem_num = m.mem_num
+	        WHERE c.chal_sdate >= SYSDATE
+	        ORDER BY fav_count DESC
+	    ) 
+	    <![CDATA[
+	    WHERE ROWNUM <= 3
+	    ]]>
+	</select>
 
 </mapper>

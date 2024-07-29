@@ -101,4 +101,10 @@ public interface ChallengeService {
     public List<ChallengeVO> selectChallengeList(Map<String, Object> map);
     //챌린지 레코드 수
     public int selectChallengeCount(Map<String, Object> map);
+    
+
+    //*챌린지 메인*//
+    //인기 챌린지
+    public List<ChallengeVO> getPopularChallenges();
+
 }

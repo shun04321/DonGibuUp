@@ -1,23 +1,101 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- section 내에 들어갈 내용을 div 내에 작성해주세요 --%>
-<%-- section의 높이는 컨텐츠의 길이에 따라 자동 조정됩니다 --%>
-<%-- 메인 페이지의 css 파일은 /DontGibuUp/src/main/resources/static/css/main.css 파일 내에 있습니다. --%>
-<%-- css 설정이 필요하면 해당 파일 내의 적절한 섹션에서 수정해주세요 (git 충돌 주의) --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    .popular-challenges {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+    }
 
+    .challenge-item {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        width: 250px;
+        overflow: hidden;
+        transition: box-shadow 0.3s ease-in-out;
+        position: relative;
+        text-decoration: none; /* 링크 텍스트 밑줄 제거 */
+        color: inherit; /* 링크 텍스트 색상 상속 */
+    }
+
+    .challenge-item:hover {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .challenge-thumbnail {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        transition: transform 0.3s ease; /* 확대 전환 효과 */
+    }
+
+    .challenge-item:hover .challenge-thumbnail {
+        transform: scale(1.1); /* 확대 효과 */
+    }
+
+    .challenge-info {
+        padding: 10px;
+        padding-left: 15px;
+    }
+
+    .challenge-item h3 {
+        font-size: 1.3em;
+        margin: 2px 0;
+        color: #58c1ac;
+    }
+
+    .challenge-item p {
+        color: #666;
+        margin: 5px 0;
+    }
+    
+    .profile-pic {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 2px;
+    }
+</style>
+</head>
+<body>
 <div>
-	<div class="title-style">챌린지1(테스트용)</div>
-	<p style="white-space:pre-line">
-	
-
-	
-	테스트용
-	
-	
-	
-	
-	
-	
-	
-	</p>
+    <div class="title-style">인기 챌린지</div>
+    <div class="popular-challenges nanum">
+        <c:forEach var="challenge" items="${popularChallenges}">
+            <a href="${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}" class="challenge-item">
+                <c:choose>
+                    <c:when test="${empty challenge.chal_photo}">
+                        <img src="${pageContext.request.contextPath}/images/챌린지_기본이미지.jpg" alt="챌린지 사진" class="challenge-thumbnail"/>
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/upload/${challenge.chal_photo}" alt="챌린지 사진" class="challenge-thumbnail"/>
+                    </c:otherwise>
+                </c:choose>
+                <div class="challenge-info">
+                    <p>
+                    <c:if test="${empty challenge.mem_photo}">
+		        		<img src="${pageContext.request.contextPath}/images/basicProfile.png" alt="작성자 프사" class="profile-pic">
+		        	</c:if>
+		        	<c:if test="${!empty challenge.mem_photo}">
+		        		<img src="${pageContext.request.contextPath}/upload/${challenge.mem_photo}" alt="작성자 프사" class="profile-pic">
+		        	</c:if>
+                        ${challenge.mem_nick}
+                    </p>
+                    <h3>${challenge.chal_title}</h3>
+                </div>
+            </a>
+        </c:forEach>
+    </div>
 </div>
+</body>
+</html>
