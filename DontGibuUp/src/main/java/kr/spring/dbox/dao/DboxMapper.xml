@@ -158,7 +158,8 @@
 			  		  dbox_sdate,
 			  		  dbox_edate,
 			  		  dbox_rdate,
-			  		  dbox_status
+			  		  dbox_status,
+			  		  total
 			  		FROM dbox 
                     JOIN dona_category USING(dcate_num)
                     LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total FROM dbox_donation group by dbox_num ) USING(dbox_num) 	  		
