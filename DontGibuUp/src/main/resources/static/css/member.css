@@ -8,6 +8,10 @@
 	cursor: pointer;
 }
 
+.form-error {
+	color: #dc3545;
+}
+
 /*마이페이지 - 회원 총기부 요약*/
 #member_total_item {
 	padding: 1.5rem;

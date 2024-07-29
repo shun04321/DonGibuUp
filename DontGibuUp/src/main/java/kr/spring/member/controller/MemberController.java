@@ -184,6 +184,9 @@ public class MemberController {
 				if (existingMember.getMem_status() == 1) { // 정지 회원인 경우
 					redirectAttributes.addFlashAttribute("error", "정지된 회원입니다");
 					redirectUrl = "/member/login";
+				} else if (existingMember.getMem_status() == 0) { // 탈퇴 회원인 경우
+					redirectAttributes.addFlashAttribute("error", "탈퇴한 회원입니다");
+					redirectUrl = "/member/login";
 				} else if (existingMember.getMem_reg_type() == 1) { //일반회원가입된 이메일일 경우
 					redirectAttributes.addFlashAttribute("error", "일반 회원가입된 이메일입니다");
 					redirectUrl = "/member/login";
@@ -324,6 +327,9 @@ public class MemberController {
 			if (existingMember != null) { // 기존 회원이 존재하는 경우
 				if (existingMember.getMem_status() == 1) { // 정지 회원인 경우
 					redirectAttributes.addFlashAttribute("error", "정지된 회원입니다");
+					redirectUrl = "/member/login";
+				} else if (existingMember.getMem_status() == 0) { // 정지 회원인 경우
+					redirectAttributes.addFlashAttribute("error", "탈퇴한 회원입니다");
 					redirectUrl = "/member/login";
 				} else if (existingMember.getMem_reg_type() == 1) { //일반회원가입된 이메일일 경우
 					redirectAttributes.addFlashAttribute("error", "일반 회원가입된 이메일입니다");

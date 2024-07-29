@@ -265,4 +265,18 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updateMemStatus(memberVO);
 	}
 
+	//회원탈퇴
+	@Override
+	public void deleteAccount(long mem_num) {
+		
+		//delete detail
+		memberMapper.deleteMemberDetail(mem_num);
+		
+		//status 업데이트
+		MemberVO member = new MemberVO();
+		member.setMem_status(0);
+		memberMapper.updateMemStatus(member);
+		
+	}
+
 }

@@ -307,7 +307,7 @@
 		GROUP BY chat_id)
 		USING(chat_id)
 		JOIN member USING(mem_num)
-		JOIN member_detail
+		LEFT OUTER JOIN member_detail
 		USING(mem_num)
 		WHERE chal_num=#{chal_num}
 		AND TO_DATE(chat_date) >=
