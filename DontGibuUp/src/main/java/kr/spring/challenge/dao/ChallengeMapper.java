@@ -158,4 +158,6 @@ public interface ChallengeMapper {
     //*챌린지 메인*//
     //인기 챌린지
     public List<ChallengeVO> getPopularChallenges();
+    //운동 챌린지
+    public List<ChallengeVO> getExerciseChallenges();
 }

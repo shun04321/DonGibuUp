@@ -1,6 +1,8 @@
 package kr.spring.main.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,15 +28,23 @@ public class MainController {
 		return "redirect:/main/main";
 	}
 	
-	//데이터, 인기 챌린지
+	//데이터, 인기챌린지, 운동챌린지
 	@GetMapping("/main/main")
 	public String main(Model model) {
 		TotalVO totalVO = dataService.selectTotalMain();
 		List<ChallengeVO> popularChallenges = challengeService.getPopularChallenges();
-		
+		Map<Long, Integer> currentParticipantsMap = new HashMap<>();
+		for (ChallengeVO challenge : popularChallenges) {
+		    int currentParticipants = challengeService.countCurrentParticipants(challenge.getChal_num());
+		    currentParticipantsMap.put(challenge.getChal_num(), currentParticipants);
+		}
+		List<ChallengeVO> exerciseChallenges = challengeService.getExerciseChallenges();
+		    
 		model.addAttribute("totalVO", totalVO);
 		model.addAttribute("popularChallenges", popularChallenges);
-		
+		model.addAttribute("currentParticipantsMap", currentParticipantsMap);
+		model.addAttribute("exerciseChallenges", exerciseChallenges);
+	    
 		return "main";//Tiles의 설정명
 	}
 	

@@ -773,4 +773,10 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public List<ChallengeVO> getPopularChallenges() {
 	    return challengeMapper.getPopularChallenges();
 	}
+	
+	//운동 챌린지
+	@Override
+	public List<ChallengeVO> getExerciseChallenges() {
+	    return challengeMapper.getExerciseChallenges();
+	}
 }

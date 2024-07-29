@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page import="java.text.SimpleDateFormat, java.util.Date" %>
 <!DOCTYPE html>
 <html>
@@ -19,7 +20,7 @@
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        width: 250px;
+        width: 220px;
         overflow: hidden;
         transition: box-shadow 0.3s ease-in-out;
         position: relative;
@@ -50,7 +51,7 @@
     .challenge-item h3 {
         font-size: 1.3em;
         margin: 2px 0;
-        color: #58c1ac;
+        color: #5a6f80;
     }
 
     .challenge-item p {
@@ -65,11 +66,15 @@
         object-fit: cover;
         margin-right: 2px;
     }
+    
+    .participation-rate {
+        font-size: 13px;
+    }
 </style>
 </head>
 <body>
 <div>
-    <div class="title-style">인기 챌린지</div>
+    <div class="title-style">가장 인기 있는 챌린지</div>
     <div class="popular-challenges nanum">
         <c:forEach var="challenge" items="${popularChallenges}">
             <a href="${pageContext.request.contextPath}/challenge/detail?chal_num=${challenge.chal_num}" class="challenge-item">
@@ -82,16 +87,20 @@
                     </c:otherwise>
                 </c:choose>
                 <div class="challenge-info">
-                    <p>
+                  	<p>
                     <c:if test="${empty challenge.mem_photo}">
 		        		<img src="${pageContext.request.contextPath}/images/basicProfile.png" alt="작성자 프사" class="profile-pic">
-		        	</c:if>
-		        	<c:if test="${!empty challenge.mem_photo}">
-		        		<img src="${pageContext.request.contextPath}/upload/${challenge.mem_photo}" alt="작성자 프사" class="profile-pic">
-		        	</c:if>
+			        	</c:if>
+			        	<c:if test="${!empty challenge.mem_photo}">
+			        		<img src="${pageContext.request.contextPath}/upload/${challenge.mem_photo}" alt="작성자 프사" class="profile-pic">
+			        	</c:if>
                         ${challenge.mem_nick}
                     </p>
                     <h3>${challenge.chal_title}</h3>
+			        <p class="participation-rate" style="color:#ff5757; margin-top:5px;">
+			            <c:set var="participationRate" value="${(currentParticipantsMap[challenge.chal_num] * 100.0) / challenge.chal_max}" />
+			            <b><c:out value="${fn:substringBefore(participationRate, '.')}" />% 달성</b>
+			        </p>
                 </div>
             </a>
         </c:forEach>
