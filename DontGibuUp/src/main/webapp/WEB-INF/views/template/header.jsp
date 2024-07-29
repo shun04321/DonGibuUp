@@ -92,29 +92,30 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item nanum">
-                        <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/main/main">Home</a>
-                    </li>
+					<li class="nav-item nanum" id="home-nav">
+					    <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/main/main">Home</a>
+					</li>
+					
+					<li class="nav-item nanum" id="subscription-nav">
+					    <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/subscription/subscriptionMain">정기기부</a>
+					</li>
+					
+					<li class="nav-item nanum" id="dbox-nav">
+					    <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/dbox/list">기부박스</a>
+					</li>
+					
+					<li class="nav-item nanum" id="challenge-nav">
+					    <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/challenge/list">챌린지</a>
+					</li>
+					
+					<li class="nav-item nanum" id="goods-nav">
+					    <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/goods/list">굿즈샵</a>
+					</li>
+					
+					<li class="nav-item nanum" id="cs-nav">
+					    <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/cs/faqlist">고객센터</a>
+					</li>
 
-                    <li class="nav-item nanum">
-                        <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/subscription/subscriptionMain">정기기부</a>
-                    </li>
-
-                    <li class="nav-item nanum">
-                        <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/dbox/list">기부박스</a>
-                    </li>
-
-                    <li class="nav-item nanum">
-                        <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/challenge/list">챌린지</a>
-                    </li>
-
-                    <li class="nav-item nanum">
-                        <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/goods/list">굿즈샵</a>
-                    </li>
-                    
-                    <li class="nav-item nanum">
-                        <a class="nav-link click-scroll" href="${pageContext.request.contextPath}/cs/faqlist">고객센터</a>
-                    </li>
                     
                     <c:if test="${empty user}">
                     <li class="nav-item ms-3 nanum">
@@ -170,3 +171,28 @@
 	<script src="${pageContext.request.contextPath}/t1/js/click-scroll.js"></script>
 	<script src="${pageContext.request.contextPath}/t1/js/counter.js"></script>
 	<script src="${pageContext.request.contextPath}/t1/js/custom.js"></script>
+	
+	<script>
+	    $(document).ready(function() {
+	        var currentPage = window.location.pathname;
+	        var basePath = '${pageContext.request.contextPath}';
+	
+	        var navItems = {
+	            '/main': '#home-nav',
+	            '/subscription': '#subscription-nav',
+	            '/dbox': '#dbox-nav',
+	            '/challenge': '#challenge-nav',
+	            '/goods': '#goods-nav',
+	            '/cs': '#cs-nav'
+	        };
+	
+	        $.each(navItems, function(path, selector) {
+	            if (currentPage.startsWith(basePath + path)) {
+	                $('.nav-item').find('a').removeClass('active');
+	                $(selector).find('a').removeClass('inactive');
+	                $(selector).find('a').addClass('active');
+	            }
+	        });
+	    });
+	</script>
+
