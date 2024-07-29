@@ -22,7 +22,7 @@
 
 	<header class="site-header">
         <div class="container">
-            <div class="row">
+            <div class="row col-12">
 
                 <div class="col-lg-8 col-12 d-flex flex-wrap">
                     <p class="d-flex me-4 mb-0">
