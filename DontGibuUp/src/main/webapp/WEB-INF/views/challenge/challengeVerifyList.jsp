@@ -74,12 +74,12 @@
 					<c:when test="${status == 'post'}">
 						<button class="btn-custom" disabled>완료된 챌린지</button>
 					</c:when>
-					<c:when test="${hasTodayVerify}">
-						<button class="btn-custom" disabled>오늘 인증 완료</button>
-					</c:when>
 					<c:when test="${hasCompletedWeeklyVerify}">
 						<button class="btn-custom" disabled>이번주 인증 완료</button>
 					</c:when>
+					<c:when test="${hasTodayVerify}">
+						<button class="btn-custom" disabled>오늘 인증 완료</button>
+					</c:when>					
 					<c:otherwise>
 						<button class="btn-custom"
 							onclick="location.href='${pageContext.request.contextPath}/challenge/verify/write?chal_joi_num=${chal_joi_num}&status=${status}'">인증하기</button>

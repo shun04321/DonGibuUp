@@ -529,6 +529,13 @@ public class ChallengeController {
 			if (weekEndDate.isBefore(today) || weekEndDate.equals(today)) {
 				totalFailedVerifications += Math.max(failedInWeek, 0);
 			}
+			
+			//이번 주 인증 완료 여부 확인
+			if(today.isAfter(startDate)||today.isEqual(startDate) && today.isBefore(endDate)) {
+				if(weeklyVerifications == chalFreq) {
+					mav.addObject("hasCompletedWeeklyVerify", true);
+				}
+			}
 		}
 
 		// 인증 성공 횟수
@@ -556,9 +563,6 @@ public class ChallengeController {
 		if(todayVerify > 0) {
 			mav.addObject("hasTodayVerify", true);
 		}		
-		
-		//이번 주 인증 완료 여부 확인
-		
 		
 		//페이징 처리를 위한 인증 개수 처리
 		mav.addObject("count", count);
