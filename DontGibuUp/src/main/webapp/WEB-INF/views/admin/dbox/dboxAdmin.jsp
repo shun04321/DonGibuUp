@@ -72,11 +72,12 @@
 		<tr>
 			<th class="align-center">기부박스 번호</th>
 			<th class="align-center">회원 번호</th>
-			<th class="align-left">기부박스 제목</th>
+			<th class="align-left"  style="width:20%;">기부박스 제목</th>
 			<th class="align-left">팀명(기관/단체)</th>
 			<th class="align-left">카테고리</th>
 			<th class="align-center">등록일</th>
 			<th class="align-center">진행 상태</th>
+			<th class="align-center">상태 관리</th>
 		</tr>
 		<!-- 목록 내용 -->
 		<c:forEach var="dbox" items="${list}">
@@ -102,23 +103,26 @@
 			<td class="align-center">${dbox.dbox_rdate}
 			<td class="dbox_status align-center">
 			<c:if test="${dbox.dbox_status == 0}">
-			신청완료
+			<span style="color:blue">신청완료</span>
 			</c:if>
 			<c:if test="${dbox.dbox_status == 1}">
-			심사완료
+			<span style="color:magenta">심사완료</span>
 			</c:if>
 			<c:if test="${dbox.dbox_status == 2}">
-			신청반려
+			<span style="color:red">신청반려</span>
 			</c:if>
 			<c:if test="${dbox.dbox_status == 3}">
-			진행중
+			<b>진행중</b>
 			</c:if>
 			<c:if test="${dbox.dbox_status == 4}">
 			진행완료
 			</c:if>
 			<c:if test="${dbox.dbox_status == 5}">
-			진행중단
+			<span style="color:red">진행중단</span>
 			</c:if>
+			</td>
+			<td class="text-center">
+			<button type="button" class="btn btn-sm btn-outline-success mt-3" onclick="location.href='dboxAdminStatus/${dbox.dbox_num}'">관리</button>
 			</td>
 		</tr>
 		</c:forEach>
@@ -126,4 +130,5 @@
 	<div class="align-center">${page}</div>
 	</c:if>
 </div>
+
 <!-- 기부박스 관리 끝 -->
