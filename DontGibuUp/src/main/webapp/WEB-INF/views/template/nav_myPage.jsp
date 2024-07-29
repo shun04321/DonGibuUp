@@ -27,7 +27,7 @@
 	</div>
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">굿즈샵</h5>
-		<a href="#" class="category-block-link"> 주문 배송 조회</a>
+		<a href="${pageContext.request.contextPath}/goods/purchaseHistory" class="category-block-link">구매 내역</a>
 		<a href="${pageContext.request.contextPath}/cart/list" class="category-block-link"> 장바구니</a>
 	</div>
 	<div class="category-block d-flex flex-column">

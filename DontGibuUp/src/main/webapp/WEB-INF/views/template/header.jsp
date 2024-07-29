@@ -137,7 +137,7 @@
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/myPage/memberInfo"><small>나의 정보</small></a></li>
                             <li><a class="dropdown-item" href="#기부"><small>나의 기부</small></a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/challenge/join/list?status=on"><small>나의 챌린지</small></a></li>
-                            <li><a class="dropdown-item" href="#주문"><small>나의 주문</small></a></li>
+                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/goods/purchaseHistory"><small>나의 주문</small></a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/myPage/inquiry"><small>나의 문의</small></a></li>
                             <li><a class="dropdown-item" href="${pageContext.request.contextPath}/member/logout"><small>로그아웃</small></a></li>
                         </ul>

@@ -75,6 +75,8 @@
 			<c:if test="${sessionScope.user != null}">
 				<input type="button" value="내 구매내역"
 					onclick="location.href='purchaseHistory'">
+				<input type="button" value="장바구니"
+					onclick="location.href='${pageContext.request.contextPath}/cart/list'">
 			</c:if>
 		</div>
 	</form>
