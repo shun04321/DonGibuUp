@@ -100,11 +100,6 @@
 		WHERE c.chal_num = #{chal_num}
 	</select>
 
-	<!-- 챌린지 개설 삭제 -->
-	<delete id="deleteChallenge" parameterType="long">
-		DELETE FROM challenge WHERE chal_num = #{chal_num}
-	</delete>
-
 	<!-- 챌린지 참가 -->
 	<insert id="insertChallengeJoin" parameterType="challengeJoinVO">
 		INSERT INTO
@@ -135,6 +130,12 @@
 		</if>	
 	</sql>
 	
+	<!-- 챌린지 시작일 월별 분류 -->
+	<sql id="filterByCurrentMonth">
+	    AND SUBSTR(c.chal_sdate, 1, 7) = #{currentMonthString}
+	</sql>
+
+	
 	<!-- 챌린지 참가 목록 수(페이징 처리 목적) -->
 	<select id="selectChallengeJoinListRowCount" parameterType="map" resultType="Integer">
 		SELECT 
@@ -144,6 +145,7 @@
 	    JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
 		WHERE cj.mem_num=#{mem_num}
 		<include refid="sortEnrolledChallenge"></include>
+		<include refid="filterByCurrentMonth"></include>
 	</select>
 	
 	<!-- 챌린지 참가 목록 -->
@@ -157,6 +159,7 @@
 	    		JOIN dona_category dc ON cj.dcate_num = dc.dcate_num
 	    		WHERE cj.mem_num = #{mem_num}
 				<include refid="sortEnrolledChallenge"></include>
+				<include refid="filterByCurrentMonth"></include>
 	    		ORDER BY cj.chal_joi_date DESC
 			)a
 		)
@@ -229,11 +232,6 @@
 			#{od_imp_uid},
 		</if> 
 		#{chal_pay_price}, #{chal_point},#{chal_pay_status})
-	</insert>
-	
-	<!-- 동일 챌린지 결제 정보 불러오기 -->
-	<insert id="selectChallengePaymentList">
-		
 	</insert>
 
 	<!-- 챌린지 ID로 챌린지 참가 데이터 삭제 -->

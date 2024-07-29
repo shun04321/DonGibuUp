@@ -1,5 +1,6 @@
 package kr.spring.challenge.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -8,9 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.siot.IamportRestClient.IamportClient;
+import com.siot.IamportRestClient.exception.IamportResponseException;
+import com.siot.IamportRestClient.request.CancelData;
 
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengeChatVO;
@@ -45,6 +52,17 @@ public class ChallengeServiceImpl implements ChallengeService{
 	MemberService memberService;
 	@Autowired
 	NotifyService notifyService;
+
+	//IamportClient 초기화 하기
+	private IamportClient impClient; 
+
+	private String apiKey = "7830478768772156";
+	private String secretKey = "T5qKYEXltMHNhzZaGSBZYQ4iYQ2Woor1VleODHJ2mhXZ4FBma0OA2e0Z4XSj3CNYY4ZPk4XBy4naYmla";
+
+	@PostConstruct
+	public void initImp() {
+		this.impClient = new IamportClient(apiKey,secretKey);
+	}
 
 	//*챌린지 개설*//
 	@Override
@@ -117,11 +135,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 	}
 
 	@Override
-	public void deleteChallenge(Long chal_num) {
-		challengeMapper.deleteChallenge(chal_num);
-	}
-
-	@Override
 	public void deleteChalPhoto(Long chal_num) {
 		challengeMapper.deleteChalPhoto(chal_num);
 	}
@@ -184,9 +197,6 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return challengeMapper.selectChallengeJoin(chal_num); 
 	}
 
-	@Override public void deleteChallengeJoin(Long chal_joi_num) {
-		challengeMapper.deleteChallengeJoin(chal_joi_num); 
-	}
 
 	//챌린지 ID로 챌린지 참가 데이터 삭제
 	@Override
@@ -216,6 +226,20 @@ public class ChallengeServiceImpl implements ChallengeService{
 	@Override
 	public void insertChallengePayment(ChallengePaymentVO chalPayVO) {
 		challengeMapper.insertChallengePayment(chalPayVO);
+	}
+
+	//동일 챌린지의 모든 결제 내역 불러오기
+	@Override
+	public List<ChallengePaymentVO> selectChallengePaymentList(Long chal_num) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_num", chal_num);
+		List<ChallengeJoinVO> joinList = challengeMapper.selectJoinMemberList(map);
+		List<ChallengePaymentVO> payList = new ArrayList<>();
+
+		for(ChallengeJoinVO joinVO : joinList) {
+			payList.add(challengeMapper.selectChallengePayment(joinVO.getChal_joi_num()));
+		}
+		return payList;
 	}
 
 	//*챌린지 인증*//
@@ -342,7 +366,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public Integer selectChallengeJoinListRowCount(Map<String, Object> map) {
 		return challengeMapper.selectChallengeJoinListRowCount(map);
 	}
-	
+
 	//개별 챌린지 취소
 	@Override
 	public void updateJoinStatus(Long chal_joi_num) {
@@ -350,7 +374,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		challengeMapper.updateChalPaymentStatus(chal_joi_num);
 		//챌린지 참가 삭제
 		challengeMapper.deleteChallengeJoin(chal_joi_num);
-		
+
 		//사용 포인트 복구
 		ChallengePaymentVO chalPayVO = challengeMapper.selectChallengePayment(chal_joi_num);
 		int chal_point = chalPayVO.getChal_point();		
@@ -362,6 +386,55 @@ public class ChallengeServiceImpl implements ChallengeService{
 			//회원 포인트 업데이트
 			memberService.updateMemPoint(pointVO);
 		}
+	}
+
+	//챌린지의 모든 참가 내역 및 결제 취소
+	@Override
+	public void cancelChallenge(Long chal_num) throws IamportResponseException, IOException {
+		//모든 결제 내역 불러오기
+		List<ChallengePaymentVO> payList = selectChallengePaymentList(chal_num);
+		
+		//모든 결제 내역 취소하기
+		for(ChallengePaymentVO payVO : payList) {
+			CancelData cancelData = new CancelData(payVO.getOd_imp_uid(), true);
+			impClient.cancelPaymentByImpUid(cancelData);
+			
+			//챌린지 결제 상태 - 취소
+			challengeMapper.updateChalPaymentStatus(payVO.getChal_joi_num());
+			//챌린지 참가 삭제
+			challengeMapper.deleteChallengeJoin(payVO.getChal_joi_num());
+
+			//사용 포인트 복구
+			ChallengePaymentVO chalPayVO = challengeMapper.selectChallengePayment(payVO.getChal_joi_num());
+			int chal_point = chalPayVO.getChal_point();		
+			if(chal_point > 0) {
+				//포인트 로그 작성
+				PointVO pointVO = new PointVO(30,chalPayVO.getChal_point(),chalPayVO.getMem_num());
+				pointService.insertPointLog(pointVO);
+
+				//회원 포인트 업데이트
+				memberService.updateMemPoint(pointVO);
+			}
+			
+			//챌린지 삭제 알림
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(payVO.getMem_num()); //알림 받을 회원 번호
+			notifyVO.setNotify_type(33);             //알림 타입
+			notifyVO.setNot_url("/member/myPage/payment"); //알림을 누르면 반환할 url
+			
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			ChallengeVO challenge = challengeMapper.selectChallenge(chal_num);
+			dynamicValues.put("chalTitle", challenge.getChal_title());
+			
+			//NotifyService 호출
+			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
+		}		
+		
+		//챌린지 톡방 환영 메시지 삭제
+		challengeMapper.deleteChallengeChat(chal_num);
+		
+		//챌린지 삭제
+		challengeMapper.deleteChallenge(chal_num);
 	}
 
 	//후기 작성 시 포인트 지급

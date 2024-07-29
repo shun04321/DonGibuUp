@@ -1,8 +1,11 @@
 package kr.spring.challenge.service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
+import com.siot.IamportRestClient.exception.IamportResponseException;
 
 import kr.spring.challenge.vo.ChallengeChatVO;
 import kr.spring.challenge.vo.ChallengeFavVO;
@@ -21,7 +24,8 @@ public interface ChallengeService {
 	public Integer selectRowCount(Map<String,Object> map);
 	public ChallengeVO selectChallenge(Long chal_num);
 	public void updateChallenge(Long chal_num);
-	public void deleteChallenge(Long chal_num);
+	//동일 챌린지의 모든 결제,참가 취소 및 챌린지 삭제
+    public void cancelChallenge(Long chal_num) throws IamportResponseException, IOException;
 	public void deleteChalPhoto(Long chal_num);
 	//참가 인원수 조회
 	public int countCurrentParticipants(long chal_num);
@@ -33,11 +37,9 @@ public interface ChallengeService {
 	public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
 	public Integer selectJoinMemberRowCount(Map<String,Object> map);
 	public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);
-	public void deleteChallengeJoin(Long chal_joi_num);
 	public void deleteChallengeJoinsByChallengeId(Long chal_num);
-	//참가 상태 변경
-	public void updateJoinStatus(Long chal_joi_num);
-    
+	//단건 참가 취소
+	public void updateJoinStatus(Long chal_joi_num);    
     //리더 여부 확인
 	public boolean isChallengeLeader(Long chal_num, Long mem_num);
 	//리더 chal_joi_num 확인하기
@@ -48,7 +50,10 @@ public interface ChallengeService {
 	
 	//*챌린지 결제*//
     public void insertChallengePayment(ChallengePaymentVO chalPayVO);
+    //단건 결제 내역 불러오기
     public ChallengePaymentVO selectChallengePayment(Long chal_joi_num);
+    //동일 챌린지의 모든 결제 내역 불러오기
+    public List<ChallengePaymentVO> selectChallengePaymentList(Long chal_num);
     
 	//*챌린지 인증*//
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);
