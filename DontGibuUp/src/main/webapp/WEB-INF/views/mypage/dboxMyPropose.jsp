@@ -80,7 +80,7 @@
 									설정하신 시작일에 모금이 시작됩니다.
 								</c:if>
                                 <c:if test="${dbox.dbox_status==2}">
-                                	<%-- ${dbox.dbox_acomment}  --%>
+                                	${dbox.dbox_acomment}
                                 </c:if>
                                 <c:if test="${dbox.dbox_status==3}">
 									현재 모금중인 기부박스입니다.
@@ -89,7 +89,7 @@
 									기부박스 모금이 완료되었습니다.
 								</c:if>
                                 <c:if test="${dbox.dbox_status==5}">
-									<%-- ${dbox.dbox_acomment}  --%>
+									${dbox.dbox_acomment}
 								</c:if>
 					          </div>
 					        </c:forEach>

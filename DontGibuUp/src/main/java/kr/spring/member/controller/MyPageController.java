@@ -487,7 +487,7 @@ public class MyPageController {
 		}
 		
 		for (DboxVO dbox : list) {
-			dbox.setDbox_accomment(StringUtil.useBrNoHTML(dbox.getDbox_accomment()));
+			dbox.setDbox_acomment(StringUtil.useBrNoHTML(dbox.getDbox_acomment()));
 		}
 
 		model.addAttribute("count", count);
