@@ -77,9 +77,13 @@
 	<!-- 관리자 검색 -->
 	<sql id="dboxAdminSearch">
 		<where>
-			<if test="(keyword ==null or keyword == '') and (statusValue != null and statusValue != '')">
-		        REGEXP_LIKE(dbox_status, '^(' || REPLACE(#{statusValue}, ',', '|') || ')$')
-		    </if>	
+			 <!-- 상태 값이 주어졌을 때, dbox_status 필터링 -->
+	        <if test="(keyword == null or keyword == '') and (statusValue != null and statusValue != '')">
+	            dbox_status IN
+	            <foreach collection="statusValue.split(',')" item="status" open="(" separator="," close=")">
+	                #{status}
+	            </foreach>
+	        </if>  	
 			<if test="keyword !=null and keyword != ''">
 				<if test="keyfield == 1">
 					dbox_num LIKE '%' || #{keyword} || '%'
@@ -96,9 +100,13 @@
 				<if test="keyfield == 5">
 					dcate_name LIKE '%' || #{keyword} || '%'
 				</if>
-			    <if test="statusValue != null and statusValue != ''">
-			        AND REGEXP_LIKE(dbox_status, '^(' || REPLACE(#{statusValue}, ',', '|') || ')$')
-			    </if>
+			    <!-- 상태 값이 주어졌을 때 추가 필터링 -->
+	            <if test="statusValue != null and statusValue != ''">
+	                AND dbox_status IN
+	                <foreach collection="statusValue.split(',')" item="status" open="(" separator="," close=")">
+	                    #{status}
+	                </foreach>
+	            </if>
 			</if>
 		</where>
 	</sql>
@@ -147,19 +155,23 @@
 			  		  dbox_status
 			  		FROM dbox 
                     JOIN dona_category USING(dcate_num)
-			  		<include refid="dboxSearch"></include>
-			  		<include refid="dboxOrder"></include>
-			  		)a)
-		LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total FROM dbox_donation group by dbox_num ) USING(dbox_num) 	  		
+                    LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total FROM dbox_donation group by dbox_num ) USING(dbox_num) 	  		
+			  		<include refid="dboxSearch"></include>			  		
+			  		)a)	
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
+		<include refid="dboxOrder"></include>
 	</select>
 	<!-- 관리자 기부박스 총레코드수/검색 레코드 수 -->
 	<select id="selectAdminListCount" parameterType="map" resultType="integer">
 		SELECT
 		  COUNT(*)
 		FROM dbox 
+		JOIN dona_category USING(dcate_num)
+  		LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total 
+			 FROM dbox_donation group by dbox_num ) 
+	    USING(dbox_num)
 		<include refid="dboxAdminSearch"></include>
 	</select>
 	<!-- 관리자 기부박스 전체 목록/검색 목록 -->
@@ -190,15 +202,16 @@
 			  		  dbox_status
 			  		FROM dbox 
                     JOIN dona_category USING(dcate_num)
-			  		<include refid="dboxAdminSearch"></include>
-			  		<include refid="dboxOrder"></include>
-			  		)a)
-		LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total 
+			  		LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total 
 						 FROM dbox_donation group by dbox_num ) 
-				   USING(dbox_num) 	  		
+				    USING(dbox_num)  
+			  		<include refid="dboxAdminSearch"></include>
+				    <include refid="dboxOrder"></include>
+			  		)a)	
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>
+		
 	</select>
 	<!-- 기부박스 기부신청 등록 -->
 	<insert id="insertDboxDonation" parameterType="dboxDonationVO">

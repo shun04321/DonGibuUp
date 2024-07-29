@@ -4,9 +4,9 @@
 <div class="text-center mt-5 mb-5">
 	<img src="${pageContext.request.contextPath}/upload/dbox/${dbox.dbox_photo}" class="img-fluid"><br>
 </div>
-<button type="button" class="btn btn-outline-success active" onclick="location.href='#'">기부박스 소개</button>
-<button type="button" class="btn btn-outline-success" onclick="location.href='#'">기부현황</button>
-<button type="button" class="btn btn-outline-success" onclick="location.href='#'">소식</button>
+<button type="button" class="btn btn-outline-success">기부박스 소개</button>
+<button type="button" class="btn btn-outline-success">기부현황</button>
+<button type="button" class="btn btn-outline-success">소식</button>
 <br>
 ${dbox.dbox_content}<br>
 <br>

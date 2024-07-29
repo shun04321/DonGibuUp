@@ -10,7 +10,7 @@
 <body>
 	<div class="verify-container">
 	    <div class="header">
-	        <h5 >[ ${chal_title} ] 인증</h5>
+	        <h5>[ ${chal_title} ] 인증</h5>
 	    </div>
 	    <form:form id="challenge_verify" enctype="multipart/form-data" modelAttribute="challengeVerifyVO">
 	        <form:hidden path="chal_joi_num"/>

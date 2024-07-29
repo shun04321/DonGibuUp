@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.spring.dbox.service.DboxService;
+import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.util.PagingUtil;
@@ -112,5 +114,30 @@ public class DboxMypageAdiminController {
 		model.addAttribute("page", page.getPage());
     	
         return "dboxAdmin";
-    }	
+    }
+    /*===================================
+     * 		기부박스 상태 관리
+     *==================================*/
+    @GetMapping("/admin/dboxAdminStatus/{dboxNum}")
+	public String proposeExample(@PathVariable long dboxNum,Model model,HttpSession session) {
+		log.debug("<<관리자 기부박스 상태관리 - dbox_num>> : "+ dboxNum);
+    	//멤버정보
+    	MemberVO member = (MemberVO) session.getAttribute("user");
+    	log.debug("<<관리자 기부박스 상태관리 - member>> : " + member);
+    	
+    	//기부박스 및 모금계획 불러오기
+    	DboxVO dbox = dboxService.selectDbox(dboxNum);
+    	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
+    	log.debug("<<관리자 기부박스 상태관리 - Dbox>> : " + dbox);
+    	log.debug("<<관리자 기부박스 상태관리 - DboxBudget>> : " + dboxBudget);
+   
+    	//뷰에 전달
+    	model.addAttribute("member",member);
+    	model.addAttribute("dbox",dbox);
+    	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
+    	model.addAttribute("dboxBudget",dboxBudget);
+    	
+    	return "dboxAdminStatus";
+ 
+    }
 }

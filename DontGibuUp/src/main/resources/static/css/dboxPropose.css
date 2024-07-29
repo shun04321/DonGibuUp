@@ -30,7 +30,6 @@
 
 .pr-custom-btn {
 	line-height: 1.7 !important;
-	font-weight: bold;
 	padding: 4px 12px;
 	border-radius: 6px;
 	color: #fff;
@@ -40,6 +39,34 @@
 
 .pr-custom-btn:hover {
 	background-color: #5bc1ac;
+}
+
+/*nav*/
+.nav_buttons {
+	border: none;
+	padding: 8px 40px;
+	background-color: #5bc1ac;
+	color: #fff;
+	transition: background-color 0.3s ease;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav_buttons:hover:not(:disabled) {
+    background-color: #58a696; 
+}
+
+.nav_buttons:disabled {
+    background-color: #e8ebea;
+}
+
+.pr-btn-left {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px; 
+}
+
+.pr-btn-right {
+    border-top-right-radius: 6px; 
+    border-bottom-right-radius: 6px;
 }
 
 /*공통*/
@@ -92,7 +119,7 @@ ul {
 }
 
 .pr-li-item {
-	margin-bottom: 2rem !important;
+	margin-bottom: 3rem !important;
 }
 
 .pr-form-label {
@@ -116,9 +143,55 @@ ul {
 }
 
 #dbox_bank, #dbox_account_name {
-	width: 23%;
+	width: 24%;
 }
 
 #dbox_account {
 	width: 50%;
+}
+
+#dbox_sdate, #dbox_edate {
+	width: 46%
+}
+
+.bud_delete_btn {
+	border: none !important;
+	background-color: #d4d4d4 !important;
+	color: #fff !important;
+}
+
+.bud_delete_btn:hover {
+	background-color: #b0b0b0 !important;
+}
+
+#dbox_budget_add {
+	height: 2rem !important;
+	line-height: 1;
+	border: none;
+	background-color: #597081;
+	color: #fff;
+}
+
+#dbox_budget_add:hover {
+	background-color: #6d8394;
+}
+
+/*step3*/
+.ck-editor__editable {
+	min-height: 30rem;
+}
+
+/*end*/
+.pr-end-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 6rem;
+    word-break: keep-all; /* 단어가 잘리지 않도록 설정 */
+}
+
+.pr-end-content {
+    display: inline-block;
+    width: calc(100% - 6rem); /* 라벨의 넓이를 제외한 나머지 넓이 사용 */
+    word-wrap: break-word; /* 길이가 긴 단어를 줄바꿈 */
+    white-space: normal;   /* 일반적인 줄바꿈 */
 }

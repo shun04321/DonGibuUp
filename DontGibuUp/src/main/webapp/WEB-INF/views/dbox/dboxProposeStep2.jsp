@@ -16,8 +16,8 @@
 					<%-- 팀 유형 --%>
 					<li class="pr-li-item">
 						 <form:label path="dbox_team_type" class="d-flex mb-2"><h3 class="pr-form-label">팀 유형</h3><span class="validation-check validation-dot"></span></form:label>
-		   				 <input type="radio" name="dbox_team_type" value="1" id="ckbox1"/><label for="ckbox1">기관</label>
-		   				 <input type="radio" name="dbox_team_type" value="2" id="ckbox2"/><label for="ckbox2">개인</label>
+		   				 <div class="d-flex align-items-center"><input type="radio" name="dbox_team_type" value="1" id="ckbox1" class="me-1"/><label for="ckbox1">기관</label></div>
+		   				 <div class="d-flex align-items-center"><input type="radio" name="dbox_team_type" value="2" id="ckbox2" class="me-1"/><label for="ckbox2">개인</label></div>
 		   				 <form:errors path="dbox_team_type" cssClass="form-error"></form:errors>
 					</li>
 					<%-- 팀명 --%>
@@ -41,35 +41,39 @@
 					<%-- 프로젝트 팀 소개 --%>
 					<li class="pr-li-item">
 						<form:label path="dbox_team_detail" class="d-flex mb-2"><h3 class="pr-form-label">프로젝트 팀 소개</h3><span class="validation-check validation-dot"></span></form:label>
-						<p class="align-right" style="padding-right:50px;"><span id="team_detail_letter">500/500</span></p>
+						<p class="d-flex justify-content-end mb-1"><span id="team_detail_letter">500/500</span></p>
 						<form:textarea path="dbox_team_detail"  placeholder="프로젝트 팀 소개 문구 1~3줄 적어주세요" cssClass="form-control"/>
 						<form:errors path="dbox_team_detail" cssClass="form-error"></form:errors>				
 					</li>
 					<%-- 계좌번호 (은행선택,예금주명,계좌번호) --%>
 					<li class="pr-li-item">
 						<form:label path="dbox_bank" class="d-flex mb-2"><h3 class="pr-form-label">계좌번호</h3><span class="validation-check validation-dot"></span></form:label>
-						<form:select path="dbox_bank" cssClass="form-control">
-							<option disabled="disabled" selected>은행 선택</option>
-							<form:option value="1">국민은행</form:option>
-							<form:option value="2">신한은행</form:option>
-							<form:option value="3">하나은행</form:option>
-							<form:option value="4">우리은행</form:option>
-						</form:select>
-						<form:errors path="dbox_bank" cssClass="error-color"/>
-		
-						<form:input path="dbox_account_name" placeholder="예금주명" cssClass="form-control"/>
-						<form:errors path="dbox_account_name" cssClass="form-error"></form:errors>	
-						
-						<form:input path="dbox_account" placeholder="계좌번호" cssClass="form-control"/>
-						<form:errors path="dbox_account" cssClass="form-error"></form:errors>	
+						<div class="d-flex justify-content-between">
+							<form:select path="dbox_bank" cssClass="form-control">
+								<option disabled="disabled" selected>은행 선택</option>
+								<form:option value="1">국민은행</form:option>
+								<form:option value="2">신한은행</form:option>
+								<form:option value="3">하나은행</form:option>
+								<form:option value="4">우리은행</form:option>
+							</form:select>
+							<form:errors path="dbox_bank" cssClass="error-color"/>
+			
+							<form:input path="dbox_account_name" placeholder="예금주명" cssClass="form-control"/>
+							<form:errors path="dbox_account_name" cssClass="form-error"></form:errors>	
+							
+							<form:input path="dbox_account" placeholder="계좌번호" cssClass="form-control"/>
+							<form:errors path="dbox_account" cssClass="form-error"></form:errors>	
+						</div>
 					</li>
 					<%-- 기부박스 희망기간 --%>
 					<li class="pr-li-item">
 						<form:label path="dbox_sdate" class="d-flex mb-2"><h3 class="pr-form-label">기부박스 희망기간</h3><span class="validation-check validation-dot"></span></form:label>
-						<form:input path="dbox_sdate" type="date"/> ~
-						<form:errors path="dbox_sdate" cssClass="form-error"></form:errors>	
-						<form:input path="dbox_edate" type="date"/>
-						<form:errors path="dbox_edate" cssClass="form-error"></form:errors>				
+						<div class="d-flex justify-content-between align-items-center">
+							<form:input path="dbox_sdate" type="date"  cssClass="form-control"/> ~
+							<form:errors path="dbox_sdate" cssClass="form-error"></form:errors>	
+							<form:input path="dbox_edate" type="date"  cssClass="form-control"/>
+							<form:errors path="dbox_edate" cssClass="form-error"></form:errors>	
+						</div>			
 					</li>
 					<%-- 모금액 사용 계획 --%>
 					<li class="pr-li-item">
@@ -82,29 +86,29 @@
 						 · 동일한 스토리 및 예산 항목으로 이중 모금 진행시<br>
 						 · 모금액을 입금 받기 전 과거 지출한 내용을 포함한 경우
 						</p>
-						<span id="dbox_budget"></span>
-						<input type="button" id="dbox_budget_add" name="dbox_budget_add" value="지출항목 추가"><p class="align-right" style="padding-right:50px;">총합 : <span id="budget_sum">0</span>원</p>
+						<div id="dbox_budget"></div>
+						<input type="button" id="dbox_budget_add" name="dbox_budget_add" value="지출항목 추가" class="form-control mb-3"><p class="align-right" style="padding-right:50px;">총합 : <span id="budget_sum">0</span>원</p>
 						<input type="hidden" id="dbox_goal" name="dbox_goal" value="">
 					</li>
 					<%-- 심사위원에게 남길 말 --%>
 					<li class="pr-li-item">
 						<form:label path="dbox_comment" class="d-flex mb-2"><h3 class="pr-form-label">심사위원에게 남길 말</h3></form:label>
-						<p class="align-right" style="padding-right:50px;"><span id="comment_letter">1000/1000</span></p>
-						<form:textarea path="dbox_comment" placeholder="심사위원에게 남길 말을 적어주세요" cssStyle="width:90%;height:50px;"/>
+						<p class="d-flex justify-content-end mb-1"><span id="comment_letter">1000/1000</span></p>
+						<form:textarea path="dbox_comment" cssClass="form-control" placeholder="심사위원에게 남길 말을 적어주세요"/>
 						<form:errors path="dbox_comment" cssClass="form-error"></form:errors>				
 					</li>
 					<%-- 자료 첨부 --%>
 					<li class="pr-li-item">
-						<h3 class="pr-form-label">자료 첨부</h3>
+						<h3 class="pr-form-label mb-3">자료 첨부</h3>
 						<form:label path="dbox_business_plan_file" class="d-flex">세부사업계획서<span class="validation-check validation-dot ms-1"></span></form:label>
-						<input type="file" name="dbox_business_plan_file" id="dbox_business_plan_file"><br>
-						<form:errors path="dbox_business_plan_file" cssClass="form-error"></form:errors><br>
-						<form:label path="dbox_budget_data_file">금액 책정 근거자료</form:label><br>
-						<input type="file" name="dbox_budget_data_file" id="dbox_budget_data">
+						<input type="file" name="dbox_business_plan_file" id="dbox_business_plan_file" class="form-control">
+						<form:errors path="dbox_business_plan_file" cssClass="form-error"></form:errors>
+						<form:label path="dbox_budget_data_file" class="mt-3">금액 책정 근거자료</form:label>
+						<input type="file" name="dbox_budget_data_file" id="dbox_budget_data" class="form-control">
 					</li>
 				</ul>	
-				<div class="align-center">
-					<form:button>다음 단계로</form:button>
+				<div class="d-flex justify-content-end">
+					<form:button class="pr-custom-btn">다음 단계로</form:button>
 				</div>
 			</form:form>
 		</div>

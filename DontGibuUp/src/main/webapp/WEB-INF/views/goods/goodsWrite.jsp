@@ -34,9 +34,14 @@
 		 	<form:label path="dcate_num">분류</form:label>
 		 	<form:select path="dcate_num">
 		 		<option disabled="disabled" selected>선택하세요</option>
-		 		<form:option value="1">노약자</form:option>
-		 		<form:option value="2">청소년</form:option>
-		 		
+		 		<form:option value="1">독거노인 종합 지원센터</form:option>
+		 		<form:option value="2">안무서운회사</form:option>
+		 		<form:option value="2">동물권행동 카라</form:option>
+		 		<form:option value="2">희망 조약돌</form:option>
+		 		<form:option value="2">Save the Children</form:option>
+		 		<form:option value="2">굿네이버스</form:option>
+		 		<form:option value="2">서울 환경 연합</form:option>
+		 		<form:option value="2">푸르메 재단</form:option>
 		 	</form:select>
 		 	<form:errors path="dcate_num" cssClass="error-color"/>
 		</li>

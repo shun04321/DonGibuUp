@@ -706,4 +706,11 @@ public class MemberController {
 
 		return "adminManagePoint";
 	}
+	
+	
+	
+	/*	@GetMapping("/test/endpage")
+		public String getEnd() {
+			return "dboxProposeEnd2";
+		}*/
 }
