@@ -30,12 +30,11 @@ public interface ChallengeMapper {
 	public List<ChallengeVO> selectList(Map<String,Object> map);
 	public Integer selectRowCount(Map<String,Object> map);
 	public ChallengeVO selectChallenge(Long chal_num);
-	public void updateChallenge(Long chal_num);
-	@Delete("DELETE FROM challenge WHERE chal_num=#{chal_num}")
-	public void deleteChallenge(Long chal_num);
+	@Update("UPDATE challenge SET chal_status=1 WHERE chal_num=#{chal_num}")
+	public void updateChallengeStatus(Long chal_num);
 	public void deleteChalPhoto(Long chal_num);
 	//참가 인원수 조회
-    @Select("SELECT COUNT(*) FROM chal_join WHERE chal_num = #{chal_num}")
+    @Select("SELECT COUNT(*) FROM chal_join WHERE chal_num = #{chal_num} AND chal_joi_status = 0")
     public int countCurrentParticipants(long chal_num);
 	
 	//*챌린지 참가*//
@@ -44,7 +43,7 @@ public interface ChallengeMapper {
     public void insertChallengeJoin(ChallengeJoinVO chalJoinVO);
     public Integer selectChallengeJoinListRowCount(Map<String,Object> map);
     public List<ChallengeJoinVO> selectChallengeJoinList(Map<String,Object> map);
-    public ChallengeJoinVO selectChallengeJoin(Long chal_num);
+    public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num);
     //챌린지 참가 회원 목록
     public Integer selectJoinMemberRowCount(Map<String,Object> map);
     public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);   
@@ -66,9 +65,9 @@ public interface ChallengeMapper {
     //단건 결제 취소 상태로 변경
     @Update("UPDATE chal_payment SET chal_pay_status=2 WHERE chal_joi_num=#{chal_joi_num}")
     public void updateChalPaymentStatus(Long chal_joi_num);
-    //단건 챌린지 참가 삭제
-    @Delete("DELETE FROM chal_join WHERE chal_joi_num = #{chal_joi_num}")
-    public void deleteChallengeJoin(Long chal_joi_num);
+    //단건 챌린지 참가 상태 변경
+    @Delete("UPDATE chal_join SET chal_joi_status=2 WHERE chal_joi_num = #{chal_joi_num}")
+    public void updateChallengeJoinStatus(Long chal_joi_num);
     
     //*챌린지 인증*//
     public void insertChallengeVerify(ChallengeVerifyVO chalVerifyVO);

@@ -39,7 +39,7 @@ public interface ChallengeService {
 	public List<ChallengeJoinVO> selectJoinMemberList(Map<String,Object> map);
 	public void deleteChallengeJoinsByChallengeId(Long chal_num);
 	//단건 참가 취소
-	public void updateJoinStatus(Long chal_joi_num);    
+	public void cancelChallengeJoin(Long chal_joi_num,Long chal_num) throws IamportResponseException, IOException;    
     //리더 여부 확인
 	public boolean isChallengeLeader(Long chal_num, Long mem_num);
 	//리더 chal_joi_num 확인하기

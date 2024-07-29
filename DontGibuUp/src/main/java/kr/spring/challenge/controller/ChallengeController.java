@@ -275,13 +275,6 @@ public class ChallengeController {
 		log.debug("count : " + count);
 
 		PagingUtil page = new PagingUtil(pageNum, count, 3, 10, "list", "&status=" + status + "&month=" + month);
-		/*
-		 * if (status == "pre") { page = new PagingUtil(pageNum, count, 3, 10, "list",
-		 * "&status=pre&month=" + month); } else if (status == "on") { page = new
-		 * PagingUtil(pageNum, count, 3, 10, "list", "&status=on&month=" + month); }
-		 * else if (status == "post") { page = new PagingUtil(pageNum, count, 3, 10,
-		 * "list", "&status=post&month=" + month); }
-		 */
 
 		map.put("start", page.getStartRow());
 		map.put("end", page.getEndRow());
@@ -307,6 +300,7 @@ public class ChallengeController {
 			verifyMap.put("end", samePage.getEndRow());
 
 			List<ChallengeVerifyVO> verifyList = challengeService.selectChallengeVerifyList(verifyMap);
+			
 
 			// 인증 성공 횟수
 			long successCount = verifyList.stream().filter(v -> v.getChal_ver_status() == 0).count();

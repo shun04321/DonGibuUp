@@ -683,28 +683,16 @@ public class ChallengeAjaxController {
 			}
 			
 			if(isLeader) {			
-				//결제,참가 상태 및 포인트 변경,챌린지 톡방 환영 메시지 삭제,챌린지 삭제
-				challengeService.cancelChallenge(challengeJoin.getChal_num());
-				
-				//세션에 포인트 반영(리더만)
-				ChallengePaymentVO payVO = challengeService.selectChallengePayment(chal_joi_num);
-				int chal_point = payVO.getChal_point();				
-				member.setMem_point(member.getMem_point()+chal_point);				
+				//결제,참가 상태 및 포인트 변경,챌린지 톡방 환영 메시지 삭제,챌린지 취소
+				challengeService.cancelChallenge(challengeJoin.getChal_num());				
 			}else {
-				ChallengePaymentVO payVO = challengeService.selectChallengePayment(chal_joi_num);	
-				String od_imp_uid = payVO.getOd_imp_uid();	
-				
-				//결제 취소 요청하기
-				CancelData cancelData = new CancelData(od_imp_uid, true);
-				impClient.cancelPaymentByImpUid(cancelData);
-				
-				//결제,참가 상태 및 포인트 변경
-				challengeService.updateJoinStatus(chal_joi_num);
-				
-				//세션에 포인트 반영
-				int chal_point = payVO.getChal_point();				
-				member.setMem_point(member.getMem_point()+chal_point);
-			}			
+				challengeService.cancelChallengeJoin(chal_joi_num,challengeJoin.getChal_num());
+			}	
+			//세션에 포인트 반영
+			ChallengePaymentVO payVO = challengeService.selectChallengePayment(chal_joi_num);
+			int chal_point = payVO.getChal_point();				
+			member.setMem_point(member.getMem_point()+chal_point);
+			
 			return ResponseEntity.ok("챌린지가 취소되었습니다.");
 		} catch (Exception e) {
 			log.error("챌린지 취소 중 오류 발생", e);

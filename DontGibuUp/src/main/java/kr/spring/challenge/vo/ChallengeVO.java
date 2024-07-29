@@ -44,6 +44,7 @@ public class ChallengeVO {
 	private Integer chal_max;
 	private Date chal_rdate;
 	private String chal_ip;
+	private Integer chal_status;
 	
 	private String chal_edate;
 	private String mem_nick;

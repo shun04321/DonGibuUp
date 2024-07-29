@@ -193,8 +193,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 		return challengeMapper.selectChallengeJoinList(map);
 	}
 
-	@Override public ChallengeJoinVO selectChallengeJoin(Long chal_num) {
-		return challengeMapper.selectChallengeJoin(chal_num); 
+	@Override public ChallengeJoinVO selectChallengeJoin(Long chal_joi_num) {
+		return challengeMapper.selectChallengeJoin(chal_joi_num); 
 	}
 
 
@@ -369,23 +369,49 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 	//개별 챌린지 취소
 	@Override
-	public void updateJoinStatus(Long chal_joi_num) {
+	public void cancelChallengeJoin(Long chal_joi_num,Long chal_num) throws IamportResponseException, IOException {
+		ChallengePaymentVO payVO = selectChallengePayment(chal_joi_num);	
+		String od_imp_uid = payVO.getOd_imp_uid();	
+		
+		//결제 취소 요청하기
+		CancelData cancelData = new CancelData(od_imp_uid, true);
+		impClient.cancelPaymentByImpUid(cancelData);
+		
 		//챌린지 결제 상태 - 취소
-		challengeMapper.updateChalPaymentStatus(chal_joi_num);
-		//챌린지 참가 삭제
-		challengeMapper.deleteChallengeJoin(chal_joi_num);
+		challengeMapper.updateChalPaymentStatus(payVO.getChal_joi_num());
+		//챌린지 참가 상태 - 취소
+		challengeMapper.updateChallengeJoinStatus(payVO.getChal_joi_num());
 
 		//사용 포인트 복구
-		ChallengePaymentVO chalPayVO = challengeMapper.selectChallengePayment(chal_joi_num);
-		int chal_point = chalPayVO.getChal_point();		
+		int chal_point = payVO.getChal_point();		
 		if(chal_point > 0) {
 			//포인트 로그 작성
-			PointVO pointVO = new PointVO(30,chalPayVO.getChal_point(),chalPayVO.getMem_num());
+			PointVO pointVO = new PointVO(30,payVO.getChal_point(),payVO.getMem_num());
 			pointService.insertPointLog(pointVO);
 
 			//회원 포인트 업데이트
 			memberService.updateMemPoint(pointVO);
 		}
+		
+		//리더에게 회원의 챌린지 취소 알림
+		NotifyVO notifyVO = new NotifyVO();
+		
+		//챌린지 정보
+		ChallengeVO challengeVO = challengeMapper.selectChallenge(chal_num);
+		
+		notifyVO.setMem_num(challengeVO.getMem_num()); //알림 받을 회원 번호
+		notifyVO.setNotify_type(35);             	   //알림 타입
+		notifyVO.setNot_url("/challenge/detail?chal_num="+chal_num); //알림을 누르면 반환할 url
+		
+		Map<String, String> dynamicValues = new HashMap<String, String>();
+		MemberVO participant = memberMapper.selectMemberDetail(payVO.getMem_num());
+		String memNick = participant.getMem_nick();
+		
+		dynamicValues.put("memNick", memNick);
+		dynamicValues.put("chalTitle", challengeVO.getChal_title());
+		
+		//NotifyService 호출
+		notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
 	}
 
 	//챌린지의 모든 참가 내역 및 결제 취소
@@ -401,8 +427,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 			
 			//챌린지 결제 상태 - 취소
 			challengeMapper.updateChalPaymentStatus(payVO.getChal_joi_num());
-			//챌린지 참가 삭제
-			challengeMapper.deleteChallengeJoin(payVO.getChal_joi_num());
+			//챌린지 참가 상태 - 취소
+			challengeMapper.updateChallengeJoinStatus(payVO.getChal_joi_num());
 
 			//사용 포인트 복구
 			ChallengePaymentVO chalPayVO = challengeMapper.selectChallengePayment(payVO.getChal_joi_num());
@@ -415,6 +441,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 				//회원 포인트 업데이트
 				memberService.updateMemPoint(pointVO);
 			}
+			
 			
 			//챌린지 삭제 알림
 			NotifyVO notifyVO = new NotifyVO();
@@ -433,8 +460,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 		//챌린지 톡방 환영 메시지 삭제
 		challengeMapper.deleteChallengeChat(chal_num);
 		
-		//챌린지 삭제
-		challengeMapper.deleteChallenge(chal_num);
+		//챌린지 상태 - 취소
+		challengeMapper.updateChallengeStatus(chal_num);
 	}
 
 	//후기 작성 시 포인트 지급
