@@ -249,6 +249,100 @@ span.upload_button {
 }
 
 /* SY */
+/* 챌린지 개설 */
+.challenge-create-container-custom {
+    max-width: 800px;
+    margin: auto;
+    padding: 40px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.form-table-custom {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.form-table-custom td {
+    padding: 10px;
+    vertical-align: top;
+}
+
+.form-table-custom label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.radio-button-custom, .input-text-custom, .input-textarea-custom, .input-select-custom, .input-date-custom, .input-file-custom {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.input-textarea-custom {
+    height: 80px;
+    resize: none;
+}
+
+.input-file-custom {
+    padding: 0;
+}
+
+.align-center {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.submit-button-custom {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.submit-button-custom:hover {
+    background-color: #0056b3;
+}
+
+/* 기본적으로 form:radiobutton이 input 요소로 렌더링되므로, input[type="radio"]를 사용하여 스타일 적용 */
+input[type="radio"].custom-radio {
+    display: none; /* 기본 라디오 버튼 숨기기 */
+}
+
+input[type="radio"].custom-radio + label.custom-radio-label {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    border: 1px solid #e9eaeb;
+    border-radius: 20px;
+    background-color: white;
+    color: #717275;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    font-size: 0.9em; /* 글자 크기 줄이기 */
+}
+
+input[type="radio"].custom-radio:checked + label.custom-radio-label {
+    background-color: #f0f8ff;
+    border-color: #999;
+}
+
+input[type="radio"].custom-radio + label.custom-radio-label:hover {
+    background-color:  #e7e7e7;
+    border-color: #999;
+}
+
 /* 챌린지 목록 */
 .image-wrapper {
     position: relative;

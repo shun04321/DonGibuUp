@@ -70,27 +70,27 @@
 		    <h6>
 		        참여금 
 		        <span class="amount-container">
-		            <span class="amount chal_fee"></span><span class="currency">원</span>
+		            <span class="amount chal_fee"></span>&nbsp;<span class="currency">원</span>
 		        </span>
 		    </h6>
 		    <br>
 		    <h6>
 		        보유 포인트 
 		        <span class="amount-container2">
-		            <span class="amount mem-point">${mem_point}</span><span class="currency">p</span>
+		            <span class="amount mem-point">${mem_point}</span>&nbsp;<span class="currency">p</span>
 		        </span>
 		    </h6>
 		    <h6>
 		        사용할 포인트 
 		        <span class="input-container">
-		            <input type="text" class="used-point" value="0"><span class="currency">p</span>
+		            <input type="text" class="used-point" value="0">&nbsp;<span class="currency">p</span>
 		        </span>
 		    </h6>
 		    <hr>
 		    <h6 style="font-size: 24px;">
 		        결제금액 
 		        <span class="amount-container">
-		            <span class="amount final_fee"></span><span class="currency">원</span>
+		            <span class="amount final_fee"></span>&nbsp;<span class="currency">원</span>
 		        </span>
 		    </h6>
 		</div>
