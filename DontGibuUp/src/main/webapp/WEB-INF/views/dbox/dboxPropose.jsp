@@ -48,7 +48,7 @@
 	                </div>
 	            </div>
 	        </div>
-	        <div class="pr-arrow d-none d-lg-block d-md-none">
+	       <!--  <div class="pr-arrow d-none d-lg-block d-md-none">
 	            ▶
 	        </div>
 	        <div class="col-sm-12 col-md-6 col-lg-2 pr-step mb-4">
@@ -60,7 +60,7 @@
 	                    </div>
 	                </div>
 	            </div>
-	        </div>
+	        </div> -->
 	    </div>
 	</div>
 	<div class="container d-flex justify-content-end pr-btn-div col-lg-9 col-12 mx-auto">
