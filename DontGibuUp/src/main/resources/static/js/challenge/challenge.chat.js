@@ -127,7 +127,8 @@ $(function() {
 					//채팅메시지 보여지게 하기	
 					$(param.chatList).each(function(index, item) {
 						let output = '';
-						if (item.chat_content.indexOf('@{common}') >= 0) {
+						console.log(item.chat_content);
+						if (item.chat_content && item.chat_content.indexOf('@{common}') >= 0) {
 							//챌린지 시작 메시지, 신규 입장 메시지
 							output += '<div class="greeting-message">';
 							output += item.chat_content.substring(0, item.chat_content.indexOf('@{common}'));
