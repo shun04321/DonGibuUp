@@ -468,6 +468,9 @@ public class ChallengeServiceImpl implements ChallengeService{
 
 		//챌린지 톡방 환영 메시지 삭제
 		challengeMapper.deleteChallengeChat(chal_num);
+		
+		//챌린지 좋아요 삭제
+		challengeMapper.deleteAllFav(chal_num);
 
 		//챌린지 상태 - 취소
 		challengeMapper.updateChallengeStatus(chal_num);
@@ -857,6 +860,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 				challengeMapper.deleteChallengeVerifyByChalJoiNum(join.getChal_joi_num());
 			}			
 		}
+		//챌린지 좋아요 삭제
+		challengeMapper.deleteAllFav(chal_num);
 		
 		//챌린지 상태 - 취소
 		challengeMapper.updateChallengeStatus(chal_num);

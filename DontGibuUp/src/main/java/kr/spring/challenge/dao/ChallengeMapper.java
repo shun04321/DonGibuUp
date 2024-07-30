@@ -144,6 +144,9 @@ public interface ChallengeMapper {
     public void insertFav(ChallengeFavVO fav);
     @Delete("DELETE FROM chal_fav WHERE chal_num=#{chal_num} AND mem_num=#{mem_num}")
     public void deleteFav(ChallengeFavVO fav);
+    //챌린지에 해당하는 모든 좋아요 삭제
+    @Delete("DELETE FROM chal_Fav WHERE chal_num=#{chal_num}")
+    public void deleteAllFav(Long chal_num);
     
     //*챌린지 스케줄러*//
     //오늘 종료된 챌린지 조회
