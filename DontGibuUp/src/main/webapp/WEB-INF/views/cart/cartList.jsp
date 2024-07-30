@@ -153,6 +153,10 @@ function updateCartQuantity(cart_num) {
             </div>
             <div class="modal-body">
                 <!-- 포인트 입력 필드 -->
+                <div class="mb-3 d-flex">
+					<label class="g-buy-label" style="width:30%">보유 포인트</label>
+                	<span>${user.mem_point}</span>
+                </div>
                 <div class="mb-3">
                     <label for="goods_do_point" class="form-label">사용할 포인트</label>
                     <input type="number" class="form-control calculate" id="goods_do_point" placeholder="사용할 포인트 입력">

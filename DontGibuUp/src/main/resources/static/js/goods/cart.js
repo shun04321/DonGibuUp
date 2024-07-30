@@ -6,10 +6,20 @@ document.addEventListener("DOMContentLoaded", function() {
     let buyerName = "${sessionScope.user.mem_nick}";
     let itemNum = "${goods.item_num}";
     let pageContextPath = document.getElementById('contextPath').dataset.contextPath; 
+    
 
     if (document.getElementById("purchaseButton")) {
         document.getElementById("purchaseButton").addEventListener("click", function() {
+			// 선택된 항목을 가져옴
+			var selectedItems = $('input[name="cart_num"]:checked');
+			
+			if (selectedItems.length === 0) {
+			    alert("선택된 항목이 없습니다.");
+			    return;
+			}
+			
             $('#staticBackdrop').modal('show');
+            updateTotalAmount();
         });
     }
 
@@ -40,7 +50,16 @@ function updateTotalAmount() {
         totalAmount += cart.price * cart.cart_quantity;
     });
 
-    let point = parseInt($('#goods_do_point').val());
+    let point =$('#goods_do_point').val();
+    
+    console.log(point);
+    
+	if (point == '' || point == null) {
+		point = 0;
+	} else {
+		point = parseInt($('#goods_do_point').val());
+	}
+    
     let mem_point = parseInt($('#mem_point').val());
 
     if (point > mem_point) {
@@ -62,6 +81,7 @@ function updateTotalAmount() {
 }
 
 function confirmPurchase(pageContextPath) {
+	
     let buyerName = "${sessionScope.user.mem_nick}";
     let deliveryAddress = document.getElementById('delivery_address').value;
 
