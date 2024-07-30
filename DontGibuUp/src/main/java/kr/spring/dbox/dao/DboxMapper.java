@@ -71,4 +71,9 @@ public interface DboxMapper {
 	public int getDboxCountbyMem_num(Map<String, Object> map);
 	//제안한 기부박스 현황 확인
 	public List<DboxVO> getDboxByMem_num(Map<String, Object> map);
+	//기부박스 중단된 impuid 불러오기
+	@Select("SELECT * FROM dbox_donation WHERE dbox_num =#{dbox_num}")
+	public List<DboxDonationVO> getDboxDonationVODboxNum(long dbox_num);
+
+	
 }

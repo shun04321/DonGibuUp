@@ -47,4 +47,6 @@ public interface DboxService {
 	public int getDboxCountbyMem_num(Map<String, Object> map);
 	//제안한 기부박스 현황 확인
 	public List<DboxVO> getDboxByMem_num(Map<String, Object> map);
+	
+	public List<DboxDonationVO> getDboxDonationVODboxNum(long dbox_num);
 }

@@ -9,20 +9,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+
+import com.google.gson.Gson;
 
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxBudgetVO;
+import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
+import kr.spring.point.vo.PointVO;
+import kr.spring.refund.vo.RefundVO;
+import kr.spring.subscription.service.SubscriptionService;
+import kr.spring.subscription.vo.GetTokenVO;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,7 +48,10 @@ public class DboxMypageAdiminController {
 	private DboxService dboxService;
 	@Autowired
 	NotifyService notifyService;
-	
+	@Autowired
+	SubscriptionService subscriptionService;
+	@Autowired
+	MemberService memberService;
 	/*===================================
 	 * 		MyPage
 	 *==================================*/
@@ -199,6 +217,22 @@ public class DboxMypageAdiminController {
     		dboxService.updateDboxAcomment(dbox_num, "신청하신 [" + dbox.getDbox_title() + "] 기부박스가 반려되었습니다. \n\n신청반려사유 : " + reject);
     		
     	}else if(dbox_status==5) {
+    		List<DboxDonationVO> list = dboxService.getDboxDonationVODboxNum(dbox_num);
+    		for(DboxDonationVO dboxdonationVO : list) {
+    			//refund
+    			RefundVO refundVO = new RefundVO();
+    			refundVO.setMem_num(dboxdonationVO.getMem_num());
+    			refundVO.setImp_uid(dboxdonationVO.getDbox_imp_uid());
+    			refundVO.setPayment_type(1);
+    			refundVO.setReason(4);
+    			refundVO.setReturn_point(dboxdonationVO.getDbox_do_point());
+    			refundVO.setAmount((int)dboxdonationVO.getDbox_do_price());
+    			refund(refundVO,dboxdonationVO);
+    			//결제상태 변경
+    			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), 2);
+    				
+    		}
+    		
     		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\n진행중단사유 : " + reject);
 
     	}
@@ -268,4 +302,80 @@ public class DboxMypageAdiminController {
     		}
     	}
     }
+    
+    //환불 api
+    public void refund(RefundVO refundVO , DboxDonationVO dboxDonationVO) {
+		Map<String,String> mapJson = new HashMap<String,String>();
+		String token = subscriptionService.getToken(1);
+		Gson gson = new Gson();
+		token = token.substring(token.indexOf("response") + 10);
+		token = token.substring(0, token.length() - 1);
+
+		// token에서 response 부분을 추출하여 GetTokenVO로 변환
+		GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
+
+		String access_token = vo.getAccess_token();
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(access_token);
+
+		Map<String, Object> map = new HashMap<>();
+		if(refundVO.getPayment_type()==0) {
+			map.put("merchant_uid", refundVO.getImp_uid());
+		}else {
+			map.put("imp_uid", refundVO.getImp_uid());
+		}
+		map.put("reason", refundVO.getReason());
+
+		String json = gson.toJson(map);
+		System.out.println("json : " + json);
+
+		HttpEntity<String> entity = new HttpEntity<>(json, headers);
+		ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/payments/cancel", entity, String.class);
+
+		// API 응답을 문자열로 받음
+		String responseBody = response.getBody();
+
+		// API 응답 문자열에서 code와 message 값을 추출
+		Map<String, Object> responseMap = gson.fromJson(responseBody, Map.class);
+		Number codeNumber = (Number) responseMap.get("code");
+		int code = codeNumber.intValue();
+		String message = (String) responseMap.get("message");
+		log.debug("response : " + response);
+		
+		if (response.getStatusCode() == HttpStatus.OK) {	        	
+			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
+			if (code == 0) { 
+				log.debug(responseBody);
+				PointVO pointVO = new PointVO();
+				//포인트 반환
+				pointVO.setMem_num(refundVO.getMem_num());
+				pointVO.setPevent_type(30);
+				pointVO.setPoint_amount(refundVO.getReturn_point());
+				memberService.updateMemPoint(pointVO);
+				//환불 알림				
+				NotifyVO notifyVO = new NotifyVO();
+				notifyVO.setMem_num(refundVO.getMem_num());
+				notifyVO.setNotify_type(36);
+				notifyVO.setNot_url("/member/myPage/payment");
+				Map<String, String> dynamicValues = new HashMap<String, String>();
+				
+				DboxVO dboxVO = dboxService.selectDbox(dboxDonationVO.getDbox_num());
+				dynamicValues.put("dboxTitle",dboxVO.getDbox_team_name());
+				dynamicValues.put("price",""+dboxDonationVO.getDbox_do_price());
+				dynamicValues.put("point",""+dboxDonationVO.getDbox_do_point());
+				notifyService.insertNotifyLog(notifyVO, dynamicValues);
+			}else {
+			//환불 실패시 {code : 1}
+				log.debug(responseBody);
+			}
+		}else{ 
+			//api 호출 실패시
+			log.debug(responseBody);
+		}
+
+	}
 }

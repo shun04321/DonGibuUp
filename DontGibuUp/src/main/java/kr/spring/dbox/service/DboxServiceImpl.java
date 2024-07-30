@@ -109,6 +109,10 @@ public class DboxServiceImpl implements DboxService {
 	public List<DboxVO> getDboxByMem_num(Map<String, Object> map) {
 		return dboxMapper.getDboxByMem_num(map);
 	}
+	@Override
+	public List<DboxDonationVO> getDboxDonationVODboxNum(long dbox_num) {
+		return dboxMapper.getDboxDonationVODboxNum(dbox_num);
+	}
 	
 
 }
