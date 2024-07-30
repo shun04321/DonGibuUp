@@ -70,9 +70,6 @@ public interface MemberService {
 	//회원 status 변경
 	public void updateMemStatus(MemberVO memberVO);
 	
-	//회원 탈퇴
-	public void deleteAccount(long mem_num);
-	
 	//회원 등급 변경
 	public void updateMemAuth(long mem_num,int member_auth);
 }

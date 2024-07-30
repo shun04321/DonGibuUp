@@ -37,6 +37,7 @@ public class CartController {
     @PostMapping("/cart/insert")
     public String insertCart(@RequestParam("item_num") long itemNum,
                              @RequestParam("cart_quantity") long cartQuantity,
+                             @RequestParam("item_price") int itemPrice,
                              @RequestParam(value = "mem_num", required = false) Long memNum,
                              HttpServletRequest request,
                              Model model) throws IllegalStateException, IOException {
@@ -46,10 +47,15 @@ public class CartController {
             model.addAttribute("url", request.getContextPath() + "/member/login");
             return "common/resultAlert";
         }
+        
+        log.debug("<<장바구니 등록 -item_num>> : " + itemNum);
+        log.debug("<<장바구니 등록 -cart_quantity>> : " + cartQuantity);
 
         CartVO cart = new CartVO();
         cart.setItem_num(itemNum);
+        cart.setItem_price(itemPrice);
         cart.setCart_quantity(cartQuantity);
+        
         cart.setMem_num(memNum);
 
         cartService.insertOrUpdateCart(cart);

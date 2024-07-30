@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.siot.IamportRestClient.IamportClient;
+
 import kr.spring.cart.dao.CartMapper;
 import kr.spring.challenge.dao.ChallengeMapper;
+import kr.spring.delete.dao.DeleteMapper;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -39,6 +44,8 @@ public class MemberServiceImpl implements MemberService {
 	CartMapper cartMapper;
 	@Autowired
 	ChallengeMapper challengeMapper;
+	@Autowired
+	DeleteMapper deleteMapper;
 
 	//회원가입
 	@Override
@@ -272,14 +279,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void deleteAccount(long mem_num) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
 	public void updateMemAuth(long mem_num, int member_auth) {//회원 등급 변경
 		memberMapper.updateMemAuth(mem_num, member_auth);
 	}
-
 
 }

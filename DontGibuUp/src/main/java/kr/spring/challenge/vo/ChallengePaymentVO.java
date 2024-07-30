@@ -19,4 +19,5 @@ public class ChallengePaymentVO {
     private int chal_point;        // 사용된 포인트
     private Date chal_pay_date;     // 결제 날짜
     private int chal_pay_status;    // 결제 상태 (0:결제완료, 1:결제취소)
+    private long chal_num;			// 챌린지 번호
 }

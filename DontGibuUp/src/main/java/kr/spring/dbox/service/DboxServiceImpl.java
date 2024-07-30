@@ -1,17 +1,36 @@
 package kr.spring.dbox.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import com.google.gson.Gson;
 
 import kr.spring.dbox.dao.DboxMapper;
 import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.member.dao.MemberMapper;
+import kr.spring.member.service.MemberService;
+import kr.spring.notify.dao.NotifyMapper;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
+import kr.spring.point.vo.PointVO;
+import kr.spring.refund.vo.RefundVO;
+import kr.spring.subscription.dao.SubscriptionMapper;
+import kr.spring.subscription.service.SubscriptionService;
+import kr.spring.subscription.vo.GetTokenVO;
 import kr.spring.subscription.vo.SubscriptionVO;
 
 @Service
@@ -19,6 +38,15 @@ import kr.spring.subscription.vo.SubscriptionVO;
 public class DboxServiceImpl implements DboxService {
 	@Autowired
 	DboxMapper dboxMapper;
+	
+	@Autowired
+	SubscriptionMapper subscriptionMapper;
+	
+	@Autowired 
+	MemberMapper memberMapper;
+	
+	@Autowired
+	NotifyMapper notifyMapper;
 	
 	//Dbox 등록
 	@Override
@@ -114,5 +142,76 @@ public class DboxServiceImpl implements DboxService {
 		return dboxMapper.getDboxDonationVODboxNum(dbox_num);
 	}
 	
+	public void refund(RefundVO refundVO , DboxDonationVO dboxDonationVO) {
+		String token = subscriptionMapper.getToken(1);
+		Gson gson = new Gson();
+		token = token.substring(token.indexOf("response") + 10);
+		token = token.substring(0, token.length() - 1);
 
+		// token에서 response 부분을 추출하여 GetTokenVO로 변환
+		GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
+
+		String access_token = vo.getAccess_token();
+
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.setBearerAuth(access_token);
+
+		Map<String, Object> map = new HashMap<>();
+		if(refundVO.getPayment_type()==0) {
+			map.put("merchant_uid", refundVO.getImp_uid());
+		}else {
+			map.put("imp_uid", refundVO.getImp_uid());
+		}
+		map.put("reason", refundVO.getReason());
+
+		String json = gson.toJson(map);
+		System.out.println("json : " + json);
+
+		HttpEntity<String> entity = new HttpEntity<>(json, headers);
+		ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/payments/cancel", entity, String.class);
+
+		// API 응답을 문자열로 받음
+		String responseBody = response.getBody();
+
+		// API 응답 문자열에서 code와 message 값을 추출
+		Map<String, Object> responseMap = gson.fromJson(responseBody, Map.class);
+		Number codeNumber = (Number) responseMap.get("code");
+		int code = codeNumber.intValue();
+		String message = (String) responseMap.get("message");
+
+		if (response.getStatusCode() == HttpStatus.OK) {	        	
+			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
+			if (code == 0) { 
+				PointVO pointVO = new PointVO();
+				//포인트 반환
+				pointVO.setMem_num(refundVO.getMem_num());
+				pointVO.setPevent_type(30);
+				pointVO.setPoint_amount(refundVO.getReturn_point());
+				memberMapper.updateMemPoint(pointVO);
+				//환불 알림				
+				NotifyVO notifyVO = new NotifyVO();
+				notifyVO.setMem_num(refundVO.getMem_num());
+				notifyVO.setNotify_type(36);
+				notifyVO.setNot_url("/member/myPage/payment");
+				Map<String, String> dynamicValues = new HashMap<String, String>();
+
+				DboxVO dboxVO = dboxMapper.selectDbox(dboxDonationVO.getDbox_num());
+				dynamicValues.put("dboxTitle",dboxVO.getDbox_title());
+				dynamicValues.put("price",""+dboxDonationVO.getDbox_do_price());
+				dynamicValues.put("point",""+dboxDonationVO.getDbox_do_point());
+
+				notifyMapper.insertNotifyLog(notifyVO, dynamicValues);
+			}else {
+			//환불 실패시 {code : 1}
+				System.out.println("환불 실패 메시지 : " + responseBody);
+			}
+		}else{ 
+			//api 호출 실패시
+			System.out.println("환불 api 호출 실패 메시지 : " + responseBody);
+		}
+
+	}
 }
