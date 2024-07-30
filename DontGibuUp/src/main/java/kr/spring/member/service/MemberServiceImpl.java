@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.cart.dao.CartMapper;
 import kr.spring.challenge.dao.ChallengeMapper;
-import kr.spring.delete.dao.DeleteMapper;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -40,8 +39,6 @@ public class MemberServiceImpl implements MemberService {
 	CartMapper cartMapper;
 	@Autowired
 	ChallengeMapper challengeMapper;
-	@Autowired
-	DeleteMapper deleteMapper;
 
 	//회원가입
 	@Override
