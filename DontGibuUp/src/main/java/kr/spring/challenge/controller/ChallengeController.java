@@ -537,9 +537,7 @@ public class ChallengeController {
 			
 			//이번 주 인증 완료 여부 확인
 			if(today.isAfter(startDate)||today.isEqual(startDate) && today.isBefore(endDate)) {
-				if(chalFreq == 0 && weeklyVerifications == 7) {
-					mav.addObject("hasCompletedWeeklyVerify", true);
-				}else if(chalFreq != 0 && weeklyVerifications == chalFreq) {
+				if(weeklyVerifications == chalFreq) {
 					mav.addObject("hasCompletedWeeklyVerify", true);
 				}
 			}

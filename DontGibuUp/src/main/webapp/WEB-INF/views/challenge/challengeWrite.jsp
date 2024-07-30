@@ -97,14 +97,14 @@
                 <td><form:label path="chal_freq">인증 빈도<span class="mandatory">*</span></form:label></td>
                 <td>
                     <form:select path="chal_freq" class="input-select-custom">
-                        <option disabled="disabled" selected>선택하세요</option>
-                        <form:option value="0">매일</form:option>
+                        <option disabled="disabled" selected>선택하세요</option>                                               
                         <form:option value="1">주1일</form:option>
                         <form:option value="2">주2일</form:option>
                         <form:option value="3">주3일</form:option>
                         <form:option value="4">주4일</form:option>
                         <form:option value="5">주5일</form:option>
                         <form:option value="6">주6일</form:option>
+                        <form:option value="7">매일</form:option>
                     </form:select>
                     <br>
                     <form:errors path="chal_freq" cssClass="error-color"/>
