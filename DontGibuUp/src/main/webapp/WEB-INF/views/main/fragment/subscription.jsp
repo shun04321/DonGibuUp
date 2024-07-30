@@ -19,10 +19,15 @@
 	cursor: pointer;
 }
 	input[type=button]:hover {
+	margin-top: 10px;
+	padding: 4px 20px;
+	border: 1px solid #09aa5c;
+	border-radius: 2px;
 	background-color: #FFF;
 	color: #09aa5c;
 	transition: 0.2s ease-out;
-	height: 30px;
+	font-weight: bold;
+	cursor: pointer;
 }
 </style>
 <div class="subscription">
