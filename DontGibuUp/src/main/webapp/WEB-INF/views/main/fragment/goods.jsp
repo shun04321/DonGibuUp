@@ -6,16 +6,14 @@
 <%-- css 설정이 필요하면 해당 파일 내의 적절한 섹션에서 수정해주세요 (git 충돌 주의) --%>
 <!-- 최신 상품 섹션 시작 -->
 <div id="latestGoods" class="container mt-5">
-    <h5 class="mt-5 mb-3">최신 상품</h5>
-    <div class="goods-item">
+    <h6 class="latestGoods">최신 상품</h6>
+    <div class="latest-goods-item">
         <div class="card" onclick="location.href='${pageContext.request.contextPath}/goods/detail?item_num=${todayGoods.item_num}'" style="cursor: pointer;">
             <img src="${pageContext.request.contextPath}${todayGoods.item_photo}" class="card-img-top" alt="${todayGoods.item_name}">
             <div class="card-body">
-                <p class="card-category">카테고리: ${todayGoods.dcate_num}</p>
-                <h5 class="card-title">${todayGoods.item_name}</h5>
+                <p class="card-title">${todayGoods.item_name}</p>
                 <p class="card-price">가격: ${todayGoods.item_price}원</p>
                 <p class="card-stock">재고: ${todayGoods.item_stock}ea</p>
-                <p class="card-status">상태: ${todayGoods.item_status}</p>
             </div>
         </div>
     </div>
@@ -26,54 +24,67 @@
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;
-    text-align: center; /* 중앙 정렬 */
+    text-align: center;
 }
 
-#latestGoods h5 {
-    color: #17a2b8;
+#latestGoods h6 {
+    color: #5a6f80;
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-.goods-item {
-    text-align: center;
-    display: inline-block; /* 인라인 블록으로 변경 */
-    width: 100%;
-    margin: 0;
+.latest-goods-item {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-.goods-item .card {
+.latest-goods-item .card {
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
-    max-width: 300px;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.goods-item .card-img-top {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     width: 100%;
-    height: auto;
+    max-width: 300px; /* Max width for card */
+    overflow: hidden;
+    transition: box-shadow 0.3s ease-in-out;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.latest-goods-item .card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.latest-goods-item .card-img-top {
+    width: 100%;
+    height: auto; /* Adjusted to keep aspect ratio */
     object-fit: cover;
-    margin: 0;
-    padding: 0;
+    transition: transform 0.3s ease;
 }
 
-.goods-item .card-body {
+.latest-goods-item .card:hover .card-img-top {
+    transform: scale(1.1);
+}
+
+.latest-goods-item .card-body {
     padding: 10px;
-    text-align: left; /* 왼쪽 정렬 */
+    text-align: left;
 }
 
-.goods-item .card-category,
-.goods-item .card-title,
-.goods-item .card-price,
-.goods-item .card-stock,
-.goods-item .card-status {
+.latest-goods-item .card-category,
+.latest-goods-item .card-title,
+.latest-goods-item .card-price,
+.latest-goods-item .card-stock,
+.latest-goods-item .card-status {
     font-size: 1rem;
     color: #555;
     margin: 5px 0;
 }
 
-.goods-item .card-title {
+.latest-goods-item .card-title {
     font-size: 1.25rem;
     font-weight: bold;
     color: #333;
