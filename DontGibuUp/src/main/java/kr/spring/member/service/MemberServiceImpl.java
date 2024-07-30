@@ -279,7 +279,10 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public void updateMemAuth(long mem_num, int member_auth) {//회원 등급 변경
+		memberMapper.updateMemAuth(mem_num, member_auth);
+	}
 
 
 }

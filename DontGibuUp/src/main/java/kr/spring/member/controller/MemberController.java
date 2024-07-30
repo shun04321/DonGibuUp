@@ -715,7 +715,7 @@ public class MemberController {
 
 		return "adminManagePoint";
 	}
-	//회원 상세 페이지 admin/detail?mem_num=361
+	//회원 상세 페이지
     @GetMapping("/admin/detail")
 	public String statusAdmin(long mem_num, Model model) {
 		log.debug("<<관리자 회원 상세 - member_num>> : "+ mem_num);
@@ -727,7 +727,19 @@ public class MemberController {
     	model.addAttribute("member",member);
     	
     	return "adminMemberDetail";
-    }	
+    }
+    //회원 등급 변경
+    @GetMapping("/admin/detail/Change")
+    public String authChange(long mem_num,int member_auth) {
+    	log.debug("<<관리자 회원 등급 변경 - member_num>> : "+ mem_num);
+    	log.debug("<<관리자 회원 등급 변경 전 - member_auth>> : " + member_auth);
+
+    	//회원 등급 수정
+    	
+    	memberService.updateMemAuth(mem_num,member_auth);
+    	
+    	return "redirect:/admin/detail?mem_num=" + mem_num;
+    }
 	
 	
 	
