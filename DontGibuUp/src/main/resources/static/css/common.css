@@ -356,3 +356,12 @@ ul#delivery_info li span {
 .text-small {
 	font-size: 0.875rem !important; /* Bootstrap small text size equivalent */
 }
+
+button{
+	width:100%;
+	height:50px;
+	font-size:12pt;
+	background-color:#fcfcfc;
+	border-color:#b7b5b5;
+	border-radius:5px;
+}

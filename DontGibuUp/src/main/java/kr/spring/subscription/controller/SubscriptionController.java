@@ -217,7 +217,7 @@ public class SubscriptionController {
 		if ("payment success".equals(paymentResult)) {
 			model.addAttribute("accessTitle", "결제 결과");
 			model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-			model.addAttribute("accessBtn", "홈으로 이동");
+			model.addAttribute("accessBtn", "확인");
 			model.addAttribute("accessUrl", "/subscription/subscriptionList");
 		} else {
 			model.addAttribute("accessTitle", "결제 실패");
@@ -319,7 +319,7 @@ public class SubscriptionController {
 			response.put("status", "success");
 			response.put("accessTitle", "결제 결과");
 			response.put("accessMsg", "결제가 성공적으로 처리되었습니다.");
-			response.put("accessBtn", "정기기부 현황");
+			response.put("accessBtn", "확인");
 			response.put("accessUrl", "subscriptionList"); 
 			response.put("url", "/subscription/resultView"); // 클라이언트에서 이동할 URL
 		} else {
@@ -339,7 +339,7 @@ public class SubscriptionController {
 		// Model attributes 설정
 		model.addAttribute("accessTitle", "결제 결과");
 		model.addAttribute("accessMsg", "결제가 성공적으로 처리되었습니다.");
-		model.addAttribute("accessBtn", "정기기부 목록");
+		model.addAttribute("accessBtn", "확인");
 		model.addAttribute("accessUrl", "subscriptionList");
 
 		// JSP 파일명 반환
@@ -889,7 +889,7 @@ public class SubscriptionController {
 				}
 				
 				NotifyVO notifyVO = new NotifyVO();
-				notifyVO.setMem_num(user.getMem_num());
+				notifyVO.setMem_num(refundVO.getMem_num());
 				notifyVO.setNotify_type(31);
 				notifyVO.setNot_url("/member/myPage/payment");
 				Map<String, String> dynamicValues = new HashMap<String, String>();
@@ -950,7 +950,7 @@ public class SubscriptionController {
 			}
 			
 			NotifyVO notifyVO = new NotifyVO();
-			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setMem_num(refundVO.getMem_num());
 			notifyVO.setNotify_type(32);
 			notifyVO.setNot_url("/member/myPage/payment");
 			Map<String, String> dynamicValues = new HashMap<String, String>();
@@ -1007,7 +1007,7 @@ public class SubscriptionController {
 			}
 			
 			NotifyVO notifyVO = new NotifyVO();
-			notifyVO.setMem_num(user.getMem_num());
+			notifyVO.setMem_num(refundVO.getMem_num());
 			notifyVO.setNotify_type(30);
 			notifyVO.setNot_url("/member/myPage/payment");
 			Map<String, String> dynamicValues = new HashMap<String, String>();
