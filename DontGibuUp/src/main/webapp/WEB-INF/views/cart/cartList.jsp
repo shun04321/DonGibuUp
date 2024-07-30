@@ -133,8 +133,8 @@ function updateCartQuantity(cart_num) {
                     <input type="number" id="cart_quantity_${cart.cart_num}" value="${cart.cart_quantity}" min="1" max="${cart.goods.item_stock}" data-item-num="${cart.goods.item_num}">
                 </td>
                 <td class="align-center">
-                    <button type="button" class="default-btn" onclick="updateCartQuantity(${cart.cart_num})">수량 변경</button>
-                </td>
+   				<button type="button" class="default-btn btn-large" onclick="updateCartQuantity(${cart.cart_num})">수량 변경</button>
+				</td>
             </tr>
         </c:forEach>
     </tbody>
@@ -178,17 +178,17 @@ function updateCartQuantity(cart_num) {
                 <div id="donation_info">
                     구매 금액의 10%는 
                     <c:choose>
-                        <c:when test="${goods.dcate_num == 1}">독거노인 종합 지원센터</c:when>
-                        <c:when test="${goods.dcate_num == 2}">안무서운회사</c:when>
-                        <c:when test="${goods.dcate_num == 3}">동물권행동 카라</c:when>
-                        <c:when test="${goods.dcate_num == 4}">희망 조약돌</c:when>
-                        <c:when test="${goods.dcate_num == 5}">Save the Children</c:when>
-                        <c:when test="${goods.dcate_num == 6}">굿네이버스</c:when>
-                        <c:when test="${goods.dcate_num == 7}">서울환경연합</c:when>
-                        <c:when test="${goods.dcate_num == 8}">푸르메 재단</c:when>
+                        <c:when test="${goods.dcate_num == 1}">독거노인기본생활 지원</c:when>
+                        <c:when test="${goods.dcate_num == 2}">청년 고립 극복 지원</c:when>
+                        <c:when test="${goods.dcate_num == 3}">유기동물 구조와 보호</c:when>
+                        <c:when test="${goods.dcate_num == 4}">미혼모(한부모가정)</c:when>
+                        <c:when test="${goods.dcate_num == 5}">해외 어린이 긴급구호</c:when>
+                        <c:when test="${goods.dcate_num == 6}">위기가정 아동지원</c:when>
+                        <c:when test="${goods.dcate_num == 7}">쓰레기 문제 해결</c:when>
+                        <c:when test="${goods.dcate_num == 8}">장애 어린이 재활 지원</c:when>
                         <c:otherwise>기타</c:otherwise>
                     </c:choose>
-                    에 전달됩니다.
+                    분야에 전달됩니다.
                 </div>
             </div>
             <div class="modal-footer">
