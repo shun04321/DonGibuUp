@@ -20,6 +20,8 @@ import kr.spring.cart.dao.CartMapper;
 import kr.spring.challenge.dao.ChallengeMapper;
 import kr.spring.challenge.vo.ChallengePaymentVO;
 import kr.spring.challenge.vo.ChallengeVO;
+import kr.spring.dbox.service.DboxService;
+import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.delete.dao.DeleteMapper;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberVO;
@@ -27,6 +29,7 @@ import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
+import kr.spring.refund.vo.RefundVO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -49,6 +52,8 @@ public class MemberDeleteServiceImpl implements MemberDeleteService {
 	DeleteMapper deleteMapper;
 	@Autowired
 	MemberService memberService;
+	@Autowired
+	DboxService dboxService;
 	
 	//IamportClient 초기화 하기
 	private IamportClient impClient; 
@@ -67,8 +72,6 @@ public class MemberDeleteServiceImpl implements MemberDeleteService {
 	public void deleteAccount(long mem_num) throws IamportResponseException, IOException {
 
 		//===================단순삭제======================//
-		//delete detail
-		//memberMapper.deleteMemberDetail(mem_num);
 
 		// 카트 삭제
 		cartMapper.deleteCartsByMember(mem_num);
@@ -100,7 +103,7 @@ public class MemberDeleteServiceImpl implements MemberDeleteService {
 		// 리더인 챌린지 목록 조회
 		List<Long> leaderChallengeNums = deleteMapper.selectChallengesByMember(mem_num);
 
-		//신청한 챌린지가 없을 때???????????????????
+		//신청한 챌린지가 없을 때
 		if (!leaderChallengeNums.isEmpty()) {
 			// 리더인 모든 챌린지에 대해 모든 참여자 환불 처리
 			for (long chal_num : leaderChallengeNums) {
@@ -190,13 +193,33 @@ public class MemberDeleteServiceImpl implements MemberDeleteService {
 			}
 		}
 		
-		//기부박스 체크
+		//진행중인 기부박스 체크
+		List<DboxDonationVO> dboxList = deleteMapper.selectOngoingDboxByMember(mem_num);
 		
+		for(DboxDonationVO dboxdonationVO : dboxList) {
+			//refund
+			RefundVO refundVO = new RefundVO();
+			refundVO.setMem_num(dboxdonationVO.getMem_num());
+			refundVO.setImp_uid(dboxdonationVO.getDbox_imp_uid());
+			refundVO.setPayment_type(1);
+			refundVO.setReason(4);
+			refundVO.setReturn_point(dboxdonationVO.getDbox_do_point());
+			refundVO.setAmount((int)dboxdonationVO.getDbox_do_price());
+			dboxService.refund(refundVO,dboxdonationVO);
+			//결제상태 변경
+			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), 2);   				
+		}
+		
+		//진행 이전 기부박스 종료
+		deleteMapper.updateDboxStatusByMember(mem_num);
+		
+		//delete detail 삭제
+		memberMapper.deleteMemberDetail(mem_num);
 
-		//status 업데이트
-		/*		MemberVO member = new MemberVO();
-				member.setMem_status(0);
-				memberMapper.updateMemStatus(member);*/
+		//status 업데이트, 비밀번호 삭제
+		memberMapper.deleteMember(mem_num);
+		
+		log.debug("<<회원 탈퇴 완료>>");
 
 	}
 }

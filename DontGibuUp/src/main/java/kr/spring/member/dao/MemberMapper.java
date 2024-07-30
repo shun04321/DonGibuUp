@@ -84,7 +84,7 @@ public interface MemberMapper {
 	public List<PaymentVO> selectMemberPayment(Map<String, Object> map);
 	
 	//회원탈퇴(status 변경)
-	@Update("UPDATE member SET mem_status=#{mem_status} WHERE mem_num=#{mem_num}")
+	@Update("UPDATE member SET mem_status=0, mem_pw='' WHERE mem_num=#{mem_num}")
 	public void deleteMember(long mem_num);
 	
 	//회원탈퇴 - member_detail 삭제
@@ -97,7 +97,7 @@ public interface MemberMapper {
 	//회원 레코드 수 선택
 	public int selectMemberCount(Map<String, Object> map);
 	//회원 status 수정(정지, 사용)
-	@Update("UPDATE member SET mem_status=0 WHERE mem_num=#{mem_num}")
+	@Update("UPDATE member SET mem_status=#{mem_status} WHERE mem_num=#{mem_num}")
 	public void updateMemStatus(MemberVO memberVO);
 	//회원 detail 삭제
 	@Delete("DELETE FROM member_detail WHERE mem_num=#{mem_num}")

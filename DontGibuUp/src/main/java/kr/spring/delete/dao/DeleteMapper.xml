@@ -39,6 +39,16 @@
         AND a.mem_num=#{mem_num}
         and b.chal_status=0
 	</select>
+	
+	<!-- 진행중인 개설 기부박스에 기부한 도네이션 불러오기 -->
+	<select id="selectOngoingDboxByMember" parameterType="long" resultType="dboxdonationVO">
+		SELECT *
+		FROM dbox_donation
+		WHERE dbox_num IN (SELECT dbox_num
+		                    FROM dbox
+		                    WHERE dbox_status=3
+		                    AND mem_num=#{mem_num})
+	</select>
 </mapper>
 
 

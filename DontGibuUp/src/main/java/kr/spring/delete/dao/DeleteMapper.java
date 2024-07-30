@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
 import kr.spring.challenge.vo.ChallengePaymentVO;
+import kr.spring.dbox.vo.DboxDonationVO;
 
 @Mapper
 public interface DeleteMapper {
@@ -42,12 +43,15 @@ public interface DeleteMapper {
 	public List<ChallengePaymentVO> selectNonLeaderChallengesByMember(long mem_num);
 	
 	
-	//challenge status 업데이트
+	/*********************
+	 * 기부박스
+	 *********************/
+	//진행중인 기부박스 불러오기 -> 환불 
+	public List<DboxDonationVO> selectOngoingDboxByMember(long mem_num);
 	
-	
-	
-
-	
+	//시작 안한모든 기부박스 불러와서 status 변경
+	@Update("UPDATE dbox SET dbox_status=5 WHERE dbox_status < 2 AND mem_num=#{mem_num}")
+	public void updateDboxStatusByMember(long mem_num);
 	
 	
 	/*********************

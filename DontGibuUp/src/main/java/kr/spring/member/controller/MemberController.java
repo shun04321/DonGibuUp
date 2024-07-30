@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.siot.IamportRestClient.exception.IamportResponseException;
+
 import kr.spring.config.validation.ValidationSequence;
 import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
 import kr.spring.dbox.vo.DboxBudgetVO;
@@ -428,13 +430,14 @@ public class MemberController {
 				if (member.getMem_status() == 1) { // 정지회원
 					result.reject("suspendedMember");
 					return "memberLogin";
+				} else if (member.getMem_status() == 0) {
+					result.reject("ExMember");
+					return "memberLogin";
 				}
 
 				// 비밀번호 일치여부 체크
 				if (memberService.isCheckedPassword(member, memberVO.getMem_pw())) {
 					// 인증 성공
-					// =====TODO 자동로그인 체크 시작====//
-					// =====TODO 자동로그인 체크 끝====//
 
 					// 로그인 처리
 					session.setAttribute("user", member);
@@ -468,8 +471,6 @@ public class MemberController {
 		String naverToken = (String) session.getAttribute("naverToken");
 		if (kakaoToken != null && !"".equals(kakaoToken)) { //카카오 로그인 
 			try {
-				// =====TODO 자동로그인 체크 시작====//
-				// =====TODO 자동로그인 체크 끝====//
 				memberOAuthService.kakaoDisconnect(kakaoToken);
 			} catch (Exception e) {
 				// 예외 처리
@@ -796,6 +797,8 @@ public class MemberController {
 		
     	return "redirect:/admin/detail?mem_num=" + mem_num;
     }
+    
+
 	
 	
 	
