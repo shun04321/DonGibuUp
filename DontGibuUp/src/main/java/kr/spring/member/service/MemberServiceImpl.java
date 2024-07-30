@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.spring.cart.dao.CartMapper;
-import kr.spring.cart.vo.CartVO;
 import kr.spring.challenge.dao.ChallengeMapper;
+import kr.spring.delete.dao.DeleteMapper;
 import kr.spring.member.dao.MemberMapper;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -41,6 +40,8 @@ public class MemberServiceImpl implements MemberService {
 	CartMapper cartMapper;
 	@Autowired
 	ChallengeMapper challengeMapper;
+	@Autowired
+	DeleteMapper deleteMapper;
 
 	//회원가입
 	@Override
@@ -273,32 +274,12 @@ public class MemberServiceImpl implements MemberService {
 		memberMapper.updateMemStatus(memberVO);
 	}
 
-	//회원탈퇴
 	@Override
 	public void deleteAccount(long mem_num) {
-		
-		//delete detail
-		//memberMapper.deleteMemberDetail(mem_num);
-		
-	    // 카트 삭제
-		cartMapper.deleteCartsByMember(mem_num);
-	    
-	    //챌린지 좋아요 삭제
-	    challengeMapper.deleteChalFavsByMember(mem_num);
-	    
-	    //신고 삭제(mem_num) reported_mem_num 일때는 일단 그대로 두고 보여줄 때 null이면 이미 탈퇴한 회원이라고 알려주기
-	    //문의 삭제
-	    //알림 로그 삭제
-	    //포인트 로그 삭제
-	    //환불신청 삭제
-	    
-	    
-		
-		//status 업데이트
-		/*		MemberVO member = new MemberVO();
-				member.setMem_status(0);
-				memberMapper.updateMemStatus(member);*/
+		// TODO Auto-generated method stub
 		
 	}
+
+
 
 }
