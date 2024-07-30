@@ -19,45 +19,8 @@ public class CartVO {
 	@NotBlank
 	private Long cart_quantity;  //장바구니 상품 수량
 	private long purchase_num; // 구매 식별번호 추가
-    private int price; // 가격 필드 추가
+    private int item_price; // 가격 필드 추가
 	private GoodsVO goods;	
-	
-	public Long getItem_num() {
-        return item_num;
-    }
-
-    public void setItem_num(Long item_num) {
-        this.item_num = item_num;
-    }
-
-    public Long getPurchase_num() {
-        return purchase_num;
-    }
-
-    public void setPurchase_num(Long purchase_num) {
-        this.purchase_num = purchase_num;
-    }
-
-    public Long getCart_quantity() {
-        return cart_quantity;
-    }
-
-    public void setCart_quantity(Long cart_quantity) {
-        this.cart_quantity = cart_quantity;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    // Getter for item_price
-    public int getItem_price() {
-        return price;
-    }
-	}
+}
 
 

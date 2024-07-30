@@ -40,6 +40,7 @@
 		    <div>		
 		        <form id="cartForm" action="${pageContext.request.contextPath}/cart/insert" method="post">
 		            <input type="hidden" name="item_num" value="${goods.item_num}">
+		            <input type="hidden" name="item_price" value="${goods.item_price}">
 		            <c:if test="${not empty sessionScope.user}">
 		                <input type="hidden" name="mem_num" value="${sessionScope.user.mem_num}">
 		            </c:if>
