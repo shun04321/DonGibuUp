@@ -105,4 +105,7 @@ public interface MemberMapper {
 	//회원 등급 변경
 	@Update("UPDATE member SET auth_num=#{member_auth} WHERE mem_num=#{mem_num}")
 	public void updateMemAuth(long mem_num,int member_auth);
+	//회원 전체 리스트 불러오기(등업용,일반회원 이상)
+	@Select("SELECT * FROM member WHERE mem_status >= 2")
+	public List<MemberVO> selectAllMemberList();
 }
