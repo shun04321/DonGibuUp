@@ -190,11 +190,11 @@
                     JOIN dona_category USING(dcate_num)
                     LEFT OUTER JOIN (SELECT dbox_num, SUM(dbox_do_price) total FROM dbox_donation group by dbox_num ) USING(dbox_num) 	  		
 			  		<include refid="dboxSearch"></include>			  		
+					<include refid="dboxOrder"></include>
 			  		)a)	
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
 		]]>		
-		<include refid="dboxOrder"></include>
 	</select>
 	<!-- 관리자 기부박스 총레코드수/검색 레코드 수 -->
 	<select id="selectAdminListCount" parameterType="map" resultType="integer">

@@ -108,7 +108,7 @@
                 <c:if test="${empty member.mem_photo}">
                 <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${member.mem_nick}&nbsp;님<br>
                 </c:if>
-	 	상태 : 
+	 	상태 / 등급 : 
 			<c:if test="${member.mem_status == 0}">
 			탈퇴회원
 			</c:if>
@@ -121,9 +121,29 @@
 			<c:if test="${member.mem_status == 9}">
 			관리자
 			</c:if>
+			
+			<c:if test="${member.auth_num == 1}">
+			<img src="/images/auth/auth1.png" class="rounded-circle my-image">
+			</c:if>
+			<c:if test="${member.auth_num == 2}">
+			<img src="/images/auth/auth2.png" class="rounded-circle my-image">
+			</c:if>
+			<c:if test="${member.auth_num == 3}">
+			<img src="/images/auth/auth3.png" class="rounded-circle my-image">
+			</c:if>
+			<c:if test="${member.auth_num == 4}">
+			<img src="/images/auth/auth4.png" class="rounded-circle my-image">
+			</c:if>
+			<c:if test="${member.auth_num == 5}">
+			<img src="/images/auth/auth5.png" class="rounded-circle my-image">
+			</c:if>
+			<c:if test="${member.auth_num == 6}">
+			<img src="/images/auth/auth6.png" class="rounded-circle my-image">
+			</c:if>
 	 	<br>
 	 	이메일 : ${member.mem_email}<br>
-	 	
+	 	총 기부 횟수 : ${memberTotal.total_count}<br> 
+	 	누적 기부액 : <fmt:formatNumber value="${memberTotal.total_amount}" type="number" minFractionDigits="0" maxFractionDigits="0"/>원<br> 
  	
  	</div>
  	
@@ -148,32 +168,53 @@
 		<c:if test="${dbox.dbox_team_type == 1}">
 		사업자 번호 : ${dbox.dbox_business_rnum}<br>
 		</c:if>
-	 	팀 설명 : ${dbox.dbox_team_detail} <br>
+		팀 설명 :
+			<c:if test="${!empty dbox.dbox_team_detail}">
+		 	${dbox.dbox_team_detail}
+		 	</c:if>
+			<c:if test="${empty dbox.dbox_team_detail}">
+ 			미입력
+		 	</c:if>
+		 	<br>
  	
  	</div>
  	
  	<h5>자료 및 남길 말</h5>
  	<div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">	
 		사업계획서 : ${dbox.dbox_business_plan}<br>
-		금액책정 근거자료 : ${dbox.dbox_budget_data}<br>
+		금액책정 근거자료 : 
+			<c:if test="${!empty dbox.dbox_budget_data}">
+		 	${dbox.dbox_budget_data}
+		 	</c:if>
+			<c:if test="${empty dbox.dbox_budget_data}">
+ 			미입력
+		 	</c:if>
+		 	<br>
 	 	계좌 : 
-	 	[<c:if test="${dbox.dbox_bank == 1}">국민은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 2}">신한은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 3}">하나은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 4}">우리은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 5}">NH농협은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 6}">IBK기업은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 7}">대구은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 8}">제주은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 9}">전북은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 10}">광주은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 11}">경남은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 12}">부산은행</c:if>
-	 	<c:if test="${dbox.dbox_bank == 13}">카카오뱅크</c:if>
-	 	<c:if test="${dbox.dbox_bank == 14}">토스뱅크</c:if>
-	 	<c:if test="${dbox.dbox_bank == 15}">케이뱅크</c:if>]
-	 	${dbox.dbox_account} / ${dbox.dbox_account_name}<br>
-	 	남길 말 : ${dbox.dbox_comment}<br>
+		 	[<c:if test="${dbox.dbox_bank == 1}">국민은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 2}">신한은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 3}">하나은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 4}">우리은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 5}">NH농협은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 6}">IBK기업은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 7}">대구은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 8}">제주은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 9}">전북은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 10}">광주은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 11}">경남은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 12}">부산은행</c:if>
+		 	<c:if test="${dbox.dbox_bank == 13}">카카오뱅크</c:if>
+		 	<c:if test="${dbox.dbox_bank == 14}">토스뱅크</c:if>
+		 	<c:if test="${dbox.dbox_bank == 15}">케이뱅크</c:if>]
+		 	${dbox.dbox_account} / ${dbox.dbox_account_name}<br>
+	 	남길 말 : 
+	 		<c:if test="${!empty dbox.dbox_comment}">
+		 	${dbox.dbox_comment}
+		 	</c:if>
+			<c:if test="${empty dbox.dbox_comment}">
+ 			미입력
+		 	</c:if>
+		 	<br>
  	</div>
  	
  	<h5>예시</h5>

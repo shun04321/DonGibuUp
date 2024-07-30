@@ -31,6 +31,7 @@ import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxVO;
 import kr.spring.member.service.MemberService;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
@@ -127,19 +128,25 @@ public class DboxAdiminController {
     	
     	//멤버정보
     	MemberVO member = memberService.selectMemberDetail(dbox.getMem_num());
+    	MemberTotalVO memberTotal = memberService.selectMemberTotal(member.getMem_num());
     	
     	log.debug("<<관리자 기부박스 상태관리 - Dbox>> : " + dbox);
     	log.debug("<<관리자 기부박스 상태관리 - DboxBudget>> : " + dboxBudget);
     	log.debug("<<관리자 기부박스 상태관리 - member>> : " + member);
-   
+		log.debug("<<관리자 기부박스 상태관리 - memberTotal>> : " + memberTotal);	
+
     	//뷰에 전달
     	model.addAttribute("member",member);
+    	model.addAttribute("memberTotal", memberTotal);
     	model.addAttribute("dbox",dbox);
     	model.addAttribute("dboxTotal",dboxService.selecDoantionTotal(dboxNum));
     	model.addAttribute("dboxBudget",dboxBudget);
     	
     	return "dboxAdminStatus";
     }
+    /*===================================
+     * 		기부박스 상태 변경
+     *==================================*/
     @GetMapping("/admin/dboxAdminStatus/Change")
     public String statusChange(long dbox_num,int dbox_status,String reject) {
     	log.debug("<<기부박스 상태 관리 - 기부박스 번호>> : " + dbox_num);
