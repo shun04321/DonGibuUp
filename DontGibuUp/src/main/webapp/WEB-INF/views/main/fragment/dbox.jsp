@@ -12,7 +12,7 @@
 	<c:forEach var="dbox" items="${dboxList}" varStatus="loop">
 		<div class="list-group-item dbox-main${loop.index + 1}" style="border: none;padding-left:0;">
 			<a href="${pageContext.request.contextPath}/dbox/${dbox.dbox_num}/content">
-				<img src="${pageContext.request.contextPath}/upload/dbox/${dbox.dbox_photo}" width="70" height="50"> <small><b>${dbox.dbox_title}</b></small>
+				<img src="${pageContext.request.contextPath}/upload/dbox/${dbox.dbox_photo}" width="70" height="50"> <small class="nanum"><b>${dbox.dbox_title}</b></small>
 			</a>
 		</div>
 	</c:forEach>
