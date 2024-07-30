@@ -282,5 +282,9 @@ public class MemberServiceImpl implements MemberService {
 	public void updateMemAuth(long mem_num, int member_auth) {//회원 등급 변경
 		memberMapper.updateMemAuth(mem_num, member_auth);
 	}
+	@Override
+	public List<MemberVO> selectAllMemberList() {//회원 전체 리스트 불러오기(등업용,일반회원 이상)
+		return memberMapper.selectAllMemberList();
+	}
 
 }
