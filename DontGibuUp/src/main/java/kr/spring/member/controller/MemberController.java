@@ -26,6 +26,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,6 +35,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.spring.config.validation.ValidationSequence;
 import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
+import kr.spring.dbox.vo.DboxBudgetVO;
+import kr.spring.dbox.vo.DboxVO;
 import kr.spring.member.service.EmailService;
 import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
@@ -712,6 +715,19 @@ public class MemberController {
 
 		return "adminManagePoint";
 	}
+	//회원 상세 페이지 admin/detail?mem_num=361
+    @GetMapping("/admin/detail")
+	public String statusAdmin(long mem_num, Model model) {
+		log.debug("<<관리자 회원 상세 - member_num>> : "+ mem_num);
+    	//멤버정보
+    	MemberVO member = memberService.selectMemberDetail(mem_num);
+    	log.debug("<<관리자 회원 상세 - member>> : " + member);	
+   
+    	//뷰에 전달
+    	model.addAttribute("member",member);
+    	
+    	return "adminMemberDetail";
+    }	
 	
 	
 	

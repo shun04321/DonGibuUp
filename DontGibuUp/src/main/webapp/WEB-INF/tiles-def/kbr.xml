@@ -165,6 +165,10 @@
 		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/member/adminManageMember.jsp"/>
 	</definition>
+	<definition name="adminMemberDetail" extends="adminInquiry">
+		<put-attribute name="title" value="회원 관리 상세" />
+		<put-attribute name="body" value="/WEB-INF/views/admin/member/adminMemberDetail.jsp"/>
+	</definition>
 	<definition name="adminManagePoint" extends="adminInquiry">
 		<put-attribute name="title" value="포인트 관리" />
 		<put-attribute name="css" value="/WEB-INF/views/admin/adminTableCSS.jsp"/>
@@ -179,6 +183,11 @@
 		<put-attribute name="title" value="신고 답변" />
 		<put-attribute name="css" value="/WEB-INF/views/cs/csCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/cs/adminReportReply.jsp"/>
+	</definition>
+	<definition name="adminPurchase" extends="adminInquiry">
+		<put-attribute name="title" value="구매내역" />
+		<put-attribute name="css" value="/WEB-INF/views/goods/goodsCSS.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/views/goods/adminPurchase.jsp"/>
 	</definition>
 	<definition name="adminPurchase" extends="adminInquiry">
 		<put-attribute name="title" value="구매내역" />
