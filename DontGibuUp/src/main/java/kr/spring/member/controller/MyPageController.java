@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.siot.IamportRestClient.exception.IamportResponseException;
 
 import kr.spring.config.validation.ValidationGroups.PatternCheckGroup;
 import kr.spring.cs.service.CSService;
@@ -30,6 +31,7 @@ import kr.spring.cs.vo.InquiryVO;
 import kr.spring.cs.vo.ReportVO;
 import kr.spring.dbox.service.DboxService;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.member.service.MemberDeleteService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
@@ -55,6 +57,9 @@ public class MyPageController {
 	
 	@Autowired
 	DboxService dboxService;
+	
+	@Autowired
+	MemberDeleteService memberDeleteService;
 
 	//자바빈 초기화
 	@ModelAttribute
@@ -213,7 +218,7 @@ public class MyPageController {
 	//회원탈퇴
 	@PostMapping("/member/myPage/deleteAccount")
 	public String deleteAccount(@Valid MemberVO memberVO, BindingResult result,
-			Model model, HttpServletRequest request, HttpSession session) {
+			Model model, HttpServletRequest request, HttpSession session) throws IamportResponseException, IOException {
 		
 		MemberVO user = (MemberVO) session.getAttribute("user");
 		
@@ -242,7 +247,7 @@ public class MyPageController {
 		memberVO.setMem_num(user.getMem_num());
 
 		//회원탈퇴 service
-		memberService.deleteAccount(user.getMem_num());
+		memberDeleteService.deleteAccount(user.getMem_num());
 		
 		session.invalidate();
 		
