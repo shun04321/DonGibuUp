@@ -164,6 +164,9 @@ public class MyPageController {
 			model.addAttribute("birth_month", parsedDate.getMonthValue());
 			model.addAttribute("birth_day", parsedDate.getDayOfMonth());
 		}
+		
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(user.getMem_num());
+		model.addAttribute("memberTotal", memberTotal);
 
 		return "memberInfo";
 	}

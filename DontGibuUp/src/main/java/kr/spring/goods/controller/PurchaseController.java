@@ -372,6 +372,6 @@ public class PurchaseController {
         List<PurchaseVO> purchaseList = purchaseService.getPurchaseListByMember(member.getMem_num());
         model.addAttribute("purchaseList", purchaseList);
 
-        return "goods/purchaseHistory";
+        return "purchaseHistory";
     }
 }

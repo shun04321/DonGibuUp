@@ -2,30 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<link href="${pageContext.request.contextPath}/t1/css/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/t1/css/bootstrap-icons.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/t1/css/templatemo-kind-heart-charity.css" rel="stylesheet">
+
 <link href="${pageContext.request.contextPath}/css/goods.css" rel="stylesheet">
-<section class="cta-section section-padding section-bg">
-    <div class="container">
-        <div class="row justify-content-center align-items-center">
-            <div class="col-lg-5 col-12 ms-auto">
-                <h2 class="mb-0">
-                    Make an impact. <br> Save lives.
-                </h2>
-            </div>
-            <div class="col-lg-5 col-12">
-                <a href="#" class="me-4">Make a donation</a> 
-                <a href="#section_4" class="custom-btn btn smoothscroll">Become a volunteer</a>
-            </div>
-        </div>
-    </div>
-</section>
+
+
 <div class="container mt-5">
     <h2>구매내역</h2>
-    <div class="mb-4">
-        <button class="default-btn btn-large" onclick="location.href='${pageContext.request.contextPath}/goods/list'">상품 목록</button>
-        <button class="default-btn btn-large" onclick="location.href='${pageContext.request.contextPath}/main/main'">홈</button>
+    <div class="mb-4 align-right">
+        <button class="default-btn btn-large g-list-btn" onclick="location.href='${pageContext.request.contextPath}/goods/list'">상품 목록</button>
     </div>
     <c:if test="${not empty purchaseList}">
         <table class="table table-bordered table-striped">
@@ -38,7 +22,6 @@
                     <th>사용한 포인트</th>
                     <th>구매일</th>
                     <th>상태</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,11 +60,6 @@
                                     환불완료
                                 </c:when>
                             </c:choose>
-                        </td>
-                        <td>
-                            <c:if test="${purchase.payStatus == 0}">
-                                <button class="default-btn btn-large" onclick="requestRefund('${purchase.imp_uid}')">Refund</button>
-                            </c:if>
                         </td>
                     </tr>
                     <c:forEach var="item" items="${purchase.cart_items}">

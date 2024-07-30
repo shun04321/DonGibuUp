@@ -22,7 +22,7 @@
     <h4 class="mb-4">${goods.item_name}</h4>
     
     <div class="detail-info d-flex">
-       	<div class="g-photo-div"><img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2"></div>
+       	<div class="g-photo-div me-4"><img src="${pageContext.request.contextPath}${goods.item_photo}" width="300" height="300" class="my-photo2"></div>
     	<div>
     		<div class="g-basic-info">
 	        	<div class="mb-1">재고: ${goods.item_stock}</div>

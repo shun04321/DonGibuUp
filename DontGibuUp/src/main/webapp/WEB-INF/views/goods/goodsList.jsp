@@ -57,7 +57,7 @@
                             <div class="card h-100 goods-item">
                                 <img src="${pageContext.request.contextPath}${goods.item_photo}" class="card-img-top mb-3" alt="${goods.item_name}" style="width: 100%; height: 160px;object-fit:cover">
 
-                                <div class="card-body p-0">
+                                <div class="card-body pb-3 px-3 d-flex flex-column justify-content-between">
                                     <h5 class="card-title">${goods.item_name}</h5>
                                     <p class="card-text">
     								<strong>가격:</strong> <fmt:formatNumber value="${goods.item_price}" type="number" groupingUsed="true"/> 원<br>
