@@ -735,7 +735,7 @@ public class MemberController {
     	if (member.getMem_phone() != null) {
 			model.addAttribute("phone2", member.getMem_phone().substring(3, 7));
 			model.addAttribute("phone3", member.getMem_phone().substring(7, 11));
-			log.debug("<<phone>> : " + member.getMem_phone().substring(3, 7)
+			log.debug("<<관리자 회원 상세 - phone>> : " + member.getMem_phone().substring(3, 7)
 					+ member.getMem_phone().substring(7, 11));
 		}
     	
@@ -748,14 +748,15 @@ public class MemberController {
 			model.addAttribute("birth_month", parsedDate.getMonthValue());
 			model.addAttribute("birth_day", parsedDate.getDayOfMonth());
 		}
-		MemberTotalVO memberTotal = memberService.selectMemberTotal(member.getMem_num());
-
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(mem_num);
+		log.debug("<<관리자 회원 상세 - memberTotal>> : " + memberTotal);	
 		//뷰에 전달
 		model.addAttribute("memberTotal", memberTotal);
 		model.addAttribute("member", member);
     	
     	return "adminMemberDetail";
     }
+    
     //회원 등급 변경
     @GetMapping("/admin/Change")
     public String authChange(long mem_num,int member_auth) {
@@ -784,7 +785,7 @@ public class MemberController {
     	//알림
 		NotifyVO notifyVO = new NotifyVO();
 		notifyVO.setMem_num(mem_num);
-		notifyVO.setNotify_type(9); 
+		notifyVO.setNotify_type(38); 
 		notifyVO.setNot_url("/member/myPage/memberInfo");
 		
 		Map<String, String> dynamicValues = new HashMap<String, String>();

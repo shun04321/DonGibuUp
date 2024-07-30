@@ -5,7 +5,7 @@
     <!-- 관리자 회원 상세 시작 -->
 <div class="page-main">
  	<h2>관리자 회원 상세</h2><br>
- 		<button type="button" class="btn btn-outline-success mt-2 mb-2" onclick="location.href='/admin/manageMember'">목록</button>
+ 		<button type="button" class="btn btn-success mt-2" style="color:white" onclick="location.href='/admin/manageMember'">목록</button>
  	<!-- 회원 주요 정보 -->
  	<h5>회원 주요 정보</h5>
  	<section class="container mt-5 mb-4">
@@ -13,13 +13,12 @@
 		    <div class="mb-1">
 		        <div class="">
 		            <c:if test="${!empty member.mem_photo}">
-		            <img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" class="rounded-circle my-image">&nbsp;${member.mem_nick}님
+		            <img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" class="rounded-circle my-image">&nbsp;${member.mem_nick}님(회원번호:${member.mem_num})
 		            </c:if>
 		            <c:if test="${empty member.mem_photo}">
-		            <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${member.mem_nick}님
+		            <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${member.mem_nick}님(회원번호:${member.mem_num})
 		            </c:if>
 		        </div>
-		        <div>${mem_nick}</div>
 		    </div>
 		    <div class="row text-center d-flex">
 		        <div class="total-menu col-12 col-sm-3 mb-3 mb-sm-0 border-right">
@@ -121,7 +120,7 @@
 			  </label>
 			</div>
 			<br>
-			<button type="submit" class="btn btn-outline-success mt-2">변경</button>
+			<button type="submit" class="btn btn-success mt-2" style="color:white">변경</button>
 	 	</form>
 	 	<script>
 	 	$('#auth_form').submit(function(){
@@ -142,16 +141,29 @@
 	 	</small>
 	</div>
  	
- 	<h5>신청자 정보</h5>
+ 	<h5>회원 상세 정보</h5>
  	<div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
  		회원 번호 : ${member.mem_num}<br>
+ 		이름 : 
+ 			<c:if test="${empty member.mem_name}">미입력</c:if>
+ 			<c:if test="${!empty member.mem_phone}">${member.mem_name}</c:if>
+ 			<br>
+ 		전화번호 : 
+ 			<c:if test="${empty member.mem_phone}">미입력</c:if>
+ 			<c:if test="${!empty member.mem_phone}">010-${phone2}-${phone3}</c:if>
+ 			<br>
+ 		생년월일 : 
+ 			<c:if test="${empty member.mem_birth}">미입력</c:if>
+ 			<c:if test="${!empty member.mem_birth}">${birth_year}년 ${birth_month}월 ${birth_day}일</c:if>
+ 			<br>
 	 	닉네임 : 	<c:if test="${!empty member.mem_photo}">
-                <img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" class="rounded-circle my-image">&nbsp;${member.mem_nick}&nbsp;님<br>
+                <img src="${pageContext.request.contextPath}/upload/${member.mem_photo}" class="rounded-circle my-image">&nbsp;${member.mem_nick}
                 </c:if>
                 <c:if test="${empty member.mem_photo}">
-                <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${member.mem_nick}&nbsp;님<br>
+                <img src="${pageContext.request.contextPath}/images/basicProfile.png" class="rounded-circle my-image">&nbsp;${member.mem_nick}
                 </c:if>
-	 	상태 : 
+                <br>
+	 	회원 상태 : 
 			<c:if test="${member.mem_status == 0}">
 			탈퇴회원
 			</c:if>
@@ -164,8 +176,36 @@
 			<c:if test="${member.mem_status == 9}">
 			관리자
 			</c:if>
-	 	<br>
-	 	이메일 : ${member.mem_email}<br>	
+	 		<br>
+	 	이메일 : ${member.mem_email}<br>
+	 	가입 유형 : 	
+	 		<c:if test="${member.mem_reg_type == 1}">
+			자체회원가입
+			</c:if>
+			<c:if test="${member.mem_reg_type == 2}">
+			네이버로그인<c:if test="${!empty member.mem_social_id}">(소셜ID : ${member.mem_social_id})</c:if>
+			</c:if>
+			<c:if test="${member.mem_reg_type == 3}">
+			카카오로그인<c:if test="${!empty member.mem_social_id}">(소셜ID : ${member.mem_social_id})</c:if>
+			</c:if>
+			<br>
+ 		가입일 : 
+ 			<c:if test="${empty member.mem_date}"> - </c:if>
+ 			<c:if test="${!empty member.mem_date}">${member.mem_date}</c:if>
+ 			<br>
+ 		회원 정보 수정일 : 
+ 			<c:if test="${empty member.mem_mdate}">수정된 적 없음</c:if>
+ 			<c:if test="${!empty member.mem_mdate}">${member.mem_mdate}</c:if>
+ 			<br>
+		추천인 코드 : ${member.mem_rcode}<br>
+		추천 참여 여부 : 
+			<c:if test="${member.recommend_status == 0}">
+			미참여
+			</c:if>
+			<c:if test="${member.recommend_status == 1}">
+			참여
+			</c:if>			
+			<br>
  	</div>
 </div>
 <!-- 관리자 회원 상세 끝 -->
