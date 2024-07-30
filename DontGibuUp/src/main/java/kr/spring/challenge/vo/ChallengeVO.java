@@ -50,6 +50,7 @@ public class ChallengeVO {
 	private String mem_nick;
 	private String mem_photo;
 	private String categoryName;
+	private Integer chal_phase;   //0:시작 전,1:진행 중,2:완료
 	
 	public void calculateChalEdate() {
 		LocalDate sdate = LocalDate.parse(chal_sdate,DateTimeFormatter.ISO_LOCAL_DATE);
