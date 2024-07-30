@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,11 @@ import kr.spring.member.service.EmailService;
 import kr.spring.member.service.MemberOAuthService;
 import kr.spring.member.service.MemberService;
 import kr.spring.member.vo.EmailMessageVO;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.member.vo.UserInfo;
+import kr.spring.notify.service.NotifyService;
+import kr.spring.notify.vo.NotifyVO;
 import kr.spring.util.AuthCheckException;
 import kr.spring.util.PagingUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +69,10 @@ public class MemberController {
 
 	@Autowired
 	private ServletContext servletContext;
-
+	
+	@Autowired
+	private NotifyService notifyService;
+	
 	//카카오 로그인 API 정보
 	@Value("${kakao.client_id}")
 	private String k_client_id;
@@ -722,22 +730,69 @@ public class MemberController {
     	//멤버정보
     	MemberVO member = memberService.selectMemberDetail(mem_num);
     	log.debug("<<관리자 회원 상세 - member>> : " + member);	
-   
-    	//뷰에 전달
-    	model.addAttribute("member",member);
+    	
+    	//휴대폰번호
+    	if (member.getMem_phone() != null) {
+			model.addAttribute("phone2", member.getMem_phone().substring(3, 7));
+			model.addAttribute("phone3", member.getMem_phone().substring(7, 11));
+			log.debug("<<phone>> : " + member.getMem_phone().substring(3, 7)
+					+ member.getMem_phone().substring(7, 11));
+		}
+    	
+    	//생년월일
+		if (member.getMem_birth() != null) {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+			LocalDate parsedDate = LocalDate.parse(member.getMem_birth(), formatter);
+
+			model.addAttribute("birth_year", parsedDate.getYear());
+			model.addAttribute("birth_month", parsedDate.getMonthValue());
+			model.addAttribute("birth_day", parsedDate.getDayOfMonth());
+		}
+		MemberTotalVO memberTotal = memberService.selectMemberTotal(member.getMem_num());
+
+		//뷰에 전달
+		model.addAttribute("memberTotal", memberTotal);
+		model.addAttribute("member", member);
     	
     	return "adminMemberDetail";
     }
     //회원 등급 변경
-    @GetMapping("/admin/detail/Change")
+    @GetMapping("/admin/Change")
     public String authChange(long mem_num,int member_auth) {
     	log.debug("<<관리자 회원 등급 변경 - member_num>> : "+ mem_num);
     	log.debug("<<관리자 회원 등급 변경 전 - member_auth>> : " + member_auth);
 
     	//회원 등급 수정
-    	
     	memberService.updateMemAuth(mem_num,member_auth);
     	
+    	//알림을 위한 정보 세팅
+    	MemberVO member = memberService.selectMember(mem_num);
+    	String authName = null;
+    	if(member_auth==1) {
+    		authName="기부흙";
+    	}else if (member_auth==2) {
+    		authName="기부씨앗";
+		}else if (member_auth==3) {
+    		authName="기부새싹";
+		}else if (member_auth==4) {
+    		authName="기부꽃";
+		}else if (member_auth==5) {
+    		authName="기부나무";
+		}else if (member_auth==6) {
+    		authName="기부숲";
+		}
+    	//알림
+		NotifyVO notifyVO = new NotifyVO();
+		notifyVO.setMem_num(mem_num);
+		notifyVO.setNotify_type(9); 
+		notifyVO.setNot_url("/member/myPage/memberInfo");
+		
+		Map<String, String> dynamicValues = new HashMap<String, String>();
+		dynamicValues.put("memNick", member.getMem_nick());
+		dynamicValues.put("memAuth", authName);
+		
+		notifyService.insertNotifyLog(notifyVO, dynamicValues);
+		
     	return "redirect:/admin/detail?mem_num=" + mem_num;
     }
 	

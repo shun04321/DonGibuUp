@@ -167,6 +167,7 @@
 	</definition>
 	<definition name="adminMemberDetail" extends="adminInquiry">
 		<put-attribute name="title" value="회원 관리 상세" />
+		<put-attribute name="css" value="/WEB-INF/views/member/memberCSS.jsp"/>
 		<put-attribute name="body" value="/WEB-INF/views/admin/member/adminMemberDetail.jsp"/>
 	</definition>
 	<definition name="adminManagePoint" extends="adminInquiry">
