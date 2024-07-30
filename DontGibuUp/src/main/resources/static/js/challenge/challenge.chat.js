@@ -154,7 +154,9 @@ $(function() {
 						//문서 객체에 추가
 						$('#chatting_message').append(output);
 						//스크롤을 하단에 위치시킴
-						$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
+						//$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
+						//새 창으로 띄웠을 때 스크롤 보정
+						$('#chatting_message').animate({ scrollTop: 100 * param.chatList.length }, 10);
 					});
 				} else {
 					alert('채팅 오류 발생');
@@ -190,7 +192,7 @@ $(function() {
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
 		sub_output += `<div class="item2">`;
-		if(item.chat_readCount != 0){
+		if (item.chat_readCount != 0) {
 			sub_output += `<div class="read-count">${item.chat_readCount}</div>`;
 		}
 		sub_output += `<div>${item.chat_date.split(' ')[1]}</div>
