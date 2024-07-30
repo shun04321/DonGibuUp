@@ -103,6 +103,6 @@ public interface MemberMapper {
 	@Delete("DELETE FROM member_detail WHERE mem_num=#{mem_num}")
 	public void deleteMemberDetail(long mem_num);
 	//회원 등급 변경
-	@Update("UPDATE member_detail SET auth_num=#{member_auth} WHERE mem_num=#{mem_num}")
+	@Update("UPDATE member SET auth_num=#{member_auth} WHERE mem_num=#{mem_num}")
 	public void updateMemAuth(long mem_num,int member_auth);
 }
