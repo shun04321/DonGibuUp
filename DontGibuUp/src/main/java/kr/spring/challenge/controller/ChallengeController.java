@@ -819,5 +819,4 @@ public class ChallengeController {
 
 		return mav;
 	}
-
 }

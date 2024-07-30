@@ -77,7 +77,9 @@ public interface ChallengeMapper {
     public List<ChallengeVerifyVO> selectChallengeVerifyListPage(Map<String, Object> map);
     public ChallengeVerifyVO selectChallengeVerify(Long chal_ver_num);
     public void updateChallengeVerify(ChallengeVerifyVO challengeVerify);
-    public void deleteChallengeVerify(Long chal_ver_num);    
+    public void deleteChallengeVerify(Long chal_ver_num);
+    @Delete("DELETE FROM chal_verify WHERE chal_joi_num=#{chal_joi_num}")
+    public void deleteChallengeVerifyByChalJoiNum(Long chal_joi_num);
     //주별 인증 횟수 확인
     public int countWeeklyVerify(Map<String, Object> params);
     //오늘의 인증 개수 확인 
@@ -100,6 +102,8 @@ public interface ChallengeMapper {
     //각 챌린지의 회원별 제보된 총 인증 개수
     @Select("SELECT COUNT(DISTINCT chal_ver_num) FROM chal_verify_rpt WHERE reported_joi_num=#{reported_joi_num}")
     public Integer selectReportedMemberCount(Long chal_joi_num);
+    @Delete("DELETE FROM chal_verify_rpt WHERE report_mem_num=#{report_mem_num}")
+    public void deleteVerifyReport(Long report_mem_num);
     
     //*챌린지 후기*//
     @Select("SELECT chal_review_seq.nextval FROM dual")

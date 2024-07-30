@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/challenge/challenge.admin.js"></script>
 <section class="section-padding nanum">
     <div class="container">
         <div class="mb-4">
@@ -66,7 +67,17 @@
 					        <td class="text-center">${challenge.mem_nick}</td>
 					        <td class="text-center">${challenge.chal_public == 0 ? '공개' : '비공개'}</td>
 					        <td class="text-center">${challenge.chal_rdate}</td>
-					        <td class="text-center">챌린지 중단</td>
+					        <td class="text-center">
+					        	<c:if test="${challenge.chal_phase == 0}">
+					        		<button class="btn btn-custom activateBtn" data-chal-num="${challenge.chal_num}" data-phase="0">챌린지 중단</button>
+					        	</c:if>
+					        	<c:if test="${challenge.chal_phase == 1}">
+					        		<button class="btn btn-custom activateBtn" data-chal-num="${challenge.chal_num}" data-phase="1">챌린지 중단</button>
+					        	</c:if>
+					        	<c:if test="${challenge.chal_phase == 2}">
+					        		<button class="btn btn-custom activateBtn" disabled>챌린지 중단</button>
+					        	</c:if>
+					        </td>
                         </tr>
                     </c:forEach>
                 </tbody>

@@ -210,22 +210,23 @@
 	<select id="selectJoinMemberList" parameterType="map"
 		resultType="challengeJoinVO">
 		SELECT * FROM(
-		SELECT a.*,rownum rnum FROM(
-		SELECT
-		cj.*,m.mem_nick,md.mem_photo,
-		(SELECT
-		COUNT(DISTINCT cvr.chal_ver_num)
-		FROM chal_verify_rpt cvr
-		WHERE cvr.reported_joi_num = cj.chal_joi_num) reported_num
-		FROM chal_join cj
-		JOIN member m ON cj.mem_num = m.mem_num
-		LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num
-		WHERE chal_num=#{chal_num} AND chal_joi_status = 0
-		<if test="chal_joi_num != null">
-			AND NOT cj.chal_joi_num=#{chal_joi_num}
-		</if>
-		ORDER BY cj.chal_joi_num ASC
-		)a )
+			SELECT a.*,rownum rnum FROM(
+				SELECT
+					cj.*,m.mem_nick,md.mem_photo,
+					(SELECT
+						COUNT(DISTINCT cvr.chal_ver_num)
+						FROM chal_verify_rpt cvr
+					WHERE cvr.reported_joi_num = cj.chal_joi_num) reported_num
+				FROM chal_join cj
+				JOIN member m ON cj.mem_num = m.mem_num
+				LEFT OUTER JOIN member_detail md ON cj.mem_num = md.mem_num
+				WHERE chal_num=#{chal_num} AND chal_joi_status = 0
+				<if test="chal_joi_num != null">
+					AND NOT cj.chal_joi_num=#{chal_joi_num}
+				</if>
+			ORDER BY cj.chal_joi_num ASC
+			)a 
+		)
 		<if test="start != null and end != null">
 		<![CDATA[
 		WHERE rnum >= #{start} AND rnum <= #{end}
@@ -293,28 +294,31 @@
 			<![CDATA[
 			REPLACE(REPLACE(chat_content,'<','&lt;'),'>','&gt;') chat_content,
 			]]>
-		chat_filename,
-		chat_date,
-		chat_readCount,
-		mem_nick,
-		mem_photo,
-		mem_num
+			chat_filename,
+			chat_date,
+			chat_readCount,
+			mem_nick,
+			mem_photo,
+			mem_num
 		FROM chal_chat
-		LEFT OUTER JOIN (SELECT
-		chat_id,
-		COUNT(*) chat_readCount
-		FROM chal_chat_read
-		GROUP BY chat_id)
+		LEFT OUTER JOIN (
+			SELECT
+				chat_id,
+				COUNT(*) chat_readCount
+			FROM chal_chat_read
+			GROUP BY chat_id)
 		USING(chat_id)
 		JOIN member USING(mem_num)
-		LEFT OUTER JOIN member_detail
-		USING(mem_num)
+		LEFT OUTER JOIN member_detail USING(mem_num)
 		WHERE chal_num=#{chal_num}
+		<if test="mem_num != null">
 		AND TO_DATE(chat_date) >=
-		(SELECT TO_DATE(chal_joi_date)
-		FROM chal_join
-		WHERE chal_num=#{chal_num}
-		AND mem_num=#{mem_num})
+			(SELECT 
+				TO_DATE(chal_joi_date)
+			FROM chal_join
+			WHERE chal_num=#{chal_num}
+			AND mem_num=#{mem_num})
+		</if>		
 		ORDER BY chat_date ASC
 	</select>
 
@@ -449,7 +453,7 @@
 		resultType="ChallengeVO">
 		SELECT *
 		FROM (SELECT a.*, rownum rnum FROM (
-		SELECT c.chal_num, c.chal_public, c.chal_type, c.chal_title, c.chal_rdate,
+		SELECT c.chal_num, c.chal_public, c.chal_type, c.chal_title, c.chal_rdate, c.chal_sdate, c.chal_edate,
 		m.mem_nick, cc.ccate_name AS categoryName
 		FROM CHALLENGE c
 		JOIN MEMBER m ON c.mem_num = m.mem_num
@@ -474,15 +478,16 @@
 
 	<sql id="challengeAdminSearch">
 		<where>
+			c.chal_status = 0
 			<if test="keyword != null and keyword != ''">
 				<if test="keyfield == '1'">
-					c.chal_num = #{keyword}
+					AND c.chal_num = #{keyword}
 				</if>
 				<if test="keyfield == '2'">
-					c.chal_title LIKE '%' || #{keyword} || '%'
+					AND c.chal_title LIKE '%' || #{keyword} || '%'
 				</if>
 				<if test="keyfield == '3'">
-					m.mem_nick LIKE '%' || #{keyword} || '%'
+					AND m.mem_nick LIKE '%' || #{keyword} || '%'
 				</if>
 			</if>
 		</where>

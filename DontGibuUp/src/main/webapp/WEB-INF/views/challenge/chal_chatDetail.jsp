@@ -32,17 +32,15 @@
 	</div>
 	<div id="chatting_message"></div>
 	<div class="previewChatImage" style="display: none;">
-		<img id="previewChatImage" src="">
+		<img id="previewChatImage" src="" style="max-width: 200px; max-height:200px;">
 	</div>
 	<form id="chat_writeForm" enctype="multipart/form-data">
 		<label for="fileUpload">
 			<span class="upload_button">📁</span>
 		</label>
         <input type="file" name="upload" class="file-input" id="fileUpload" accept="image/*">			
-    	<!-- <input type="file" name="upload" class="file-input" id="fileUpload" accept="image/*">  -->
 		<input type="hidden" name="chal_num" id="chal_num" value="${chal_num}">	
-	  	<textarea rows="5" cols="30" name="chat_content" id="chat_content"></textarea>
-	  	<br>   
+	  	<textarea rows="5" cols="30" name="chat_content" id="chat_content"></textarea>  
 		<input type="submit" value="→" id="chal_submit">
 	</form>
 </div>
