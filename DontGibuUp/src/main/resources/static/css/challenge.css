@@ -94,7 +94,7 @@ div.chatInfo {
 	background-color: white;
 	border-radius: 0 0 10px 10px;
 	width: 670px;
-	height: 500px;
+	height: 700px;
 	margin: 0 auto;
 	padding: 10px;
 	overflow: auto;
@@ -1065,7 +1065,7 @@ input.custom-radio[type="radio"] + label.custom-radio-label:hover {
 .form-section input[type="file"], .form-section textarea {
 	flex: 1;
 	padding: 10px;
-	margin-left: 10px;
+	/* margin-left: 10px; */
 	border: 1px solid #ddd;
 	border-radius: 5px;
 }
@@ -1547,7 +1547,8 @@ textarea:focus {
 
 .review-content2 {
     display: flex;
-    align-items: center; /* 중앙 정렬 */
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .review-rating .stars {
