@@ -537,7 +537,9 @@ public class ChallengeController {
 			
 			//이번 주 인증 완료 여부 확인
 			if(today.isAfter(startDate)||today.isEqual(startDate) && today.isBefore(endDate)) {
-				if(weeklyVerifications == chalFreq) {
+				if(chalFreq == 0 && weeklyVerifications == 7) {
+					mav.addObject("hasCompletedWeeklyVerify", true);
+				}else if(chalFreq != 0 && weeklyVerifications == chalFreq) {
 					mav.addObject("hasCompletedWeeklyVerify", true);
 				}
 			}
@@ -728,6 +730,16 @@ public class ChallengeController {
 			// 디버깅: 쿼리 후 결과 리스트 출력
 			log.debug("검색된 챌린지 수: " + list.size());
 			for (ChallengeVO challenge : list) {
+				LocalDate sdate = LocalDate.parse(challenge.getChal_sdate());
+				LocalDate edate = LocalDate.parse(challenge.getChal_edate());				
+				LocalDate today = LocalDate.now();
+				if(today.isAfter(edate)) {
+					challenge.setChal_phase(2);
+				}else if(today.isBefore(sdate)) {
+					challenge.setChal_phase(0);
+				}else {
+					challenge.setChal_phase(1);
+				}
 				log.debug(challenge.toString());
 			}
 		}
