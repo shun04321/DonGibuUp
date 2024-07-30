@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 
@@ -32,6 +33,7 @@
                 <div class="me-1"><input type="search" name="keyword" id="keyword" value="${param.keyword}" class="form-control"></div>
                 <div><input type="submit" value="찾기" class="form-control g-custom-btn"></div>
             </div>
+            <br>
             <div class="align-right">
                 <script type="text/javascript">
                     $('#order').change(function() {
@@ -42,6 +44,7 @@
                     <input type="button" value="상품 등록" onclick="location.href='write'">
                     <input type="button" value="구매 관리" onclick="location.href='${pageContext.request.contextPath}/admin/purchaseList'">
                 </c:if>
+                	<input type="button" value="내 구매 내역" onclick="location.href='purchaseHistory'">
             </div>
         </form>
         <c:if test="${count == 0}">
@@ -58,9 +61,9 @@
                                 <div class="card-body p-0">
                                     <h5 class="card-title">${goods.item_name}</h5>
                                     <p class="card-text">
-                                        <strong>가격:</strong> ${goods.item_price}<br>
-                                        <strong>재고:</strong> ${goods.item_stock}
-                                    </p>
+    								<strong>가격:</strong> <fmt:formatNumber value="${goods.item_price}" type="number" groupingUsed="true"/> 원<br>
+    								<strong>재고:</strong> ${goods.item_stock} ea
+									</p>
                                     <a href="detail?item_num=${goods.item_num}" class="btn custom-btn" style="width:100%;height:15px;line-height:0;font-size:0.9rem">상세보기</a>
                                     <c:if test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
                                     	<div class="mt-2">
