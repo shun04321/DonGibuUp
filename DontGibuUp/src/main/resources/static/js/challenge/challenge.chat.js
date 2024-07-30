@@ -53,7 +53,8 @@ $(function() {
 	//채팅 메시지 입력하기
 	$('#chat_content').keydown(function(e) {
 		if (e.keyCode == 13 && !e.shiftKey) {
-			$('#chat_writeForm').trigger(e);
+			e.preventDefault();
+			$('#chat_writeForm').submit();
 		}
 	});
 
@@ -89,6 +90,7 @@ $(function() {
 					//폼 초기화
 					$('#chat_content').val('');
 					$('#fileUpload').val('');
+					$('.previewChatImage').hide();
 					//웹 소켓 통신 - 1:1 채팅과 구분하기 위한 코드 작성 
 					let message = JSON.stringify({ type: 'chatMessage', content: 'msg' });
 					message_socket.send(message);
@@ -149,13 +151,10 @@ $(function() {
 								output += readImage(param, item);
 							}
 						}
-
 						//문서 객체에 추가
 						$('#chatting_message').append(output);
 						//스크롤을 하단에 위치시킴
-						requestAnimationFrame(function() {
-							$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
-						});
+						$('#chatting_message').scrollTop($("#chatting_message")[0].scrollHeight);
 					});
 				} else {
 					alert('채팅 오류 발생');
@@ -190,9 +189,11 @@ $(function() {
 		sub_output += '<span>' + item.chat_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</span>';
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
-		sub_output += `<div class="item2">
-						    <div class="read-count">${item.chat_readCount}</div>
-						    <div>${item.chat_date.split(' ')[1]}</div>
+		sub_output += `<div class="item2">`;
+		if(item.chat_readCount != 0){
+			sub_output += `<div class="read-count">${item.chat_readCount}</div>`;
+		}
+		sub_output += `<div>${item.chat_date.split(' ')[1]}</div>
 						   </div>`;
 		sub_output += '</div></div>';
 		sub_output += '</div>';
@@ -217,7 +218,7 @@ $(function() {
 			sub_output += '<div class="from-position">';
 		}
 		sub_output += '<div class="item">';
-		sub_output += `<img src="${contextPath}/upload/${item.chat_filename}" max-width="200">`;
+		sub_output += `<img src="${contextPath}/upload/${item.chat_filename}" style="max-width: 200px; max-height: 200px;">`;
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
 		sub_output += `<div class="item2">

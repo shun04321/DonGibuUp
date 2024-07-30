@@ -699,4 +699,23 @@ public class ChallengeAjaxController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("챌린지 취소 중 오류가 발생했습니다.");
 		}
 	}
+	
+	//관리자의 챌린지 중단
+	@PostMapping("/admin/cancelChallengeByAdmin")
+	@ResponseBody
+	public Map<String,String> cancelChallengeByAdmin(@RequestBody Map<String,Long> data, HttpSession session) throws IamportResponseException, IOException {		
+		Map<String,String> mapJson = new HashMap<>();
+		
+		MemberVO user = (MemberVO) session.getAttribute("user");
+		
+		if(user == null) {
+			mapJson.put("result", "logout");
+		}else if(user.getMem_status() != 9) {
+			mapJson.put("result", "noAuthority");
+		}else {
+			challengeService.cancelChallengeByAdmin(data);
+			mapJson.put("result", "success");
+		}		
+		return mapJson;
+	}
 }

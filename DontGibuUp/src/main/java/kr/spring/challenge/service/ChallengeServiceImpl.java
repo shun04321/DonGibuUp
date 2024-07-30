@@ -1,5 +1,6 @@
 package kr.spring.challenge.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,7 @@ import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
 import kr.spring.point.service.PointService;
 import kr.spring.point.vo.PointVO;
+import kr.spring.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,6 +55,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 	MemberService memberService;
 	@Autowired
 	NotifyService notifyService;
+	@Autowired
+	private ServletContext servletContext;
 
 	//IamportClient 초기화 하기
 	private IamportClient impClient; 
@@ -282,7 +287,7 @@ public class ChallengeServiceImpl implements ChallengeService{
 		params.put("weekNumber", weekNumber);
 		return challengeMapper.countWeeklyVerify(params);
 	}
-	
+
 	@Override
 	public Integer countTodayVerify(Long chal_joi_num) {
 		return challengeMapper.countTodayVerify(chal_joi_num);
@@ -377,11 +382,11 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public void cancelChallengeJoin(Long chal_joi_num,Long chal_num) throws IamportResponseException, IOException {
 		ChallengePaymentVO payVO = selectChallengePayment(chal_joi_num);	
 		String od_imp_uid = payVO.getOd_imp_uid();	
-		
+
 		//결제 취소 요청하기
 		CancelData cancelData = new CancelData(od_imp_uid, true);
 		impClient.cancelPaymentByImpUid(cancelData);
-		
+
 		//챌린지 결제 상태 - 취소
 		challengeMapper.updateChalPaymentStatus(payVO.getChal_joi_num());
 		//챌린지 참가 상태 - 취소
@@ -397,39 +402,39 @@ public class ChallengeServiceImpl implements ChallengeService{
 			//회원 포인트 업데이트
 			memberService.updateMemPoint(pointVO);
 		}
-		
+
 		//리더에게 회원의 챌린지 취소 알림
 		NotifyVO notifyVO = new NotifyVO();
-		
+
 		//챌린지 정보
 		ChallengeVO challengeVO = challengeMapper.selectChallenge(chal_num);
-		
+
 		notifyVO.setMem_num(challengeVO.getMem_num()); //알림 받을 회원 번호
 		notifyVO.setNotify_type(35);             	   //알림 타입
 		notifyVO.setNot_url("/challenge/detail?chal_num="+chal_num); //알림을 누르면 반환할 url
-		
+
 		Map<String, String> dynamicValues = new HashMap<String, String>();
 		MemberVO participant = memberMapper.selectMemberDetail(payVO.getMem_num());
 		String memNick = participant.getMem_nick();
-		
+
 		dynamicValues.put("memNick", memNick);
 		dynamicValues.put("chalTitle", challengeVO.getChal_title());
-		
+
 		//NotifyService 호출
 		notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
 	}
 
-	//챌린지의 모든 참가 내역 및 결제 취소
+	//챌린지의 모든 참가 내역 및 결제 취소(리더 취소시)
 	@Override
 	public void cancelChallenge(Long chal_num) throws IamportResponseException, IOException {
 		//모든 결제 내역 불러오기
 		List<ChallengePaymentVO> payList = selectChallengePaymentList(chal_num);
-		
+
 		//모든 결제 내역 취소하기
 		for(ChallengePaymentVO payVO : payList) {
 			CancelData cancelData = new CancelData(payVO.getOd_imp_uid(), true);
 			impClient.cancelPaymentByImpUid(cancelData);
-			
+
 			//챌린지 결제 상태 - 취소
 			challengeMapper.updateChalPaymentStatus(payVO.getChal_joi_num());
 			//챌린지 참가 상태 - 취소
@@ -446,24 +451,24 @@ public class ChallengeServiceImpl implements ChallengeService{
 				//회원 포인트 업데이트
 				memberService.updateMemPoint(pointVO);
 			}			
-			
+
 			//챌린지 삭제 알림
 			NotifyVO notifyVO = new NotifyVO();
 			notifyVO.setMem_num(payVO.getMem_num()); //알림 받을 회원 번호
 			notifyVO.setNotify_type(33);             //알림 타입
 			notifyVO.setNot_url("/member/myPage/payment"); //알림을 누르면 반환할 url
-			
+
 			Map<String, String> dynamicValues = new HashMap<String, String>();
 			ChallengeVO challenge = challengeMapper.selectChallenge(chal_num);
 			dynamicValues.put("chalTitle", challenge.getChal_title());
-			
+
 			//NotifyService 호출
 			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
 		}		
-		
+
 		//챌린지 톡방 환영 메시지 삭제
 		challengeMapper.deleteChallengeChat(chal_num);
-		
+
 		//챌린지 상태 - 취소
 		challengeMapper.updateChallengeStatus(chal_num);
 	}
@@ -514,10 +519,30 @@ public class ChallengeServiceImpl implements ChallengeService{
 	//챌린지 채팅방 삭제
 	@Override
 	public void deleteChallengeChat(Long chal_num) {
+		Map<String,Object> map = new HashMap<>();
+		map.put("chal_num", chal_num);
+		List<ChallengeChatVO> chatList = challengeMapper.selectChallengeChat(map);
+		for(ChallengeChatVO chat : chatList) {
+			removeFile(chat.getChat_filename());
+		}
 		//챌린지 채팅 읽기 기록 삭제
 		challengeMapper.deleteChalChatRead(chal_num);
 		//챌린지 채팅 전체 삭제
 		challengeMapper.deleteChallengeChat(chal_num);		
+	}
+
+	//채팅방 사진 삭제
+	private void removeFile(String filename) {
+		if (filename != null) {
+			// 컨텍스트 루트상의 절대 경로 구하기
+			String path = servletContext.getRealPath("/upload");
+			File file = new File(path, filename);
+			if (file.exists() && file.delete()) {
+				log.info("파일 삭제 성공: {}", filename);
+			} else {
+				log.warn("파일 삭제 실패 또는 파일이 존재하지 않음: {}", filename);
+			}
+		}
 	}
 
 	//*챌린지 좋아요*//
@@ -584,9 +609,8 @@ public class ChallengeServiceImpl implements ChallengeService{
 			//2. 참가자에게 환급 포인트 지급
 			refundPointsToUsers(chal_num);
 
-			//3. 단체 채팅방 삭제
-			challengeMapper.deleteChalChatRead(chal_num);
-			challengeMapper.deleteChallengeChat(chal_num);
+			//3. 단체 채팅방 삭제			
+			deleteChallengeChat(chal_num);
 
 			//4. 챌린지 종료 알림 전송
 			Map<String, Object> params = new HashMap<>();
@@ -770,16 +794,83 @@ public class ChallengeServiceImpl implements ChallengeService{
 	public ChallengePaymentVO selectChallengePayment(Long chal_joi_num) {
 		return challengeMapper.selectChallengePayment(chal_joi_num);
 	}
-	
+
+	//챌린지 중단
+	@Override
+	public void cancelChallengeByAdmin(Map<String, Long> map) throws IamportResponseException, IOException {
+		Long chal_num = map.get("chal_num");
+		Long chal_phase = map.get("chal_phase");
+
+		//모든 결제 내역 불러오기
+		List<ChallengePaymentVO> payList = selectChallengePaymentList(chal_num);
+
+		//모든 결제 내역 취소하기
+		for(ChallengePaymentVO payVO : payList) {
+			CancelData cancelData = new CancelData(payVO.getOd_imp_uid(), true);
+			impClient.cancelPaymentByImpUid(cancelData);
+
+			//챌린지 결제 상태 - 취소
+			challengeMapper.updateChalPaymentStatus(payVO.getChal_joi_num());
+			//챌린지 참가 상태 - 취소
+			challengeMapper.updateChallengeJoinStatus(payVO.getChal_joi_num());
+
+			//사용 포인트 복구
+			ChallengePaymentVO chalPayVO = challengeMapper.selectChallengePayment(payVO.getChal_joi_num());
+			int chal_point = chalPayVO.getChal_point();		
+			if(chal_point > 0) {
+				//포인트 로그 작성
+				PointVO pointVO = new PointVO(30,chalPayVO.getChal_point(),chalPayVO.getMem_num());
+				pointService.insertPointLog(pointVO);
+
+				//회원 포인트 업데이트
+				memberService.updateMemPoint(pointVO);
+			}			
+
+			//챌린지 삭제 알림
+			NotifyVO notifyVO = new NotifyVO();
+			notifyVO.setMem_num(payVO.getMem_num()); //알림 받을 회원 번호
+			notifyVO.setNotify_type(34);             //알림 타입
+			notifyVO.setNot_url("/member/myPage/payment"); //알림을 누르면 반환할 url
+
+			Map<String, String> dynamicValues = new HashMap<String, String>();
+			ChallengeVO challenge = challengeMapper.selectChallenge(chal_num);
+			dynamicValues.put("chalTitle", challenge.getChal_title());
+
+			//NotifyService 호출
+			notifyService.insertNotifyLog(notifyVO, dynamicValues); //알림 로그 찍기
+		}
+
+		if(chal_phase == 0) {//시작 전 챌린지 중단
+			//챌린지 톡방 환영 메시지 삭제
+			challengeMapper.deleteChallengeChat(chal_num);
+		}else if(chal_phase == 1){//진행 중인 챌린지 중단
+			//챌린지 채팅방 삭제
+			deleteChallengeChat(chal_num);
+			
+			//챌린지 인증 신고 & 기록 삭제
+			Map<String, Object> rptMap = new HashMap<>();
+			rptMap.put("chal_num", chal_num);
+			List<ChallengeJoinVO> joinList = selectJoinMemberList(rptMap);
+			
+			for(ChallengeJoinVO join : joinList) {
+				challengeMapper.deleteVerifyReport(join.getMem_num()); 	
+				challengeMapper.deleteChallengeVerifyByChalJoiNum(join.getChal_joi_num());
+			}			
+		}
+		
+		//챌린지 상태 - 취소
+		challengeMapper.updateChallengeStatus(chal_num);
+	}	
+
 	//*챌린지 메인*//
 	//인기 챌린지
 	@Override
 	public List<ChallengeVO> getPopularChallenges() {
-	    return challengeMapper.getPopularChallenges();
+		return challengeMapper.getPopularChallenges();
 	}
 	//운동 챌린지
 	@Override
 	public List<ChallengeVO> getExerciseChallenges() {
-	    return challengeMapper.getExerciseChallenges();
+		return challengeMapper.getExerciseChallenges();
 	}
 }
