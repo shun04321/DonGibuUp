@@ -43,7 +43,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-public class DboxMypageAdiminController {
+public class DboxAdiminController {
 	@Autowired
 	private DboxService dboxService;
 	@Autowired
@@ -52,34 +52,7 @@ public class DboxMypageAdiminController {
 	SubscriptionService subscriptionService;
 	@Autowired
 	MemberService memberService;
-	/*===================================
-	 * 		MyPage
-	 *==================================*/
-	
-	/*===================================
-	 * 		제안한 기부박스
-	 *==================================*/
-//    @GetMapping("/dbox/myPage/dboxMyPropose")
-//    public String dboxMyPropose() {
-//    	log.debug("<<MyPage - 제안한 기부박스>> : ");
-//    	
-//        return "dboxMyPropose";
-//    }	
-//    
-//    /*===================================
-//     * 		기부박스 기부내역
-//     *==================================*/
-//    @GetMapping("/dbox/myPage/dboxMyDonation")
-//    public String dboxMyDonation() {
-//    	log.debug("<<MyPage - 기부박스 기부내역>> : ");
-//    	
-//    	return "dboxMyDonation";
-//    }	
-    
-	/*===================================
-	 * 		Admin
-	 *==================================*/
-    
+
     /*===================================
      * 		기부박스 관리
      *==================================*/
@@ -145,17 +118,19 @@ public class DboxMypageAdiminController {
      * 		기부박스 상태 관리
      *==================================*/
     @GetMapping("/admin/dboxAdminStatus/{dboxNum}")
-	public String statusAdmin(@PathVariable long dboxNum,Model model,HttpSession session) {
+	public String statusAdmin(@PathVariable long dboxNum,Model model) {
 		log.debug("<<관리자 기부박스 상태관리 - dbox_num>> : "+ dboxNum);
-    	//멤버정보
-    	MemberVO member = (MemberVO) session.getAttribute("user");
-    	log.debug("<<관리자 기부박스 상태관리 - member>> : " + member);
     	
     	//기부박스 및 모금계획 불러오기
     	DboxVO dbox = dboxService.selectDbox(dboxNum);
     	List<DboxBudgetVO> dboxBudget = dboxService.selectDboxBudgets(dboxNum);
+    	
+    	//멤버정보
+    	MemberVO member = memberService.selectMemberDetail(dbox.getMem_num());
+    	
     	log.debug("<<관리자 기부박스 상태관리 - Dbox>> : " + dbox);
     	log.debug("<<관리자 기부박스 상태관리 - DboxBudget>> : " + dboxBudget);
+    	log.debug("<<관리자 기부박스 상태관리 - member>> : " + member);
    
     	//뷰에 전달
     	model.addAttribute("member",member);
@@ -239,7 +214,9 @@ public class DboxMypageAdiminController {
     	
     	return "redirect:/admin/dboxAdminStatus/"+dbox_num;
     }
-    
+    /*===================================
+     * 		기부박스 자동 업데이트
+     *==================================*/   
     @Scheduled(cron = "0 0 0 * * ?")//0초 0분 0시 매일 매월 ?요일
     public void dboxUpdate() {
     	LocalDate today = LocalDate.now();
@@ -302,7 +279,9 @@ public class DboxMypageAdiminController {
     		}
     	}
     }
-    
+    /*===================================
+     * 		기부박스 환불(진행중단)
+     *==================================*/   
     //환불 api
     public void refund(RefundVO refundVO , DboxDonationVO dboxDonationVO) {
 		Map<String,String> mapJson = new HashMap<String,String>();
