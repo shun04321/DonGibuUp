@@ -4,6 +4,28 @@
 <%-- section의 높이는 컨텐츠의 길이에 따라 자동 조정됩니다 --%>
 <%-- 메인 페이지의 css 파일은 /DontGibuUp/src/main/resources/static/css/main.css 파일 내에 있습니다. --%>
 <%-- css 설정이 필요하면 해당 파일 내의 적절한 섹션에서 수정해주세요 (git 충돌 주의) --%>
-<div>
-	
+<style>
+	.subscription{
+		margin-top : 180px;
+	}
+	input[type=button] {
+	margin-top: 10px;
+	padding: 4px 20px;
+	border: 1px solid #09aa5c;
+	border-radius: 2px;
+	color: #fff;
+	background-color: #09aa5c;
+	font-weight: bold;
+	cursor: pointer;
+}
+	input[type=button]:hover {
+	background-color: #FFF;
+	color: #09aa5c;
+	transition: 0.2s ease-out;
+	height: 30px;
+}
+</style>
+<div class="subscription">
+<span>우리의 주변을 지키는 값진 행동,</span><br>
+<input type="button" value="정기후원하기 →" onclick="location.href='${pageContext.request.contextPath}/subscription/subscriptionMain'">
 </div>

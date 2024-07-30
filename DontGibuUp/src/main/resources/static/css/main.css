@@ -52,6 +52,19 @@
 	}
 }
 
+#subscription_section{
+	font-family: "Noto Sans KR", sans-serif;
+	font-weight: 600;
+	font-size: 1.35rem;
+	color: #2e2e2e;
+    width: 100%;
+    height: 40vh; /* Viewport height */
+    background-image: url('../upload/5cf1b03f-5087-4ce7-a9ec-c6af0d977ff5_여성 배너.png');
+    background-size: cover; /* Adjust the image to cover the entire div */
+    background-position: center; /* Center the image in the div */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
 .main-section .title-style {
 	font-family: "Noto Sans KR", sans-serif;
 	font-weight: 600;
