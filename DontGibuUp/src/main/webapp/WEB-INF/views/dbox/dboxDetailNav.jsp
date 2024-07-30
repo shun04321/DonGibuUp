@@ -73,7 +73,7 @@
 							<input type="hidden" id="pay_price" name="pay_price" value="">
 							
 							<div class="mb-3">
-							  <label for="dbox_do_comment" class="form-label">포인트 입력</label>
+							  <label for="dbox_do_comment" class="form-label">코멘트 입력</label>
 							  <textarea class="form-control" id="dbox_do_comment" placeholder="남길 코멘트를 입력해주세요."></textarea>
 							</div>
 							<div class="text-end">
