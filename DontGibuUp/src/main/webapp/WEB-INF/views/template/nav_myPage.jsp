@@ -9,7 +9,9 @@
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">나의 정보</h5>
 		<a href="${pageContext.request.contextPath}/member/myPage/memberInfo" class="category-block-link"> 회원정보 수정</a>
+		<c:if test="${user.mem_reg_type == 1}">
 		<a href="${pageContext.request.contextPath}/member/myPage/changePassword" class="category-block-link"> 비밀번호 수정</a>
+		</c:if>
 		<a href="${pageContext.request.contextPath}/member/myPage/inviteFriendEvent" class="category-block-link"> 친구초대</a>
 		<a href="${pageContext.request.contextPath}/member/myPage/point" class="category-block-link"> 포인트</a>
 		<a href="${pageContext.request.contextPath}/member/myPage/payment" class="category-block-link"> 결제내역</a>
@@ -41,7 +43,9 @@
 	<div class="category-block d-flex flex-column">
 		<h5 class="mb-3">나의 정보</h5>
 		<a href="${pageContext.request.contextPath}/member/myPage/memberInfo" class="category-block-link"> 회원정보 수정</a>
+		<c:if test="${user.mem_reg_type == 1}">
 		<a href="${pageContext.request.contextPath}/member/myPage/changePassword" class="category-block-link"> 비밀번호 수정</a>
+		</c:if>
 	</div>
 </c:if>
 <!-- MyPage 메뉴 끝 -->

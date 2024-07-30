@@ -32,6 +32,10 @@
 	width: 28%;
 }
 
+#goods_section {
+	background-color: #f9f9f9;
+}
+
 
 @media ( max-width : 992px) {
 	.top-banner {
