@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import kr.spring.category.service.CategoryService;
+import kr.spring.category.vo.DonationCategoryVO;
 import kr.spring.challenge.service.ChallengeService;
 import kr.spring.challenge.vo.ChallengeVO;
 import kr.spring.data.service.DataService;
@@ -30,6 +32,8 @@ public class MainController {
 	private GoodsService goodsService;
 	@Autowired
 	private DboxService dboxService;
+	@Autowired
+	private CategoryService categoryService;
 	@GetMapping("/")
 	public String init() {
 		return "redirect:/main/main";
@@ -46,7 +50,10 @@ public class MainController {
 		    currentParticipantsMap.put(challenge.getChal_num(), currentParticipants);
 		}
 		List<ChallengeVO> exerciseChallenges = challengeService.getExerciseChallenges();
-		    
+
+		List<DonationCategoryVO> categorylist = categoryService.selectList();
+		
+		model.addAttribute("categorylist",categorylist);
 		model.addAttribute("totalVO", totalVO);
 		model.addAttribute("popularChallenges", popularChallenges);
 		model.addAttribute("currentParticipantsMap", currentParticipantsMap);
