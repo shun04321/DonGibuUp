@@ -48,6 +48,8 @@ public class DboxServiceImpl implements DboxService {
 	@Autowired
 	NotifyMapper notifyMapper;
 	
+   @Autowired
+    SubscriptionService subscriptionService;  // SubscriptionService 주입
 	//Dbox 등록
 	@Override
 	public Long insertDbox(DboxVO dbox) {
@@ -143,7 +145,7 @@ public class DboxServiceImpl implements DboxService {
 	}
 	
 	public void refund(RefundVO refundVO , DboxDonationVO dboxDonationVO) {
-		String token = subscriptionMapper.getToken(1);
+		String token = subscriptionService.getToken(1);
 		Gson gson = new Gson();
 		token = token.substring(token.indexOf("response") + 10);
 		token = token.substring(0, token.length() - 1);
@@ -193,7 +195,7 @@ public class DboxServiceImpl implements DboxService {
 				memberMapper.updateMemPoint(pointVO);
 				//환불 알림				
 				NotifyVO notifyVO = new NotifyVO();
-				notifyVO.setMem_num(refundVO.getMem_num());
+				notifyVO.setMem_num(dboxDonationVO.getMem_num());
 				notifyVO.setNotify_type(36);
 				notifyVO.setNot_url("/member/myPage/payment");
 				Map<String, String> dynamicValues = new HashMap<String, String>();

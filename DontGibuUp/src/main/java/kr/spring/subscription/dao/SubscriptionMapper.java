@@ -56,8 +56,13 @@ public interface SubscriptionMapper {
 	public void deleteSubscription(long sub_num);
 
 	//정기결제를 위한 getToken
-	public String getToken(int payment_type);
-
+	@Select("SELECT imp_key FROM token WHERE payment_type=#{payment_type}")
+	public String getImpKeys(int payment_type);
+	
+	@Select("SELECT imp_secret FROM token WHERE payment_type=#{payment_type}")
+	public String getImpSecret(int payment_type);
+	
+	
 	@Select("SELECT * FROM subscription WHERE sub_ndate = #{today} AND sub_status = 0")
 	public List<SubscriptionVO> getSubscriptionByDay(int today);
 

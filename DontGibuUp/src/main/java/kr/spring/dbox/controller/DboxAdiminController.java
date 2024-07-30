@@ -211,7 +211,7 @@ public class DboxAdiminController {
     			refundVO.setAmount((int)dboxdonationVO.getDbox_do_price());
     			dboxService.refund(refundVO,dboxdonationVO);
     			//결제상태 변경
-    			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), dbox_status);   				
+    			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), 2);   				
     		}
     		
     		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\n진행중단사유 : " + reject);

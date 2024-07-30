@@ -24,7 +24,11 @@ public interface SubscriptionService {
     // 오늘 날짜 구하기
     public int getTodayDate();
     
-    String getToken(int payment_type);
+    public String getImpKeys(int payment_type);
+    
+    public String getImpSecret(int payment_type);
+    
+    public String getToken(int payment_type);
     //정기 결제 날짜가 오늘인 구독 목록 반환
     public List<SubscriptionVO> getSubscriptionByDay(int today);
     

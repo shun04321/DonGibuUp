@@ -39,33 +39,29 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     private CategoryMapper categoryMapper;
 
-    private static final String IMP_KEY0 = "1607808574122853";
-    private static final String IMP_SECRET0 = "pRNB4gue3y2Y7MvkiLRCrqECvVseUrmFKo1XtMokvRAj5LCOZ9zFLFIOAcYTZQbApYFMPRMoNfo8R5NE";
-    private static final String IMP_KEY1 = "1768802126155655";
-    private static final String IMP_SECRET1 = "7lbuqivNTuXgdJ0ELcC9KH7mo8ruzxAQz6i7NEw72bobO7JIPfH8I07YSYcQUmPypmQg0S3H9XxqM9wQ";
-    private static final String IMP_KEY3 = "2501776226527075";
-    private static final String IMP_SECRET3 = "qpZRCTf52Ldmm3eOgJwXu8lVk80JNJLszHOVhk9onjhCwSaUxMh2neAOtQmZcniVoveOdlaHBMtYX5Er";
 
-    
     public String getToken(int payment_type) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         Map<String, Object> map = new HashMap<>();
-        if(payment_type==0) {
-        map.put("imp_key", IMP_KEY0);
-        map.put("imp_secret", IMP_SECRET0);
-        }else if(payment_type==1) {
-        	map.put("imp_key", IMP_KEY1);
-            map.put("imp_secret", IMP_SECRET1);
-        }else {
-        	map.put("imp_key", IMP_KEY3);
-            map.put("imp_secret", IMP_SECRET3);
-        }
+
+        map.put("imp_key", getImpKeys(payment_type));
+        map.put("imp_secret", getImpSecret(payment_type));
+        
         String json = new Gson().toJson(map);
         HttpEntity<String> entity = new HttpEntity<>(json, headers);
         return restTemplate.postForObject("https://api.iamport.kr/users/getToken", entity, String.class);
+    }
+    
+    public String getImpKeys(int payment_type) {
+    	return subscriptionMapper.getImpKeys(payment_type);
+    };
+    
+    @Override
+    public String getImpSecret(int payment_type) {
+    	return subscriptionMapper.getImpSecret(payment_type);
     }
 
     @Override
@@ -159,4 +155,5 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 	public long getDboxDoNum(String imp_uid) {
 		return subscriptionMapper.getDboxDoNum(imp_uid);
 	}
+
 }
