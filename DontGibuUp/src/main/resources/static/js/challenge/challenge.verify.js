@@ -334,19 +334,26 @@ function setPage(totalItem, method) {
 	}
 
 	let pageInfo = '';
-
+	
+	pageInfo += '<div class="align-center">';
+	
 	if (startPage > pageSize) {
 		pageInfo += '<span class="pageBtn ' + method + '" data-page=' + (startPage - 1) + '>[이전]</span>';
 	}
 
 	for (var i = startPage; i <= endPage; i++) {
-		pageInfo += '<span class="pageBtn ' + method + '" data-page=' + i + '>' + i + '</span>';
+		if (i == currentPage) {
+            pageInfo += '<span class="pageBtn ' + method + '" data-page=' + i + ' style="color: red;">' + i + '</span>';
+        } else {
+            pageInfo += '<span class="pageBtn ' + method + '" data-page=' + i + '>' + i + '</span>';
+        }
 	}
 
 	if (endPage < totalPage) {
-		pageInfo += '<span class="pageBtn ' + method + '" data-page=' + (startPage + pageSize) + '>[다음]</span>';
+		pageInfo += '<span class="pageBtn' + method + '" data-page=' + (startPage + pageSize) + '>[다음]</span>';
 	}
-
+	pageInfo += '</div>';
+	
 	return pageInfo;
 }
 
