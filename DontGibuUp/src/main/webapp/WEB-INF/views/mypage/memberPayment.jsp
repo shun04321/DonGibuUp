@@ -233,6 +233,8 @@ $(document).ready(function() {
                             <td><fmt:formatNumber value="${payment.price}" type="number" minFractionDigits="0" maxFractionDigits="0"/></td>
                             <td>
                                 <c:if test="${payment.type == 2}">${payment.donation}</c:if>
+                                <c:if test="${payment.type < 2}"><fmt:formatNumber value="${payment.price}" type="number" minFractionDigits="0" maxFractionDigits="0"/></c:if>
+                                <c:if test="${payment.type == 3}"><fmt:formatNumber value="${payment.donation}" type="number" minFractionDigits="0" maxFractionDigits="0"/></c:if>
                             </td>
                             <td>${payment.point}P</td>
                             <td>

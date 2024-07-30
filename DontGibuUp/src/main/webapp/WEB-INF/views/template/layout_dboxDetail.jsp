@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dboxDetail.css" type="text/css">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 <tiles:insertAttribute name="css" ignore="true" />
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/favicon.png"/>
 </head>
 <script src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <body>

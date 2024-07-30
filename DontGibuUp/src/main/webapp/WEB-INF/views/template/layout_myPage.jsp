@@ -12,6 +12,7 @@
 <title><tiles:getAsString name="title" /></title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css" type="text/css">
 <tiles:insertAttribute name="css" ignore="true" />
+<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/favicon.png"/>
 </head>
 <body>
 <div id="main">

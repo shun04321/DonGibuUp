@@ -29,7 +29,7 @@
 	<!-- inject:css -->
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/t2/css/vertical-layout-light/style.css">
 	<!-- endinject -->
-	<link rel="shortcut icon" href="${pageContext.request.contextPath}/t2/images/favicon.png" />
+	<link rel="icon" type="image/png" href="${pageContext.request.contextPath}/images/favicon.png"/>
 </head>
 <body>
 <div id="main">
