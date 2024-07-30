@@ -201,6 +201,14 @@ public class DboxAdiminController {
     	}else if(dbox_status==5) {
     		List<DboxDonationVO> list = dboxService.getDboxDonationVODboxNum(dbox_num);
     		for(DboxDonationVO dboxdonationVO : list) {
+    			if(dboxdonationVO.getDbox_do_point() == dboxdonationVO.getDbox_do_price()) {
+    				PointVO pointVO = new PointVO();
+    				//포인트 반환
+    				pointVO.setMem_num(dboxdonationVO.getMem_num());
+    				pointVO.setPevent_type(30);
+    				pointVO.setPoint_amount(dboxdonationVO.getDbox_do_point());
+    				memberService.updateMemPoint(pointVO);
+    			}else {   			
     			//refund
     			RefundVO refundVO = new RefundVO();
     			refundVO.setMem_num(dboxdonationVO.getMem_num());
@@ -212,6 +220,7 @@ public class DboxAdiminController {
     			dboxService.refund(refundVO,dboxdonationVO);
     			//결제상태 변경
     			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), 2);   				
+    			}
     		}
     		
     		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\n진행중단사유 : " + reject);
