@@ -35,7 +35,7 @@
 	                  dcate_icon,
 	                  dcate_content,
 	                  dcate_banner
-	                FROM dona_category 				<!-- 알리아스 -->
+	                FROM dona_category 	ORDER BY dcate_num DESC<!-- 알리아스 -->
 	                )a)
 	</select>
 	 <update id="updateDonationCategory" parameterType="DonationCategoryVO">
