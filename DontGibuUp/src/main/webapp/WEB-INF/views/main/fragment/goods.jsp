@@ -5,7 +5,7 @@
 <%-- 메인 페이지의 css 파일은 /DontGibuUp/src/main/resources/static/css/main.css 파일 내에 있습니다. --%>
 <%-- css 설정이 필요하면 해당 파일 내의 적절한 섹션에서 수정해주세요 (git 충돌 주의) --%>
 <!-- 최신 상품 섹션 시작 -->
-<h6 class="latestGoods">최신 상품</h6>
+<h6 class="latestGoods">필요한 상품 사고 기부도 하고</h6>
 <div id="latestGoods">
     <div class="latest-goods-item">
         <div class="card" onclick="location.href='${pageContext.request.contextPath}/goods/detail?item_num=${todayGoods.item_num}'" style="cursor: pointer;">

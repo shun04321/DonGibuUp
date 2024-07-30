@@ -44,7 +44,6 @@
                     <input type="button" value="상품 등록" onclick="location.href='write'">
                     <input type="button" value="구매 관리" onclick="location.href='${pageContext.request.contextPath}/admin/purchaseList'">
                 </c:if>
-                	<input type="button" value="내 구매 내역" onclick="location.href='purchaseHistory'">
             </div>
         </form>
         <c:if test="${count == 0}">
