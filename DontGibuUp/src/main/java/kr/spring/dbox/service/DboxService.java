@@ -9,6 +9,7 @@ import kr.spring.dbox.vo.DboxBudgetVO;
 import kr.spring.dbox.vo.DboxDonationVO;
 import kr.spring.dbox.vo.DboxResultVO;
 import kr.spring.dbox.vo.DboxVO;
+import kr.spring.refund.vo.RefundVO;
 import kr.spring.subscription.vo.SubscriptionVO;
 
 public interface DboxService {
@@ -49,4 +50,6 @@ public interface DboxService {
 	public List<DboxVO> getDboxByMem_num(Map<String, Object> map);
 	
 	public List<DboxDonationVO> getDboxDonationVODboxNum(long dbox_num);
+	
+	public void refund(RefundVO refundVO , DboxDonationVO dboxDonationVO);
 }

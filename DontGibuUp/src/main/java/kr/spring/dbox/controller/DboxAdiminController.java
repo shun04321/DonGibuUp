@@ -202,10 +202,9 @@ public class DboxAdiminController {
     			refundVO.setReason(4);
     			refundVO.setReturn_point(dboxdonationVO.getDbox_do_point());
     			refundVO.setAmount((int)dboxdonationVO.getDbox_do_price());
-    			refund(refundVO,dboxdonationVO);
+    			dboxService.refund(refundVO,dboxdonationVO);
     			//결제상태 변경
-    			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), 2);
-    				
+    			dboxService.updatePayStatus(dboxdonationVO.getDbox_do_num(), dbox_status);   				
     		}
     		
     		dboxService.updateDboxAcomment(dbox_num, "[" + dbox.getDbox_title() + "] 기부박스가 진행중단되었습니다. \n\n진행중단사유 : " + reject);
@@ -279,82 +278,4 @@ public class DboxAdiminController {
     		}
     	}
     }
-    /*===================================
-     * 		기부박스 환불(진행중단)
-     *==================================*/   
-    //환불 api
-    public void refund(RefundVO refundVO , DboxDonationVO dboxDonationVO) {
-		Map<String,String> mapJson = new HashMap<String,String>();
-		String token = subscriptionService.getToken(1);
-		Gson gson = new Gson();
-		token = token.substring(token.indexOf("response") + 10);
-		token = token.substring(0, token.length() - 1);
-
-		// token에서 response 부분을 추출하여 GetTokenVO로 변환
-		GetTokenVO vo = gson.fromJson(token, GetTokenVO.class);
-
-		String access_token = vo.getAccess_token();
-
-		RestTemplate restTemplate = new RestTemplate();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.setBearerAuth(access_token);
-
-		Map<String, Object> map = new HashMap<>();
-		if(refundVO.getPayment_type()==0) {
-			map.put("merchant_uid", refundVO.getImp_uid());
-		}else {
-			map.put("imp_uid", refundVO.getImp_uid());
-		}
-		map.put("reason", refundVO.getReason());
-
-		String json = gson.toJson(map);
-		System.out.println("json : " + json);
-
-		HttpEntity<String> entity = new HttpEntity<>(json, headers);
-		ResponseEntity<String> response = restTemplate.postForEntity("https://api.iamport.kr/payments/cancel", entity, String.class);
-
-		// API 응답을 문자열로 받음
-		String responseBody = response.getBody();
-
-		// API 응답 문자열에서 code와 message 값을 추출
-		Map<String, Object> responseMap = gson.fromJson(responseBody, Map.class);
-		Number codeNumber = (Number) responseMap.get("code");
-		int code = codeNumber.intValue();
-		String message = (String) responseMap.get("message");
-		log.debug("response : " + response);
-		
-		if (response.getStatusCode() == HttpStatus.OK) {	        	
-			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
-			if (code == 0) { 
-				log.debug(responseBody);
-				PointVO pointVO = new PointVO();
-				//포인트 반환
-				pointVO.setMem_num(refundVO.getMem_num());
-				pointVO.setPevent_type(30);
-				pointVO.setPoint_amount(refundVO.getReturn_point());
-				memberService.updateMemPoint(pointVO);
-				//환불 알림				
-				NotifyVO notifyVO = new NotifyVO();
-				notifyVO.setMem_num(refundVO.getMem_num());
-				notifyVO.setNotify_type(36);
-				notifyVO.setNot_url("/member/myPage/payment");
-				Map<String, String> dynamicValues = new HashMap<String, String>();
-				
-				DboxVO dboxVO = dboxService.selectDbox(dboxDonationVO.getDbox_num());
-				dynamicValues.put("dboxTitle",dboxVO.getDbox_title());
-				dynamicValues.put("price",""+dboxDonationVO.getDbox_do_price());
-				dynamicValues.put("point",""+dboxDonationVO.getDbox_do_point());
-				notifyService.insertNotifyLog(notifyVO, dynamicValues);
-			}else {
-			//환불 실패시 {code : 1}
-				log.debug(responseBody);
-			}
-		}else{ 
-			//api 호출 실패시
-			log.debug(responseBody);
-		}
-
-	}
 }

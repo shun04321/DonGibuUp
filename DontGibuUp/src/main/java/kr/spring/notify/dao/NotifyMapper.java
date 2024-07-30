@@ -1,6 +1,7 @@
 package kr.spring.notify.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -26,4 +27,5 @@ public interface NotifyMapper {
 	//알림 템플릿 가져오기
 	@Select("SELECT notify_template FROM db_notify_template WHERE notify_type=#{notify_type}")
 	public String selectNotifyTemplate(int notify_type);
+	public void insertNotifyLog(NotifyVO notifyVO, Map<String, String> dynamicValues);
 }
