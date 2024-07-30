@@ -343,7 +343,7 @@ public class DboxAdiminController {
 				Map<String, String> dynamicValues = new HashMap<String, String>();
 				
 				DboxVO dboxVO = dboxService.selectDbox(dboxDonationVO.getDbox_num());
-				dynamicValues.put("dboxTitle",dboxVO.getDbox_team_name());
+				dynamicValues.put("dboxTitle",dboxVO.getDbox_title());
 				dynamicValues.put("price",""+dboxDonationVO.getDbox_do_price());
 				dynamicValues.put("point",""+dboxDonationVO.getDbox_do_point());
 				notifyService.insertNotifyLog(notifyVO, dynamicValues);
