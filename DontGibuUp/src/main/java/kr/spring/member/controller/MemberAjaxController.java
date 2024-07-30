@@ -1,21 +1,29 @@
 package kr.spring.member.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.siot.IamportRestClient.exception.IamportResponseException;
+
 import kr.spring.cs.vo.FaqVO;
+import kr.spring.member.service.MemberDeleteService;
 import kr.spring.member.service.MemberService;
+import kr.spring.member.vo.MemberTotalVO;
 import kr.spring.member.vo.MemberVO;
 import kr.spring.notify.service.NotifyService;
 import kr.spring.notify.vo.NotifyVO;
@@ -34,6 +42,9 @@ public class MemberAjaxController {
 	
 	@Autowired
 	private NotifyService notifyService;
+	
+	@Autowired
+	private MemberDeleteService memberDeleteService;
 
 	/*===============================
 	   		이메일 중복 체크
@@ -214,6 +225,27 @@ public class MemberAjaxController {
 			memberVO.setMem_num(mem_num);
 			memberVO.setMem_status(2);
 			memberService.updateMemStatus(memberVO);
+			mapAjax.put("result", "success");
+		}
+
+		return mapAjax;
+	}
+	
+	//회원 제명 
+	@ResponseBody
+	@PostMapping("/admin/expelMember")
+	public Map<String, Object> ExpelMemberAjax(long mem_num, HttpSession session) throws IamportResponseException, IOException {
+		Map<String, Object> mapAjax = new HashMap<String, Object>();
+
+		MemberVO user = (MemberVO) session.getAttribute("user");
+
+		if (user == null) {
+			// 로그인 안 됨
+			mapAjax.put("result", "logout");
+		} else if (user.getMem_status() != 9) {
+			mapAjax.put("result", "noAuthority");
+		} else {
+			memberDeleteService.deleteAccount(mem_num);
 			mapAjax.put("result", "success");
 		}
 

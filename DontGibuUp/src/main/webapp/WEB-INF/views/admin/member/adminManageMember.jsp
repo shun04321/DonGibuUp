@@ -62,12 +62,12 @@
 	        <tbody>
 	            <!-- JSTL loop example -->
 	            <c:forEach var="member" items="${list}">
-	                <tr>
+	                <tr class="mem-item">
 	                    <td class="text-center">${member.mem_num}</td>
 	                    <td class="text-left"><a href="detail?mem_num=${member.mem_num}" class="text-decoration-none">${member.mem_email}</a></td>
 	                    <td class="text-center">${member.mem_nick}</td>
 	                    <td class="text-center">${member.mem_date}</td>
-	                    <td class="text-center">
+	                    <td class="text-center mem-status">
 	                        <c:choose>
 	                            <c:when test="${member.mem_status == 0}">탈퇴</c:when>
 	                            <c:when test="${member.mem_status == 1}">정지</c:when>
@@ -77,7 +77,7 @@
 	                    </td>
 	                    <td class="text-center d-flex align-items-center justify-content-center">
 	                        <button class="btn btn-custom expelBtn" data-nick="${member.mem_nick}" data-num="${member.mem_num}"
-	                            <c:if test="${member.mem_status == 9}">disabled</c:if>>제명
+	                            <c:if test="${member.mem_status == 9 || member.mem_status == 0}">disabled</c:if>>제명
 	                        </button>
 	                        <button class="btn btn-custom suspendBtn" data-nick="${member.mem_nick}" data-num="${member.mem_num}"
 	                            <c:if test="${member.mem_status != 2}">disabled</c:if>>정지
