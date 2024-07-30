@@ -7,7 +7,7 @@
 
 
 <div class="container mt-5">
-    <h2>구매내역</h2>
+    <h4>구매내역</h4>
     <div class="mb-4 align-right">
         <button class="default-btn btn-large g-list-btn" onclick="location.href='${pageContext.request.contextPath}/goods/list'">상품 목록</button>
     </div>
