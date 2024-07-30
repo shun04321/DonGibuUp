@@ -6,8 +6,11 @@
 <!-- 기부박스 상태 관리 시작 -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dbox.css" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<div class="page-main">
- 	<h2>기부박스 상태 관리</h2><br>
+<section class="section-padding nanum mb-0 pb-0">
+	<div class="container">
+		<div class="mb-4">
+ 			<h2>기부박스 상태 관리</h2>
+ 		</div>
  		<button type="button" class="btn btn-outline-success mt-2 mb-2" onclick="location.href='/admin/dboxAdmin'">목록</button>
  	<h5>기부박스 정보</h5>
  	<div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
@@ -219,4 +222,5 @@
  	
  	<h5>예시</h5>
 </div>
+</section>
 <!-- 기부박스 상태 관리 끝 -->

@@ -3,9 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
     <!-- 관리자 회원 상세 시작 -->
-<div class="page-main">
- 	<h2>관리자 회원 상세</h2><br>
- 		<button type="button" class="btn btn-success mt-2" style="color:white" onclick="location.href='/admin/manageMember'">목록</button>
+<section class="section-padding nanum">
+	<div class="container">
+		<div class="mb-4">
+ 			<h2>관리자 회원 상세</h2>
+ 		</div>
+ 		<br>
  	<!-- 회원 주요 정보 -->
  	<h5>회원 주요 정보</h5>
  	<section class="container mt-5 mb-4">
@@ -207,5 +210,9 @@
 			</c:if>			
 			<br>
  	</div>
+ 	<div class="align-right">
+		<button type="button" class="btn btn-success mt-2" style="color:white" onclick="location.href='/admin/manageMember'">목록</button>
+	</div>
 </div>
+</section>
 <!-- 관리자 회원 상세 끝 -->

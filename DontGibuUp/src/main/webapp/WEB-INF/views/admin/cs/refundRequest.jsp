@@ -93,8 +93,12 @@ $(document).ready(function() {
     z-index: 1000;
 }
 </style>
-<div class="page-main">
-    <h2>환불신청 관리</h2>
+
+<section class="section-padding nanum">
+	<div class="container">
+		<div class="mb-4">
+    		<h2>환불신청 관리</h2>
+    	</div>
     <div class="container">
         <div class="mb-4"></div>
         <div class="mb-3">
@@ -164,4 +168,5 @@ $(document).ready(function() {
         </c:if>
     </div>
 </div>
+</section>
 <!-- 환불 끝 -->

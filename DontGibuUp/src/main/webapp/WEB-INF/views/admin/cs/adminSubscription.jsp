@@ -5,8 +5,11 @@
 <!-- 회원 관리 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/subscription/admin.subscription.js"></script>
-<div class="page-main">
-	<h2>정기기부 관리</h2>
+<section class="section-padding nanum">
+	<div class="container">
+		<div class="mb-4">
+			<h2>정기기부 관리</h2>
+		</div>
 	<form action="AdminSubscription" id="search_form" method="get">
 		<ul class="search">
 			<li>
@@ -64,4 +67,5 @@
 	<div class="align-center">${page}</div>
 	</c:if>
 </div>
+</section>
 <!-- 회원 목록 끝 -->

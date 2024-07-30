@@ -4,8 +4,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!-- 기부박스 관리 시작 -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-3.7.1.min.js"></script>
-<div class="page-main">
- 	<h2>기부박스 관리</h2>
+<section class="section-padding nanum">
+	<div class="container">
+		<div class="mb-4">
+ 			<h2>기부박스 관리</h2>
+ 		</div>
+ 		
 	<form action="dboxAdmin" id="search_form" method="get">
 		<ul class="search" style="width:60%;text-align:center">
 			<li>
@@ -130,5 +134,6 @@
 	<div class="align-center">${page}</div>
 	</c:if>
 </div>
+</section>
 
 <!-- 기부박스 관리 끝 -->
