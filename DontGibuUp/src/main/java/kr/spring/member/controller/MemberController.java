@@ -798,12 +798,87 @@ public class MemberController {
     	return "redirect:/admin/detail?mem_num=" + mem_num;
     }
 	//회원 등급 자동 등업
-    @Scheduled(cron = "30 05 17 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void authUpdate() {
-    	List<MemberVO> member = memberService.selectAllMemberList();
-    	
+    	//전체 멤버리스트
+    	List<MemberVO> memberList = memberService.selectAllMemberList();
+    	//등업한 회원수 카운트
+    	int count = 0;
+    	for(MemberVO member : memberList) {
+    		MemberTotalVO memberTotal = memberService.selectMemberTotal(member.getMem_num());  		
+    		if(member.getAuth_num()==1) {
+    			//기부흙 -> 기부씨앗 : 기부액 10,000원, 기부횟수 5회
+        		if(memberTotal.getTotal_amount() >= 10000 && memberTotal.getTotal_count() >= 5) {
+        			memberService.updateMemAuth(member.getMem_num(),member.getAuth_num()+1);
+        			notifyMethod(member.getMem_num(),member.getMem_nick(),member.getAuth_num()+1);
+        			log.debug("<<등업한 회원 - 기부흙 -> 기부씨앗>> : " + member.getMem_nick() + "(" + member.getMem_num() + ")");
+        			count++;
+        		}
+        	}else if (member.getAuth_num()==2) {
+        		//기부씨앗 -> 기부새싹 : 기부액 100,000원, 기부횟수 10회
+        		if(memberTotal.getTotal_amount() >= 100000 && memberTotal.getTotal_count() >= 10) {
+        			memberService.updateMemAuth(member.getMem_num(),member.getAuth_num()+1);
+        			notifyMethod(member.getMem_num(),member.getMem_nick(),member.getAuth_num()+1);
+        			log.debug("<<등업한 회원 - 기부씨앗 -> 기부새싹>> : " + member.getMem_nick() + "(" + member.getMem_num() + ")");
+        			count++;
+        		}
+    		}else if (member.getAuth_num()==3) {
+    			//기부새싹 -> 기부꽃 : 기부액 1,000,000원, 기부횟수 30회
+    			if(memberTotal.getTotal_amount() >= 1000000 && memberTotal.getTotal_count() >= 30) {
+    				memberService.updateMemAuth(member.getMem_num(),member.getAuth_num()+1);
+    				notifyMethod(member.getMem_num(),member.getMem_nick(),member.getAuth_num()+1);
+    				log.debug("<<등업한 회원 - 기부새싹 -> 기부꽃>> : " + member.getMem_nick() + "(" + member.getMem_num() + ")");
+    				count++;
+    			}     	
+        	}else if (member.getAuth_num()==4) {
+        		//기부꽃 -> 기부나무 : 기부액 10,000,000원, 기부횟수 30회
+        		if(memberTotal.getTotal_amount() >= 10000000 && memberTotal.getTotal_count() >= 30) {
+        			memberService.updateMemAuth(member.getMem_num(),member.getAuth_num()+1);
+        			notifyMethod(member.getMem_num(),member.getMem_nick(),member.getAuth_num()+1);
+        			log.debug("<<등업한 회원 - 기부꽃 -> 기부나무>> : " + member.getMem_nick() + "(" + member.getMem_num() + ")");
+        			count++;
+        		}     	
+        	}else if (member.getAuth_num()==5) {
+        		//기부나무 -> 기부숲 : 기부액 100,000,000원, 기부횟수 30회
+        		if(memberTotal.getTotal_amount() >= 100000000 && memberTotal.getTotal_count() >= 30) {
+        			memberService.updateMemAuth(member.getMem_num(),member.getAuth_num()+1);
+        			notifyMethod(member.getMem_num(),member.getMem_nick(),member.getAuth_num()+1);
+        			log.debug("<<등업한 회원 - 기부나무 -> 기부숲>> : " + member.getMem_nick() + "(" + member.getMem_num() + ")");
+        			count++;
+        		}     	
+        	}   		
+    	}//end of for
+    	log.debug("<<오늘 등업한 회원 수>> : " + count);
     }
 	
+    //알림 메서드
+    public void notifyMethod(long mem_num,String mem_nick,int member_auth) {
+    	String authName = null;
+    	if(member_auth==1) {
+    		authName="기부흙";
+    	}else if (member_auth==2) {
+    		authName="기부씨앗";
+		}else if (member_auth==3) {
+    		authName="기부새싹";
+		}else if (member_auth==4) {
+    		authName="기부꽃";
+		}else if (member_auth==5) {
+    		authName="기부나무";
+		}else if (member_auth==6) {
+    		authName="기부숲";
+		}
+    	
+    	NotifyVO notifyVO = new NotifyVO();
+		notifyVO.setMem_num(mem_num);
+		notifyVO.setNotify_type(38); 
+		notifyVO.setNot_url("/member/myPage/memberInfo");
+		
+		Map<String, String> dynamicValues = new HashMap<String, String>();
+		dynamicValues.put("memNick", mem_nick);
+		dynamicValues.put("memAuth", authName);
+		
+		notifyService.insertNotifyLog(notifyVO, dynamicValues);
+    }
 	
 	/*	@GetMapping("/test/endpage")
 		public String getEnd() {
