@@ -250,7 +250,7 @@ $(function() {
 			sub_output += '<div class="from-position">';
 		}
 		sub_output += '<div class="item">';
-		sub_output += `<div><img src="${contextPath}/upload/${item.chat_filename}"></div>`;
+		sub_output += `<div><img src="${contextPath}/upload/${item.chat_filename}" style="max-width: 200px; max-height: 200px;"></div>`;
 		sub_output += '<div>' + item.chat_content.replace(/\r\n/g, '<br>').replace(/\r/g, '<br>').replace(/\n/g, '<br>') + '</div>';
 		sub_output += '</div>';
 		//안 읽은 사람수, 작성 시간 추출
