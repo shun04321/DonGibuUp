@@ -73,7 +73,7 @@ public class ChallengeAjaxController {
 			String chal_sdate,
 			String chal_edate,
 			HttpSession session) {
-		log.debug("chal_type : " + chal_type);
+		log.debug("order : " + order);
 		Map<String,Object> map = new HashMap<>();
 		//map에 검색할 자기계발 카테고리 넣기
 		List<ChallengeCategoryVO> categories = categoryService.selectChalCateList();

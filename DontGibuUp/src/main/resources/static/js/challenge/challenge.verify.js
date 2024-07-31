@@ -368,6 +368,7 @@ function toggleEditSave(chal_ver_num) {
 			type: 'POST',
 			data: { chal_ver_num: chal_ver_num, chal_content: newContent },
 			success: function(response) {
+				$('#content-'+chal_ver_num).hide();
 				$('#content-' + chal_ver_num).text(newContent).show();
 				$('#edit-form-' + chal_ver_num).hide();
 				editButton.text('수정');

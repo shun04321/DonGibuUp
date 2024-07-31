@@ -42,32 +42,40 @@
 		</where>
 	</sql>
 
-	<!-- 챌린지 분류 조건 -->
+	<!-- 챌린지 분류 조건 -->	
 	<sql id="challengeSort">
-		<if test="order != null and order != ''">
-			<choose>
-				<when test="order == 0">
-					ORDER BY chal_num DESC
-				</when>
-				<when test="order == 1">
-				</when>
-				<when test="order == 2">
-					ORDER BY chal_sdate ASC
-				</when>
-				<when test="order == 3">
-				</when>
-			</choose>
-		</if>
+		<choose>
+			<when test="order == 0">
+				ORDER BY chal_num DESC
+			</when>
+			<when test="order == 1">
+				ORDER BY NVL((
+					SELECT COUNT(*)
+					FROM chal_fav cf
+					WHERE c.chal_num = cf.chal_num
+					GROUP BY cf.chal_num
+				),0) DESC
+			</when>
+			<when test="order == 2">
+				ORDER BY chal_sdate ASC
+			</when>
+			<when test="order == 3">
+				ORDER BY (
+					SELECT COUNT(*)
+                	FROM chal_join cj
+                	WHERE cj.chal_num = c.chal_num
+                	GROUP BY cj.chal_num
+				) DESC
+			</when>
+		</choose>
 	</sql>
 
 	<!-- 챌린지 개설 수 -->
 	<select id="selectRowCount" parameterType="map"
 		resultType="Integer">
-		SELECT COUNT(*) FROM challenge
-		JOIN member USING (mem_num)
-		<!-- 검색 조건 sql문 -->
+		SELECT COUNT(*) FROM challenge c
+		JOIN member m ON c.mem_num = m.mem_num
 		<include refid="challengeSearch"></include>
-		<include refid="challengeSort"></include>
 	</select>
 
 	<!-- 챌린지 개설 목록 -->
