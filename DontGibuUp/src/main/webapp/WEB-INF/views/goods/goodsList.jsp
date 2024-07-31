@@ -51,12 +51,12 @@
                 </script>
 				<c:if
 					test="${sessionScope.user != null && sessionScope.user.mem_status == 9}">
-					<input type="button" value="상품 등록" onclick="location.href='write'">
+					<input type="button" value="상품 등록" onclick="location.href='write'" style="padding: 6px 12px; border-radius: 5px; background-color: #597081; color: white; border: none; cursor: pointer;">
 					<input type="button" value="구매 관리"
-						onclick="location.href='${pageContext.request.contextPath}/admin/purchaseList'">
+						onclick="location.href='${pageContext.request.contextPath}/admin/purchaseList'" style="padding: 6px 12px; border-radius: 5px; background-color: #597081; color: white; border: none; cursor: pointer;">
 				</c:if>
 				<input type="button" value="장바구니"
-					onclick="location.href='${pageContext.request.contextPath}/cart/list'">
+					onclick="location.href='${pageContext.request.contextPath}/cart/list'" style="padding: 6px 12px; border-radius: 5px; background-color: #597081; color: white; border: none; cursor: pointer;">
 			</div>
 		</form>
 		<c:if test="${count == 0}">
