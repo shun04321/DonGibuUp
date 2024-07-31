@@ -508,9 +508,10 @@
 	<!-- 챌린지 메인 -->
 	<select id="getPopularChallenges" resultType="ChallengeVO">
 	    SELECT * FROM (
-	        SELECT c.*, m.mem_nick, (SELECT COUNT(*) FROM CHAL_FAV f WHERE f.chal_num = c.chal_num) AS fav_count
+	        SELECT c.*, m.mem_nick, md.mem_photo, (SELECT COUNT(*) FROM CHAL_FAV f WHERE f.chal_num = c.chal_num) AS fav_count
 	        FROM CHALLENGE c
 	        JOIN MEMBER m ON c.mem_num = m.mem_num
+	        JOIN MEMBER_DETAIL md ON m.mem_num = md.mem_num
 	        WHERE c.chal_sdate >= TRUNC(SYSDATE)
 	        ORDER BY fav_count DESC
 	    ) 
@@ -521,9 +522,10 @@
 	
 	<select id="getExerciseChallenges" resultType="ChallengeVO">
 	    SELECT * FROM (
-	        SELECT c.*, m.mem_nick
+	        SELECT c.*, m.mem_nick, md.mem_photo
 	        FROM CHALLENGE c
 	        JOIN MEMBER m ON c.mem_num = m.mem_num
+	        JOIN MEMBER_DETAIL md ON m.mem_num = md.mem_num
 	        WHERE c.chal_sdate >= SYSDATE
 	        AND c.chal_type = 0
 	    ) 

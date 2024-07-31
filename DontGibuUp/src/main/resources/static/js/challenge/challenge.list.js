@@ -113,9 +113,9 @@ $(function() {
                     output += '<h5 class="mb-3">' + challenge.chal_title + '</h5>';
                     output += '<p>';
                     if (challenge.mem_photo) {
-                        output += '<img src="' + pageContext + '/upload/' + challenge.mem_photo + '" width="20" height="20">'; //프사
+                        output += '<img src="' + pageContext + '/upload/' + challenge.mem_photo + '" width="20" height="20" class="profile-pic">'; //프사
                     } else {
-                        output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20">'; //프사
+                        output += '<img src="' + pageContext + '/images/basicProfile.png" width="20" height="20" class="profile-pic">'; //프사
                     }
                     output += ' <span>' + challenge.mem_nick + '</span>';
                     output += '</p>';
