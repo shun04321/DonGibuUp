@@ -15,6 +15,10 @@
 		</h2>
 		<br>
 		<div class="challenge-list">
+			<c:if test="${count == 0}">
+				<div class="result-display">신청하신 챌린지 중 시작 날짜가 이번달인 챌린지가 없습니다.</div>
+			</c:if>
+			<c:if test="${count != 0}">			
 			<c:forEach var="entry" items="${challengesByMonth}">
 				<c:forEach var="challengeData" items="${entry.value}">
 					<c:set var="challengeJoin" value="${challengeData.challengeJoin}" />
@@ -83,6 +87,7 @@
 					</div>
 				</c:forEach>
 			</c:forEach>
+			</c:if>
 		</div>
 		<div class="align-center">${page}</div>
 	</div>

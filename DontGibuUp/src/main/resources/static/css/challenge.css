@@ -10,6 +10,13 @@
 	justify-content: space-around;
 }
 
+.result-display{
+	background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
 .chal_listElement {
 	flex: 0 1 150px;
 	margin: 10px 10px; /* 아래쪽에 간격을 둠 */

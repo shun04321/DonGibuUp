@@ -368,6 +368,7 @@ public class ChallengeController {
 		model.addAttribute("challengesByMonth", Map.of(currentMonthString, challengeDataList));
 		model.addAttribute("status", status);
 		model.addAttribute("currentMonth", currentMonthString);
+		model.addAttribute("count",count);
 		model.addAttribute("page", page.getPage());
 
 		return "challengeJoinList";
