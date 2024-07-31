@@ -26,7 +26,18 @@
     	<div>
     		<div class="g-basic-info">
 	        	<div class="mb-1">재고: ${goods.item_stock}</div>
-	        	<div class="mb-1">카테고리: ${goods.dcate_num}</div> 
+	        	<div class="mb-1">카테고리: 
+    <c:choose>
+        <c:when test="${goods.dcate_num == 1}">독거노인기본생활 지원</c:when>
+        <c:when test="${goods.dcate_num == 2}">청년 고립 극복 지원</c:when>
+        <c:when test="${goods.dcate_num == 3}">유기동물 구조와 보호</c:when>
+        <c:when test="${goods.dcate_num == 4}">미혼모(한부모가정)</c:when>
+        <c:when test="${goods.dcate_num == 5}">해외 어린이 긴급구호</c:when>
+        <c:when test="${goods.dcate_num == 6}">위기가정 아동지원</c:when>
+        <c:when test="${goods.dcate_num == 7}">쓰레기 문제 해결</c:when>
+        <c:when test="${goods.dcate_num == 8}">장애 어린이 재활 지원</c:when>
+    </c:choose>
+</div> 
 	        	<div class="mb-1">가격: ${goods.item_price}</div>
     		</div>
         	<div class="d-flex mb-1" style="height:36px"><label class="me-1" style="width:5rem">수량:</label><input class="form-control"
