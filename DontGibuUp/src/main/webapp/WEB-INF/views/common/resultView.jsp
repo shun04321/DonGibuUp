@@ -30,19 +30,26 @@
     }
 
     input[type="button"] {
-        margin-top: 20px;
-        padding: 10px 20px;
-        font-size: 2vw; /* Viewport width의 2% */
+       margin-top: 10px;
+        padding: 4px 20px;
+        border: 1px solid #09aa5c;
+        border-radius: 2px;
         color: #fff;
-        background-color: #007BFF;
-        border: none;
-        border-radius: 5px;
+        background-color: #09aa5c;
+        font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.3s ease;
     }
 
     input[type="button"]:hover {
-        background-color: #0056b3;
+        margin-top: 10px;
+        padding: 4px 20px;
+        border: 1px solid #09aa5c;
+        border-radius: 2px;
+        background-color: #FFF;
+        color: #09aa5c;
+        transition: 0.2s ease-out;
+        font-weight: bold;
+        cursor: pointer;
     }
 </style>
 </head>
