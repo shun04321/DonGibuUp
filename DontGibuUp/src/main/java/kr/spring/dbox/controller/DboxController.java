@@ -178,7 +178,7 @@ public class DboxController {
 			return "redirect:/member/login";
 		}
 		List<DonationCategoryVO> list = categoryService.selectListNoPage();
-		
+		log.debug("<<Step1 카테고리 리스트>> : " + list);
 		model.addAttribute("list",list);
 		
 		return "dboxProposeStep1";		
@@ -186,7 +186,8 @@ public class DboxController {
 	@PostMapping("/dbox/propose/step1")
 	public String Step1Submit(@Valid DboxVO dboxVO,
 							  BindingResult result,
-							  HttpSession session) {
+							  HttpSession session,
+							  Model model) {
 		//dboxVO에 dcate_num이 담겼는지 확인
 		log.debug("<<기부박스 제안 Step1>> : " + dboxVO);
 		
@@ -198,6 +199,9 @@ public class DboxController {
 		}
 		//유효성 체크 결과 오류가 있으면 폼 호출
 		if(result.hasFieldErrors("dcate_num")) {
+			List<DonationCategoryVO> list = categoryService.selectListNoPage();
+			log.debug("<<Step1 카테고리 리스트>> : " + list);
+			model.addAttribute("list",list);
 			return "dboxProposeStep1";
 		}
 
