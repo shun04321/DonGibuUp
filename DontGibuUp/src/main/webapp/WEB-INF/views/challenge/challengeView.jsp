@@ -74,10 +74,10 @@
 	    <div class="row">
 	        <div class="col">
 	            <span>인증 빈도</span>&nbsp;&nbsp;
-	            <c:if test="${challenge.chal_freq == 0}">
+	            <c:if test="${challenge.chal_freq == 7}">
 	                <p class="inline-text">매일</p>
 	            </c:if>
-	            <c:if test="${challenge.chal_freq != 0}">
+	            <c:if test="${challenge.chal_freq != 7}">
 	                <p class="inline-text">주 ${challenge.chal_freq}일</p>
 	            </c:if>
 	        </div>
