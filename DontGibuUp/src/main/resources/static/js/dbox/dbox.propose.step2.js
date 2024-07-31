@@ -81,7 +81,11 @@ $(function(){
 	//사용계획 삭제
 	$(document).on('click','.bud_delete_btn',function(){
 		let bud_num = $(this).attr('data-bud_num');
-		$('#bud_num'+bud_num).remove();
+		if(bud_num ==1){
+			alert('1개 이하로는 삭제하실 수 없습니다.');
+		}else{
+			$('#bud_num'+bud_num).remove();
+		}
 	});
 	
 	//사용계획 총합

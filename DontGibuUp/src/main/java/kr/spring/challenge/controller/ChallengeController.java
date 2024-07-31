@@ -535,9 +535,10 @@ public class ChallengeController {
 			if (weekEndDate.isBefore(today) || weekEndDate.equals(today)) {
 				totalFailedVerifications += Math.max(failedInWeek, 0);
 			}
-			
 			//이번 주 인증 완료 여부 확인
-			if(today.isAfter(startDate)||today.isEqual(startDate) && today.isBefore(endDate)) {
+			LocalDate start = startDate.plusDays(weekNumber * 7);
+			LocalDate end = startDate.plusDays((weekNumber+1) * 7);
+			if(today.isAfter(start) && today.isBefore(end) ||today.isEqual(start) && today.isBefore(end)) {
 				if(weeklyVerifications == chalFreq) {
 					mav.addObject("hasCompletedWeeklyVerify", true);
 				}
