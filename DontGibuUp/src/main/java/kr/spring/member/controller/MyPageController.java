@@ -3,6 +3,7 @@ package kr.spring.member.controller;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -539,12 +540,14 @@ public class MyPageController {
 		//페이지 처리
 		PagingUtil page = new PagingUtil(pageNum, count, 10, 10, "dboxMyPropose");
 		
-		List<DboxVO> list = null;
+		map.put("start", page.getStartRow());
+		map.put("end", page.getEndRow());
 		
-		if (count > 0) {
-			map.put("start", page.getStartRow());
-			map.put("end", page.getEndRow());
+		List<DboxVO> list = null;
+		if(count > 0) {
 			list = dboxService.getDboxByMem_num(map);
+		}else {
+			list = Collections.emptyList();//null일 경우 빈 배열로 인식되게 세팅
 		}
 		
 		for (DboxVO dbox : list) {
