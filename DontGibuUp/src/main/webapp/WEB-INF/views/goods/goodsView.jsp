@@ -34,7 +34,7 @@
         		<form id="purchaseForm" method="post">
 		            <input type="hidden" name="merchantUid" value="${goods.item_num}_${System.currentTimeMillis()}">
 		            <input type="hidden" id="goods_do_price" name="amount" value="${goods.item_price}">
-		            <input type="button" value="구매하기" class="g-custom-btn ms-2" id="buy_now_button" style="height:100%">
+		            <input type="button" value="구매하기" class="btn btn-outline-success active" id="buy_now_button" style="height:100%">
 		        </form>
         	</div>
 		    <div>		
@@ -47,7 +47,7 @@
 		            <div class="d-flex mb-1" style="height:36px">
 		            	<label for="cart_quantity" class="me-1" style="width:5rem">수량:</label><input class="form-control"
 		             	type="number" id="cart_quantity" name="cart_quantity" value="1" min="1" max="${goods.item_stock}">
-		            	<input type="button" value="장바구니" class="g-custom-btn ms-2" onclick="addToCart()">
+		            	<input type="button" value="장바구니" class="btn btn-outline-success active" onclick="addToCart()">
 		            </div>
 		        </form>
 			</div>
