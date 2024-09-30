@@ -288,5 +288,20 @@
 		</div>
 	</div>
 </div>
+  <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // 현재 날짜 객체를 생성합니다.
+            var today = new Date();
+            
+            // 날짜를 두 자리 형식으로 변환합니다.
+            var day = today.getDate().toString().padStart(2, '0');
+            
+            // <span> 요소의 내용을 설정합니다.
+            document.getElementById('paymentDateInfo').textContent = day;
+            
+            // 폼의 숨겨진 필드에 값을 설정합니다.
+            document.getElementById('sub_date').value = day;
+        });
+    </script>
 </html>
 

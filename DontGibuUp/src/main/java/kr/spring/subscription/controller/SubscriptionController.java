@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -61,6 +63,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.siot.IamportRestClient.IamportClient;
 
 import kr.spring.subscription.vo.GetTokenVO;
@@ -431,6 +435,8 @@ public class SubscriptionController {
 		if (response.getStatusCode() == HttpStatus.OK) {	        	
 			// API 호출은 성공적으로 되었지만, 실제 결제 성공 여부는 API 응답의 상태를 확인해야 함
 			if (code == 0) {
+				schedulePay(payuid, 5000, "dfjkalfja;lfd");
+				
 				//결제 성공 알림
 				NotifyVO notifyVO = new NotifyVO();
 				notifyVO.setMem_num(user.getMem_num());
@@ -442,6 +448,7 @@ public class SubscriptionController {
 
 				// 결제 성공
 				sub_paymentService.insertSub_payment(sub_paymentVO);
+				
 				return "payment success";
 			} else {
 				//결제 실패 알림
@@ -1017,7 +1024,62 @@ public class SubscriptionController {
 		}
 		return mapJson;
 	}
+	
+    public String schedulePay(String customerUid, int price, String merchant_uid) {
+        String token = subscriptionService.getToken(0);
+        Integer timestamp = 0;
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.KOREA);
+		cal.add(Calendar.DATE, +5);
+		String date = sdf.format(cal.getTime());
+		try {
+			Date stp = sdf.parse(date);
+			timestamp = (int) (stp.getTime()/1000);
+			System.out.println(timestamp);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // 현재 Unix Timestamp를 초 단위로 생성
+        String accessToken = extractAccessToken(token);
 
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(accessToken);
+
+        JsonObject scheduleObject = new JsonObject();
+        scheduleObject.addProperty("schedule_at", 1726444800);
+        scheduleObject.addProperty("merchant_uid", "232");
+        scheduleObject.addProperty("amount", 50000);
+
+        JsonArray schedulesArray = new JsonArray();
+        schedulesArray.add(scheduleObject); // scheduleObject를 배열에 추가
+
+        JsonObject reqJson = new JsonObject();
+        reqJson.addProperty("customer_uid", customerUid);
+        reqJson.add("schedules", schedulesArray); // schedules가 배열로 추가됨
+
+        String json = new Gson().toJson(reqJson);
+
+        HttpEntity<String> entity = new HttpEntity<>(json, headers);
+        String response =  restTemplate.postForObject("https://api.iamport.kr/subscribe/payments/schedule", entity, String.class);
+
+        // 응답 결과를 콘솔에 출력
+        System.out.println("스케줄페이 응답: " + response);
+
+        return response;
+
+    }
+    
+    private String extractAccessToken(String token) {
+        try {
+            JsonObject jsonObject = new Gson().fromJson(token, JsonObject.class);
+            return jsonObject.getAsJsonObject("response").get("access_token").getAsString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 }
 
 
